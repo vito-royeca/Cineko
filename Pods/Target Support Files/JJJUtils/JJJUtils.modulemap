@@ -1,0 +1,6 @@
+framework module JJJUtils {
+  umbrella header "JJJUtils-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module Pods_CinekoUITests {
+  umbrella header "Pods-CinekoUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

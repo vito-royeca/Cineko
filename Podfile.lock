@@ -1,0 +1,19 @@
+PODS:
+  - JJJUtils (0.3.0):
+    - JJJUtils/OSX (= 0.3.0)
+  - MBProgressHUD (0.9.2)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
+
+DEPENDENCIES:
+  - JJJUtils
+  - MBProgressHUD
+  - SDWebImage
+
+SPEC CHECKSUMS:
+  JJJUtils: fdc339298ed848127e6c0fd5661a1e4e67a1b6da
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+
+COCOAPODS: 0.39.0
