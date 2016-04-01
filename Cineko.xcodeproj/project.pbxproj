@@ -1,0 +1,505 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378731CAE16B600FB6830 /* AppDelegate.swift */; };
+		8C1378761CAE16B600FB6830 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378751CAE16B600FB6830 /* ViewController.swift */; };
+		8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C1378771CAE16B700FB6830 /* Main.storyboard */; };
+		8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787A1CAE16B700FB6830 /* Assets.xcassets */; };
+		8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */; };
+		8C1378891CAE16B800FB6830 /* CinekoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378881CAE16B800FB6830 /* CinekoTests.swift */; };
+		8C1378941CAE16B800FB6830 /* CinekoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378931CAE16B800FB6830 /* CinekoUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8C1378851CAE16B800FB6830 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C1378681CAE16B300FB6830 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C13786F1CAE16B300FB6830;
+			remoteInfo = Cineko;
+		};
+		8C1378901CAE16B800FB6830 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C1378681CAE16B300FB6830 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C13786F1CAE16B300FB6830;
+			remoteInfo = Cineko;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8C1378701CAE16B300FB6830 /* Cineko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cineko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C1378731CAE16B600FB6830 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8C1378751CAE16B600FB6830 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8C1378781CAE16B700FB6830 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8C13787A1CAE16B700FB6830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8C13787D1CAE16B700FB6830 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8C13787F1CAE16B700FB6830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C1378841CAE16B800FB6830 /* CinekoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinekoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C1378881CAE16B800FB6830 /* CinekoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CinekoTests.swift; sourceTree = "<group>"; };
+		8C13788A1CAE16B800FB6830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C13788F1CAE16B800FB6830 /* CinekoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinekoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C1378931CAE16B800FB6830 /* CinekoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CinekoUITests.swift; sourceTree = "<group>"; };
+		8C1378951CAE16B900FB6830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C13786D1CAE16B300FB6830 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C1378811CAE16B800FB6830 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C13788C1CAE16B800FB6830 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C1378671CAE16B300FB6830 = {
+			isa = PBXGroup;
+			children = (
+				8C1378721CAE16B600FB6830 /* Cineko */,
+				8C1378871CAE16B800FB6830 /* CinekoTests */,
+				8C1378921CAE16B800FB6830 /* CinekoUITests */,
+				8C1378711CAE16B300FB6830 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8C1378711CAE16B300FB6830 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C1378701CAE16B300FB6830 /* Cineko.app */,
+				8C1378841CAE16B800FB6830 /* CinekoTests.xctest */,
+				8C13788F1CAE16B800FB6830 /* CinekoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C1378721CAE16B600FB6830 /* Cineko */ = {
+			isa = PBXGroup;
+			children = (
+				8C1378731CAE16B600FB6830 /* AppDelegate.swift */,
+				8C1378751CAE16B600FB6830 /* ViewController.swift */,
+				8C1378771CAE16B700FB6830 /* Main.storyboard */,
+				8C13787A1CAE16B700FB6830 /* Assets.xcassets */,
+				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
+				8C13787F1CAE16B700FB6830 /* Info.plist */,
+			);
+			path = Cineko;
+			sourceTree = "<group>";
+		};
+		8C1378871CAE16B800FB6830 /* CinekoTests */ = {
+			isa = PBXGroup;
+			children = (
+				8C1378881CAE16B800FB6830 /* CinekoTests.swift */,
+				8C13788A1CAE16B800FB6830 /* Info.plist */,
+			);
+			path = CinekoTests;
+			sourceTree = "<group>";
+		};
+		8C1378921CAE16B800FB6830 /* CinekoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8C1378931CAE16B800FB6830 /* CinekoUITests.swift */,
+				8C1378951CAE16B900FB6830 /* Info.plist */,
+			);
+			path = CinekoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C13786F1CAE16B300FB6830 /* Cineko */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C1378981CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "Cineko" */;
+			buildPhases = (
+				8C13786C1CAE16B300FB6830 /* Sources */,
+				8C13786D1CAE16B300FB6830 /* Frameworks */,
+				8C13786E1CAE16B300FB6830 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Cineko;
+			productName = Cineko;
+			productReference = 8C1378701CAE16B300FB6830 /* Cineko.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8C1378831CAE16B800FB6830 /* CinekoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C13789B1CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "CinekoTests" */;
+			buildPhases = (
+				8C1378801CAE16B800FB6830 /* Sources */,
+				8C1378811CAE16B800FB6830 /* Frameworks */,
+				8C1378821CAE16B800FB6830 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C1378861CAE16B800FB6830 /* PBXTargetDependency */,
+			);
+			name = CinekoTests;
+			productName = CinekoTests;
+			productReference = 8C1378841CAE16B800FB6830 /* CinekoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8C13788E1CAE16B800FB6830 /* CinekoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C13789E1CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "CinekoUITests" */;
+			buildPhases = (
+				8C13788B1CAE16B800FB6830 /* Sources */,
+				8C13788C1CAE16B800FB6830 /* Frameworks */,
+				8C13788D1CAE16B800FB6830 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C1378911CAE16B800FB6830 /* PBXTargetDependency */,
+			);
+			name = CinekoUITests;
+			productName = CinekoUITests;
+			productReference = 8C13788F1CAE16B800FB6830 /* CinekoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C1378681CAE16B300FB6830 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Jovito Royeca";
+				TargetAttributes = {
+					8C13786F1CAE16B300FB6830 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					8C1378831CAE16B800FB6830 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 8C13786F1CAE16B300FB6830;
+					};
+					8C13788E1CAE16B800FB6830 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 8C13786F1CAE16B300FB6830;
+					};
+				};
+			};
+			buildConfigurationList = 8C13786B1CAE16B300FB6830 /* Build configuration list for PBXProject "Cineko" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C1378671CAE16B300FB6830;
+			productRefGroup = 8C1378711CAE16B300FB6830 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C13786F1CAE16B300FB6830 /* Cineko */,
+				8C1378831CAE16B800FB6830 /* CinekoTests */,
+				8C13788E1CAE16B800FB6830 /* CinekoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C13786E1CAE16B300FB6830 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */,
+				8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */,
+				8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C1378821CAE16B800FB6830 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C13788D1CAE16B800FB6830 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C13786C1CAE16B300FB6830 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C1378761CAE16B600FB6830 /* ViewController.swift in Sources */,
+				8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C1378801CAE16B800FB6830 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C1378891CAE16B800FB6830 /* CinekoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C13788B1CAE16B800FB6830 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C1378941CAE16B800FB6830 /* CinekoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C1378861CAE16B800FB6830 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C13786F1CAE16B300FB6830 /* Cineko */;
+			targetProxy = 8C1378851CAE16B800FB6830 /* PBXContainerItemProxy */;
+		};
+		8C1378911CAE16B800FB6830 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C13786F1CAE16B300FB6830 /* Cineko */;
+			targetProxy = 8C1378901CAE16B800FB6830 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8C1378771CAE16B700FB6830 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C1378781CAE16B700FB6830 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C13787D1CAE16B700FB6830 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8C1378961CAE16B900FB6830 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8C1378971CAE16B900FB6830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C1378991CAE16B900FB6830 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Cineko/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8C13789A1CAE16B900FB6830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Cineko/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8C13789C1CAE16B900FB6830 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = CinekoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineko.app/Cineko";
+			};
+			name = Debug;
+		};
+		8C13789D1CAE16B900FB6830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = CinekoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineko.app/Cineko";
+			};
+			name = Release;
+		};
+		8C13789F1CAE16B900FB6830 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CinekoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Cineko;
+			};
+			name = Debug;
+		};
+		8C1378A01CAE16B900FB6830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CinekoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Cineko;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C13786B1CAE16B300FB6830 /* Build configuration list for PBXProject "Cineko" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C1378961CAE16B900FB6830 /* Debug */,
+				8C1378971CAE16B900FB6830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C1378981CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "Cineko" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C1378991CAE16B900FB6830 /* Debug */,
+				8C13789A1CAE16B900FB6830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8C13789B1CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "CinekoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C13789C1CAE16B900FB6830 /* Debug */,
+				8C13789D1CAE16B900FB6830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8C13789E1CAE16B900FB6830 /* Build configuration list for PBXNativeTarget "CinekoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C13789F1CAE16B900FB6830 /* Debug */,
+				8C1378A01CAE16B900FB6830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C1378681CAE16B300FB6830 /* Project object */;
+}
