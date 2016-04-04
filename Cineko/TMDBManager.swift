@@ -1,5 +1,5 @@
 //
-//  DownloadManager.swift
+//  TMDBManager.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 04/04/2016.
@@ -7,9 +7,10 @@
 //
 
 import Foundation
-class TMDBManager: NSObject {
+import KeychainAccess
 
-    var sessionID:String?
+class TMDBManager: NSObject {
+    let keychain = Keychain(server: "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)", protocolType: .HTTPS)
 
     func requestToken(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get

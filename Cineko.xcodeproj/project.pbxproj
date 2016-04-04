@@ -109,6 +109,9 @@
 		8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowsViewController.swift; sourceTree = "<group>"; };
 		8CB7494B1CAEC20500EABB91 /* PeopleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleViewController.swift; sourceTree = "<group>"; };
 		8CB7494F1CAEC21900EABB91 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		8CBDC34C1CB2BA1200FA15F8 /* Cineko-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cineko-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CBDC34D1CB2BA1200FA15F8 /* CinekoTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CinekoTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CBDC34E1CB2BA1300FA15F8 /* CinekoUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CinekoUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CD408BD1CB17AC200F9132F /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		8CD408C11CB1822E00F9132F /* TMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBManager.swift; sourceTree = "<group>"; };
 		90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CinekoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -252,6 +255,9 @@
 				8C1378AF1CAE80D000FB6830 /* GCDBlackBox.swift */,
 				8C1378B01CAE80D000FB6830 /* NetworkManager.swift */,
 				8CD408C11CB1822E00F9132F /* TMDBManager.swift */,
+				8CBDC34C1CB2BA1200FA15F8 /* Cineko-Bridging-Header.h */,
+				8CBDC34D1CB2BA1200FA15F8 /* CinekoTests-Bridging-Header.h */,
+				8CBDC34E1CB2BA1300FA15F8 /* CinekoUITests-Bridging-Header.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -715,10 +721,13 @@
 			baseConfigurationReference = 5BF6298FD888C45CA3E9E79B /* Pods-Cineko.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Cineko/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -727,10 +736,12 @@
 			baseConfigurationReference = D4AF6C6BFC48C4C843F58195 /* Pods-Cineko.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Cineko/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -739,10 +750,13 @@
 			baseConfigurationReference = 9285EB472CD725C6F83ACA2D /* Pods-CinekoTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CinekoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/CinekoTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineko.app/Cineko";
 			};
 			name = Debug;
@@ -752,10 +766,12 @@
 			baseConfigurationReference = 2BBB6EC9900CC67C4275E520 /* Pods-CinekoTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CinekoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/CinekoTests-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cineko.app/Cineko";
 			};
 			name = Release;
@@ -764,10 +780,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6D27791043D9657918374E78 /* Pods-CinekoUITests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CinekoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/CinekoUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_TARGET_NAME = Cineko;
 			};
 			name = Debug;
@@ -776,10 +795,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F5DD1BDE88AC31DFDEE89B78 /* Pods-CinekoUITests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = CinekoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.CinekoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/CinekoUITests-Bridging-Header.h";
 				TEST_TARGET_NAME = Cineko;
 			};
 			name = Release;

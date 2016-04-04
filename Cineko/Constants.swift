@@ -21,6 +21,7 @@ struct Constants {
         
         static let RequestTokenKey    = "request_token"
         static let RequestTokenDate   = "request_token_date"
+        static let SessionIDKey       = "session_id"
     }
 
     struct TMDBRequestToken {
