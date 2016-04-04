@@ -17,13 +17,22 @@ struct Constants {
         static let APIKeyValue = "b6484c1f1ef60a8e5f5281452f964d9b"
         
         static let SignupURL       = "https://www.themoviedb.org/account/signup"
-        static let AuthenticateURL = "http://www.themoviedb.org/authenticate"
+        static let AuthenticateURL = "https://www.themoviedb.org/authenticate"
+        
+        static let RequestTokenKey    = "request_token"
+        static let RequestTokenDate   = "request_token_date"
     }
 
     struct TMDBRequestToken {
         static let Path = "/authentication/token/new"
         static let Parameters = [TMDB.APIKey: TMDB.APIKeyValue]
         static let RequestToken = "request_token"
+    }
+    
+    struct TMDBRequestSessionID {
+        static let Path = "/authentication/session/new"
+//        static let Parameters = [TMDB.APIKey: TMDB.APIKeyValue]
+        static let SessionID = "session_id"
     }
     
     // MARK: Rotten Tomatoes

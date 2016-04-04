@@ -32,6 +32,9 @@
 		8C1378BD1CAE819F00FB6830 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378BC1CAE819F00FB6830 /* Constants.swift */; };
 		8C1378BE1CAE819F00FB6830 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378BC1CAE819F00FB6830 /* Constants.swift */; };
 		8C1378BF1CAE819F00FB6830 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378BC1CAE819F00FB6830 /* Constants.swift */; };
+		8C3C82341CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
+		8C3C82351CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
+		8C3C82361CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
 		8CB749401CAEC1B600EABB91 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* DiscoverViewController.swift */; };
 		8CB749411CAEC1B600EABB91 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* DiscoverViewController.swift */; };
 		8CB749421CAEC1B600EABB91 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* DiscoverViewController.swift */; };
@@ -100,6 +103,7 @@
 		8C1378B01CAE80D000FB6830 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8C1378BA1CAE812900FB6830 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1378BC1CAE819F00FB6830 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8C3C82331CB22032008CCF4C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8CB7493F1CAEC1B600EABB91 /* DiscoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowsViewController.swift; sourceTree = "<group>"; };
@@ -231,10 +235,11 @@
 			isa = PBXGroup;
 			children = (
 				8CB7493F1CAEC1B600EABB91 /* DiscoverViewController.swift */,
-				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
+				8C3C82331CB22032008CCF4C /* LoginViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8CB7494B1CAEC20500EABB91 /* PeopleViewController.swift */,
 				8CB7494F1CAEC21900EABB91 /* SearchViewController.swift */,
+				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
 				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
 			);
 			name = Controller;
@@ -529,6 +534,7 @@
 				8C1378B71CAE80D000FB6830 /* NetworkManager.swift in Sources */,
 				8CB749481CAEC1F000EABB91 /* TVShowsViewController.swift in Sources */,
 				8C1378761CAE16B600FB6830 /* ViewController.swift in Sources */,
+				8C3C82341CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8CB7494C1CAEC20500EABB91 /* PeopleViewController.swift in Sources */,
 				8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */,
 				8C1378B11CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
@@ -550,6 +556,7 @@
 				8C1378B81CAE80D000FB6830 /* NetworkManager.swift in Sources */,
 				8CB749491CAEC1F000EABB91 /* TVShowsViewController.swift in Sources */,
 				8C1378AD1CAE80A700FB6830 /* TMDBTests.swift in Sources */,
+				8C3C82351CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8CB7494D1CAEC20500EABB91 /* PeopleViewController.swift in Sources */,
 				8C1378AA1CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
 				8C1378B21CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
@@ -568,6 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C3C82361CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8CD408C01CB17AC200F9132F /* StartViewController.swift in Sources */,
 				8CB7494A1CAEC1F000EABB91 /* TVShowsViewController.swift in Sources */,
 				8CD408C41CB1822E00F9132F /* TMDBManager.swift in Sources */,
