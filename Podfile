@@ -6,18 +6,21 @@ use_frameworks!
 
 target "Cineko" do
 pod 'JJJUtils'
+pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 end
 
 target "CinekoTests" do
 pod 'JJJUtils'
+pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 end
 
 target "CinekoUITests" do
 pod 'JJJUtils'
+pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 end

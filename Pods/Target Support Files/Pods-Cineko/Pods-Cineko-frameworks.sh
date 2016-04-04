@@ -85,11 +85,13 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Cineko/JJJUtils.framework"
+  install_framework "Pods-Cineko/KeychainAccess.framework"
   install_framework "Pods-Cineko/MBProgressHUD.framework"
   install_framework "Pods-Cineko/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Cineko/JJJUtils.framework"
+  install_framework "Pods-Cineko/KeychainAccess.framework"
   install_framework "Pods-Cineko/MBProgressHUD.framework"
   install_framework "Pods-Cineko/SDWebImage.framework"
 fi
