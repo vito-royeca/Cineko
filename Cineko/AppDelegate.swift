@@ -17,18 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
         var viewControllerID:String?
         
+        // if we have TMDB session id show the main interface, else show the start page
         if let _ = TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] {
             viewControllerID = "MainTabBarController"
         } else {
             viewControllerID = "StartViewController"
         }
-        
+
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window!.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerID!)
         window!.makeKeyAndVisible()
         

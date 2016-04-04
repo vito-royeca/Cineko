@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  AccountViewController.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 01/04/2016.
@@ -8,6 +8,6 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class AccountViewController: UIViewController {
 
 }
