@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8377AAE9313F4F56420B061BD725F0D1FE18172A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8377AAE9313F4F56420B061BD725F0D1FE18172A" : 0,
+    "8F0E4036E86239756A639845DD8D33C125293FFC" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "36355D0E-1847-451B-B428-592B4C81F3F9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8377AAE9313F4F56420B061BD725F0D1FE18172A" : "Cineko\/",
+    "8F0E4036E86239756A639845DD8D33C125293FFC" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Cineko",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Cineko.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jovito-royeca\/Cineko.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8377AAE9313F4F56420B061BD725F0D1FE18172A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jovito-royeca\/Udacity-iOSDeveloper.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8F0E4036E86239756A639845DD8D33C125293FFC"
+    }
+  ]
+}
