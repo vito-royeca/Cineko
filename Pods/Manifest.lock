@@ -1,4 +1,5 @@
 PODS:
+  - BLKFlexibleHeightBar (1.0.2)
   - Crashlytics (3.7.0):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.7)
@@ -11,6 +12,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
+  - BLKFlexibleHeightBar
   - Crashlytics
   - Fabric
   - JJJUtils
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - SDWebImage
 
 SPEC CHECKSUMS:
+  BLKFlexibleHeightBar: b27572a69633d8e33f1f2bbc486b04d8e86f742d
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   JJJUtils: fdc339298ed848127e6c0fd5661a1e4e67a1b6da
