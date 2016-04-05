@@ -69,16 +69,11 @@ class StartViewController: UIViewController {
         }
     }
     
-    // MARK: Overrides
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        
-//        if let _ = TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] {
-//            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
-//                presentViewController(controller, animated: true, completion: nil)
-//            }
-//        }
-//    }
+    @IBAction func skipLoginAction(sender: UIButton) {
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
+            presentViewController(controller, animated: true, completion: nil)
+        }
+    }
     
     // MARK: Utility methods
     func presentLoginViewController(authenticateURLString: String) {

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Init Crashlytics
         Fabric.with([Crashlytics.self])
         
+        TMDBManager.sharedInstance().checkFirstRun()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         var viewControllerID:String?

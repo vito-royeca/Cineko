@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Bryan Keller. All rights reserved.
 //
 
-#import "BLKFlexibleHeightBar.h"
+#import "BLKFlexibleHeightBar/BLKFlexibleHeightBar.h"
 
 @interface FacebookStyleBar : BLKFlexibleHeightBar
 

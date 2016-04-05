@@ -30,6 +30,19 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    // MARK: Utility methods
+    func checkFirstRun() {
+        if !NSUserDefaults.standardUserDefaults().boolForKey("FirstRun") {
+            // remove prior keychain items if this is our first run
+            TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] = nil
+            TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = nil
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.RequestTokenDate)
+            
+            // then mark this us our first run
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstRun")
+        }
+    }
+    
     // MARK: - Shared Instance
     class func sharedInstance() -> TMDBManager {
         

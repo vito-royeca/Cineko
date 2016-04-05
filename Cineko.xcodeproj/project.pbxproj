@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		87A3085D191827D4F6CCB5E1 /* Pods_CinekoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37ECB34B30BFE9A199455045 /* Pods_CinekoTests.framework */; };
 		8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378731CAE16B600FB6830 /* AppDelegate.swift */; };
-		8C1378761CAE16B600FB6830 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378751CAE16B600FB6830 /* ViewController.swift */; };
 		8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C1378771CAE16B700FB6830 /* Main.storyboard */; };
 		8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787A1CAE16B700FB6830 /* Assets.xcassets */; };
 		8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */; };
@@ -35,6 +34,9 @@
 		8C3C82341CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
 		8C3C82351CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
 		8C3C82361CB22032008CCF4C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3C82331CB22032008CCF4C /* LoginViewController.swift */; };
+		8C642D8D1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
+		8C642D8E1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
+		8C642D8F1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8CB749401CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749411CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749421CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
@@ -85,7 +87,6 @@
 		6D27791043D9657918374E78 /* Pods-CinekoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CinekoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CinekoUITests/Pods-CinekoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C1378701CAE16B300FB6830 /* Cineko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cineko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C1378731CAE16B600FB6830 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8C1378751CAE16B600FB6830 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8C1378781CAE16B700FB6830 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8C13787A1CAE16B700FB6830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C13787D1CAE16B700FB6830 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -104,6 +105,8 @@
 		8C1378BA1CAE812900FB6830 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1378BC1CAE819F00FB6830 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8C3C82331CB22032008CCF4C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookStyleBar.h; sourceTree = "<group>"; };
+		8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStyleBar.m; sourceTree = "<group>"; };
 		8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedViewController.swift; sourceTree = "<group>"; };
 		8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowsViewController.swift; sourceTree = "<group>"; };
@@ -187,13 +190,15 @@
 			children = (
 				8C1378731CAE16B600FB6830 /* AppDelegate.swift */,
 				8C13787A1CAE16B700FB6830 /* Assets.xcassets */,
+				8CBDC34C1CB2BA1200FA15F8 /* Cineko-Bridging-Header.h */,
+				8CBDC34D1CB2BA1200FA15F8 /* CinekoTests-Bridging-Header.h */,
+				8CBDC34E1CB2BA1300FA15F8 /* CinekoUITests-Bridging-Header.h */,
 				8C1378BC1CAE819F00FB6830 /* Constants.swift */,
 				8C1378A51CAE7BA700FB6830 /* Controller */,
 				8C13787F1CAE16B700FB6830 /* Info.plist */,
 				8C1378A31CAE7B9200FB6830 /* Model */,
 				8C1378A61CAE7BAF00FB6830 /* Utilities */,
 				8C1378A41CAE7BA200FB6830 /* View */,
-				8C1378751CAE16B600FB6830 /* ViewController.swift */,
 			);
 			path = Cineko;
 			sourceTree = "<group>";
@@ -220,8 +225,6 @@
 		8C1378A31CAE7B9200FB6830 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C1378771CAE16B700FB6830 /* Main.storyboard */,
-				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
 				8C1378A71CAE7BF300FB6830 /* Cineko.xcdatamodeld */,
 			);
 			name = Model;
@@ -230,6 +233,10 @@
 		8C1378A41CAE7BA200FB6830 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */,
+				8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */,
+				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
+				8C1378771CAE16B700FB6830 /* Main.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -255,9 +262,6 @@
 				8C1378AF1CAE80D000FB6830 /* GCDBlackBox.swift */,
 				8C1378B01CAE80D000FB6830 /* NetworkManager.swift */,
 				8CD408C11CB1822E00F9132F /* TMDBManager.swift */,
-				8CBDC34C1CB2BA1200FA15F8 /* Cineko-Bridging-Header.h */,
-				8CBDC34D1CB2BA1200FA15F8 /* CinekoTests-Bridging-Header.h */,
-				8CBDC34E1CB2BA1300FA15F8 /* CinekoUITests-Bridging-Header.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -554,7 +558,6 @@
 			files = (
 				8C1378B71CAE80D000FB6830 /* NetworkManager.swift in Sources */,
 				8CB749481CAEC1F000EABB91 /* TVShowsViewController.swift in Sources */,
-				8C1378761CAE16B600FB6830 /* ViewController.swift in Sources */,
 				8C3C82341CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8CB7494C1CAEC20500EABB91 /* PeopleViewController.swift in Sources */,
 				8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */,
@@ -565,6 +568,7 @@
 				8C1378A91CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
 				8C1378B41CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
 				8CD408BE1CB17AC200F9132F /* StartViewController.swift in Sources */,
+				8C642D8D1CB36537008D18F1 /* FacebookStyleBar.m in Sources */,
 				8CB749441CAEC1CF00EABB91 /* MoviesViewController.swift in Sources */,
 				8CD408C21CB1822E00F9132F /* TMDBManager.swift in Sources */,
 			);
@@ -587,6 +591,7 @@
 				8C1378891CAE16B800FB6830 /* CinekoTests.swift in Sources */,
 				8C1378B51CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
 				8CD408BF1CB17AC200F9132F /* StartViewController.swift in Sources */,
+				8C642D8E1CB36537008D18F1 /* FacebookStyleBar.m in Sources */,
 				8CB749451CAEC1CF00EABB91 /* MoviesViewController.swift in Sources */,
 				8CD408C31CB1822E00F9132F /* TMDBManager.swift in Sources */,
 			);
@@ -598,6 +603,7 @@
 			files = (
 				8C3C82361CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8CD408C01CB17AC200F9132F /* StartViewController.swift in Sources */,
+				8C642D8F1CB36537008D18F1 /* FacebookStyleBar.m in Sources */,
 				8CB7494A1CAEC1F000EABB91 /* TVShowsViewController.swift in Sources */,
 				8CD408C41CB1822E00F9132F /* TMDBManager.swift in Sources */,
 				8CB749521CAEC21900EABB91 /* AccountViewController.swift in Sources */,

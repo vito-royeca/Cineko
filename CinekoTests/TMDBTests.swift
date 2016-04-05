@@ -42,22 +42,6 @@ class TMDBTests: XCTestCase {
                 print("\(dict)")
                 self.finished = true
                 
-//                if let photos = dict["photos"] as? [String: AnyObject] {
-//                    if let photo = photos["photo"] as? [[String: AnyObject]] {
-//                        print("\(photo)")
-//                        
-//                        for d in photo {
-//                            if let p = self.findOrCreatePhoto(d, pin: pin!) {
-//                                self.downloadPhotoImage(p)
-//                            }
-//                        }
-//                        
-//                    }  else {
-//                        print("error: photo key not found")
-//                    }
-//                } else {
-//                    print("error: photos key not found")
-//                }
             }
         }
         
