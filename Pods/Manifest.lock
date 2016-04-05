@@ -1,4 +1,7 @@
 PODS:
+  - Crashlytics (3.7.0):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.7)
   - JJJUtils (0.3.0):
     - JJJUtils/OSX (= 0.3.0)
   - KeychainAccess (2.3.5)
@@ -8,12 +11,16 @@ PODS:
   - SDWebImage/Core (3.7.5)
 
 DEPENDENCIES:
+  - Crashlytics
+  - Fabric
   - JJJUtils
   - KeychainAccess
   - MBProgressHUD
   - SDWebImage
 
 SPEC CHECKSUMS:
+  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   JJJUtils: fdc339298ed848127e6c0fd5661a1e4e67a1b6da
   KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1

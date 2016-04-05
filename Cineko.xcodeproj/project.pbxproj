@@ -288,6 +288,7 @@
 				8C13786E1CAE16B300FB6830 /* Resources */,
 				DD202BF4C7E40D3DBEAB4065 /* Embed Pods Frameworks */,
 				28244AD12D744ACF5C48ACEB /* Copy Pods Resources */,
+				8C642D8A1CB35B78008D18F1 /* Fabric Run Script */,
 			);
 			buildRules = (
 			);
@@ -469,6 +470,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CinekoUITests/Pods-CinekoUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8C642D8A1CB35B78008D18F1 /* Fabric Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fabric Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 114b3dd82452ec2f4024140ec862698d331b8f3f e633393678a7e8c4f2e8be609515f7ad0ff6dd85c474c001fea74fde0273c2e4";
 		};
 		8E4928C74B488273C73F8B43 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
