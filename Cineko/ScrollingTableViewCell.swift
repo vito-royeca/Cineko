@@ -11,13 +11,17 @@ import SDWebImage
 
 protocol ScrollingTableViewCellDelegate : NSObjectProtocol {
     func seeAllAction(tag: Int);
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath);
+    func didSelectItem(tag: Int, dict: [String: AnyObject])
 }
 
 class ScrollingTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 150
     static let MaxItems = 12
+    struct Keys {
+        static let ID  = "id"
+        static let URL = "url"
+    }
     
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
@@ -25,7 +29,7 @@ class ScrollingTableViewCell: UITableViewCell {
     
     // MARK: Variables
     weak var delegate: ScrollingTableViewCellDelegate?
-    var imageURLs:[String]?
+    var data:[[String: AnyObject]]?
     
     // MARK: Actions
     @IBAction func seeAllAction(sender: UIButton) {
@@ -59,11 +63,8 @@ extension ScrollingTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
         
-        if let imageURLs = imageURLs {
-            cell.imageView.sd_setImageWithURL(NSURL(string: imageURLs[indexPath.row]), placeholderImage: UIImage(named: "image"))
-            
-//            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://www.domain.com/path/to/image.jpg"]
-//                placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+        if let data = data {
+            cell.imageView.sd_setImageWithURL(NSURL(string: data[indexPath.row][Keys.URL] as! String), placeholderImage: UIImage(named: "image"))
         }
         return cell
     }
@@ -71,9 +72,10 @@ extension ScrollingTableViewCell : UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegate
 extension ScrollingTableViewCell : UICollectionViewDelegate {
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        if let delegate = delegate {
-            delegate.collectionView(collectionView, didDeselectItemAtIndexPath: indexPath)
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let delegate = delegate,
+            let data = data {
+            delegate.didSelectItem(tag, dict: data[indexPath.row])
         }
     }
 }

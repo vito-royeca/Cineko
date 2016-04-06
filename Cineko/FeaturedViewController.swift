@@ -19,7 +19,7 @@ class FeaturedViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
-    var movieURLs:[String]?
+    var movieData:[[String: AnyObject]]?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -58,12 +58,16 @@ class FeaturedViewController: UIViewController {
                                 fetchRequest.predicate = NSPredicate(format: "movieID IN %@", movieIDs)
                                 fetchRequest.fetchLimit = ScrollingTableViewCell.MaxItems
                                 do {
-                                    self.movieURLs = [String]()
+                                    self.movieData = [[String: AnyObject]]()
                                     
                                     let movies = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Movie]
                                     for movie in movies {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])/\(movie.posterPath!)"
-                                        self.movieURLs!.append(url)
+                                        var data = [String: AnyObject]()
+                                        data[ScrollingTableViewCell.Keys.ID] = movie.movieID! as Int
+                                        data[ScrollingTableViewCell.Keys.URL] = url
+                                        
+                                        self.movieData!.append(data)
                                     }
                                     self.tableView.reloadData()
                                 } catch let error as NSError {
@@ -103,7 +107,7 @@ extension FeaturedViewController : UITableViewDataSource {
         switch indexPath.row {
             case 0:
                 cell.titleLabel.text = "In Theaters"
-                cell.imageURLs = movieURLs
+                cell.data = movieData
                 cell.collectionView.reloadData()
             case 1:
                 cell.titleLabel.text = "On TV"
@@ -134,7 +138,7 @@ extension FeaturedViewController : ScrollingTableViewCellDelegate {
         print("tag = \(tag)")
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        
+    func didSelectItem(tag: Int, dict: [String: AnyObject]) {
+        print("tag = \(tag); \(dict)")
     }
 }

@@ -30,8 +30,6 @@ struct Constants {
             }
         }
         
-        
-        
         struct Authentication {
             struct TokenNew {
                 static let Path = "/authentication/token/new"
