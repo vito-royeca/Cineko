@@ -13,15 +13,13 @@ import MBProgressHUD
 
 class LoginViewController: UIViewController {
 
-    // MARK: Properties
-    
+    // MARK: Outlets
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var webView: UIWebView!
     
-    // MARL: Variables
+    // MARK: Variables
     var authenticationURLString:String?
-    var requestToken:String?
     var hasHUD = false
     
     // MARK: Actions
@@ -49,7 +47,6 @@ class LoginViewController: UIViewController {
         webView.delegate = self
         if let authenticationURLString  = authenticationURLString {
             if let authURL = NSURL(string: authenticationURLString) {
-                requestToken = authURL.lastPathComponent
                 webView.loadRequest(NSURLRequest(URL: authURL))
             }
         }
@@ -65,15 +62,13 @@ class LoginViewController: UIViewController {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let sessionID = dict[Constants.TMDBRequestSessionID.SessionID] as? String {
-                    
-                    // lets store the sessionID in the Keychain
-                    TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] = sessionID
+                    TMDBManager.sharedInstance().saveSessionID(sessionID)
                     
                     performUIUpdatesOnMain {
-                        self.doneButton.enabled = true
-                        self.cancelButton.enabled = false
                         MBProgressHUD.hideHUDForView(self.webView, animated: true)
                         self.hasHUD = false
+                        self.doneButton.enabled = true
+                        self.cancelButton.enabled = false
                     }
                 }
             }
@@ -88,9 +83,7 @@ class LoginViewController: UIViewController {
             }
         }
         
-        if let requestToken = requestToken {
-            TMDBManager.sharedInstance().requestSessionID(requestToken, success: success, failure: failure);
-        }
+        TMDBManager.sharedInstance().requestSessionID(success, failure: failure);
     }
 }
 
@@ -111,14 +104,12 @@ extension LoginViewController: UIWebViewDelegate {
         if let request = webView.request {
             if let url = request.URL {
                 if let lastPath = url.lastPathComponent {
-                    if lastPath == requestToken {
+                    if lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
                         MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        hasHUD = false
                         
                     } else if lastPath == "deny" {
-                        // remove the request token from the keychain and NSUserDefaults
-                        TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = nil
-                        NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.RequestTokenDate)
-                        
+                        TMDBManager.sharedInstance().removeRequestToken()
                         doneButton.enabled = true
                         cancelButton.enabled = false
                         

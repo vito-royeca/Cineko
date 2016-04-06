@@ -11,31 +11,14 @@ import UIKit
 import JJJUtils
 import MBProgressHUD
 
-//protocol StartViewControllerDelegate : NSObjectProtocol {
-//    func loadMainInterface()
-//}
-
 class StartViewController: UIViewController {
-    // MARK: Variables
-    var requestToken:String?
-    var requestTokenDate:NSDate?
     
     // MARK: Actions
     @IBAction func loginAction(sender: UIButton) {
-        if let requestToken = TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey],
-            let requestTokenDate = NSUserDefaults.standardUserDefaults().valueForKey(Constants.TMDB.RequestTokenDate) as? NSDate {
-            
-            // let's calculate the age of the request token
-            let interval = requestTokenDate.timeIntervalSinceNow
-            let secondsInAnHour:Double = 3600
-            let elapsedTime = abs(interval / secondsInAnHour)
-            
-            // request token's expiration is 1 hour
-            if elapsedTime <= 60 {
+        if let requestToken = TMDBManager.sharedInstance().getAvailableRequestToken() {
                 let urlString = "\(Constants.TMDB.AuthenticateURL)/\(requestToken)"
                 self.presentLoginViewController(urlString)
-            }
-            
+        
         } else {
             MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             
@@ -43,10 +26,7 @@ class StartViewController: UIViewController {
                 if let dict = results as? [String: AnyObject] {
                     if let requestToken = dict[Constants.TMDBRequestToken.RequestToken] as? String {
                         
-                        // let's store the request token in the Keychain
-                        // and the token's timestamp in NSUserDefaults
-                        TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = requestToken
-                        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: Constants.TMDB.RequestTokenDate)
+                        TMDBManager.sharedInstance().saveRequestToken(requestToken)
                         
                         performUIUpdatesOnMain {
                             let urlString = "\(Constants.TMDB.AuthenticateURL)/\(requestToken)"

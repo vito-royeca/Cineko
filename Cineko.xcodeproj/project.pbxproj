@@ -37,6 +37,12 @@
 		8C642D8D1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8C642D8E1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8C642D8F1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
+		8C67891C1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */; };
+		8C67891D1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */; };
+		8C67891E1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */; };
+		8C67891F1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
+		8C6789201CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
+		8C6789211CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
 		8CB749401CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749411CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749421CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
@@ -107,6 +113,8 @@
 		8C3C82331CB22032008CCF4C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookStyleBar.h; sourceTree = "<group>"; };
 		8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStyleBar.m; sourceTree = "<group>"; };
+		8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTableViewCell.swift; sourceTree = "<group>"; };
+		8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScrollingTableViewCell.xib; sourceTree = "<group>"; };
 		8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedViewController.swift; sourceTree = "<group>"; };
 		8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowsViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +245,8 @@
 				8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */,
 				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
 				8C1378771CAE16B700FB6830 /* Main.storyboard */,
+				8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */,
+				8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -395,6 +405,7 @@
 				8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */,
 				8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */,
 				8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */,
+				8C67891F1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +413,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C6789201CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C6789211CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +576,7 @@
 				8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */,
 				8C1378B11CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8CB749501CAEC21900EABB91 /* AccountViewController.swift in Sources */,
+				8C67891C1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */,
 				8C1378BD1CAE819F00FB6830 /* Constants.swift in Sources */,
 				8CB749401CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
 				8C1378A91CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
@@ -585,6 +599,7 @@
 				8CB7494D1CAEC20500EABB91 /* PeopleViewController.swift in Sources */,
 				8C1378AA1CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
 				8C1378B21CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
+				8C67891D1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */,
 				8CB749511CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C1378BE1CAE819F00FB6830 /* Constants.swift in Sources */,
 				8CB749411CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
@@ -608,6 +623,7 @@
 				8CD408C41CB1822E00F9132F /* TMDBManager.swift in Sources */,
 				8CB749521CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C1378B61CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
+				8C67891E1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */,
 				8C1378B31CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8CB749421CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
 				8C1378B91CAE80D000FB6830 /* NetworkManager.swift in Sources */,
