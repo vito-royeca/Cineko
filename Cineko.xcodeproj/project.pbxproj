@@ -43,6 +43,12 @@
 		8C67891F1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
 		8C6789201CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
 		8C6789211CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */; };
+		8C6789241CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
+		8C6789251CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
+		8C6789261CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
+		8C6789271CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
+		8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
+		8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8CB749401CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749411CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
 		8CB749421CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */; };
@@ -115,6 +121,8 @@
 		8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStyleBar.m; sourceTree = "<group>"; };
 		8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTableViewCell.swift; sourceTree = "<group>"; };
 		8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScrollingTableViewCell.xib; sourceTree = "<group>"; };
+		8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailCollectionViewCell.xib; sourceTree = "<group>"; };
 		8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedViewController.swift; sourceTree = "<group>"; };
 		8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowsViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +255,8 @@
 				8C1378771CAE16B700FB6830 /* Main.storyboard */,
 				8C67891A1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift */,
 				8C67891B1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib */,
+				8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */,
+				8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -404,6 +414,7 @@
 			files = (
 				8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */,
 				8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */,
+				8C6789271CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 				8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */,
 				8C67891F1CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
 			);
@@ -414,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6789201CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
+				8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6789211CB4BDEC00E4E14B /* ScrollingTableViewCell.xib in Resources */,
+				8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,6 +590,7 @@
 				8C1378B11CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8CB749501CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C67891C1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */,
+				8C6789241CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */,
 				8C1378BD1CAE819F00FB6830 /* Constants.swift in Sources */,
 				8CB749401CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
 				8C1378A91CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
@@ -603,6 +617,7 @@
 				8CB749511CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C1378BE1CAE819F00FB6830 /* Constants.swift in Sources */,
 				8CB749411CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
+				8C6789251CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */,
 				8C1378891CAE16B800FB6830 /* CinekoTests.swift in Sources */,
 				8C1378B51CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
 				8CD408BF1CB17AC200F9132F /* StartViewController.swift in Sources */,
@@ -624,6 +639,7 @@
 				8CB749521CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C1378B61CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
 				8C67891E1CB4BDEC00E4E14B /* ScrollingTableViewCell.swift in Sources */,
+				8C6789261CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */,
 				8C1378B31CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8CB749421CAEC1B600EABB91 /* FeaturedViewController.swift in Sources */,
 				8C1378B91CAE80D000FB6830 /* NetworkManager.swift in Sources */,

@@ -11,8 +11,10 @@ import BLKFlexibleHeightBar
 
 class MoviesViewController: UIViewController {
 
-    // MARK: Properties
+    // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: Variables
     var myCustomBar:FacebookStyleBar?
     
     // MARK: Overrides
