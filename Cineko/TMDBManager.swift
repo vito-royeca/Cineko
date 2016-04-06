@@ -10,7 +10,7 @@ import Foundation
 import KeychainAccess
 
 class TMDBManager: NSObject {
-    let keychain = Keychain(server: "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)", protocolType: .HTTPS)
+    let keychain = Keychain(server: "\(Constants.TMDB.APIURL)", protocolType: .HTTPS)
 
     // MARK: iPad
     func checkFirstRun() {
@@ -60,7 +60,7 @@ class TMDBManager: NSObject {
     // MARK: Authentication
     func authenticationTokenNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get
-        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Authentication.TokenNew.Path)"
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Authentication.TokenNew.Path)"
         let parameters = Constants.TMDB.Parameters
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
@@ -69,7 +69,7 @@ class TMDBManager: NSObject {
     func authenticationSessionNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         if let requestToken = getAvailableRequestToken() {
             let httpMethod:HTTPMethod = .Get
-            let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Authentication.SessionNew.Path)"
+            let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Authentication.SessionNew.Path)"
             let parameters = [Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue,
                               Constants.TMDB.Authentication.TokenNew.Keys.RequestToken: requestToken]
             
@@ -83,7 +83,7 @@ class TMDBManager: NSObject {
     // MARK: Movies
     func moviesNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get
-        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Movies.NowPlaying.Path)"
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Movies.NowPlaying.Path)"
         let parameters = Constants.TMDB.Parameters
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

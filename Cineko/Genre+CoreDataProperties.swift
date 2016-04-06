@@ -14,7 +14,7 @@ import CoreData
 
 extension Genre {
 
-    @NSManaged var genreId: NSNumber?
+    @NSManaged var genreID: NSNumber?
     @NSManaged var name: String?
     @NSManaged var movies: NSSet?
 

@@ -19,9 +19,9 @@ extension Movie {
     @NSManaged var backdropPath: String?
     @NSManaged var budget: NSNumber?
     @NSManaged var homepage: String?
-    @NSManaged var movieId: NSNumber?
-    @NSManaged var imdbId: String?
-    @NSManaged var rtId: String?
+    @NSManaged var movieID: NSNumber?
+    @NSManaged var imdbID: String?
+    @NSManaged var rtID: String?
     @NSManaged var originalLanguage: String?
     @NSManaged var overview: String?
     @NSManaged var releaseDate: String?
@@ -33,6 +33,7 @@ extension Movie {
     @NSManaged var video: NSNumber?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
+    @NSManaged var popularity: NSNumber?
     @NSManaged var posterPath: String?
     @NSManaged var genres: NSSet?
     @NSManaged var productionCompanies: NSSet?

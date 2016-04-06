@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol ScrollingTableViewCellDelegate : NSObjectProtocol {
     func seeAllAction(tag: Int);
@@ -24,6 +25,7 @@ class ScrollingTableViewCell: UITableViewCell {
     
     // MARK: Variables
     weak var delegate: ScrollingTableViewCellDelegate?
+    var imageURLs:[String]?
     
     // MARK: Actions
     @IBAction func seeAllAction(sender: UIButton) {
@@ -57,6 +59,12 @@ extension ScrollingTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
         
+        if let imageURLs = imageURLs {
+            cell.imageView.sd_setImageWithURL(NSURL(string: imageURLs[indexPath.row]), placeholderImage: UIImage(named: "image"))
+            
+//            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://www.domain.com/path/to/image.jpg"]
+//                placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+        }
         return cell
     }
 }

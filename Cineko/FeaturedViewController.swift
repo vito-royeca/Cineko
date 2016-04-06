@@ -8,12 +8,18 @@
 
 import UIKit
 
+import CoreData
 import JJJUtils
+import DATAStack
+import Sync
 
 class FeaturedViewController: UIViewController {
 
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: Variables
+    var movieURLs:[String]?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -24,18 +30,48 @@ class FeaturedViewController: UIViewController {
         
         // TLYShyNavBar
         shyNavBarManager.scrollView = tableView
+        
+        loadFeaturedMovies()
     }
     
     // MARK: Custom Methods
     func loadFeaturedMovies() {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                if let sessionID = dict[Constants.TMDB.Authentication.SessionNew.Keys.SessionID] as? String {
-                    TMDBManager.sharedInstance().saveSessionID(sessionID)
-                    
-                    performUIUpdatesOnMain {
-                        
+                if let json = dict["results"] as? [[String: AnyObject]],
+                    let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+
+                    // save the movieIDs
+                    var movieIDs = [NSNumber]()
+                    for movie in json {
+                        for (key,value) in movie {
+                            if key == "id" {
+                                movieIDs.append(value as! NSNumber)
+                            }
+                        }
                     }
+                    
+                    Sync.changes(json, inEntityNamed: "Movie", dataStack: appDelegate.dataStack,
+                        completion: { (error: NSError?) in
+                            if error == nil {
+                                let fetchRequest = NSFetchRequest(entityName: "Movie")
+                                fetchRequest.predicate = NSPredicate(format: "movieID IN %@", movieIDs)
+                                fetchRequest.fetchLimit = ScrollingTableViewCell.MaxItems
+                                do {
+                                    self.movieURLs = [String]()
+                                    
+                                    let movies = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Movie]
+                                    for movie in movies {
+                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])/\(movie.posterPath!)"
+                                        self.movieURLs!.append(url)
+                                    }
+                                    self.tableView.reloadData()
+                                } catch let error as NSError {
+                                    print("\(error.userInfo)")
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -46,7 +82,12 @@ class FeaturedViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
+        TMDBManager.sharedInstance().moviesNowPlaying(success, failure: failure)
+    }
+    
+    var sharedContext: NSManagedObjectContext {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        return appDelegate.dataStack.mainContext
     }
 }
 
@@ -62,6 +103,8 @@ extension FeaturedViewController : UITableViewDataSource {
         switch indexPath.row {
             case 0:
                 cell.titleLabel.text = "In Theaters"
+                cell.imageURLs = movieURLs
+                cell.collectionView.reloadData()
             case 1:
                 cell.titleLabel.text = "On TV"
             case 2:

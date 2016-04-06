@@ -2,13 +2,22 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="Account" representedClassName=".Account" syncable="YES"/>
     <entity name="Genre" representedClassName=".Genre" syncable="YES">
-        <attribute name="genreId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="genreID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="genres" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <entity name="Image" representedClassName=".Image" syncable="YES">
         <attribute name="aspectRatio" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+            </userInfo>
+        </attribute>
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -20,17 +29,23 @@
     <entity name="Movie" representedClassName=".Movie" syncable="YES">
         <attribute name="adult" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="budget" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="budget" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="imdbId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="movieId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="imdbID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="movieID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
         <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="revenue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="rtId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="revenue" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="rtID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="runtime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
@@ -47,18 +62,30 @@
     </entity>
     <entity name="People" representedClassName=".People" syncable="YES"/>
     <entity name="ProductionCompany" representedClassName=".ProductionCompany" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+            </userInfo>
+        </attribute>
         <attribute name="productionCompanyId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCompanies" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <entity name="ProductionCountry" representedClassName=".ProductionCountry" syncable="YES">
         <attribute name="iso31661" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+            </userInfo>
+        </attribute>
         <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCountries" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <entity name="SpokenLanguage" representedClassName=".SpokenLanguage" syncable="YES">
         <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+            </userInfo>
+        </attribute>
         <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="spokenLanguages" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <entity name="TVEpisode" representedClassName=".TVEpisode" syncable="YES"/>
@@ -68,15 +95,15 @@
     </entity>
     <elements>
         <element name="Account" positionX="18" positionY="63" width="128" height="45"/>
-        <element name="ProductionCompany" positionX="0" positionY="45" width="128" height="90"/>
+        <element name="Genre" positionX="-9" positionY="54" width="128" height="90"/>
         <element name="Image" positionX="36" positionY="81" width="128" height="180"/>
-        <element name="Movie" positionX="-54" positionY="-9" width="128" height="435"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="450"/>
         <element name="People" positionX="-18" positionY="27" width="128" height="45"/>
+        <element name="ProductionCompany" positionX="0" positionY="45" width="128" height="90"/>
+        <element name="ProductionCountry" positionX="9" positionY="108" width="128" height="90"/>
+        <element name="SpokenLanguage" positionX="18" positionY="144" width="128" height="90"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="45"/>
         <element name="TVSeason" positionX="-9" positionY="54" width="128" height="45"/>
         <element name="TVShow" positionX="-36" positionY="9" width="128" height="60"/>
-        <element name="Genre" positionX="-9" positionY="54" width="128" height="90"/>
-        <element name="ProductionCountry" positionX="9" positionY="108" width="128" height="90"/>
-        <element name="SpokenLanguage" positionX="18" positionY="144" width="128" height="90"/>
     </elements>
 </model>
