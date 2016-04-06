@@ -1,0 +1,6 @@
+framework module NSEntityDescription_SYNCPrimaryKey {
+  umbrella header "NSEntityDescription-SYNCPrimaryKey-umbrella.h"
+
+  export *
+  module * { export * }
+}

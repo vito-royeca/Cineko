@@ -85,15 +85,33 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoUITests/BLKFlexibleHeightBar.framework"
+  install_framework "Pods-CinekoUITests/DATAFilter.framework"
+  install_framework "Pods-CinekoUITests/DATAObjectIDs.framework"
+  install_framework "Pods-CinekoUITests/DATAStack.framework"
   install_framework "Pods-CinekoUITests/JJJUtils.framework"
   install_framework "Pods-CinekoUITests/KeychainAccess.framework"
   install_framework "Pods-CinekoUITests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoUITests/NSDictionary_ANDYSafeValue.framework"
+  install_framework "Pods-CinekoUITests/NSEntityDescription_SYNCPrimaryKey.framework"
+  install_framework "Pods-CinekoUITests/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods-CinekoUITests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoUITests/SDWebImage.framework"
+  install_framework "Pods-CinekoUITests/Sync.framework"
+  install_framework "Pods-CinekoUITests/TLYShyNavBar.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoUITests/BLKFlexibleHeightBar.framework"
+  install_framework "Pods-CinekoUITests/DATAFilter.framework"
+  install_framework "Pods-CinekoUITests/DATAObjectIDs.framework"
+  install_framework "Pods-CinekoUITests/DATAStack.framework"
   install_framework "Pods-CinekoUITests/JJJUtils.framework"
   install_framework "Pods-CinekoUITests/KeychainAccess.framework"
   install_framework "Pods-CinekoUITests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoUITests/NSDictionary_ANDYSafeValue.framework"
+  install_framework "Pods-CinekoUITests/NSEntityDescription_SYNCPrimaryKey.framework"
+  install_framework "Pods-CinekoUITests/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods-CinekoUITests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoUITests/SDWebImage.framework"
+  install_framework "Pods-CinekoUITests/Sync.framework"
+  install_framework "Pods-CinekoUITests/TLYShyNavBar.framework"
 fi

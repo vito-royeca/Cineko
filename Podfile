@@ -12,6 +12,8 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
+pod 'Sync'
+pod 'TLYShyNavBar'
 end
 
 target "CinekoTests" do
@@ -22,6 +24,8 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
+pod 'Sync'
+pod 'TLYShyNavBar'
 end
 
 target "CinekoUITests" do
@@ -32,4 +36,6 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
+pod 'Sync'
+pod 'TLYShyNavBar'
 end

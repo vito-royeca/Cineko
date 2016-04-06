@@ -1,0 +1,6 @@
+framework module DATAObjectIDs {
+  umbrella header "DATAObjectIDs-umbrella.h"
+
+  export *
+  module * { export * }
+}

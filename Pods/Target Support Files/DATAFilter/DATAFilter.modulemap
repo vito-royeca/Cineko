@@ -1,0 +1,6 @@
+framework module DATAFilter {
+  umbrella header "DATAFilter-umbrella.h"
+
+  export *
+  module * { export * }
+}

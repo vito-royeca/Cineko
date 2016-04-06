@@ -1,0 +1,6 @@
+framework module NSString_HYPNetworking {
+  umbrella header "NSString-HYPNetworking-umbrella.h"
+
+  export *
+  module * { export * }
+}

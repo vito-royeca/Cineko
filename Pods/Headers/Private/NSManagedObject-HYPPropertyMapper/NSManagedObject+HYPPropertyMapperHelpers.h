@@ -1,0 +1,1 @@
+../../../NSManagedObject-HYPPropertyMapper/Source/NSManagedObject+HYPPropertyMapperHelpers.h

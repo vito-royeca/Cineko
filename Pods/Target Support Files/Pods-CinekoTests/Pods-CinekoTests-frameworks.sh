@@ -85,15 +85,33 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoTests/BLKFlexibleHeightBar.framework"
+  install_framework "Pods-CinekoTests/DATAFilter.framework"
+  install_framework "Pods-CinekoTests/DATAObjectIDs.framework"
+  install_framework "Pods-CinekoTests/DATAStack.framework"
   install_framework "Pods-CinekoTests/JJJUtils.framework"
   install_framework "Pods-CinekoTests/KeychainAccess.framework"
   install_framework "Pods-CinekoTests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoTests/NSDictionary_ANDYSafeValue.framework"
+  install_framework "Pods-CinekoTests/NSEntityDescription_SYNCPrimaryKey.framework"
+  install_framework "Pods-CinekoTests/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods-CinekoTests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
+  install_framework "Pods-CinekoTests/Sync.framework"
+  install_framework "Pods-CinekoTests/TLYShyNavBar.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoTests/BLKFlexibleHeightBar.framework"
+  install_framework "Pods-CinekoTests/DATAFilter.framework"
+  install_framework "Pods-CinekoTests/DATAObjectIDs.framework"
+  install_framework "Pods-CinekoTests/DATAStack.framework"
   install_framework "Pods-CinekoTests/JJJUtils.framework"
   install_framework "Pods-CinekoTests/KeychainAccess.framework"
   install_framework "Pods-CinekoTests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoTests/NSDictionary_ANDYSafeValue.framework"
+  install_framework "Pods-CinekoTests/NSEntityDescription_SYNCPrimaryKey.framework"
+  install_framework "Pods-CinekoTests/NSManagedObject_HYPPropertyMapper.framework"
+  install_framework "Pods-CinekoTests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
+  install_framework "Pods-CinekoTests/Sync.framework"
+  install_framework "Pods-CinekoTests/TLYShyNavBar.framework"
 fi
