@@ -29,10 +29,8 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="55" id="jei-hS-3Ce"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                        <state key="normal" title="See All &gt;">
-                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal" title="See All &gt;"/>
                         <connections>
                             <action selector="seeAllAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3ZC-hn-FPm"/>
                         </connections>

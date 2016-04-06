@@ -1,28 +1,82 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
-    <entity name="Account" syncable="YES"/>
-    <entity name="Company" syncable="YES"/>
-    <entity name="Image" syncable="YES">
-        <attribute name="localPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="remotePath" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Account" representedClassName=".Account" syncable="YES"/>
+    <entity name="Genre" representedClassName=".Genre" syncable="YES">
+        <attribute name="genreId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="genres" inverseEntity="Movie" syncable="YES"/>
     </entity>
-    <entity name="Movie" syncable="YES">
+    <entity name="Image" representedClassName=".Image" syncable="YES">
+        <attribute name="aspectRatio" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="movieBackdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="backdrops" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="moviePosters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="posters" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="Movie" representedClassName=".Movie" syncable="YES">
+        <attribute name="adult" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="budget" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imdbId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="movieId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="revenue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rtId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="runtime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="video" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="backdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="movieBackdrops" inverseEntity="Image" syncable="YES"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="movies" inverseEntity="Genre" syncable="YES"/>
+        <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="moviePosters" inverseEntity="Image" syncable="YES"/>
+        <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ProductionCompany" inverseName="movies" inverseEntity="ProductionCompany" syncable="YES"/>
+        <relationship name="productionCountries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ProductionCountry" inverseName="movies" inverseEntity="ProductionCountry" syncable="YES"/>
+        <relationship name="spokenLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpokenLanguage" inverseName="movies" inverseEntity="SpokenLanguage" syncable="YES"/>
     </entity>
-    <entity name="People" syncable="YES"/>
-    <entity name="TVEpisode" syncable="YES"/>
-    <entity name="TVSeason" syncable="YES"/>
-    <entity name="TVShow" syncable="YES">
+    <entity name="People" representedClassName=".People" syncable="YES"/>
+    <entity name="ProductionCompany" representedClassName=".ProductionCompany" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="productionCompanyId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCompanies" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="ProductionCountry" representedClassName=".ProductionCountry" syncable="YES">
+        <attribute name="iso31661" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCountries" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="SpokenLanguage" representedClassName=".SpokenLanguage" syncable="YES">
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="spokenLanguages" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="TVEpisode" representedClassName=".TVEpisode" syncable="YES"/>
+    <entity name="TVSeason" representedClassName=".TVSeason" syncable="YES"/>
+    <entity name="TVShow" representedClassName=".TVShow" syncable="YES">
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Movie" positionX="-54" positionY="-9" width="128" height="60"/>
-        <element name="TVShow" positionX="-36" positionY="9" width="128" height="60"/>
-        <element name="People" positionX="-18" positionY="27" width="128" height="45"/>
-        <element name="Company" positionX="0" positionY="45" width="128" height="45"/>
         <element name="Account" positionX="18" positionY="63" width="128" height="45"/>
-        <element name="Image" positionX="36" positionY="81" width="128" height="75"/>
-        <element name="TVSeason" positionX="-9" positionY="54" width="128" height="45"/>
+        <element name="ProductionCompany" positionX="0" positionY="45" width="128" height="90"/>
+        <element name="Image" positionX="36" positionY="81" width="128" height="180"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="435"/>
+        <element name="People" positionX="-18" positionY="27" width="128" height="45"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="45"/>
+        <element name="TVSeason" positionX="-9" positionY="54" width="128" height="45"/>
+        <element name="TVShow" positionX="-36" positionY="9" width="128" height="60"/>
+        <element name="Genre" positionX="-9" positionY="54" width="128" height="90"/>
+        <element name="ProductionCountry" positionX="9" positionY="108" width="128" height="90"/>
+        <element name="SpokenLanguage" positionX="18" positionY="144" width="128" height="90"/>
     </elements>
 </model>

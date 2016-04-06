@@ -8,6 +8,8 @@
 
 import UIKit
 
+import JJJUtils
+
 class FeaturedViewController: UIViewController {
 
     // MARK: Outlets
@@ -19,6 +21,32 @@ class FeaturedViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ScrollingTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // TLYShyNavBar
+        shyNavBarManager.scrollView = tableView
+    }
+    
+    // MARK: Custom Methods
+    func loadFeaturedMovies() {
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let sessionID = dict[Constants.TMDB.Authentication.SessionNew.Keys.SessionID] as? String {
+                    TMDBManager.sharedInstance().saveSessionID(sessionID)
+                    
+                    performUIUpdatesOnMain {
+                        
+                    }
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) in
+            performUIUpdatesOnMain {
+                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+            }
+        }
+        
+        TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
     }
 }
 
@@ -44,6 +72,8 @@ extension FeaturedViewController : UITableViewDataSource {
                 break
         }
         
+        cell.tag = indexPath.row
+        cell.delegate = self
         return cell
     }
 }
@@ -51,14 +81,14 @@ extension FeaturedViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension FeaturedViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 150
+        return ScrollingTableViewCell.Height
     }
 }
 
 // MARK: ScrollingTableViewCellDelegate
 extension FeaturedViewController : ScrollingTableViewCellDelegate {
     func seeAllAction(tag: Int) {
-        
+        print("tag = \(tag)")
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {

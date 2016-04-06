@@ -12,43 +12,22 @@ import KeychainAccess
 class TMDBManager: NSObject {
     let keychain = Keychain(server: "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)", protocolType: .HTTPS)
 
+    // MARK: iPad
     func checkFirstRun() {
         if !NSUserDefaults.standardUserDefaults().boolForKey("FirstRun") {
             // remove prior keychain items if this is our first run
-            TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] = nil
-            TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = nil
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.RequestTokenDate)
+            TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] = nil
+            TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.RequestToken] = nil
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.iPad.Keys.RequestTokenDate)
             
             // then mark this us our first run
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstRun")
         }
     }
     
-    func requestToken(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
-        let httpMethod:HTTPMethod = .Get
-        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDBRequestToken.Path)"
-        let parameters = Constants.TMDBRequestToken.Parameters
-        
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
-    }
-    
-    func requestSessionID(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
-        if let requestToken = getAvailableRequestToken() {
-            let httpMethod:HTTPMethod = .Get
-            let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDBRequestSessionID.Path)"
-            let parameters = [Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue,
-                              Constants.TMDBRequestToken.RequestToken: requestToken]
-            
-            NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
-        
-        } else {
-            failure(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))
-        }
-    }
-    
     func getAvailableRequestToken() -> String? {
-        if let requestToken = keychain[Constants.TMDB.RequestTokenKey],
-            let requestTokenDate = NSUserDefaults.standardUserDefaults().valueForKey(Constants.TMDB.RequestTokenDate) as? NSDate {
+        if let requestToken = keychain[Constants.TMDB.iPad.Keys.RequestToken],
+            let requestTokenDate = NSUserDefaults.standardUserDefaults().valueForKey(Constants.TMDB.iPad.Keys.RequestTokenDate) as? NSDate {
             
             // let's calculate the age of the request token
             let interval = requestTokenDate.timeIntervalSinceNow
@@ -65,17 +44,49 @@ class TMDBManager: NSObject {
     }
     
     func saveRequestToken(requestToken: String) {
-        TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = requestToken
-        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: Constants.TMDB.RequestTokenDate)
+        TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.RequestToken] = requestToken
+        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: Constants.TMDB.iPad.Keys.RequestTokenDate)
     }
     
     func removeRequestToken() {
-        TMDBManager.sharedInstance().keychain[Constants.TMDB.RequestTokenKey] = nil
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.RequestTokenDate)
+        TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.RequestToken] = nil
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.iPad.Keys.RequestTokenDate)
     }
     
     func saveSessionID(sessionID: String) {
-        TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] = sessionID
+        TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] = sessionID
+    }
+    
+    // MARK: Authentication
+    func authenticationTokenNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Authentication.TokenNew.Path)"
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func authenticationSessionNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        if let requestToken = getAvailableRequestToken() {
+            let httpMethod:HTTPMethod = .Get
+            let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Authentication.SessionNew.Path)"
+            let parameters = [Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue,
+                              Constants.TMDB.Authentication.TokenNew.Keys.RequestToken: requestToken]
+            
+            NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        
+        } else {
+            failure(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))
+        }
+    }
+    
+    // MARK: Movies
+    func moviesNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)\(Constants.TMDB.Movies.NowPlaying.Path)"
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: - Shared Instance

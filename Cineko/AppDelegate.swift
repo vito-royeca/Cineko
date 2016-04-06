@@ -27,9 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var viewControllerID:String?
         
         // if we have TMDB session id show the main interface, else show the start page
-        if let sessionID = TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] {
+        if let sessionID = TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] {
             viewControllerID = "MainTabBarController"
-            print("TMDB sessionID=\(sessionID)")
+            print("TMDB sessionID = \(sessionID)")
         } else {
             viewControllerID = "StartViewController"
         }

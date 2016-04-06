@@ -24,7 +24,7 @@ class StartViewController: UIViewController {
             
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
-                    if let requestToken = dict[Constants.TMDBRequestToken.RequestToken] as? String {
+                    if let requestToken = dict[Constants.TMDB.Authentication.TokenNew.Keys.RequestToken] as? String {
                         
                         TMDBManager.sharedInstance().saveRequestToken(requestToken)
                         
@@ -45,7 +45,7 @@ class StartViewController: UIViewController {
                 }
             }
             
-            TMDBManager.sharedInstance().requestToken(success, failure: failure)
+            TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
         }
     }
     

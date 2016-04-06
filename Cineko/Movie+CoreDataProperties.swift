@@ -24,7 +24,7 @@ extension Movie {
     @NSManaged var rtId: String?
     @NSManaged var originalLanguage: String?
     @NSManaged var overview: String?
-    @NSManaged var releaseDate: NSDate?
+    @NSManaged var releaseDate: String?
     @NSManaged var revenue: NSNumber?
     @NSManaged var runtime: NSNumber?
     @NSManaged var status: String?

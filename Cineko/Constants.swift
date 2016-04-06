@@ -15,27 +15,48 @@ struct Constants {
         static let ApiHost     = "api.themoviedb.org/3"
         static let APIKey      = "api_key"
         static let APIKeyValue = "b6484c1f1ef60a8e5f5281452f964d9b"
+        static let Parameters  = [APIKey: APIKeyValue]
         
         static let SignupURL       = "https://www.themoviedb.org/account/signup"
         static let AuthenticateURL = "https://www.themoviedb.org/authenticate"
         
-        static let RequestTokenKey    = "request_token"
-        static let RequestTokenDate   = "request_token_date"
-        static let SessionIDKey       = "session_id"
+        struct iPad {
+            struct Keys {
+                static let RequestToken    = "request_token"
+                static let RequestTokenDate   = "request_token_date"
+                static let SessionID       = "session_id"
+            }
+        }
+        
+        struct Authentication {
+            struct TokenNew {
+                static let Path = "/authentication/token/new"
+                struct Keys {
+                    static let RequestToken = "request_token"
+                }
+            }
+            
+            struct SessionNew {
+                static let Path = "/authentication/session/new"
+                struct Keys {
+                    static let SessionID = "session_id"
+                }
+            }
+        }
+        
+        struct Movies {
+            struct NowPlaying {
+                static let Path = "/movie/now_playing"
+                struct Keys {
+                    static let Page = "page"
+                    static let TotalPages = "total_page"
+                    static let TotalResults = "total_results"
+                    static let Results = "results"
+                }
+            }
+        }
     }
 
-    struct TMDBRequestToken {
-        static let Path = "/authentication/token/new"
-        static let Parameters = [TMDB.APIKey: TMDB.APIKeyValue]
-        static let RequestToken = "request_token"
-    }
-    
-    struct TMDBRequestSessionID {
-        static let Path = "/authentication/session/new"
-//        static let Parameters = [TMDB.APIKey: TMDB.APIKeyValue]
-        static let SessionID = "session_id"
-    }
-    
     // MARK: Rotten Tomatoes
     struct RT {
         static let ApiScheme   = "http"

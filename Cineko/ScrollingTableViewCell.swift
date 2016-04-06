@@ -14,6 +14,10 @@ protocol ScrollingTableViewCellDelegate : NSObjectProtocol {
 }
 
 class ScrollingTableViewCell: UITableViewCell {
+    // MARK: Constants
+    static let Height:CGFloat = 150
+    static let MaxItems = 12
+    
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -32,7 +36,7 @@ class ScrollingTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        collectionView.registerClass(ThumbnailCollectionViewCell.self, forCellWithReuseIdentifier:"Cell")
+        collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -44,17 +48,20 @@ class ScrollingTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: UICollectionViewDataSource
 extension ScrollingTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return ScrollingTableViewCell.MaxItems
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
+        
         return cell
     }
 }
 
+// MARK: UICollectionViewDelegate
 extension ScrollingTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate {

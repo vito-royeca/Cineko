@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func doneAction(sender: UIBarButtonItem) {
-        if let _ = TMDBManager.sharedInstance().keychain[Constants.TMDB.SessionIDKey] {
+        if let _ = TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] {
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
                 presentViewController(controller, animated: true, completion: nil)
             }
@@ -61,7 +61,7 @@ class LoginViewController: UIViewController {
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                if let sessionID = dict[Constants.TMDBRequestSessionID.SessionID] as? String {
+                if let sessionID = dict[Constants.TMDB.Authentication.SessionNew.Keys.SessionID] as? String {
                     TMDBManager.sharedInstance().saveSessionID(sessionID)
                     
                     performUIUpdatesOnMain {
@@ -83,7 +83,7 @@ class LoginViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().requestSessionID(success, failure: failure);
+        TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
     }
 }
 

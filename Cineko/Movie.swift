@@ -11,7 +11,7 @@ import CoreData
 
 
 class Movie: NSManagedObject {
-
-// Insert code here to add functionality to your managed object subclass
-
+    
+    // Insert code here to add functionality to your managed object subclass
+    
 }

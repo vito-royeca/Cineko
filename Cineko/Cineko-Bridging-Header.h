@@ -3,3 +3,4 @@
 //
 
 #import "FacebookStyleBar.h"
+#import "TLYShyNavBar/TLYShyNavBarManager.h"
