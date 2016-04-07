@@ -14,5 +14,15 @@ import CoreData
 
 extension TVEpisode {
 
-
+    @NSManaged var airDate: String?
+    @NSManaged var episodeID: NSNumber?
+    @NSManaged var episodeNumber: NSNumber?
+    @NSManaged var name: String?
+    @NSManaged var overview: String?
+    @NSManaged var productionCode: String?
+    @NSManaged var seasonNumber: NSNumber?
+    @NSManaged var stillPath: String?
+    @NSManaged var voteAverage: NSNumber?
+    @NSManaged var voteCount: NSNumber?
+    @NSManaged var tvSeason: TVSeason?
 }

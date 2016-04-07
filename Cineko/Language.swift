@@ -1,5 +1,5 @@
 //
-//  ProductionCompany.swift
+//  SpokenLanguage.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class ProductionCompany: NSManagedObject {
+class Language: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
 

@@ -9,12 +9,19 @@
 import UIKit
 import SDWebImage
 
-protocol ScrollingTableViewCellDelegate : NSObjectProtocol {
-    func seeAllAction(tag: Int);
-    func didSelectItem(tag: Int, dict: [String: AnyObject])
+public enum ThumbnailType : Int {
+    case InTheaters
+    case OnTV
+    case Lists
+    case People
 }
 
-class ScrollingTableViewCell: UITableViewCell {
+protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
+    func seeAllAction(type: ThumbnailType);
+    func didSelectItem(type: ThumbnailType, dict: [String: AnyObject])
+}
+
+class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 150
     static let MaxItems = 12
@@ -28,13 +35,14 @@ class ScrollingTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: Variables
-    weak var delegate: ScrollingTableViewCellDelegate?
+    weak var delegate: ThumbnailTableViewCellDelegate?
     var data:[[String: AnyObject]]?
+    var thumbnailType: ThumbnailType?
     
     // MARK: Actions
     @IBAction func seeAllAction(sender: UIButton) {
         if let delegate = delegate {
-            delegate.seeAllAction(tag)
+            delegate.seeAllAction(thumbnailType!)
         }
     }
     
@@ -55,9 +63,9 @@ class ScrollingTableViewCell: UITableViewCell {
 }
 
 // MARK: UICollectionViewDataSource
-extension ScrollingTableViewCell : UICollectionViewDataSource {
+extension ThumbnailTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ScrollingTableViewCell.MaxItems
+        return ThumbnailTableViewCell.MaxItems
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -71,11 +79,11 @@ extension ScrollingTableViewCell : UICollectionViewDataSource {
 }
 
 // MARK: UICollectionViewDelegate
-extension ScrollingTableViewCell : UICollectionViewDelegate {
+extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
             let data = data {
-            delegate.didSelectItem(tag, dict: data[indexPath.row])
+            delegate.didSelectItem(thumbnailType!, dict: data[indexPath.row])
         }
     }
 }

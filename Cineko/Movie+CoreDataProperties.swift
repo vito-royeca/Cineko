@@ -14,18 +14,20 @@ import CoreData
 
 extension Movie {
 
-    @NSManaged var originalTitle: String?
     @NSManaged var adult: NSNumber?
     @NSManaged var backdropPath: String?
     @NSManaged var budget: NSNumber?
     @NSManaged var homepage: String?
-    @NSManaged var movieID: NSNumber?
     @NSManaged var imdbID: String?
-    @NSManaged var rtID: String?
+    @NSManaged var movieID: NSNumber?
     @NSManaged var originalLanguage: String?
+    @NSManaged var originalTitle: String?
     @NSManaged var overview: String?
+    @NSManaged var popularity: NSNumber?
+    @NSManaged var posterPath: String?
     @NSManaged var releaseDate: String?
     @NSManaged var revenue: NSNumber?
+    @NSManaged var rtID: String?
     @NSManaged var runtime: NSNumber?
     @NSManaged var status: String?
     @NSManaged var tagline: String?
@@ -33,13 +35,10 @@ extension Movie {
     @NSManaged var video: NSNumber?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
-    @NSManaged var popularity: NSNumber?
-    @NSManaged var posterPath: String?
+    @NSManaged var backdrops: NSSet?
     @NSManaged var genres: NSSet?
+    @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?
     @NSManaged var productionCountries: NSSet?
     @NSManaged var spokenLanguages: NSSet?
-    @NSManaged var posters: NSSet?
-    @NSManaged var backdrops: NSSet?
-
 }

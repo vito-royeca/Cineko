@@ -1,5 +1,5 @@
 //
-//  ProductionCompany+CoreDataProperties.swift
+//  SpokenLanguage+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -12,10 +12,10 @@
 import Foundation
 import CoreData
 
-extension ProductionCompany {
+extension Language {
 
     @NSManaged var name: String?
-    @NSManaged var productionCompanyId: NSNumber?
+    @NSManaged var iso6391: String?
     @NSManaged var movies: NSSet?
 
 }

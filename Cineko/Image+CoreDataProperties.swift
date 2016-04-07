@@ -14,14 +14,13 @@ import CoreData
 
 extension Image {
 
+    @NSManaged var aspectRatio: NSNumber?
     @NSManaged var filePath: String?
-    @NSManaged var width: NSNumber?
     @NSManaged var height: NSNumber?
     @NSManaged var iso6391: String?
-    @NSManaged var aspectRatio: NSNumber?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
-    @NSManaged var moviePosters: NSSet?
+    @NSManaged var width: NSNumber?
     @NSManaged var movieBackdrops: NSSet?
-
+    @NSManaged var moviePosters: NSSet?
 }

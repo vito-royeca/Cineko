@@ -1,5 +1,5 @@
 //
-//  People+CoreDataProperties.swift
+//  ProductionCompany+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -12,17 +12,15 @@
 import Foundation
 import CoreData
 
-extension People {
-    
-    @NSManaged var adult: NSNumber?
-    @NSManaged var alsoKnownAs: NSData?
-    @NSManaged var biography: String?
-    @NSManaged var birthday: String?
-    @NSManaged var deathday: String?
+extension Company {
+
+    @NSManaged var companyDescription: String?
+    @NSManaged var companyID: NSNumber?
+    @NSManaged var headquarters: String?
     @NSManaged var homepage: String?
+    @NSManaged var logoPath: String?
     @NSManaged var name: String?
-    @NSManaged var peopleID: NSNumber?
-    @NSManaged var placeOfBirth: String?
-    @NSManaged var profilePath: String?
-    
+    @NSManaged var movies: NSSet?
+    @NSManaged var tvShows: NSSet?
+
 }

@@ -1,5 +1,5 @@
 //
-//  Genre+CoreDataProperties.swift
+//  ProductionCountry+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -12,10 +12,10 @@
 import Foundation
 import CoreData
 
-extension Genre {
+extension Country {
 
-    @NSManaged var genreID: NSNumber?
     @NSManaged var name: String?
+    @NSManaged var iso31661: String?
     @NSManaged var movies: NSSet?
-    @NSManaged var tvShows: NSSet?
+
 }

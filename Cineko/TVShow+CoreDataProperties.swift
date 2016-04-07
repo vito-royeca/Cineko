@@ -14,6 +14,28 @@ import CoreData
 
 extension TVShow {
 
-    @NSManaged var title: String?
-
+    @NSManaged var backdropPath: String?
+    @NSManaged var firstAirDate: String?
+    @NSManaged var homepage: String?
+    @NSManaged var inProduction: NSNumber?
+    @NSManaged var languages: NSData?
+    @NSManaged var lastAirDate: String?
+    @NSManaged var name: String?
+    @NSManaged var numberOfEpisodes: NSNumber?
+    @NSManaged var numberOfSeasons: NSNumber?
+    @NSManaged var originalLanguage: String?
+    @NSManaged var originalName: String?
+    @NSManaged var originalCountry: NSData?
+    @NSManaged var overview: String?
+    @NSManaged var popularity: NSNumber?
+    @NSManaged var posterPath: String?
+    @NSManaged var status: String?
+    @NSManaged var tvShowID: NSNumber?
+    @NSManaged var tvShowType: String?
+    @NSManaged var voteAverage: NSNumber?
+    @NSManaged var voteCount: NSNumber?
+    @NSManaged var genres: NSSet?
+    @NSManaged var networks: NSSet?
+    @NSManaged var productionCompanies: NSSet?
+    @NSManaged var tvSeasons: NSSet?
 }

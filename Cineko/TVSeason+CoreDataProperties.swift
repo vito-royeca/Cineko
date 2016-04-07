@@ -13,6 +13,14 @@ import Foundation
 import CoreData
 
 extension TVSeason {
-
-
+    
+    @NSManaged var airDate: String?
+    @NSManaged var episodeCount: NSNumber?
+    @NSManaged var name: String?
+    @NSManaged var overview: String?
+    @NSManaged var posterPath: String?
+    @NSManaged var sessionNumber: NSNumber?
+    @NSManaged var tvSeasonID: NSNumber?
+    @NSManaged var tvEpisodes: NSSet?
+    @NSManaged var tvShow: TVShow?
 }
