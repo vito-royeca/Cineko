@@ -31,6 +31,7 @@
     CGFloat normalizedY = parentMaxY - self.scrollView.frame.origin.y;
     UIEdgeInsets insets = self.scrollView.contentInset;
     insets.top = normalizedY;
+    insets.bottom = 0;
     
     if (normalizedY > -FLT_EPSILON && !UIEdgeInsetsEqualToEdgeInsets(insets, self.scrollView.contentInset))
     {

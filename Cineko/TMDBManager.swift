@@ -57,7 +57,7 @@ class TMDBManager: NSObject {
         TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] = sessionID
     }
     
-    // MARK: Authentication
+    // MARK: TMDB Authentication
     func authenticationTokenNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Authentication.TokenNew.Path)"
@@ -80,10 +80,19 @@ class TMDBManager: NSObject {
         }
     }
     
-    // MARK: Movies
+    // MARK: TMDB Movies
     func moviesNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Movies.NowPlaying.Path)"
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: TMDB TV Shows
+    func tvShowsNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.TVShows.NowPlaying.Path)"
         let parameters = Constants.TMDB.Parameters
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

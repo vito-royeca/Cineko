@@ -57,6 +57,12 @@ struct Constants {
                 }
             }
         }
+        
+        struct TVShows {
+            struct NowPlaying {
+                static let Path = "/tv/on_the_air"
+            }
+        }
     }
 
     // MARK: Rotten Tomatoes
