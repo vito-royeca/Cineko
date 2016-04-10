@@ -1,5 +1,5 @@
 //
-//  People+CoreDataProperties.swift
+//  Person+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension People {
+extension Person {
     
     @NSManaged var adult: NSNumber?
     @NSManaged var alsoKnownAs: NSData?
@@ -21,8 +21,9 @@ extension People {
     @NSManaged var deathday: String?
     @NSManaged var homepage: String?
     @NSManaged var name: String?
-    @NSManaged var peopleID: NSNumber?
+    @NSManaged var personID: NSNumber?
     @NSManaged var placeOfBirth: String?
+    @NSManaged var popularity: NSNumber?
     @NSManaged var profilePath: String?
     
 }

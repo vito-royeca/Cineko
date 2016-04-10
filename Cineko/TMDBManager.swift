@@ -37,6 +37,11 @@ class TMDBManager: NSObject {
             // request token's expiration is 1 hour
             if elapsedTime <= 60 {
                 return requestToken
+                
+            } else {
+                TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] = nil
+                TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.RequestToken] = nil
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(Constants.TMDB.iPad.Keys.RequestTokenDate)
             }
         }
         
@@ -90,9 +95,26 @@ class TMDBManager: NSObject {
     }
     
     // MARK: TMDB TV Shows
-    func tvShowsNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+    func tvShowsOnTheAir(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get
-        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.TVShows.NowPlaying.Path)"
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.TVShows.OnTheAir.Path)"
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func tvShowsAiringToday(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.TVShows.AiringToday.Path)"
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: TMDB People
+    func peoplePopular(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.People.Popular.Path)"
         let parameters = Constants.TMDB.Parameters
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

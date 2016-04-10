@@ -39,7 +39,7 @@
             </objects>
             <point key="canvasLocation" x="1902" y="-113"/>
         </scene>
-        <!--Featured View Controller-->
+        <!--Featured-->
         <scene sceneID="nUf-6K-ZGy">
             <objects>
                 <viewController id="CxK-ZS-wL2" customClass="FeaturedViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
@@ -64,7 +64,7 @@
                             <constraint firstAttribute="trailing" secondItem="GIB-wL-wzG" secondAttribute="trailing" id="wml-CP-IDO"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="s34-TQ-j9D"/>
+                    <navigationItem key="navigationItem" title="Featured" id="s34-TQ-j9D"/>
                     <connections>
                         <outlet property="tableView" destination="GIB-wL-wzG" id="xVG-J4-8Mt"/>
                     </connections>
@@ -224,11 +224,11 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="G93-kW-eQc" kind="relationship" relationship="viewControllers" id="IF9-RD-Ubh"/>
-                        <segue destination="yQz-if-Wux" kind="relationship" relationship="viewControllers" id="dYc-Ff-3tB"/>
-                        <segue destination="GDC-zP-ktd" kind="relationship" relationship="viewControllers" id="XUR-eI-NuB"/>
-                        <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="qOP-PJ-Fy5"/>
-                        <segue destination="0ZO-6o-vxF" kind="relationship" relationship="viewControllers" id="4Jp-8b-MLq"/>
+                        <segue destination="0ZO-6o-vxF" kind="relationship" relationship="viewControllers" id="qw2-uF-X2u"/>
+                        <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="edu-od-g9U"/>
+                        <segue destination="G93-kW-eQc" kind="relationship" relationship="viewControllers" id="r2C-Q6-SYb"/>
+                        <segue destination="uwc-6F-GSl" kind="relationship" relationship="viewControllers" id="s7s-Qi-qMq"/>
+                        <segue destination="GDC-zP-ktd" kind="relationship" relationship="viewControllers" id="8g9-FK-ELS"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -255,25 +255,24 @@
             </objects>
             <point key="canvasLocation" x="1082" y="639"/>
         </scene>
-        <!--People-->
-        <scene sceneID="RO1-sD-Tbg">
+        <!--View Controller-->
+        <scene sceneID="Qq4-bx-MnO">
             <objects>
-                <viewController id="yQz-if-Wux" customClass="PeopleViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="uwc-6F-GSl" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RdW-9p-1kL"/>
-                        <viewControllerLayoutGuide type="bottom" id="eMe-vN-oag"/>
+                        <viewControllerLayoutGuide type="top" id="f9R-tH-DH0"/>
+                        <viewControllerLayoutGuide type="bottom" id="EKQ-6v-gYu"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4Zf-xy-aLo">
+                    <view key="view" contentMode="scaleToFill" id="Bpl-hR-qTH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="People" image="people" id="0No-bd-LMy"/>
-                    <navigationItem key="navigationItem" id="JXV-id-rxf"/>
+                    <tabBarItem key="tabBarItem" systemItem="search" id="noe-WY-P8P"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nwl-Hq-rYQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uS0-8J-ETv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="1409"/>
+            <point key="canvasLocation" x="1082" y="1404"/>
         </scene>
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
@@ -293,7 +292,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJd-b5-IBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="2205"/>
+            <point key="canvasLocation" x="1082" y="2193"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -337,7 +336,6 @@
     <resources>
         <image name="account" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
-        <image name="people" width="25" height="25"/>
         <image name="rtLogo" width="123" height="40"/>
         <image name="tmdbLogo" width="535" height="113"/>
         <image name="tv" width="25" height="25"/>

@@ -12,8 +12,7 @@ import SDWebImage
 public enum ThumbnailType : Int {
     case InTheaters
     case OnTV
-    case Lists
-    case People
+    case PopularPeople
 }
 
 protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
@@ -23,7 +22,7 @@ protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
 
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
-    static let Height:CGFloat = 150
+    static let Height:CGFloat = 180
     static let MaxItems = 12
     struct Keys {
         static let ID  = "id"
@@ -33,6 +32,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     // MARK: Variables
     weak var delegate: ThumbnailTableViewCellDelegate?
@@ -50,6 +50,14 @@ class ThumbnailTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        let width = collectionView.frame.size.width / 3
+        let height = collectionView.frame.size.height
+        let space = CGFloat(5.0)
+        
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSizeMake(width, height)
+        
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -72,7 +80,24 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
         
         if let data = data {
-            cell.imageView.sd_setImageWithURL(NSURL(string: data[indexPath.row][Keys.URL] as! String), placeholderImage: UIImage(named: "image"))
+            if let urlString = data[indexPath.row][Keys.URL] as? String {
+                cell.imageView.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: UIImage(named: "image"))
+                
+            } else {
+                if let thumbnailType = thumbnailType {
+                    switch thumbnailType {
+                        case .InTheaters:
+                            cell.imageView.image = UIImage(named: "movie")
+                        case .OnTV:
+                            cell.imageView.image = UIImage(named: "tv")
+                        case .PopularPeople:
+                            cell.imageView.image = UIImage(named: "people")
+                    }
+
+                } else {
+                    cell.imageView.image = nil
+                }
+            }
         }
         return cell
     }
@@ -82,9 +107,11 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
 extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
-            let data = data {
-            delegate.didSelectItem(thumbnailType!, dict: data[indexPath.row])
+            let data = data,
+            let thumbnailType = thumbnailType {
+            delegate.didSelectItem(thumbnailType, dict: data[indexPath.row])
         }
     }
 }
+
 

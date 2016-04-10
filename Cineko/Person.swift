@@ -1,5 +1,5 @@
 //
-//  People.swift
+//  Person.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-class People: NSManagedObject {
+class Person: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
 

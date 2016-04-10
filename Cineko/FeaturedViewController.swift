@@ -21,6 +21,7 @@ class FeaturedViewController: UIViewController {
     // MARK: Variables
     var movieData:[[String: AnyObject]]?
     var tvData:[[String: AnyObject]]?
+    var peopleData:[[String: AnyObject]]?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -36,6 +37,7 @@ class FeaturedViewController: UIViewController {
         
         loadFeaturedMovies()
         loadFeaturedTVShows()
+        loadFeaturedPeople()
     }
     
     // MARK: Custom Methods
@@ -55,31 +57,37 @@ class FeaturedViewController: UIViewController {
                         }
                     }
                     
-                    Sync.changes(json, inEntityNamed: "Movie", dataStack: appDelegate.dataStack,
-                        completion: { (error: NSError?) in
-                            if error == nil {
-                                let fetchRequest = NSFetchRequest(entityName: "Movie")
-                                fetchRequest.predicate = NSPredicate(format: "movieID IN %@", movieIDs)
-                                fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
-                                do {
-                                    self.movieData = [[String: AnyObject]]()
+                    let completion = { (error: NSError?) in
+                        if error == nil {
+                            let fetchRequest = NSFetchRequest(entityName: "Movie")
+                            fetchRequest.predicate = NSPredicate(format: "movieID IN %@", movieIDs)
+                            fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true),
+                                NSSortDescriptor(key: "title", ascending: true)]
+                            
+                            do {
+                                self.movieData = [[String: AnyObject]]()
+                                let movies = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Movie]
+                                
+                                for movie in movies {
+                                    var data = [String: AnyObject]()
+                                    data[ThumbnailTableViewCell.Keys.ID] = movie.movieID! as Int
                                     
-                                    let movies = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Movie]
-                                    for movie in movies {
-                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(movie.posterPath!)"
-                                        var data = [String: AnyObject]()
-                                        data[ThumbnailTableViewCell.Keys.ID] = movie.movieID! as Int
+                                    if let posterPath = movie.posterPath {
+                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
                                         data[ThumbnailTableViewCell.Keys.URL] = url
-                                        
-                                        self.movieData!.append(data)
                                     }
-                                    self.tableView.reloadData()
-                                } catch let error as NSError {
-                                    print("\(error.userInfo)")
+                                    
+                                    self.movieData!.append(data)
                                 }
+                                self.tableView.reloadData()
+                            } catch let error as NSError {
+                                print("\(error.userInfo)")
                             }
                         }
-                    )
+                    }
+                    
+                    Sync.changes(json, inEntityNamed: "Movie", dataStack: appDelegate.dataStack, completion: completion)
                 }
             }
         }
@@ -109,31 +117,36 @@ class FeaturedViewController: UIViewController {
                         }
                     }
                     
-                    Sync.changes(json, inEntityNamed: "TVShow", dataStack: appDelegate.dataStack,
-                                 completion: { (error: NSError?) in
-                                    if error == nil {
-                                        let fetchRequest = NSFetchRequest(entityName: "TVShow")
-                                        fetchRequest.predicate = NSPredicate(format: "tvShowID IN %@", tvIDs)
-                                        fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
-                                        do {
-                                            self.tvData = [[String: AnyObject]]()
-                                            
-                                            let tvShows = try self.sharedContext.executeFetchRequest(fetchRequest) as! [TVShow]
-                                            for tvShow in tvShows {
-                                                let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(tvShow.posterPath!)"
-                                                var data = [String: AnyObject]()
-                                                data[ThumbnailTableViewCell.Keys.ID] = tvShow.tvShowID! as Int
-                                                data[ThumbnailTableViewCell.Keys.URL] = url
-                                                
-                                                self.tvData!.append(data)
-                                            }
-                                            self.tableView.reloadData()
-                                        } catch let error as NSError {
-                                            print("\(error.userInfo)")
-                                        }
+                    let completion = { (error: NSError?) in
+                        if error == nil {
+                            let fetchRequest = NSFetchRequest(entityName: "TVShow")
+                            fetchRequest.predicate = NSPredicate(format: "tvShowID IN %@", tvIDs)
+                            fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+                            
+                            do {
+                                self.tvData = [[String: AnyObject]]()
+                                let tvShows = try self.sharedContext.executeFetchRequest(fetchRequest) as! [TVShow]
+                                
+                                for tvShow in tvShows {
+                                    var data = [String: AnyObject]()
+                                    data[ThumbnailTableViewCell.Keys.ID] = tvShow.tvShowID! as Int
+                                    
+                                    if let posterPath = tvShow.posterPath {
+                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
+                                        data[ThumbnailTableViewCell.Keys.URL] = url
                                     }
+                                    
+                                    self.tvData!.append(data)
+                                }
+                                self.tableView.reloadData()
+                            } catch let error as NSError {
+                                print("\(error.userInfo)")
+                            }
                         }
-                    )
+                    }
+                    
+                    Sync.changes(json, inEntityNamed: "TVShow", dataStack: appDelegate.dataStack, completion: completion)
                 }
             }
         }
@@ -144,7 +157,68 @@ class FeaturedViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().tvShowsNowPlaying(success, failure: failure)
+        TMDBManager.sharedInstance().tvShowsAiringToday(success, failure: failure)
+    }
+    
+    func loadFeaturedPeople() {
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]],
+                    let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                    
+                    // save the tvIDs
+                    var peopleIDs = [NSNumber]()
+                    for people in json {
+                        for (key,value) in people {
+                            if key == "id" {
+                                peopleIDs.append(value as! NSNumber)
+                            }
+                        }
+                    }
+                    
+                    let completion = { (error: NSError?) in
+                        if error == nil {
+                            let fetchRequest = NSFetchRequest(entityName: "Person")
+                            fetchRequest.predicate = NSPredicate(format: "personID IN %@", peopleIDs)
+                            fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                            fetchRequest.sortDescriptors = [
+                                NSSortDescriptor(key: "popularity", ascending: false),
+                                NSSortDescriptor(key: "name", ascending: true)]
+                            
+                            do {
+                                self.peopleData = [[String: AnyObject]]()
+                                let people = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Person]
+                                
+                                for person in people {
+                                    var data = [String: AnyObject]()
+                                    data[ThumbnailTableViewCell.Keys.ID] = person.personID! as Int
+                                    
+                                    if let profilePath = person.profilePath {
+                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.ProfileSizes[1])\(profilePath)"
+                                        data[ThumbnailTableViewCell.Keys.URL] = url
+                                    }
+                                    
+                                    self.peopleData!.append(data)
+                                }
+                                self.tableView.reloadData()
+                            } catch let error as NSError {
+                                print("\(error.userInfo)")
+                            }
+                        }
+                    }
+                    
+                    Sync.changes(json, inEntityNamed: "Person", dataStack: appDelegate.dataStack, completion: completion)
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) in
+            performUIUpdatesOnMain {
+                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+            }
+        }
+        
+        TMDBManager.sharedInstance().peoplePopular(success, failure: failure)
     }
     
     var sharedContext: NSManagedObjectContext {
@@ -156,7 +230,7 @@ class FeaturedViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension FeaturedViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -172,11 +246,9 @@ extension FeaturedViewController : UITableViewDataSource {
                 cell.titleLabel.text = "On TV"
                 cell.data = tvData
             case 2:
-                cell.thumbnailType = .Lists
-                cell.titleLabel.text = "Lists"
-            case 3:
-                cell.thumbnailType = .People
-                cell.titleLabel.text = "People"
+                cell.thumbnailType = .PopularPeople
+                cell.titleLabel.text = "Popular People"
+                cell.data = peopleData
             default:
                 break
         }
