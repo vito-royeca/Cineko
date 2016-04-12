@@ -52,16 +52,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GIB-wL-wzG">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="GIB-wL-wzG" firstAttribute="bottom" secondItem="TgA-ZX-Y0F" secondAttribute="top" id="5hP-el-rcY"/>
-                            <constraint firstItem="GIB-wL-wzG" firstAttribute="top" secondItem="c1T-fq-RHA" secondAttribute="bottom" id="SlB-Rj-Igr"/>
-                            <constraint firstItem="GIB-wL-wzG" firstAttribute="leading" secondItem="FUg-um-N2a" secondAttribute="leading" id="shy-tt-hHe"/>
-                            <constraint firstAttribute="trailing" secondItem="GIB-wL-wzG" secondAttribute="trailing" id="wml-CP-IDO"/>
+                            <constraint firstItem="GIB-wL-wzG" firstAttribute="leading" secondItem="FUg-um-N2a" secondAttribute="leading" id="IMy-OC-DKh"/>
+                            <constraint firstAttribute="trailing" secondItem="GIB-wL-wzG" secondAttribute="trailing" id="bRb-8e-S6G"/>
+                            <constraint firstItem="GIB-wL-wzG" firstAttribute="top" secondItem="FUg-um-N2a" secondAttribute="top" id="eL6-iw-7CS"/>
+                            <constraint firstAttribute="bottom" secondItem="GIB-wL-wzG" secondAttribute="bottom" id="tm3-xE-akq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Featured" id="s34-TQ-j9D"/>
@@ -72,6 +72,90 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODw-Hp-JRR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1902" y="-863"/>
+        </scene>
+        <!--Movie Details View Controller-->
+        <scene sceneID="NhU-hz-64w">
+            <objects>
+                <viewController storyboardIdentifier="MovieDetailsViewController" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qLp-Rv-VUg"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q23-FN-YyM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mi1-zV-vtf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BZY-Dv-BSm">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="actionTableViewCell" id="Q3Z-cv-Gi9" customClass="ActionTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q3Z-cv-Gi9" id="3uH-T0-yYg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clearTableViewCell" id="AQr-6t-Zab">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AQr-6t-Zab" id="xFr-vh-Xwi">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleTableViewCell" id="hvD-Ek-494" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hvD-Ek-494" id="AmD-jJ-gqg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="Ngs-o2-IsK" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="160" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ngs-o2-IsK" id="U63-lq-syO">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="z2F-vW-Usg" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="204" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2F-vW-Usg" id="WIu-qk-ZCh">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="6At-tm-DiG" id="52P-gF-RR9"/>
+                                    <outlet property="delegate" destination="6At-tm-DiG" id="3s0-47-ZAr"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="mi1-zV-vtf" secondAttribute="top" id="9Ll-f5-mLh"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="bottom" secondItem="Q23-FN-YyM" secondAttribute="top" id="GJf-lZ-Cci"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="Re3-O6-XTn"/>
+                            <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="kks-Lo-frr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0JT-9C-AX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2543" y="-863"/>
         </scene>
         <!--Start View Controller-->
         <scene sceneID="qPU-x9-dlN">
@@ -85,7 +169,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4c-YP-zCy">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4c-YP-zCy">
                                 <rect key="frame" x="238" y="247" width="124" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="124" id="KdP-Pf-C67"/>
@@ -95,7 +179,7 @@
                                     <action selector="loginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="WIq-4Y-ig4"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-UP-NoW">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-UP-NoW">
                                 <rect key="frame" x="262" y="285" width="77" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="77" id="NAW-vt-dhz"/>
@@ -105,13 +189,13 @@
                                     <action selector="skipLoginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="Wa8-Lh-jZv"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tmdbLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-fk-yCC">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="tmdbLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-fk-yCC">
                                 <rect key="frame" x="151" y="417" width="300" height="63"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="aVH-8H-gPy"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cineko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Cineko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
                                 <rect key="frame" x="247" y="121" width="108" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="108" id="qzj-PE-dHz"/>
@@ -121,7 +205,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered By" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alf-mi-1F0">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Powered By" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alf-mi-1F0">
                                 <rect key="frame" x="248" y="388" width="106" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="106" id="rMX-Pb-4bA"/>

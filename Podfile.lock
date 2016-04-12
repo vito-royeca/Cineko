@@ -26,7 +26,6 @@ PODS:
     - NSDictionary-ANDYSafeValue (~> 0.3.1)
     - NSEntityDescription-SYNCPrimaryKey (~> 0.1.2)
     - NSManagedObject-HYPPropertyMapper (~> 3.4.3)
-  - TLYShyNavBar (1.0.0)
 
 DEPENDENCIES:
   - BLKFlexibleHeightBar
@@ -37,7 +36,6 @@ DEPENDENCIES:
   - MBProgressHUD
   - SDWebImage
   - Sync
-  - TLYShyNavBar
 
 SPEC CHECKSUMS:
   BLKFlexibleHeightBar: b27572a69633d8e33f1f2bbc486b04d8e86f742d
@@ -55,6 +53,5 @@ SPEC CHECKSUMS:
   NSString-HYPNetworking: 24c3828eebde8a37cc16101a475934a56ac820c0
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Sync: 7831aa847c08e79f4e92619e26ef65e671e8cd53
-  TLYShyNavBar: d313a1c50c58cb7af744829120eaa33ca8a998ce
 
 COCOAPODS: 0.39.0

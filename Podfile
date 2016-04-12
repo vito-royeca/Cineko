@@ -13,7 +13,7 @@ pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'Sync'
-pod 'TLYShyNavBar'
+#pod 'TLYShyNavBar'
 end
 
 target "CinekoTests" do
@@ -25,7 +25,7 @@ pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'Sync'
-pod 'TLYShyNavBar'
+#pod 'TLYShyNavBar'
 end
 
 target "CinekoUITests" do
@@ -37,5 +37,5 @@ pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
 pod 'Sync'
-pod 'TLYShyNavBar'
+#pod 'TLYShyNavBar'
 end

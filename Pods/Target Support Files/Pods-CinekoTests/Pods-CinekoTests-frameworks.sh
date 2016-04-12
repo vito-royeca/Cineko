@@ -97,7 +97,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoTests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
   install_framework "Pods-CinekoTests/Sync.framework"
-  install_framework "Pods-CinekoTests/TLYShyNavBar.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoTests/BLKFlexibleHeightBar.framework"
@@ -113,5 +112,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoTests/NSString_HYPNetworking.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
   install_framework "Pods-CinekoTests/Sync.framework"
-  install_framework "Pods-CinekoTests/TLYShyNavBar.framework"
 fi

@@ -26,6 +26,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     static let MaxItems = 12
     struct Keys {
         static let ID  = "id"
+        static let OID = "oid"
         static let URL = "url"
     }
     

@@ -22,6 +22,10 @@ class FeaturedViewController: UIViewController {
     var movieData:[[String: AnyObject]]?
     var tvData:[[String: AnyObject]]?
     var peopleData:[[String: AnyObject]]?
+    var sharedContext: NSManagedObjectContext {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        return appDelegate.dataStack.mainContext
+    }
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -29,11 +33,6 @@ class FeaturedViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
         tableView.delegate = self
-        
-        // TLYShyNavBar
-//        var insets = tableView.contentInset
-//        insets.bottom = 0
-        shyNavBarManager.scrollView = tableView
         
         loadFeaturedMovies()
         loadFeaturedTVShows()
@@ -72,6 +71,7 @@ class FeaturedViewController: UIViewController {
                                 for movie in movies {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = movie.movieID! as Int
+                                    data[ThumbnailTableViewCell.Keys.OID] = movie.objectID
                                     
                                     if let posterPath = movie.posterPath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
@@ -131,6 +131,7 @@ class FeaturedViewController: UIViewController {
                                 for tvShow in tvShows {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = tvShow.tvShowID! as Int
+                                    data[ThumbnailTableViewCell.Keys.OID] = tvShow.objectID
                                     
                                     if let posterPath = tvShow.posterPath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
@@ -192,6 +193,7 @@ class FeaturedViewController: UIViewController {
                                 for person in people {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = person.personID! as Int
+                                    data[ThumbnailTableViewCell.Keys.OID] = person.objectID
                                     
                                     if let profilePath = person.profilePath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.ProfileSizes[1])\(profilePath)"
@@ -221,10 +223,7 @@ class FeaturedViewController: UIViewController {
         TMDBManager.sharedInstance().peoplePopular(success, failure: failure)
     }
     
-    var sharedContext: NSManagedObjectContext {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        return appDelegate.dataStack.mainContext
-    }
+    
 }
 
 // MARK: UITableViewDataSource
@@ -273,6 +272,20 @@ extension FeaturedViewController : ThumbnailTableViewCellDelegate {
     }
     
     func didSelectItem(type: ThumbnailType, dict: [String: AnyObject]) {
-        print("tag = \(type); \(dict)")
+        switch type {
+        case .InTheaters:
+            
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
+                let navigationController = navigationController,
+                let movieID = dict[ThumbnailTableViewCell.Keys.OID] as? NSManagedObjectID {
+                controller.movieID = movieID
+                navigationController.pushViewController(controller, animated: true)
+            }
+        case .OnTV:
+            print("\(type)")
+        case .PopularPeople:
+            print("\(type)")
+        }
+        
     }
 }

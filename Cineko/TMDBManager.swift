@@ -94,6 +94,15 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    func moviesID(movieID: NSNumber, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(Constants.TMDB.APIURL)\(Constants.TMDB.Movies.ID.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
+        let parameters = Constants.TMDB.Parameters
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     // MARK: TMDB TV Shows
     func tvShowsOnTheAir(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod:HTTPMethod = .Get

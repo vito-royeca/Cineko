@@ -85,6 +85,10 @@ struct Constants {
             struct NowPlaying {
                 static let Path = "/movie/now_playing"
             }
+            
+            struct ID {
+                static let Path = "/movie/{id}"
+            }
         }
         
         struct TVShows {
