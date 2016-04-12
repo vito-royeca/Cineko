@@ -20,6 +20,8 @@ class MovieDetailsViewController: UIViewController {
     
     // MARK: Variables
     var movieID:NSManagedObjectID?
+    var backdropData:[[String: AnyObject]]?
+    var posterData:[[String: AnyObject]]?
     var sharedContext: NSManagedObjectContext {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         return appDelegate.dataStack.mainContext
@@ -35,30 +37,17 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         
+        loadDetails()
+        loadPhotos()
+    }
+
+    // MARK: Custom Methods
+    func loadDetails() {
         if let movieID = movieID {
             let movie = sharedContext.objectWithID(movieID) as! Movie
-            
-            if let posterPath = movie.posterPath {
-                let urlString = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[4])\(posterPath)"
-                let backgroundView = UIImageView(frame: tableView.frame)
-                backgroundView.contentMode = .ScaleAspectFit
-                tableView.backgroundView = backgroundView
-                backgroundView.sd_setImageWithURL(NSURL(string: urlString))
-                
-//                let completed = { (image: UIImage!, data: NSData!, error: NSError!, finished: Bool) in
-//                    performUIUpdatesOnMain {
-//                        let backgroundView = UIImageView(image: image)
-//                        backgroundView.contentMode = .ScaleAspectFit
-//                        backgroundView.frame = self.tableView.frame
-//                        self.tableView.backgroundView = backgroundView
-//                    }
-//                }
-//                
-//                let downloader = SDWebImageDownloader.sharedDownloader()
-//                downloader.downloadImageWithURL(url, options: .LowPriority, progress: nil, completed: completed)
-            }
-            
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
                     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -81,19 +70,118 @@ class MovieDetailsViewController: UIViewController {
             TMDBManager.sharedInstance().moviesID(movie.movieID!, success: success, failure: failure)
         }
     }
+    
+    func loadPhotos() {
+        if let movieID = movieID {
+            let movie = sharedContext.objectWithID(movieID) as! Movie
+            
+            let success = { (results: AnyObject!) in
+                if let dict = results as? [String: AnyObject] {
+                    if let json = dict["backdrops"] as? [[String: AnyObject]],
+                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                        
+                        // save the movieIDs
+                        var imageIDs = [String]()
+                        for image in json {
+                            for (key,value) in image {
+                                if key == "file_path" {
+                                    imageIDs.append(value as! String)
+                                }
+                            }
+                        }
+                        
+                        let completion = { (error: NSError?) in
+                            if error == nil {
+                                let fetchRequest = NSFetchRequest(entityName: "Image")
+                                fetchRequest.predicate = NSPredicate(format: "filePath IN %@", imageIDs)
+                                fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                                
+                                do {
+                                    self.backdropData = [[String: AnyObject]]()
+                                    let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
+                                    
+                                    for image in images {
+                                        var data = [String: AnyObject]()
+                                        data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+                                        data[ThumbnailTableViewCell.Keys.OID] = image.objectID
+                                        
+                                        if let filePath = image.filePath {
+                                            let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
+                                            data[ThumbnailTableViewCell.Keys.URL] = url
+                                        }
+                                        
+                                        self.backdropData!.append(data)
+                                    }
+                                    self.tableView.reloadData()
+                                } catch let error as NSError {
+                                    print("\(error.userInfo)")
+                                }
+                            }
+                        }
+                        
+                        Sync.changes(json, inEntityNamed: "Image", dataStack: appDelegate.dataStack, completion: completion)
+                    }
+                    
+                    if let json = dict["posters"] as? [[String: AnyObject]],
+                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                        
+                        // save the movieIDs
+                        var imageIDs = [String]()
+                        for image in json {
+                            for (key,value) in image {
+                                if key == "file_path" {
+                                    imageIDs.append(value as! String)
+                                }
+                            }
+                        }
+                        
+                        let completion = { (error: NSError?) in
+                            if error == nil {
+                                let fetchRequest = NSFetchRequest(entityName: "Image")
+                                fetchRequest.predicate = NSPredicate(format: "filePath IN %@", imageIDs)
+                                fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                                
+                                do {
+                                    self.posterData = [[String: AnyObject]]()
+                                    let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
+                                    
+                                    for image in images {
+                                        var data = [String: AnyObject]()
+                                        data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+                                        data[ThumbnailTableViewCell.Keys.OID] = image.objectID
+                                        
+                                        if let filePath = image.filePath {
+                                            let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(filePath)"
+                                            data[ThumbnailTableViewCell.Keys.URL] = url
+                                        }
+                                        
+                                        self.posterData!.append(data)
+                                    }
+                                    self.tableView.reloadData()
+                                } catch let error as NSError {
+                                    print("\(error.userInfo)")
+                                }
+                            }
+                        }
+                        
+                        Sync.changes(json, inEntityNamed: "Image", dataStack: appDelegate.dataStack, completion: completion)
+                    }
+                }
+            }
+            
+            let failure = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+            }
+            
+            TMDBManager.sharedInstance().moviesImages(movie.movieID!, success: success, failure: failure)
+        }
+    }
 
-    // MARK: Custom Methods
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
-            if let _ = cell as? ActionTableViewCell {
-            // do something
-            }
-            
-        case 1:
-            cell.backgroundColor = UIColor.clearColor()
-            
-        case 2:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
                     let movie = sharedContext.objectWithID(movieID) as! Movie
@@ -104,7 +192,17 @@ class MovieDetailsViewController: UIViewController {
                     }
                 }
             }
-        case 3:
+        case 1:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 0
+                c.titleLabel.text = "Photos"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.data = backdropData
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.collectionView.reloadData()
+            }
+        case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
                     let movie = sharedContext.objectWithID(movieID) as! Movie
@@ -119,7 +217,7 @@ class MovieDetailsViewController: UIViewController {
 
                 }
             }
-        case 4:
+        case 3:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
                     let movie = sharedContext.objectWithID(movieID) as! Movie
@@ -130,9 +228,30 @@ class MovieDetailsViewController: UIViewController {
                     }
                 }
             }
-            
+        
+        case 4:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 4
+                c.titleLabel.text = "Posters"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.data = posterData
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.collectionView.reloadData()
+            }
         default:
             return
+        }
+    }
+    
+    func dynamicHeightForCell(identifier: String, indexPath: NSIndexPath) -> CGFloat {
+        if let cell = tableView.dequeueReusableCellWithIdentifier(identifier) {
+            configureCell(cell, indexPath: indexPath)
+            cell.layoutIfNeeded()
+            let size = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+            return size.height
+        } else {
+            return UITableViewAutomaticDimension
         }
     }
 }
@@ -147,15 +266,15 @@ extension MovieDetailsViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("actionTableViewCell", forIndexPath: indexPath)
-        case 1:
-            cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 1:
+            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+        case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
-        case 4:
+        case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
+        case 4:
+            cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         }
@@ -169,26 +288,14 @@ extension MovieDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         switch indexPath.row {
+        case 0:
+            return dynamicHeightForCell("titleTableViewCell", indexPath: indexPath)
         case 1:
-            return CGFloat(180)
-        case 2:
-            if let cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell") {
-                configureCell(cell, indexPath: indexPath)
-                cell.layoutIfNeeded()
-                let size = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-                return size.height
-            } else {
-                return UITableViewAutomaticDimension
-            }
+            return ThumbnailTableViewCell.Height
+        case 3:
+            return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
         case 4:
-            if let cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell") {
-                configureCell(cell, indexPath: indexPath)
-                cell.layoutIfNeeded()
-                let size = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-                return size.height
-            } else {
-                return UITableViewAutomaticDimension
-            }
+            return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
         }

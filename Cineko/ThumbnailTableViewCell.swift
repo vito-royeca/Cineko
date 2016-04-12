@@ -9,15 +9,9 @@
 import UIKit
 import SDWebImage
 
-public enum ThumbnailType : Int {
-    case InTheaters
-    case OnTV
-    case PopularPeople
-}
-
 protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
-    func seeAllAction(type: ThumbnailType);
-    func didSelectItem(type: ThumbnailType, dict: [String: AnyObject])
+    func seeAllAction(tag: Int)
+    func didSelectItem(tag: Int, dict: [String: AnyObject])
 }
 
 class ThumbnailTableViewCell: UITableViewCell {
@@ -25,25 +19,28 @@ class ThumbnailTableViewCell: UITableViewCell {
     static let Height:CGFloat = 180
     static let MaxItems = 12
     struct Keys {
-        static let ID  = "id"
-        static let OID = "oid"
-        static let URL = "url"
+        static let ID      = "id"
+        static let OID     = "oid"
+        static let URL     = "url"
+        static let Caption  = "caption"
     }
     
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var seeAllButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     // MARK: Variables
     weak var delegate: ThumbnailTableViewCellDelegate?
     var data:[[String: AnyObject]]?
-    var thumbnailType: ThumbnailType?
-    
+    var showCaption = false
+    private var imageSizeAdjusted = false
+
     // MARK: Actions
     @IBAction func seeAllAction(sender: UIButton) {
         if let delegate = delegate {
-            delegate.seeAllAction(thumbnailType!)
+            delegate.seeAllAction(self.tag)
         }
     }
     
@@ -51,13 +48,12 @@ class ThumbnailTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        let width = collectionView.frame.size.width / 3
-        let height = collectionView.frame.size.height
+//        let width = collectionView.frame.size.width / CGFloat(visibleThumbnails)
+//        let height = collectionView.frame.size.height
         let space = CGFloat(5.0)
-        
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
-        flowLayout.itemSize = CGSizeMake(width, height)
+//        flowLayout.itemSize = CGSizeMake(width, height)
         
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
@@ -74,7 +70,11 @@ class ThumbnailTableViewCell: UITableViewCell {
 // MARK: UICollectionViewDataSource
 extension ThumbnailTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ThumbnailTableViewCell.MaxItems
+        if let data = data {
+            return data.count
+        } else {
+            return 0
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -82,24 +82,40 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
         
         if let data = data {
             if let urlString = data[indexPath.row][Keys.URL] as? String {
-                cell.imageView.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: UIImage(named: "image"))
+                let url = NSURL(string: urlString)
+                let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                    if self.showCaption {
+                        if let caption = data[indexPath.row][Keys.Caption] as? String {
+                            cell.captionLabel.text = caption
+                            let average = image.averageColor()
+//                          cell.captionLabel.shadowColor = image.patternColor(average)
+//                          cell.captionLabel.textColor = average
+                            cell.captionLabel.textColor = image.patternColor(average)
+                        }
+                    } else {
+                        cell.captionLabel.text = nil
+                    }
+                    
+                    if !self.imageSizeAdjusted {
+                        let imageWidth = image.size.width
+                        let imageHeight = image.size.height
+                        let height = collectionView.frame.size.height
+                        let newWidth = (imageWidth * height) / imageHeight
+                        self.flowLayout.itemSize = CGSizeMake(newWidth, height)
+                        self.imageSizeAdjusted = true
+                    }
+                }
+                cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
                 
             } else {
-                if let thumbnailType = thumbnailType {
-                    switch thumbnailType {
-                        case .InTheaters:
-                            cell.imageView.image = UIImage(named: "movie")
-                        case .OnTV:
-                            cell.imageView.image = UIImage(named: "tv")
-                        case .PopularPeople:
-                            cell.imageView.image = UIImage(named: "people")
-                    }
-
-                } else {
-                    cell.imageView.image = nil
+                cell.thumbnailImage.image = UIImage(named: "noImage")
+                if let caption = data[indexPath.row][Keys.Caption] as? String {
+                    cell.captionLabel.text = caption
+                    cell.captionLabel.textColor = UIColor.redColor()
                 }
             }
         }
+        
         return cell
     }
 }
@@ -108,9 +124,8 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
 extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
-            let data = data,
-            let thumbnailType = thumbnailType {
-            delegate.didSelectItem(thumbnailType, dict: data[indexPath.row])
+            let data = data {
+            delegate.didSelectItem(self.tag, dict: data[indexPath.row])
         }
     }
 }

@@ -31,8 +31,6 @@ class FeaturedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
-        tableView.delegate = self
         
         loadFeaturedMovies()
         loadFeaturedTVShows()
@@ -72,6 +70,7 @@ class FeaturedViewController: UIViewController {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = movie.movieID! as Int
                                     data[ThumbnailTableViewCell.Keys.OID] = movie.objectID
+                                    data[ThumbnailTableViewCell.Keys.Caption] = movie.title
                                     
                                     if let posterPath = movie.posterPath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
@@ -132,6 +131,7 @@ class FeaturedViewController: UIViewController {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = tvShow.tvShowID! as Int
                                     data[ThumbnailTableViewCell.Keys.OID] = tvShow.objectID
+                                    data[ThumbnailTableViewCell.Keys.Caption] = tvShow.name
                                     
                                     if let posterPath = tvShow.posterPath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
@@ -194,6 +194,7 @@ class FeaturedViewController: UIViewController {
                                     var data = [String: AnyObject]()
                                     data[ThumbnailTableViewCell.Keys.ID] = person.personID! as Int
                                     data[ThumbnailTableViewCell.Keys.OID] = person.objectID
+                                    data[ThumbnailTableViewCell.Keys.Caption] = person.name
                                     
                                     if let profilePath = person.profilePath {
                                         let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.ProfileSizes[1])\(profilePath)"
@@ -237,17 +238,18 @@ extension FeaturedViewController : UITableViewDataSource {
         
         switch indexPath.row {
             case 0:
-                cell.thumbnailType = .InTheaters
-                cell.titleLabel.text = "In Theaters"
+                cell.tag = 0
+                cell.titleLabel.text = "Now Showing"
                 cell.data = movieData
             case 1:
-                cell.thumbnailType = .OnTV
-                cell.titleLabel.text = "On TV"
+                cell.tag = 1
+                cell.titleLabel.text = "Airing Today"
                 cell.data = tvData
             case 2:
-                cell.thumbnailType = .PopularPeople
+                cell.tag = 2
                 cell.titleLabel.text = "Popular People"
                 cell.data = peopleData
+                cell.showCaption = true
             default:
                 break
         }
@@ -267,24 +269,25 @@ extension FeaturedViewController : UITableViewDelegate {
 
 // MARK: ThumbnailTableViewCellDelegate
 extension FeaturedViewController : ThumbnailTableViewCellDelegate {
-    func seeAllAction(type: ThumbnailType) {
-        print("type = \(type)")
+    func seeAllAction(tag: Int) {
+        print("type = \(tag)")
     }
     
-    func didSelectItem(type: ThumbnailType, dict: [String: AnyObject]) {
-        switch type {
-        case .InTheaters:
-            
+    func didSelectItem(tag: Int, dict: [String: AnyObject]) {
+        switch tag {
+        case 0:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
                 let navigationController = navigationController,
                 let movieID = dict[ThumbnailTableViewCell.Keys.OID] as? NSManagedObjectID {
                 controller.movieID = movieID
                 navigationController.pushViewController(controller, animated: true)
             }
-        case .OnTV:
-            print("\(type)")
-        case .PopularPeople:
-            print("\(type)")
+        case 1:
+            print("\(tag)")
+        case 2:
+            print("\(tag)")
+        default:
+            print("\(tag)")
         }
         
     }

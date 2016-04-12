@@ -16,17 +16,27 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q8g-ky-vaN">
                         <rect key="frame" x="0.0" y="0.0" width="80" height="112"/>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="xzJ-Z7-lKn">
+                        <rect key="frame" x="0.0" y="91" width="80" height="21"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="H2j-OB-F1j"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="ZmD-17-Hy6"/>
                 <constraint firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="dDc-pi-PgL"/>
                 <constraint firstItem="q8g-ky-vaN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fVT-gG-Faz"/>
                 <constraint firstItem="q8g-ky-vaN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hfq-bJ-09a"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="91" id="qeT-Pg-Say"/>
                 <constraint firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="qhB-QZ-Gcs"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="leading" secondItem="q8g-ky-vaN" secondAttribute="leading" id="wOh-2f-ODv"/>
             </constraints>
             <connections>
-                <outlet property="imageView" destination="q8g-ky-vaN" id="bQj-c2-Hkz"/>
+                <outlet property="captionLabel" destination="xzJ-Z7-lKn" id="qnn-db-Fjz"/>
+                <outlet property="thumbnailImage" destination="q8g-ky-vaN" id="KsK-Hl-D2N"/>
             </connections>
         </collectionViewCell>
     </objects>

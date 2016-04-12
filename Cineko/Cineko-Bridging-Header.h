@@ -3,5 +3,5 @@
 //
 
 #import "FacebookStyleBar.h"
-#import "TLYShyNavBar/TLYShyNavBarManager.h"
+#import <JJJUtils/JJJ.h>
 #import <SDWebImage/UIImageView+WebCache.h>

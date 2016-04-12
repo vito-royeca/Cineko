@@ -37,6 +37,10 @@
 		8C1F106C1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
 		8C1F106D1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
 		8C1F106E1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
+		8C340CDC1CBCC36B0065626A /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */; };
+		8C340CDD1CBCC4020065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
+		8C340CDE1CBCC4030065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
+		8C340CDF1CBCC4040065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
 		8C37CD7B1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
 		8C37CD7C1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
 		8C37CD7D1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
@@ -57,12 +61,6 @@
 		8C642D8D1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8C642D8E1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8C642D8F1CB36537008D18F1 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
-		8C67891C1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift */; };
-		8C67891D1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift */; };
-		8C67891E1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67891A1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift */; };
-		8C67891F1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib */; };
-		8C6789201CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib */; };
-		8C6789211CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C67891B1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib */; };
 		8C6789241CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
 		8C6789251CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
 		8C6789261CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */; };
@@ -210,6 +208,8 @@
 		8C1378BC1CAE819F00FB6830 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightTableViewCell.swift; sourceTree = "<group>"; };
 		8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
+		8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
+		8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
 		8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionTableViewCell.swift; sourceTree = "<group>"; };
 		8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionTableViewCell.xib; sourceTree = "<group>"; };
 		8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -219,8 +219,6 @@
 		8C4FDB991CB6132200E2997F /* Network+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Network+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookStyleBar.h; sourceTree = "<group>"; };
 		8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStyleBar.m; sourceTree = "<group>"; };
-		8C67891A1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
-		8C67891B1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
 		8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C67892A1CB5209200E4E14B /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -411,8 +409,8 @@
 				8C37CD821CBB65DC0093196C /* MediaInfoTableViewCell.xib */,
 				8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */,
 				8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */,
-				8C67891A1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift */,
-				8C67891B1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib */,
+				8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */,
+				8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -570,12 +568,12 @@
 			files = (
 				8C1F106C1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */,
+				8C340CDC1CBCC36B0065626A /* ThumbnailTableViewCell.xib in Resources */,
 				8C37CD7E1CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */,
 				8C6789271CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 				8C37CD861CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
 				8C1378791CAE16B700FB6830 /* Main.storyboard in Resources */,
-				8C67891F1CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +582,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C37CD871CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
-				8C6789201CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */,
 				8C37CD7F1CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C1F106D1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
@@ -596,7 +593,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C37CD881CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
-				8C6789211CB4BDEC00E4E14B /* ThumbnailTableViewCell.xib in Resources */,
 				8C37CD801CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C1F106E1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
@@ -764,7 +760,6 @@
 				8C1378741CAE16B600FB6830 /* AppDelegate.swift in Sources */,
 				8C1378B11CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8CB749501CAEC21900EABB91 /* AccountViewController.swift in Sources */,
-				8C67891C1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */,
 				8C67895B1CB5209200E4E14B /* Movie.swift in Sources */,
 				8CDAA49E1CB60B26008E9665 /* Credit+CoreDataProperties.swift in Sources */,
 				8C6789791CB5209200E4E14B /* TVSeason.swift in Sources */,
@@ -782,6 +777,7 @@
 				8C67897F1CB5209200E4E14B /* Language.swift in Sources */,
 				8C67896D1CB5209200E4E14B /* Account.swift in Sources */,
 				8C6789491CB5209200E4E14B /* TVShow.swift in Sources */,
+				8C340CDD1CBCC4020065626A /* ThumbnailTableViewCell.swift in Sources */,
 				8C6789701CB5209200E4E14B /* TVEpisode+CoreDataProperties.swift in Sources */,
 				8CDAA4A11CB60B26008E9665 /* Credit.swift in Sources */,
 				8C6789611CB5209200E4E14B /* Country.swift in Sources */,
@@ -818,7 +814,6 @@
 				8C67896B1CB5209200E4E14B /* Account+CoreDataProperties.swift in Sources */,
 				8C1378B21CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8C6789771CB5209200E4E14B /* TVSeason+CoreDataProperties.swift in Sources */,
-				8C67891D1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */,
 				8CB749511CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C67895C1CB5209200E4E14B /* Movie.swift in Sources */,
 				8C6789681CB5209200E4E14B /* Company.swift in Sources */,
@@ -841,6 +836,7 @@
 				8C6789591CB5209200E4E14B /* Movie+CoreDataProperties.swift in Sources */,
 				8C6789621CB5209200E4E14B /* Country.swift in Sources */,
 				8C642D8E1CB36537008D18F1 /* FacebookStyleBar.m in Sources */,
+				8C340CDE1CBCC4030065626A /* ThumbnailTableViewCell.swift in Sources */,
 				8C7809551CB80A7800C1810C /* MovieDetailsViewController.swift in Sources */,
 				8CB749451CAEC1CF00EABB91 /* MoviesViewController.swift in Sources */,
 				8CD408C31CB1822E00F9132F /* TMDBManager.swift in Sources */,
@@ -868,7 +864,6 @@
 				8CD408C41CB1822E00F9132F /* TMDBManager.swift in Sources */,
 				8CB749521CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C1378B61CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
-				8C67891E1CB4BDEC00E4E14B /* ThumbnailTableViewCell.swift in Sources */,
 				8C67895D1CB5209200E4E14B /* Movie.swift in Sources */,
 				8C37CD851CBB65DC0093196C /* MediaInfoTableViewCell.swift in Sources */,
 				8CDAA4A01CB60B26008E9665 /* Credit+CoreDataProperties.swift in Sources */,
@@ -895,6 +890,7 @@
 				8CB749461CAEC1CF00EABB91 /* MoviesViewController.swift in Sources */,
 				8C67895A1CB5209200E4E14B /* Movie+CoreDataProperties.swift in Sources */,
 				8C6789571CB5209200E4E14B /* Image.swift in Sources */,
+				8C340CDF1CBCC4040065626A /* ThumbnailTableViewCell.swift in Sources */,
 				8C6789601CB5209200E4E14B /* Country+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

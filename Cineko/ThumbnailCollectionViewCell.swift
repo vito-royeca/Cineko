@@ -10,7 +10,8 @@ import UIKit
 
 class ThumbnailCollectionViewCell: UICollectionViewCell {
     // MARK: Outlets
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var thumbnailImage: UIImageView!
+    @IBOutlet weak var captionLabel: UILabel!
     
     // MARK: Overrides
     override func awakeFromNib() {

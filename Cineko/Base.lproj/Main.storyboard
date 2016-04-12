@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Movies View Controller-->
@@ -54,6 +55,37 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GIB-wL-wzG">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="nowShowingTableViewCell" id="Eyv-yi-qS6" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eyv-yi-qS6" id="nYI-3u-cLF">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="airingTodayTableViewCell" id="aOS-DL-hNB" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aOS-DL-hNB" id="bCk-sA-UwY">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="popularPeopleTableViewCell" id="Vtz-IO-qE3" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="180" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vtz-IO-qE3" id="k6c-eK-AoJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="CxK-ZS-wL2" id="OMt-vG-jZD"/>
+                                    <outlet property="delegate" destination="CxK-ZS-wL2" id="73Z-Km-eZX"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -89,26 +121,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="actionTableViewCell" id="Q3Z-cv-Gi9" customClass="ActionTableViewCell" customModule="Cineko" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q3Z-cv-Gi9" id="3uH-T0-yYg">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clearTableViewCell" id="AQr-6t-Zab">
-                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AQr-6t-Zab" id="xFr-vh-Xwi">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleTableViewCell" id="hvD-Ek-494" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="116" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hvD-Ek-494" id="AmD-jJ-gqg">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -116,8 +130,17 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="Kws-x1-NCx" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kws-x1-NCx" id="kH4-OV-Isq">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="Ngs-o2-IsK" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cineko" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="160" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="180" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ngs-o2-IsK" id="U63-lq-syO">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -126,9 +149,18 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="z2F-vW-Usg" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="204" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2F-vW-Usg" id="WIu-qk-ZCh">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postersTableViewCell" id="490-ib-rFm" userLabel="postersTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="268" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="490-ib-rFm" id="Nly-hM-WLH">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -143,19 +175,26 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="mi1-zV-vtf" secondAttribute="top" id="9Ll-f5-mLh"/>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="bottom" secondItem="Q23-FN-YyM" secondAttribute="top" id="GJf-lZ-Cci"/>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="Re3-O6-XTn"/>
-                            <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="kks-Lo-frr"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="bottom" secondItem="Q23-FN-YyM" secondAttribute="top" id="8Rc-R0-NjF"/>
+                            <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="9GC-ST-2Mo"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="AsM-9d-zrN"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="mi1-zV-vtf" secondAttribute="top" id="vDI-9p-8rA"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="hKK-Iw-wLY">
+                        <rightBarButtonItems>
+                            <barButtonItem image="star-filled" id="aYz-1u-SRe"/>
+                            <barButtonItem image="heart-filled" id="cuV-FF-voo"/>
+                            <barButtonItem image="eye-filled" id="sLV-iu-MVH"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0JT-9C-AX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2543" y="-863"/>
+            <point key="canvasLocation" x="3604" y="-863"/>
         </scene>
         <!--Start View Controller-->
         <scene sceneID="qPU-x9-dlN">
@@ -416,11 +455,32 @@
             </objects>
             <point key="canvasLocation" x="1090" y="-863"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="H3o-mG-FDo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hrS-Tr-UHV" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="04i-CW-2Vw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="6At-tm-DiG" kind="relationship" relationship="rootViewController" id="8so-Lt-2tz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZeE-xJ-ark" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2792" y="-863"/>
+        </scene>
     </scenes>
     <resources>
         <image name="account" width="25" height="25"/>
+        <image name="eye-filled" width="25" height="25"/>
+        <image name="heart-filled" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="rtLogo" width="123" height="40"/>
+        <image name="star-filled" width="25" height="25"/>
         <image name="tmdbLogo" width="535" height="113"/>
         <image name="tv" width="25" height="25"/>
     </resources>

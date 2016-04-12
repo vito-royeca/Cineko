@@ -47,6 +47,7 @@
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="file_path"/>
             </userInfo>
         </attribute>
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
