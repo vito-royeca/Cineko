@@ -21,6 +21,6 @@ extension Image {
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
     @NSManaged var width: NSNumber?
-    @NSManaged var movieBackdrops: NSSet?
-    @NSManaged var moviePosters: NSSet?
+    @NSManaged var movieBackdrop: Movie?
+    @NSManaged var moviePoster: Movie?
 }

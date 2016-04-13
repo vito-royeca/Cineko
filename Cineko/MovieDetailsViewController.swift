@@ -73,99 +73,64 @@ class MovieDetailsViewController: UIViewController {
     
     func loadPhotos() {
         if let movieID = movieID {
-            let movie = sharedContext.objectWithID(movieID) as! Movie
+            var movie = sharedContext.objectWithID(movieID) as! Movie
             
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
-                    if let json = dict["backdrops"] as? [[String: AnyObject]],
-                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                        
-                        // save the movieIDs
-                        var imageIDs = [String]()
-                        for image in json {
-                            for (key,value) in image {
-                                if key == "file_path" {
-                                    imageIDs.append(value as! String)
-                                }
-                            }
-                        }
-                        
-                        let completion = { (error: NSError?) in
-                            if error == nil {
-                                let fetchRequest = NSFetchRequest(entityName: "Image")
-                                fetchRequest.predicate = NSPredicate(format: "filePath IN %@", imageIDs)
-                                fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
-                                
-                                do {
-                                    self.backdropData = [[String: AnyObject]]()
-                                    let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
-                                    
-                                    for image in images {
-                                        var data = [String: AnyObject]()
-                                        data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-                                        data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-                                        
-                                        if let filePath = image.filePath {
-                                            let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
-                                            data[ThumbnailTableViewCell.Keys.URL] = url
-                                        }
-                                        
-                                        self.backdropData!.append(data)
-                                    }
-                                    self.tableView.reloadData()
-                                } catch let error as NSError {
-                                    print("\(error.userInfo)")
-                                }
-                            }
-                        }
-                        
-                        Sync.changes(json, inEntityNamed: "Image", dataStack: appDelegate.dataStack, completion: completion)
+                    var backdrops = [[String: AnyObject]]()
+                    var posters = [[String: AnyObject]]()
+                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                    
+                    if let json = dict["backdrops"] as? [[String: AnyObject]] {
+                        backdrops = json
+                    }
+                    if let json = dict["posters"] as? [[String: AnyObject]] {
+                        posters = json
                     }
                     
-                    if let json = dict["posters"] as? [[String: AnyObject]],
-                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                        
-                        // save the movieIDs
-                        var imageIDs = [String]()
-                        for image in json {
-                            for (key,value) in image {
-                                if key == "file_path" {
-                                    imageIDs.append(value as! String)
-                                }
-                            }
-                        }
-                        
-                        let completion = { (error: NSError?) in
-                            if error == nil {
-                                let fetchRequest = NSFetchRequest(entityName: "Image")
-                                fetchRequest.predicate = NSPredicate(format: "filePath IN %@", imageIDs)
-                                fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    let completion = { (error: NSError?) in
+                        if error == nil {
+//                            self.backdropData = self.getImages(NSPredicate(format: "movieBackdrop = %@"))
+//                            self.posterData = self.getImages(NSPredicate(format: "moviePoster = %@"))
+                            
+                            self.backdropData = [[String: AnyObject]]()
+                            for image in movie.backdrops!.allObjects as! [Image] {
+                                var data = [String: AnyObject]()
+                                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+                                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
                                 
-                                do {
-                                    self.posterData = [[String: AnyObject]]()
-                                    let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
-                                    
-                                    for image in images {
-                                        var data = [String: AnyObject]()
-                                        data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-                                        data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-                                        
-                                        if let filePath = image.filePath {
-                                            let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(filePath)"
-                                            data[ThumbnailTableViewCell.Keys.URL] = url
-                                        }
-                                        
-                                        self.posterData!.append(data)
-                                    }
-                                    self.tableView.reloadData()
-                                } catch let error as NSError {
-                                    print("\(error.userInfo)")
+                                if let filePath = image.filePath {
+                                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
+                                    data[ThumbnailTableViewCell.Keys.URL] = url
                                 }
+                                
+                                self.backdropData!.append(data)
                             }
+                            
+                            self.posterData = [[String: AnyObject]]()
+                            for image in movie.posters!.allObjects as! [Image] {
+                                var data = [String: AnyObject]()
+                                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+                                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
+                                
+                                if let filePath = image.filePath {
+                                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
+                                    data[ThumbnailTableViewCell.Keys.URL] = url
+                                }
+                                
+                                self.posterData!.append(data)
+                            }
+                            
+                            self.tableView.reloadData()
                         }
-                        
-                        Sync.changes(json, inEntityNamed: "Image", dataStack: appDelegate.dataStack, completion: completion)
                     }
+                    
+                    var data = [[String: AnyObject]]()
+                    data.append(["id": movie.movieID!.integerValue,
+                                 "backdrops": backdrops,
+                                 "posters": posters])
+                    let predicate = NSPredicate(format: "movieID=%@ ", movie.movieID!)
+                    Sync.changes(data, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
                 }
             }
             
@@ -179,6 +144,35 @@ class MovieDetailsViewController: UIViewController {
         }
     }
 
+    func getImages(predicate: NSPredicate) -> [[String: AnyObject]] {
+        let fetchRequest = NSFetchRequest(entityName: "Image")
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+        var returnData = [[String: AnyObject]]()
+        
+        do {
+            let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
+            
+            for image in images {
+                var data = [String: AnyObject]()
+                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
+                
+                if let filePath = image.filePath {
+                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
+                    data[ThumbnailTableViewCell.Keys.URL] = url
+                }
+                
+                returnData.append(data)
+            }
+            self.tableView.reloadData()
+        } catch let error as NSError {
+            print("\(error.userInfo)")
+        }
+        
+        return returnData
+    }
+    
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:

@@ -41,12 +41,6 @@
 		8C340CDD1CBCC4020065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
 		8C340CDE1CBCC4030065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
 		8C340CDF1CBCC4040065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
-		8C37CD7B1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
-		8C37CD7C1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
-		8C37CD7D1CBB4C900093196C /* ActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */; };
-		8C37CD7E1CBB4C900093196C /* ActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */; };
-		8C37CD7F1CBB4C900093196C /* ActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */; };
-		8C37CD801CBB4C900093196C /* ActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */; };
 		8C37CD831CBB65DC0093196C /* MediaInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */; };
 		8C37CD841CBB65DC0093196C /* MediaInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */; };
 		8C37CD851CBB65DC0093196C /* MediaInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */; };
@@ -210,8 +204,6 @@
 		8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
 		8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
 		8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
-		8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionTableViewCell.swift; sourceTree = "<group>"; };
-		8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionTableViewCell.xib; sourceTree = "<group>"; };
 		8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTableViewCell.swift; sourceTree = "<group>"; };
 		8C37CD821CBB65DC0093196C /* MediaInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaInfoTableViewCell.xib; sourceTree = "<group>"; };
 		8C3C82331CB22032008CCF4C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -397,8 +389,6 @@
 		8C1378A41CAE7BA200FB6830 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8C37CD791CBB4C900093196C /* ActionTableViewCell.swift */,
-				8C37CD7A1CBB4C900093196C /* ActionTableViewCell.xib */,
 				8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */,
 				8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */,
 				8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */,
@@ -569,7 +559,6 @@
 				8C1F106C1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C13787E1CAE16B700FB6830 /* LaunchScreen.storyboard in Resources */,
 				8C340CDC1CBCC36B0065626A /* ThumbnailTableViewCell.xib in Resources */,
-				8C37CD7E1CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C13787B1CAE16B700FB6830 /* Assets.xcassets in Resources */,
 				8C6789271CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 				8C37CD861CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
@@ -582,7 +571,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C37CD871CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
-				8C37CD7F1CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C1F106D1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 			);
@@ -593,7 +581,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C37CD881CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */,
-				8C37CD801CBB4C900093196C /* ActionTableViewCell.xib in Resources */,
 				8C1F106E1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */,
 				8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */,
 			);
@@ -752,7 +739,6 @@
 				8C3C82341CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8C67896A1CB5209200E4E14B /* Account+CoreDataProperties.swift in Sources */,
 				8C7809541CB80A7800C1810C /* MovieDetailsViewController.swift in Sources */,
-				8C37CD7B1CBB4C900093196C /* ActionTableViewCell.swift in Sources */,
 				8C6789641CB5209200E4E14B /* Company+CoreDataProperties.swift in Sources */,
 				8C6789731CB5209200E4E14B /* TVEpisode.swift in Sources */,
 				8C6789431CB5209200E4E14B /* Person.swift in Sources */,
@@ -824,7 +810,6 @@
 				8C6789501CB5209200E4E14B /* Genre.swift in Sources */,
 				8C6789801CB5209200E4E14B /* Language.swift in Sources */,
 				8C6789251CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift in Sources */,
-				8C37CD7C1CBB4C900093196C /* ActionTableViewCell.swift in Sources */,
 				8C1378891CAE16B800FB6830 /* CinekoTests.swift in Sources */,
 				8C6789561CB5209200E4E14B /* Image.swift in Sources */,
 				8C1378B51CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
@@ -878,7 +863,6 @@
 				8C1378B91CAE80D000FB6830 /* NetworkManager.swift in Sources */,
 				8C1378AB1CAE7BF300FB6830 /* Cineko.xcdatamodeld in Sources */,
 				8C6789811CB5209200E4E14B /* Language.swift in Sources */,
-				8C37CD7D1CBB4C900093196C /* ActionTableViewCell.swift in Sources */,
 				8C67896F1CB5209200E4E14B /* Account.swift in Sources */,
 				8C67894B1CB5209200E4E14B /* TVShow.swift in Sources */,
 				8C6789721CB5209200E4E14B /* TVEpisode+CoreDataProperties.swift in Sources */,
