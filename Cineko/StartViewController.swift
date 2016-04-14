@@ -15,38 +15,45 @@ class StartViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func loginAction(sender: UIButton) {
-        if let requestToken = TMDBManager.sharedInstance().getAvailableRequestToken() {
-                let urlString = "\(Constants.TMDB.AuthenticateURL)/\(requestToken)"
-                self.presentLoginViewController(urlString)
         
-        } else {
-            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        do {
+            if let requestToken = try TMDBManager.sharedInstance().getAvailableRequestToken() {
+                    let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
+                    self.presentLoginViewController(urlString)
             
-            let success = { (results: AnyObject!) in
-                if let dict = results as? [String: AnyObject] {
-                    if let requestToken = dict[Constants.TMDB.Authentication.TokenNew.Keys.RequestToken] as? String {
-                        
-                        TMDBManager.sharedInstance().saveRequestToken(requestToken)
-                        
-                        performUIUpdatesOnMain {
-                            let urlString = "\(Constants.TMDB.AuthenticateURL)/\(requestToken)"
-                            MBProgressHUD.hideHUDForView(self.view, animated: true)
-                            self.presentLoginViewController(urlString)
+            } else {
+                MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                
+                let success = { (results: AnyObject!) in
+                    if let dict = results as? [String: AnyObject] {
+                        if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
+                            
+                            do {
+                             try TMDBManager.sharedInstance().saveRequestToken(requestToken)
+                            } catch {}
+                            
+                            performUIUpdatesOnMain {
+                                let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
+                                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                                self.presentLoginViewController(urlString)
+                            }
                         }
                     }
                 }
-            }
-            
-            let failure = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                    
+                
+                let failure = { (error: NSError?) in
+                    performUIUpdatesOnMain {
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                        
+                    }
                 }
+                
+                do {
+                    try TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
+                } catch {}
             }
-            
-            TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
-        }
+        } catch {}
     }
     
     @IBAction func skipLoginAction(sender: UIButton) {

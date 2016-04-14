@@ -73,7 +73,7 @@ class FeaturedViewController: UIViewController {
                                     data[ThumbnailTableViewCell.Keys.Caption] = movie.title
                                     
                                     if let posterPath = movie.posterPath {
-                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
+                                        let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(posterPath)"
                                         data[ThumbnailTableViewCell.Keys.URL] = url
                                     }
                                     
@@ -97,7 +97,9 @@ class FeaturedViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().moviesNowPlaying(success, failure: failure)
+        do {
+            try TMDBManager.sharedInstance().moviesNowPlaying(success, failure: failure)
+        } catch {}
     }
     
     func loadFeaturedTVShows() {
@@ -134,7 +136,7 @@ class FeaturedViewController: UIViewController {
                                     data[ThumbnailTableViewCell.Keys.Caption] = tvShow.name
                                     
                                     if let posterPath = tvShow.posterPath {
-                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.PosterSizes[0])\(posterPath)"
+                                        let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(posterPath)"
                                         data[ThumbnailTableViewCell.Keys.URL] = url
                                     }
                                     
@@ -158,7 +160,9 @@ class FeaturedViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().tvShowsAiringToday(success, failure: failure)
+        do {
+            try TMDBManager.sharedInstance().tvShowsAiringToday(success, failure: failure)
+        } catch {}
     }
     
     func loadFeaturedPeople() {
@@ -197,7 +201,7 @@ class FeaturedViewController: UIViewController {
                                     data[ThumbnailTableViewCell.Keys.Caption] = person.name
                                     
                                     if let profilePath = person.profilePath {
-                                        let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.ProfileSizes[1])\(profilePath)"
+                                        let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[1])\(profilePath)"
                                         data[ThumbnailTableViewCell.Keys.URL] = url
                                     }
                                     
@@ -221,7 +225,9 @@ class FeaturedViewController: UIViewController {
             }
         }
         
-        TMDBManager.sharedInstance().peoplePopular(success, failure: failure)
+        do {
+            try TMDBManager.sharedInstance().peoplePopular(success, failure: failure)
+        } catch {}
     }
     
     

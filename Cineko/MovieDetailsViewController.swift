@@ -40,7 +40,7 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "changeNotification:", name: NSManagedObjectContextObjectsDidChangeNotification, object: sharedContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieDetailsViewController.changeNotification), name: NSManagedObjectContextObjectsDidChangeNotification, object: sharedContext)
         
         loadDetails()
         loadPhotos()
@@ -82,7 +82,9 @@ class MovieDetailsViewController: UIViewController {
                 }
             }
             
-            TMDBManager.sharedInstance().moviesID(movie.movieID!, success: success, failure: failure)
+            do {
+                try TMDBManager.sharedInstance().moviesID(movie.movieID!, success: success, failure: failure)
+            } catch {}
         }
     }
     
@@ -131,7 +133,9 @@ class MovieDetailsViewController: UIViewController {
                 }
             }
             
-            TMDBManager.sharedInstance().moviesImages(movie.movieID!, success: success, failure: failure)
+            do {
+                try TMDBManager.sharedInstance().moviesImages(movie.movieID!, success: success, failure: failure)
+            } catch {}
         }
     }
 
@@ -150,7 +154,7 @@ class MovieDetailsViewController: UIViewController {
                 data[ThumbnailTableViewCell.Keys.OID] = image.objectID
                 
                 if let filePath = image.filePath {
-                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
+                    let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(filePath)"
                     data[ThumbnailTableViewCell.Keys.URL] = url
                 }
                 

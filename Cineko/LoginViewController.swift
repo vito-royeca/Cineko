@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func doneAction(sender: UIBarButtonItem) {
-        if let _ = TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] {
+        if TMDBManager.sharedInstance().hasSessionID() {
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
                 presentViewController(controller, animated: true, completion: nil)
             }
@@ -61,8 +61,10 @@ class LoginViewController: UIViewController {
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                if let sessionID = dict[Constants.TMDB.Authentication.SessionNew.Keys.SessionID] as? String {
-                    TMDBManager.sharedInstance().saveSessionID(sessionID)
+                if let sessionID = dict[TMDBConstants.Authentication.SessionNew.Keys.SessionID] as? String {
+                    do {
+                        try TMDBManager.sharedInstance().saveSessionID(sessionID)
+                    } catch {}
                     
                     performUIUpdatesOnMain {
                         MBProgressHUD.hideHUDForView(self.webView, animated: true)
@@ -82,8 +84,9 @@ class LoginViewController: UIViewController {
                 
             }
         }
-        
-        TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
+        do {
+            try TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
+        } catch {}
     }
 }
 
@@ -104,12 +107,14 @@ extension LoginViewController: UIWebViewDelegate {
         if let request = webView.request {
             if let url = request.URL {
                 if let lastPath = url.lastPathComponent {
-                    if lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
+                    do {
+                    
+                    if try lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
                         MBProgressHUD.hideHUDForView(self.view, animated: true)
                         hasHUD = false
                         
                     } else if lastPath == "deny" {
-                        TMDBManager.sharedInstance().removeRequestToken()
+                        try TMDBManager.sharedInstance().removeRequestToken()
                         doneButton.enabled = true
                         cancelButton.enabled = false
                         
@@ -119,6 +124,7 @@ extension LoginViewController: UIWebViewDelegate {
                     }  else if lastPath == "signup" {
                         
                     }
+                    } catch {}
                 }
             }
         }

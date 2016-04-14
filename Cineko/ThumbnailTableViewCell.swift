@@ -14,6 +14,12 @@ protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
     func didSelectItem(tag: Int, dict: [String: AnyObject])
 }
 
+protocol ThumbnailTableViewCellDisplayable : NSObjectProtocol {
+    func id() -> AnyObject
+    func imageURLString() -> String
+    func caption() -> String
+}
+
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
@@ -48,22 +54,13 @@ class ThumbnailTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-//        let width = collectionView.frame.size.width / CGFloat(visibleThumbnails)
-//        let height = collectionView.frame.size.height
         let space = CGFloat(5.0)
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
-//        flowLayout.itemSize = CGSizeMake(width, height)
         
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
         collectionView.delegate = self
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 }
 
