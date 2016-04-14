@@ -59,27 +59,27 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedTVShows() {
-//        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
-//            if let error = error {
-//                performUIUpdatesOnMain {
-//                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-//                }
-//                
-//            } else {
-//                self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-//                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs!)
-//                self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-//                self.airingTodayFetchRequest!.sortDescriptors = [
-//                    NSSortDescriptor(key: "name", ascending: true)]
-//            performUIUpdatesOnMain {
-//                self.tableView.reloadData()
-//            }
-//            }
-//        }
-//        
-//        do {
-//            try TMDBManager.sharedInstance().tvShowsNowAiring(completion)
-//        } catch {}
+        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
+            if let error = error {
+                performUIUpdatesOnMain {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+                
+            } else {
+                self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
+                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs!)
+                self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.airingTodayFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "name", ascending: true)]
+            performUIUpdatesOnMain {
+                self.tableView.reloadData()
+            }
+            }
+        }
+        
+        do {
+            try TMDBManager.sharedInstance().tvShowsAiringToday(completion)
+        } catch {}
     }
     
     func loadFeaturedPeople() {
