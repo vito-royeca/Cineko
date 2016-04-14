@@ -43,6 +43,10 @@ class TVShow: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("TVShow", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         backdropPath = dictionary[Keys.BackdropPath] as? String
         firstAirDate = dictionary[Keys.FirstAirDate] as? String
         homepage = dictionary[Keys.Homepage] as? String

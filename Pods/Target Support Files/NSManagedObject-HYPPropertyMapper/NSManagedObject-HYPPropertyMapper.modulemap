@@ -1,6 +1,0 @@
-framework module NSManagedObject_HYPPropertyMapper {
-  umbrella header "NSManagedObject-HYPPropertyMapper-umbrella.h"
-
-  export *
-  module * { export * }
-}

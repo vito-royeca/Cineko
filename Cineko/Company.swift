@@ -29,6 +29,10 @@ class Company: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Company", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         companyDescription = dictionary[Keys.CompanyDescription] as? String
         headquarters = dictionary[Keys.Headquarters] as? String
         homepage = dictionary[Keys.Homepage] as? String

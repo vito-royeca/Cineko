@@ -85,31 +85,15 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Cineko/BLKFlexibleHeightBar.framework"
-  install_framework "Pods-Cineko/DATAFilter.framework"
-  install_framework "Pods-Cineko/DATAObjectIDs.framework"
-  install_framework "Pods-Cineko/DATAStack.framework"
   install_framework "Pods-Cineko/JJJUtils.framework"
   install_framework "Pods-Cineko/KeychainAccess.framework"
   install_framework "Pods-Cineko/MBProgressHUD.framework"
-  install_framework "Pods-Cineko/NSDictionary_ANDYSafeValue.framework"
-  install_framework "Pods-Cineko/NSEntityDescription_SYNCPrimaryKey.framework"
-  install_framework "Pods-Cineko/NSManagedObject_HYPPropertyMapper.framework"
-  install_framework "Pods-Cineko/NSString_HYPNetworking.framework"
   install_framework "Pods-Cineko/SDWebImage.framework"
-  install_framework "Pods-Cineko/Sync.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Cineko/BLKFlexibleHeightBar.framework"
-  install_framework "Pods-Cineko/DATAFilter.framework"
-  install_framework "Pods-Cineko/DATAObjectIDs.framework"
-  install_framework "Pods-Cineko/DATAStack.framework"
   install_framework "Pods-Cineko/JJJUtils.framework"
   install_framework "Pods-Cineko/KeychainAccess.framework"
   install_framework "Pods-Cineko/MBProgressHUD.framework"
-  install_framework "Pods-Cineko/NSDictionary_ANDYSafeValue.framework"
-  install_framework "Pods-Cineko/NSEntityDescription_SYNCPrimaryKey.framework"
-  install_framework "Pods-Cineko/NSManagedObject_HYPPropertyMapper.framework"
-  install_framework "Pods-Cineko/NSString_HYPNetworking.framework"
   install_framework "Pods-Cineko/SDWebImage.framework"
-  install_framework "Pods-Cineko/Sync.framework"
 fi

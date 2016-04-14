@@ -25,6 +25,10 @@ class Language: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Language", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         name = dictionary[Keys.Name] as? String
         iso6391 = dictionary[Keys.ISO6391] as? String
     }

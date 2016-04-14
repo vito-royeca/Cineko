@@ -30,6 +30,10 @@ class Image: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Image", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         aspectRatio = dictionary[Keys.AspectRatio] as? NSNumber
         filePath = dictionary[Keys.FilePath] as? String
         height = dictionary[Keys.Height] as? NSNumber

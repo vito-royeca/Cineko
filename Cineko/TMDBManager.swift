@@ -8,8 +8,7 @@
 
 import Foundation
 import KeychainAccess
-
-
+import CoreData
 
 enum TMDBError: ErrorType {
     case NoAPIKey
@@ -119,6 +118,9 @@ class TMDBManager: NSObject {
 
     // MARK: Variables
     private var apiKey:String?
+    private var sharedContext: NSManagedObjectContext {
+        return CoreDataManager.sharedInstance().managedObjectContext
+    }
     
     // MARK: Setup
     func setup(apiKey: String) {
@@ -228,7 +230,7 @@ class TMDBManager: NSObject {
     }
     
     // MARK: TMDB Movies
-    func moviesNowPlaying(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func moviesNowPlaying(completion: (arrayIDs: [AnyObject]?, error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -237,10 +239,30 @@ class TMDBManager: NSObject {
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.NowPlaying.Path)"
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
+        let success = { (results: AnyObject!) in
+            var movieIDs = [NSNumber]()
+            
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for movie in json {
+                        if let m = self.findOrCreateMovie(movie) {
+                            movieIDs.append(m.movieID!)
+                        }
+                    }
+                }
+            }
+            
+            completion(arrayIDs: movieIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: nil, error: error)
+        }
+        
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func moviesID(movieID: NSNumber, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func movieDetails(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -249,11 +271,25 @@ class TMDBManager: NSObject {
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.ID.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
         let parameters = [TMDBConstants.APIKey: apiKey!]
+    
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let m = self.findOrCreateMovie(dict) {
+                    m.update(dict)
+                    CoreDataManager.sharedInstance().saveContext()
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func moviesImages(movieID: NSNumber, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func moviesImages(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -262,6 +298,36 @@ class TMDBManager: NSObject {
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Images.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
         let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let movie = self.findOrCreateMovie([Movie.Keys.MovieID: movieID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let backdrops = dict["backdrops"] as? [[String: AnyObject]] {
+                    for backdrop in backdrops {
+                        if let image = self.findOrCreateImage(backdrop) {
+                            image.movieBackdrop = movie
+                        }
+                    }
+                }
+                
+                if let posters = dict["posters"] as? [[String: AnyObject]] {
+                    for poster in posters {
+                        if let image = self.findOrCreateImage(poster) {
+                            image.moviePoster = movie
+                        }
+                    }
+                }
+                
+                CoreDataManager.sharedInstance().saveContext()
+            }
+            
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
@@ -304,7 +370,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    // MARK: - Shared Instance
+    // MARK: Core Data
     class func sharedInstance() -> TMDBManager {
         
         struct Singleton {
@@ -312,5 +378,58 @@ class TMDBManager: NSObject {
         }
         
         return Singleton.sharedInstance
+    }
+    
+    func findOrCreateMovie(dict: Dictionary<String, AnyObject>) -> Movie? {
+        var movie:Movie?
+        
+        let fetchRequest = NSFetchRequest(entityName: "Movie")
+        if let movieID = dict[Movie.Keys.MovieID] as? NSNumber {
+            fetchRequest.predicate = NSPredicate(format: "movieID == %@", movieID)
+            do {
+                if let m = try sharedContext.executeFetchRequest(fetchRequest).first as? Movie {
+                    movie = m
+                    
+                } else {
+                    movie = Movie(dictionary: dict, context: sharedContext)
+                    
+                    //                    if let tags = dict["tags"] as? String {
+                    //                        if let setTags = findOrCreateTags(tags) {
+                    //                            photo!.tags = setTags
+                    //                        }
+                    //                    }
+                    
+                    CoreDataManager.sharedInstance().saveContext()
+                }
+                
+            } catch let error as NSError {
+                print("Error in fetch \(error), \(error.userInfo)")
+            }
+        }
+        
+        return movie
+    }
+    
+    func findOrCreateImage(dict: Dictionary<String, AnyObject>) -> Image? {
+        var image:Image?
+        
+        let fetchRequest = NSFetchRequest(entityName: "Image")
+        if let filePath = dict[Image.Keys.FilePath] as? String {
+            fetchRequest.predicate = NSPredicate(format: "filePath == %@", filePath)
+            do {
+                if let m = try sharedContext.executeFetchRequest(fetchRequest).first as? Image {
+                    image = m
+                    
+                } else {
+                    image = Image(dictionary: dict, context: sharedContext)
+                    CoreDataManager.sharedInstance().saveContext()
+                }
+                
+            } catch let error as NSError {
+                print("Error in fetch \(error), \(error.userInfo)")
+            }
+        }
+        
+        return image
     }
 }

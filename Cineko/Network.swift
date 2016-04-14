@@ -25,6 +25,10 @@ class Network: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Network", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         networkID = dictionary[Keys.NetworkID] as? NSNumber
         name = dictionary[Keys.Name] as? String
     }

@@ -36,50 +36,30 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieDetailsViewController.changeNotification(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: CoreDataManager.sharedInstance().managedObjectContext)
-        
         loadDetails()
         loadPhotos()
     }
 
     // MARK: Custom Methods
-    func changeNotification(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let deletedObjects   = userInfo[NSDeletedObjectsKey]
-            let insertedObjects  = userInfo[NSInsertedObjectsKey]
-            let updatedObjects  = userInfo[NSUpdatedObjectsKey]
-            
-            print("inserted: \(insertedObjects)")
-            print("deleted: \(deletedObjects)")
-            print("updated: \(updatedObjects)")
-        }
-    }
-
-    
     func loadDetails() {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
-            let success = { (results: AnyObject!) in
-                if let dict = results as? [String: AnyObject] {
-                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
                     
-                    let completion = { (error: NSError?) in
+                } else {
+                    performUIUpdatesOnMain {
                         self.tableView.reloadData()
                     }
-                    let predicate = NSPredicate(format: "movieID=%@", movie.movieID!)
-                    
-                    Sync.changes([dict], inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
-                }
-            }
-            
-            let failure = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
                 }
             }
             
             do {
-                try TMDBManager.sharedInstance().moviesID(movie.movieID!, success: success, failure: failure)
+                try TMDBManager.sharedInstance().movieDetails(movie.movieID!, completion: completion)
             } catch {}
         }
     }
@@ -88,92 +68,35 @@ class MovieDetailsViewController: UIViewController {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
             
-            let success = { (results: AnyObject!) in
-                if let dict = results as? [String: AnyObject] {
-                    var backdrops = [[String: AnyObject]]()
-                    var posters = [[String: AnyObject]]()
-                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                    
-                    if let json = dict["backdrops"] as? [[String: AnyObject]] {
-                        backdrops = json
-                    }
-                    if let json = dict["posters"] as? [[String: AnyObject]] {
-                        posters = json
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
-                    let completion = { (error: NSError?) in
-                        if error == nil {
-                            self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
-                            self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop = %@", movie)
-                            self.backdropFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                            self.backdropFetchRequest!.sortDescriptors = [
-                                NSSortDescriptor(key: "voteAverage", ascending: false)]
-                            
-                            self.posterFetchRequest = NSFetchRequest(entityName: "Image")
-                            self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster = %@", movie)
-                            self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                            self.posterFetchRequest!.sortDescriptors = [
-                                NSSortDescriptor(key: "voteAverage", ascending: false)]
-                            
-                            self.tableView.reloadData()
-                        }
+                } else {
+                    self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop = %@", movie)
+                    self.backdropFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                    
+                    self.posterFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster = %@", movie)
+                    self.posterFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                    
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
                     }
-                    
-                    var syncData = [[String: AnyObject]]()
-                    syncData.append(["id": movie.movieID!.integerValue,
-                                 "backdrops": backdrops,
-                                 "posters": posters])
-                    let predicate = NSPredicate(format: "movieID=%@ ", movie.movieID!)
-                    Sync.changes(syncData, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
-                    
-//                    syncData = [[String: AnyObject]]()
-//                    syncData.append(["id": movie.movieID!.integerValue,
-//                        "posters": posters])
-//                    Sync.changes(syncData, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
-                }
-            }
-            
-            let failure = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
                 }
             }
             
             do {
-                try TMDBManager.sharedInstance().moviesImages(movie.movieID!, success: success, failure: failure)
+                try TMDBManager.sharedInstance().moviesImages(movie.movieID!, completion: completion)
             } catch {}
         }
     }
 
-//    func getImages(predicate: NSPredicate) -> [[String: AnyObject]] {
-//        let fetchRequest = NSFetchRequest(entityName: "Image")
-//        fetchRequest.predicate = predicate
-//        fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
-//        var returnData = [[String: AnyObject]]()
-//        
-//        do {
-//            let images = try CoreDataManager.sharedInstance().managedObjectContext.executeFetchRequest(fetchRequest) as! [Image]
-//            
-//            for image in images {
-//                var data = [String: AnyObject]()
-//                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-//                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-//                
-//                if let filePath = image.filePath {
-//                    let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(filePath)"
-//                    data[ThumbnailTableViewCell.Keys.URL] = url
-//                }
-//                
-//                returnData.append(data)
-//            }
-//            self.tableView.reloadData()
-//        } catch let error as NSError {
-//            print("\(error.userInfo)")
-//        }
-//        
-//        return returnData
-//    }
-    
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
@@ -192,7 +115,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = 0
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                c.seeAllButton.hidden = true
                 c.fetchRequest = backdropFetchRequest
                 c.displayType = .Backdrop
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
@@ -230,7 +153,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = 4
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                c.seeAllButton.hidden = true
                 c.fetchRequest = posterFetchRequest
                 c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)

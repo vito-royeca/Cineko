@@ -33,6 +33,10 @@ class TVEpisode: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("TVEpisode", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         airDate = dictionary[Keys.Name] as? String
         episodeID = dictionary[Keys.Name] as? NSNumber
         episodeNumber = dictionary[Keys.Name] as? NSNumber

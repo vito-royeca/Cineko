@@ -34,6 +34,10 @@ class Person: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Person", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         adult = dictionary[Keys.Adult] as? NSNumber
         alsoKnownAs = dictionary[Keys.AlsoKnownAs] as? NSData
         biography = dictionary[Keys.Biography] as? String

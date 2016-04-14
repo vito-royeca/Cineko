@@ -43,6 +43,10 @@ class Movie: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Movie", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         adult = dictionary[Keys.Adult] as? NSNumber
         backdropPath = dictionary[Keys.BackdropPath] as? String
         budget = dictionary[Keys.Budget] as? NSNumber

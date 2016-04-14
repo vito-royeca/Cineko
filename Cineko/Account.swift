@@ -24,7 +24,11 @@ class Account: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Account", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
-//        ownerId = dictionary[Keys.OwnerId] as? String
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
+        
     }
 
 }

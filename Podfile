@@ -12,7 +12,6 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
-pod 'Sync'
 #pod 'TLYShyNavBar'
 end
 
@@ -24,7 +23,6 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
-pod 'Sync'
 #pod 'TLYShyNavBar'
 end
 
@@ -36,6 +34,5 @@ pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
 pod 'SDWebImage'
-pod 'Sync'
 #pod 'TLYShyNavBar'
 end

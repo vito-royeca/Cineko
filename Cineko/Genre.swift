@@ -25,6 +25,10 @@ class Genre: NSManagedObject {
         let entity =  NSEntityDescription.entityForName("Genre", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
+        update(dictionary)
+    }
+    
+    func update(dictionary: [String : AnyObject]) {
         genreID = dictionary[Keys.GenreID] as? NSNumber
         name = dictionary[Keys.Name] as? String
     }
