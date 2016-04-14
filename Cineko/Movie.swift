@@ -25,3 +25,17 @@ class Movie: NSManagedObject {
         return nil
     }
 }
+
+extension Movie : ThumbnailTableViewCellDisplayable {
+    func id() -> AnyObject? {
+        return movieID
+    }
+    
+    func path() -> String? {
+        return posterPath
+    }
+    
+    func caption() -> String? {
+        return title
+    }
+}

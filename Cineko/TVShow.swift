@@ -15,3 +15,17 @@ class TVShow: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
 
 }
+
+extension TVShow : ThumbnailTableViewCellDisplayable {
+    func id() -> AnyObject? {
+        return tvShowID
+    }
+    
+    func path() -> String? {
+        return posterPath
+    }
+    
+    func caption() -> String? {
+        return name
+    }
+}

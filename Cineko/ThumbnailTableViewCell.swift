@@ -7,41 +7,54 @@
 //
 
 import UIKit
+import CoreData
 import SDWebImage
 
-protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
-    func seeAllAction(tag: Int)
-    func didSelectItem(tag: Int, dict: [String: AnyObject])
+public enum DisplayType : Int {
+    case Poster
+    case Backdrop
+    case Profile
 }
 
 protocol ThumbnailTableViewCellDisplayable : NSObjectProtocol {
-    func id() -> AnyObject
-    func imageURLString() -> String
-    func caption() -> String
+    func id() -> AnyObject?
+    func path() -> String?
+    func caption() -> String?
+}
+
+
+protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
+    func seeAllAction(tag: Int)
+    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable)
 }
 
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
     static let MaxItems = 12
-    struct Keys {
-        static let ID      = "id"
-        static let OID     = "oid"
-        static let URL     = "url"
-        static let Caption  = "caption"
-    }
+    
+    // MARK: Variables
+    weak var delegate: ThumbnailTableViewCellDelegate?
+    var displayType:DisplayType?
+//    var data:[[String: AnyObject]]?
+    var showCaption = false
+    private var imageSizeAdjusted = false
+    var fetchRequest:NSFetchRequest?
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
+                                                                  managedObjectContext: CoreDataManager.sharedInstance().managedObjectContext,
+                                                                  sectionNameKeyPath: nil,
+                                                                  cacheName: nil)
+        
+        return fetchedResultsController
+    }()
     
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var seeAllButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-    
-    // MARK: Variables
-    weak var delegate: ThumbnailTableViewCellDelegate?
-    var data:[[String: AnyObject]]?
-    var showCaption = false
-    private var imageSizeAdjusted = false
 
     // MARK: Actions
     @IBAction func seeAllAction(sender: UIButton) {
@@ -62,13 +75,79 @@ class ThumbnailTableViewCell: UITableViewCell {
         collectionView.dataSource = self
         collectionView.delegate = self
     }
+    
+    // MARK: Custom methods
+    func loadData() {
+        if (fetchRequest) != nil {
+            do {
+                try fetchedResultsController.performFetch()
+            } catch {}
+            fetchedResultsController.delegate = self
+            
+            
+        }
+        
+        collectionView.reloadData()
+    }
+    
+    func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
+        if let path = displayable.path(),
+            displayType = displayType {
+            var urlString:String?
+            
+            switch displayType {
+            case .Poster:
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
+            case .Profile:
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[1])\(path)"
+            case .Backdrop:
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(path)"
+            }
+            
+            let url = NSURL(string: urlString!)
+            let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                if self.showCaption {
+                    if let caption = displayable.caption() {
+                        cell.captionLabel.text = caption
+                        let average = image.averageColor()
+//                          cell.captionLabel.shadowColor = image.patternColor(average)
+//                          cell.captionLabel.textColor = average
+                        cell.captionLabel.textColor = image.patternColor(average)
+                    }
+                } else {
+                    cell.captionLabel.text = nil
+                }
+                
+                if !self.imageSizeAdjusted &&
+                    image != nil  {
+                    let imageWidth = image.size.width
+                    let imageHeight = image.size.height
+                    let height = self.collectionView.frame.size.height
+                    let newWidth = (imageWidth * height) / imageHeight
+                    self.flowLayout.itemSize = CGSizeMake(newWidth, height)
+                    self.imageSizeAdjusted = true
+                }
+            }
+            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
+            
+        } else {
+            cell.thumbnailImage.image = UIImage(named: "noImage")
+            if let caption = displayable.caption() {
+                cell.captionLabel.text = caption
+                cell.captionLabel.textColor = UIColor.redColor()
+            }
+        }
+    }
 }
 
 // MARK: UICollectionViewDataSource
 extension ThumbnailTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let data = data {
-            return data.count
+        if (fetchRequest) != nil,
+            let sections = fetchedResultsController.sections {
+            let sectionInfo = sections[section]
+        
+            return sectionInfo.numberOfObjects
         } else {
             return 0
         }
@@ -77,41 +156,8 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
         
-        if let data = data {
-            if let urlString = data[indexPath.row][Keys.URL] as? String {
-                let url = NSURL(string: urlString)
-                let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                    if self.showCaption {
-                        if let caption = data[indexPath.row][Keys.Caption] as? String {
-                            cell.captionLabel.text = caption
-                            let average = image.averageColor()
-//                          cell.captionLabel.shadowColor = image.patternColor(average)
-//                          cell.captionLabel.textColor = average
-                            cell.captionLabel.textColor = image.patternColor(average)
-                        }
-                    } else {
-                        cell.captionLabel.text = nil
-                    }
-                    
-                    if !self.imageSizeAdjusted &&
-                        image != nil  {
-                        let imageWidth = image.size.width
-                        let imageHeight = image.size.height
-                        let height = collectionView.frame.size.height
-                        let newWidth = (imageWidth * height) / imageHeight
-                        self.flowLayout.itemSize = CGSizeMake(newWidth, height)
-                        self.imageSizeAdjusted = true
-                    }
-                }
-                cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
-                
-            } else {
-                cell.thumbnailImage.image = UIImage(named: "noImage")
-                if let caption = data[indexPath.row][Keys.Caption] as? String {
-                    cell.captionLabel.text = caption
-                    cell.captionLabel.textColor = UIColor.redColor()
-                }
-            }
+        if let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+            configureCell(cell, displayable: displayable)
         }
         
         return cell
@@ -122,10 +168,59 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
 extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
-            let data = data {
-            delegate.didSelectItem(self.tag, dict: data[indexPath.row])
+            let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+            delegate.didSelectItem(self.tag, displayable: displayable)
         }
     }
 }
 
+// MARK: NSFetchedResultsControllerDelegate
+extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
+    func controller(controller: NSFetchedResultsController,
+                    didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+                                     atIndex sectionIndex: Int,
+                                             forChangeType type: NSFetchedResultsChangeType) {
+        
+        switch type {
+        case .Insert:
+            collectionView.insertSections(NSIndexSet(index: sectionIndex))
+            
+        case .Delete:
+            collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+            
+        default:
+            return
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController,
+                    didChangeObject anObject: AnyObject,
+                                    atIndexPath indexPath: NSIndexPath?,
+                                                forChangeType type: NSFetchedResultsChangeType,
+                                                              newIndexPath: NSIndexPath?) {
+        
+        switch type {
+        case .Insert:
+            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            
+        case .Delete:
+            collectionView.deleteItemsAtIndexPaths([indexPath!])
+            
+        case .Update:
+            if let indexPath = indexPath {
+                if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
+                    
+                    if let c = cell as? ThumbnailCollectionViewCell,
+                        let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+                        configureCell(c, displayable: displayable)
+                    }
+                }
+            }
+            
+        case .Move:
+            collectionView.deleteItemsAtIndexPaths([indexPath!])
+            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+        }
+    }
+}
 

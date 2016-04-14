@@ -20,12 +20,8 @@ class MovieDetailsViewController: UIViewController {
     
     // MARK: Variables
     var movieID:NSManagedObjectID?
-    var backdropData:[[String: AnyObject]]?
-    var posterData:[[String: AnyObject]]?
-    var sharedContext: NSManagedObjectContext {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        return appDelegate.dataStack.mainContext
-    }
+    var backdropFetchRequest:NSFetchRequest?
+    var posterFetchRequest:NSFetchRequest?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -40,7 +36,7 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieDetailsViewController.changeNotification), name: NSManagedObjectContextObjectsDidChangeNotification, object: sharedContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MovieDetailsViewController.changeNotification(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: CoreDataManager.sharedInstance().managedObjectContext)
         
         loadDetails()
         loadPhotos()
@@ -62,7 +58,7 @@ class MovieDetailsViewController: UIViewController {
     
     func loadDetails() {
         if let movieID = movieID {
-            let movie = sharedContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
                     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -90,7 +86,7 @@ class MovieDetailsViewController: UIViewController {
     
     func loadPhotos() {
         if let movieID = movieID {
-            let movie = sharedContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
             
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
@@ -107,8 +103,18 @@ class MovieDetailsViewController: UIViewController {
                     
                     let completion = { (error: NSError?) in
                         if error == nil {
-                            self.backdropData = self.getImages(NSPredicate(format: "movieBackdrop = %@", movie))
-                            self.posterData = self.getImages(NSPredicate(format: "moviePoster = %@", movie))
+                            self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                            self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop = %@", movie)
+                            self.backdropFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                            self.backdropFetchRequest!.sortDescriptors = [
+                                NSSortDescriptor(key: "voteAverage", ascending: false)]
+                            
+                            self.posterFetchRequest = NSFetchRequest(entityName: "Image")
+                            self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster = %@", movie)
+                            self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                            self.posterFetchRequest!.sortDescriptors = [
+                                NSSortDescriptor(key: "voteAverage", ascending: false)]
+                            
                             self.tableView.reloadData()
                         }
                     }
@@ -139,41 +145,41 @@ class MovieDetailsViewController: UIViewController {
         }
     }
 
-    func getImages(predicate: NSPredicate) -> [[String: AnyObject]] {
-        let fetchRequest = NSFetchRequest(entityName: "Image")
-        fetchRequest.predicate = predicate
-        fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
-        var returnData = [[String: AnyObject]]()
-        
-        do {
-            let images = try self.sharedContext.executeFetchRequest(fetchRequest) as! [Image]
-            
-            for image in images {
-                var data = [String: AnyObject]()
-                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-                
-                if let filePath = image.filePath {
-                    let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(filePath)"
-                    data[ThumbnailTableViewCell.Keys.URL] = url
-                }
-                
-                returnData.append(data)
-            }
-            self.tableView.reloadData()
-        } catch let error as NSError {
-            print("\(error.userInfo)")
-        }
-        
-        return returnData
-    }
+//    func getImages(predicate: NSPredicate) -> [[String: AnyObject]] {
+//        let fetchRequest = NSFetchRequest(entityName: "Image")
+//        fetchRequest.predicate = predicate
+//        fetchRequest.fetchLimit = ThumbnailTableViewCell.MaxItems
+//        var returnData = [[String: AnyObject]]()
+//        
+//        do {
+//            let images = try CoreDataManager.sharedInstance().managedObjectContext.executeFetchRequest(fetchRequest) as! [Image]
+//            
+//            for image in images {
+//                var data = [String: AnyObject]()
+//                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
+//                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
+//                
+//                if let filePath = image.filePath {
+//                    let url = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(filePath)"
+//                    data[ThumbnailTableViewCell.Keys.URL] = url
+//                }
+//                
+//                returnData.append(data)
+//            }
+//            self.tableView.reloadData()
+//        } catch let error as NSError {
+//            print("\(error.userInfo)")
+//        }
+//        
+//        return returnData
+//    }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
-                    let movie = sharedContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
                     
                     if let title = movie.title {
                         c.dynamicLabel.text = title
@@ -187,14 +193,15 @@ class MovieDetailsViewController: UIViewController {
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-                c.data = backdropData
+                c.fetchRequest = backdropFetchRequest
+                c.displayType = .Backdrop
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-                c.collectionView.reloadData()
+                c.loadData()
             }
         case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
-                    let movie = sharedContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
                     
                     if let releaseDate = movie.releaseDate {
                         c.releaseDateLabel.text = releaseDate
@@ -209,7 +216,7 @@ class MovieDetailsViewController: UIViewController {
         case 3:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
-                    let movie = sharedContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
                     
                     if let overview = movie.overview {
                         c.dynamicLabel.text = overview
@@ -224,9 +231,10 @@ class MovieDetailsViewController: UIViewController {
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-                c.data = posterData
+                c.fetchRequest = posterFetchRequest
+                c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-                c.collectionView.reloadData()
+                c.loadData()
             }
         default:
             return

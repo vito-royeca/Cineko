@@ -15,3 +15,17 @@ class Person: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
 
 }
+
+extension Person : ThumbnailTableViewCellDisplayable {
+    func id() -> AnyObject? {
+        return personID
+    }
+    
+    func path() -> String? {
+        return profilePath
+    }
+    
+    func caption() -> String? {
+        return name
+    }
+}

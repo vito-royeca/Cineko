@@ -15,3 +15,17 @@ class Image: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
 
 }
+
+extension Image : ThumbnailTableViewCellDisplayable {
+    func id() -> AnyObject? {
+        return filePath
+    }
+    
+    func path() -> String? {
+        return filePath
+    }
+    
+    func caption() -> String? {
+        return nil
+    }
+}
