@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MBProgressHUD
 import SDWebImage
 
 public enum DisplayType : Int {
@@ -36,7 +37,6 @@ class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Variables
     weak var delegate: ThumbnailTableViewCellDelegate?
     var displayType:DisplayType?
-//    var data:[[String: AnyObject]]?
     var showCaption = false
     private var imageSizeAdjusted = false
     var fetchRequest:NSFetchRequest?
@@ -83,8 +83,6 @@ class ThumbnailTableViewCell: UITableViewCell {
                 try fetchedResultsController.performFetch()
             } catch {}
             fetchedResultsController.delegate = self
-            
-            
         }
         
         collectionView.reloadData()
@@ -127,6 +125,14 @@ class ThumbnailTableViewCell: UITableViewCell {
                     self.flowLayout.itemSize = CGSizeMake(newWidth, height)
                     self.imageSizeAdjusted = true
                 }
+                
+                MBProgressHUD.hideHUDForView(cell, animated: true)
+                cell.hasHUD = false
+            }
+            
+            if !cell.hasHUD {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                cell.hasHUD = true
             }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             

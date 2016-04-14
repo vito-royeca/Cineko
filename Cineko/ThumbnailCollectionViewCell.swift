@@ -13,6 +13,9 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var captionLabel: UILabel!
     
+    // MARK: Variables
+    var hasHUD = false
+    
     // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
