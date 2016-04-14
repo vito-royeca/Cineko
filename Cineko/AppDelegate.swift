@@ -20,28 +20,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Init Crashlytics
+        // Crashlytics
         Fabric.with([Crashlytics.self])
         
+        // Core Data
+        CoreDataManager.sharedInstance().setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
+        
         // TMDB
-        TMDBManager.sharedInstance().checkFirstRun()
+        TMDBManager.sharedInstance().setup(Constants.TMDBAPIKeyValue)
+        
+        // RT
+        RTManager.sharedInstance().setup(Constants.RTAPIKeyValue)
         
         // Docs Directory
         print("docs = \(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!)")
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var viewControllerID:String?
-        
         // if we have TMDB session id show the main interface, else show the start page
-        if let sessionID = TMDBManager.sharedInstance().keychain[Constants.TMDB.iPad.Keys.SessionID] {
-            viewControllerID = "MainTabBarController"
-            print("TMDB sessionID = \(sessionID)")
-        } else {
-            viewControllerID = "StartViewController"
-        }
+        let viewControllerID = TMDBManager.sharedInstance().hasSessionID() ? "MainTabBarController" : "StartViewController"
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window!.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerID!)
+        window!.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerID)
         window!.makeKeyAndVisible()
         
         return true

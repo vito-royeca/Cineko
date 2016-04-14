@@ -8,6 +8,33 @@
 
 import UIKit
 
-class RTManager: NSObject {
+enum RTError: ErrorType {
+    case NoAPIKey
+    case NoSessionID
+}
 
+struct TRConstants {
+    static let APIKey     = "api_key"
+    static let APIURL     = "hapi.rottentomatoes.com/api/public/v1.0.json"
+    
+}
+
+class RTManager: NSObject {
+    // MARK: Variables
+    private var apiKey:String?
+    
+    // MARK: Setup
+    func setup(apiKey: String) {
+        self.apiKey = apiKey
+    }
+    
+    // MARK: - Shared Instance
+    class func sharedInstance() -> RTManager {
+        
+        struct Singleton {
+            static var sharedInstance = RTManager()
+        }
+        
+        return Singleton.sharedInstance
+    }
 }

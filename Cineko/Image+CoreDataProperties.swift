@@ -23,4 +23,6 @@ extension Image {
     @NSManaged var width: NSNumber?
     @NSManaged var movieBackdrop: Movie?
     @NSManaged var moviePoster: Movie?
+    @NSManaged var tvShowBackdrop: TVShow?
+    @NSManaged var tvShowPoster: TVShow?
 }

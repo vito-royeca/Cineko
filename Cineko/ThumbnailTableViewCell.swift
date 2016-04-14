@@ -96,7 +96,8 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
                         cell.captionLabel.text = nil
                     }
                     
-                    if !self.imageSizeAdjusted {
+                    if !self.imageSizeAdjusted &&
+                        image != nil  {
                         let imageWidth = image.size.width
                         let imageHeight = image.size.height
                         let height = collectionView.frame.size.height

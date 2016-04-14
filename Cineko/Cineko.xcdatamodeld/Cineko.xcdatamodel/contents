@@ -57,6 +57,8 @@
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="movieBackdrop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="backdrops" inverseEntity="Movie" syncable="YES"/>
         <relationship name="moviePoster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="posters" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="tvShowBackrop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="backdrops" inverseEntity="TVShow" syncable="YES"/>
+        <relationship name="tvShowPoster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="posters" inverseEntity="TVShow" syncable="YES"/>
     </entity>
     <entity name="Language" representedClassName=".Language" syncable="YES">
         <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
@@ -193,8 +195,10 @@
         <attribute name="tvShowType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="voteAverage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="backdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="tvShowBackrop" inverseEntity="Image" syncable="YES"/>
         <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="tvShows" inverseEntity="Genre" syncable="YES"/>
         <relationship name="networks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Network" inverseName="tvShows" inverseEntity="Network" syncable="YES"/>
+        <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="tvShowPoster" inverseEntity="Image" syncable="YES"/>
         <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Company" inverseName="tvShows" inverseEntity="Company" syncable="YES"/>
         <relationship name="tvSeasons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVSeason" inverseName="tvShow" inverseEntity="TVSeason" syncable="YES"/>
         <userInfo>
@@ -203,18 +207,18 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="45"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="43"/>
         <element name="Company" positionX="0" positionY="45" width="128" height="165"/>
         <element name="Country" positionX="9" positionY="108" width="128" height="90"/>
-        <element name="Credit" positionX="9" positionY="162" width="128" height="45"/>
+        <element name="Credit" positionX="9" positionY="162" width="128" height="43"/>
         <element name="Genre" positionX="-9" positionY="54" width="128" height="105"/>
-        <element name="Image" positionX="36" positionY="81" width="128" height="180"/>
+        <element name="Image" positionX="36" positionY="81" width="128" height="208"/>
         <element name="Language" positionX="18" positionY="144" width="128" height="90"/>
-        <element name="Movie" positionX="-54" positionY="-9" width="128" height="450"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="448"/>
         <element name="Network" positionX="-9" positionY="144" width="128" height="30"/>
         <element name="Person" positionX="-18" positionY="27" width="128" height="210"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="210"/>
         <element name="TVSeason" positionX="-9" positionY="54" width="128" height="180"/>
-        <element name="TVShow" positionX="-36" positionY="9" width="128" height="30"/>
+        <element name="TVShow" positionX="-36" positionY="9" width="128" height="433"/>
     </elements>
 </model>

@@ -39,12 +39,27 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "changeNotification:", name: NSManagedObjectContextObjectsDidChangeNotification, object: sharedContext)
         
         loadDetails()
         loadPhotos()
     }
 
     // MARK: Custom Methods
+    func changeNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let deletedObjects   = userInfo[NSDeletedObjectsKey]
+            let insertedObjects  = userInfo[NSInsertedObjectsKey]
+            let updatedObjects  = userInfo[NSUpdatedObjectsKey]
+            
+            print("inserted: \(insertedObjects)")
+            print("deleted: \(deletedObjects)")
+            print("updated: \(updatedObjects)")
+        }
+    }
+
+    
     func loadDetails() {
         if let movieID = movieID {
             let movie = sharedContext.objectWithID(movieID) as! Movie
@@ -73,7 +88,7 @@ class MovieDetailsViewController: UIViewController {
     
     func loadPhotos() {
         if let movieID = movieID {
-            var movie = sharedContext.objectWithID(movieID) as! Movie
+            let movie = sharedContext.objectWithID(movieID) as! Movie
             
             let success = { (results: AnyObject!) in
                 if let dict = results as? [String: AnyObject] {
@@ -90,47 +105,23 @@ class MovieDetailsViewController: UIViewController {
                     
                     let completion = { (error: NSError?) in
                         if error == nil {
-//                            self.backdropData = self.getImages(NSPredicate(format: "movieBackdrop = %@"))
-//                            self.posterData = self.getImages(NSPredicate(format: "moviePoster = %@"))
-                            
-                            self.backdropData = [[String: AnyObject]]()
-                            for image in movie.backdrops!.allObjects as! [Image] {
-                                var data = [String: AnyObject]()
-                                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-                                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-                                
-                                if let filePath = image.filePath {
-                                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
-                                    data[ThumbnailTableViewCell.Keys.URL] = url
-                                }
-                                
-                                self.backdropData!.append(data)
-                            }
-                            
-                            self.posterData = [[String: AnyObject]]()
-                            for image in movie.posters!.allObjects as! [Image] {
-                                var data = [String: AnyObject]()
-                                data[ThumbnailTableViewCell.Keys.ID] = image.filePath as String!
-                                data[ThumbnailTableViewCell.Keys.OID] = image.objectID
-                                
-                                if let filePath = image.filePath {
-                                    let url = "\(Constants.TMDB.ImageURL)/\(Constants.TMDB.BackdropSizes[0])\(filePath)"
-                                    data[ThumbnailTableViewCell.Keys.URL] = url
-                                }
-                                
-                                self.posterData!.append(data)
-                            }
-                            
+                            self.backdropData = self.getImages(NSPredicate(format: "movieBackdrop = %@", movie))
+                            self.posterData = self.getImages(NSPredicate(format: "moviePoster = %@", movie))
                             self.tableView.reloadData()
                         }
                     }
                     
-                    var data = [[String: AnyObject]]()
-                    data.append(["id": movie.movieID!.integerValue,
+                    var syncData = [[String: AnyObject]]()
+                    syncData.append(["id": movie.movieID!.integerValue,
                                  "backdrops": backdrops,
                                  "posters": posters])
                     let predicate = NSPredicate(format: "movieID=%@ ", movie.movieID!)
-                    Sync.changes(data, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
+                    Sync.changes(syncData, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
+                    
+//                    syncData = [[String: AnyObject]]()
+//                    syncData.append(["id": movie.movieID!.integerValue,
+//                        "posters": posters])
+//                    Sync.changes(syncData, inEntityNamed: "Movie", predicate: predicate, dataStack: appDelegate.dataStack, completion: completion)
                 }
             }
             
@@ -191,7 +182,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = 0
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.data = backdropData
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.collectionView.reloadData()
@@ -228,7 +219,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = 4
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.data = posterData
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.collectionView.reloadData()

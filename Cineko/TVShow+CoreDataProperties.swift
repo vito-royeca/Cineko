@@ -34,8 +34,10 @@ extension TVShow {
     @NSManaged var tvShowType: String?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
+    @NSManaged var backdrops: NSSet?
     @NSManaged var genres: NSSet?
     @NSManaged var networks: NSSet?
+    @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?
     @NSManaged var tvSeasons: NSSet?
 }

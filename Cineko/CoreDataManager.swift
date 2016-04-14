@@ -9,10 +9,22 @@
 import Foundation
 import CoreData
 
-private let SQLITE_FILE_NAME = "Virtual Tourist.sqlite"
+enum CoreDataError: ErrorType {
+    case NoSQLiteFile
+    case NoModelFile
+}
 
 class CoreDataManager: NSObject {
-
+    // MARK: Variables
+    private var sqliteFile:String?
+    private var modelFile:String?
+    
+    // MARK: Setup
+    func setup(sqliteFile: String, modelFile: String) {
+        self.sqliteFile = sqliteFile
+        self.modelFile = modelFile
+    }
+    
     // MARK: - The Core Data stack. The code has been moved, unaltered, from the AppDelegate.
     
     lazy var applicationDocumentsDirectory: NSURL = {
@@ -23,7 +35,8 @@ class CoreDataManager: NSObject {
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("Virtual_Tourist", withExtension: "momd")!
+        let arr = self.modelFile!.componentsSeparatedByString(".")
+        let modelURL = NSBundle.mainBundle().URLForResource(arr.first, withExtension: arr.last)!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
@@ -31,7 +44,7 @@ class CoreDataManager: NSObject {
         // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(SQLITE_FILE_NAME)
+        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(self.sqliteFile!)
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
