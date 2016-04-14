@@ -398,7 +398,7 @@ class TMDBManager: NSObject {
     }
     
     // MARK: TMDB People
-    func peoplePopular(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func peoplePopular(completion: (arrayIDs: [AnyObject]?, error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -406,6 +406,26 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Popular.Path)"
         let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            var personIDs = [NSNumber]()
+            
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for person in json {
+                        if let m = self.findOrCreatePerson(person) {
+                            personIDs.append(m.personID!)
+                        }
+                    }
+                }
+            }
+            
+            completion(arrayIDs: personIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: nil, error: error)
+        }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
@@ -471,6 +491,29 @@ class TMDBManager: NSObject {
         }
         
         return tvShow
+    }
+    
+    func findOrCreatePerson(dict: Dictionary<String, AnyObject>) -> Person? {
+        var person:Person?
+        
+        let fetchRequest = NSFetchRequest(entityName: "Person")
+        if let personID = dict[Person.Keys.PersonID] as? NSNumber {
+            fetchRequest.predicate = NSPredicate(format: "personID == %@", personID)
+            do {
+                if let m = try sharedContext.executeFetchRequest(fetchRequest).first as? Person {
+                    person = m
+                    
+                } else {
+                    person = Person(dictionary: dict, context: sharedContext)
+                    CoreDataManager.sharedInstance().saveContext()
+                }
+                
+            } catch let error as NSError {
+                print("Error in fetch \(error), \(error.userInfo)")
+            }
+        }
+        
+        return person
     }
     
     func findOrCreateImage(dict: Dictionary<String, AnyObject>) -> Image? {

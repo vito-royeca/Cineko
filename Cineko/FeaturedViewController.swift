@@ -83,29 +83,29 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedPeople() {
-//        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
-//            if let error = error {
-//                performUIUpdatesOnMain {
-//                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-//                }
-//                
-//            } else {
-//                self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-//                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs!)
-//                self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-//                self.popularPeopleFetchRequest!.sortDescriptors = [
-//                    NSSortDescriptor(key: "popularity", ascending: false),
-//                    NSSortDescriptor(key: "name", ascending: true)]
-//            performUIUpdatesOnMain {
-//                self.tableView.reloadData()
-//            }
-//
-//            }
-//        }
-//        
-//        do {
-//            try TMDBManager.sharedInstance().peoplePopular(completion)
-//        } catch {}
+        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
+            if let error = error {
+                performUIUpdatesOnMain {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+                
+            } else {
+                self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
+                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs!)
+                self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.popularPeopleFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "popularity", ascending: false),
+                    NSSortDescriptor(key: "name", ascending: true)]
+            performUIUpdatesOnMain {
+                self.tableView.reloadData()
+            }
+
+            }
+        }
+        
+        do {
+            try TMDBManager.sharedInstance().peoplePopular(completion)
+        } catch {}
     }
 }
 
@@ -148,6 +148,7 @@ extension FeaturedViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension FeaturedViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return tableView.frame.size.height / 3
         return ThumbnailTableViewCell.Height
     }
 }
