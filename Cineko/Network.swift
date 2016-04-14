@@ -12,6 +12,21 @@ import CoreData
 
 class Network: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    struct Keys {
+        static let NetworkID = "id"
+        static let Name = "name"
+    }
+    
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    
+    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+        let entity =  NSEntityDescription.entityForName("Network", inManagedObjectContext: context)!
+        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        
+        networkID = dictionary[Keys.NetworkID] as? NSNumber
+        name = dictionary[Keys.Name] as? String
+    }
 
 }

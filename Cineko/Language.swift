@@ -12,6 +12,21 @@ import CoreData
 
 class Language: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    struct Keys {
+        static let Name = "name"
+        static let ISO6391 = "iso_639_1"
+    }
+    
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    
+    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+        let entity =  NSEntityDescription.entityForName("Language", inManagedObjectContext: context)!
+        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        
+        name = dictionary[Keys.Name] as? String
+        iso6391 = dictionary[Keys.ISO6391] as? String
+    }
 
 }

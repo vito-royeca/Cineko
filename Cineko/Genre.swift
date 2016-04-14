@@ -12,6 +12,21 @@ import CoreData
 
 class Genre: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    struct Keys {
+        static let GenreID = "id"
+        static let Name = "name"
+    }
+    
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    }
+    
+    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+        let entity =  NSEntityDescription.entityForName("Genre", inManagedObjectContext: context)!
+        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        
+        genreID = dictionary[Keys.GenreID] as? NSNumber
+        name = dictionary[Keys.Name] as? String
+    }
 
 }

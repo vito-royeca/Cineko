@@ -207,10 +207,10 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="43"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="45"/>
         <element name="Company" positionX="0" positionY="45" width="128" height="165"/>
         <element name="Country" positionX="9" positionY="108" width="128" height="90"/>
-        <element name="Credit" positionX="9" positionY="162" width="128" height="43"/>
+        <element name="Credit" positionX="9" positionY="162" width="128" height="45"/>
         <element name="Genre" positionX="-9" positionY="54" width="128" height="105"/>
         <element name="Image" positionX="36" positionY="81" width="128" height="208"/>
         <element name="Language" positionX="18" positionY="144" width="128" height="90"/>

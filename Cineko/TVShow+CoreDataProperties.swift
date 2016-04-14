@@ -25,7 +25,7 @@ extension TVShow {
     @NSManaged var numberOfSeasons: NSNumber?
     @NSManaged var originalLanguage: String?
     @NSManaged var originalName: String?
-    @NSManaged var originalCountry: NSData?
+    @NSManaged var originCountry: NSData?
     @NSManaged var overview: String?
     @NSManaged var popularity: NSNumber?
     @NSManaged var posterPath: String?
