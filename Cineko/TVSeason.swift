@@ -42,5 +42,21 @@ class TVSeason: NSManagedObject {
         seasonNumber = dictionary[Keys.SeasonNumber] as? NSNumber
         tvSeasonID = dictionary[Keys.TVSeasonID] as? NSNumber
     }
+}
 
+extension TVSeason : ThumbnailTableViewCellDisplayable {
+    func id() -> AnyObject? {
+        return tvSeasonID
+    }
+    
+    func path() -> String? {
+        return posterPath
+    }
+    
+    func caption() -> String? {
+        if let seasonNumber = seasonNumber {
+            return "Season \(seasonNumber.integerValue)"
+        }
+        return nil
+    }
 }

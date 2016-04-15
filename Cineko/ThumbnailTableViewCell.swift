@@ -108,12 +108,6 @@ class ThumbnailTableViewCell: UITableViewCell {
                     if let caption = displayable.caption() {
                         cell.captionLabel.text = caption
                         cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-//                        cell.captionLabel.textColor = UIColor.whiteColor()
-                        
-//                        let average = image.averageColor()
-//                          cell.captionLabel.shadowColor = image.patternColor(average)
-//                          cell.captionLabel.textColor = average
-//                        cell.captionLabel.textColor = image.patternColor(average)
                     }
                 } else {
                     cell.captionLabel.text = nil

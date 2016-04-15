@@ -256,6 +256,7 @@ class TMDBManager: NSObject {
                 }
             }
             
+            CoreDataManager.sharedInstance().saveContext()
             completion(arrayIDs: movieIDs, error: nil)
         }
         
@@ -280,9 +281,10 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let m = self.findOrCreateMovie(dict) {
                     m.update(dict)
-                    CoreDataManager.sharedInstance().saveContext()
                 }
             }
+            
+            CoreDataManager.sharedInstance().saveContext()
             completion(error: nil)
         }
         
@@ -322,10 +324,9 @@ class TMDBManager: NSObject {
                         }
                     }
                 }
-                
-                CoreDataManager.sharedInstance().saveContext()
             }
             
+            CoreDataManager.sharedInstance().saveContext()
             completion(error: nil)
         }
         
@@ -359,6 +360,7 @@ class TMDBManager: NSObject {
                 }
             }
             
+            CoreDataManager.sharedInstance().saveContext()
             completion(arrayIDs: tvShowIDs, error: nil)
         }
         
@@ -391,6 +393,7 @@ class TMDBManager: NSObject {
                 }
             }
             
+            CoreDataManager.sharedInstance().saveContext()
             completion(arrayIDs: tvShowIDs, error: nil)
         }
         
@@ -514,7 +517,7 @@ class TMDBManager: NSObject {
         return Singleton.sharedInstance
     }
     
-    func findOrCreateMovie(dict: Dictionary<String, AnyObject>) -> Movie? {
+    func findOrCreateMovie(dict: [String: AnyObject]) -> Movie? {
         var movie:Movie?
         
         let fetchRequest = NSFetchRequest(entityName: "Movie")
@@ -532,8 +535,6 @@ class TMDBManager: NSObject {
 //                            photo!.tags = setTags
 //                        }
 //                    }
-                    
-                    CoreDataManager.sharedInstance().saveContext()
                 }
                 
             } catch let error as NSError {
@@ -544,7 +545,7 @@ class TMDBManager: NSObject {
         return movie
     }
     
-    func findOrCreateTVShow(dict: Dictionary<String, AnyObject>) -> TVShow? {
+    func findOrCreateTVShow(dict: [String: AnyObject]) -> TVShow? {
         var tvShow:TVShow?
         
         let fetchRequest = NSFetchRequest(entityName: "TVShow")
@@ -556,7 +557,12 @@ class TMDBManager: NSObject {
                     
                 } else {
                     tvShow = TVShow(dictionary: dict, context: sharedContext)
-                    CoreDataManager.sharedInstance().saveContext()
+                }
+                
+                if let seasons = dict["seasons"] as? [[String: AnyObject]] {
+                    for season in seasons {
+                        findOrCreateTVSeason(season, tvShow: tvShow!)
+                    }
                 }
                 
             } catch let error as NSError {
@@ -567,7 +573,30 @@ class TMDBManager: NSObject {
         return tvShow
     }
     
-    func findOrCreatePerson(dict: Dictionary<String, AnyObject>) -> Person? {
+    func findOrCreateTVSeason(dict: [String: AnyObject], tvShow: TVShow) -> TVSeason? {
+        var tvSeason:TVSeason?
+        
+        let fetchRequest = NSFetchRequest(entityName: "TVSeason")
+        if let tvSeasonID = dict[TVSeason.Keys.TVSeasonID] as? NSNumber {
+            fetchRequest.predicate = NSPredicate(format: "tvSeasonID == %@", tvSeasonID)
+            do {
+                if let m = try sharedContext.executeFetchRequest(fetchRequest).first as? TVSeason {
+                    tvSeason = m
+                    
+                } else {
+                    tvSeason = TVSeason(dictionary: dict, context: sharedContext)
+                }
+                tvSeason!.tvShow = tvShow
+                
+            } catch let error as NSError {
+                print("Error in fetch \(error), \(error.userInfo)")
+            }
+        }
+        
+        return tvSeason
+    }
+    
+    func findOrCreatePerson(dict: [String: AnyObject]) -> Person? {
         var person:Person?
         
         let fetchRequest = NSFetchRequest(entityName: "Person")
@@ -579,7 +608,6 @@ class TMDBManager: NSObject {
                     
                 } else {
                     person = Person(dictionary: dict, context: sharedContext)
-                    CoreDataManager.sharedInstance().saveContext()
                 }
                 
             } catch let error as NSError {
@@ -590,7 +618,7 @@ class TMDBManager: NSObject {
         return person
     }
     
-    func findOrCreateImage(dict: Dictionary<String, AnyObject>) -> Image? {
+    func findOrCreateImage(dict: [String: AnyObject]) -> Image? {
         var image:Image?
         
         let fetchRequest = NSFetchRequest(entityName: "Image")
@@ -602,7 +630,6 @@ class TMDBManager: NSObject {
                     
                 } else {
                     image = Image(dictionary: dict, context: sharedContext)
-                    CoreDataManager.sharedInstance().saveContext()
                 }
                 
             } catch let error as NSError {

@@ -23,7 +23,7 @@ class TVShowDetailsViewController: UIViewController {
     // MARK: Variables
     var tvShowID:NSManagedObjectID?
     var backdropFetchRequest:NSFetchRequest?
-    var posterFetchRequest:NSFetchRequest?
+    var tvSeasonFetchRequest:NSFetchRequest?
     
     // MARK: Actions
     @IBAction func watchlistAction(sender: UIBarButtonItem) {
@@ -48,13 +48,14 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
-        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         loadDetails()
-        loadPhotos()
+        loadBackdrops()
+        loadSeasons()
     }
 
     // MARK: Custom Methods
@@ -81,7 +82,7 @@ class TVShowDetailsViewController: UIViewController {
         }
     }
     
-    func loadPhotos() {
+    func loadBackdrops() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
             
@@ -97,16 +98,8 @@ class TVShowDetailsViewController: UIViewController {
                     self.backdropFetchRequest!.sortDescriptors = [
                         NSSortDescriptor(key: "voteAverage", ascending: false)]
                     
-                    self.posterFetchRequest = NSFetchRequest(entityName: "Image")
-                    self.posterFetchRequest!.predicate = NSPredicate(format: "tvShowPoster = %@", tvShow)
-                    self.posterFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "voteAverage", ascending: false)]
-                    
                     performUIUpdatesOnMain {
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }
                         self.tableView.reloadData()
@@ -118,6 +111,37 @@ class TVShowDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
+                try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
+            } catch {}
+        }
+    }
+    
+    func loadSeasons() {
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                } else {
+                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
+                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
+                    self.tvSeasonFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
+                    
+                    performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            
+            do {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
@@ -191,11 +215,19 @@ class TVShowDetailsViewController: UIViewController {
             
         case 4:
             if let c = cell as? ThumbnailTableViewCell {
+                var seasons = 0
+                if let tvShowID = tvShowID {
+                    let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+                    
+                    if let numberOfSeasons = tvShow.numberOfSeasons {
+                        seasons = numberOfSeasons.integerValue
+                    }
+                }
                 c.tag = 4
-                c.titleLabel.text = "Posters"
+                c.titleLabel.text = "Seasons (\(seasons))"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
-                c.fetchRequest = posterFetchRequest
+                c.fetchRequest = tvSeasonFetchRequest
                 c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.loadData()
@@ -235,7 +267,7 @@ extension TVShowDetailsViewController : UITableViewDataSource {
         case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
         case 4:
-            cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         }
