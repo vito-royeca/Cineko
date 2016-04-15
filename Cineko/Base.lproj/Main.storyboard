@@ -105,7 +105,7 @@
             </objects>
             <point key="canvasLocation" x="1902" y="-863"/>
         </scene>
-        <!--Movie Details View Controller-->
+        <!--Movie Details-->
         <scene sceneID="NhU-hz-64w">
             <objects>
                 <viewController storyboardIdentifier="MovieDetailsViewController" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
@@ -181,15 +181,30 @@
                             <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="mi1-zV-vtf" secondAttribute="top" id="vDI-9p-8rA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hKK-Iw-wLY">
+                    <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
-                            <barButtonItem image="star-filled" id="aYz-1u-SRe"/>
-                            <barButtonItem image="heart-filled" id="cuV-FF-voo"/>
-                            <barButtonItem image="eye-filled" id="sLV-iu-MVH"/>
+                            <barButtonItem image="star" id="aYz-1u-SRe">
+                                <connections>
+                                    <action selector="rateAction:" destination="6At-tm-DiG" id="Tp0-XC-gr0"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="heart" id="cuV-FF-voo">
+                                <connections>
+                                    <action selector="favoriteAction:" destination="6At-tm-DiG" id="5jq-ti-D9C"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="eye" id="sLV-iu-MVH">
+                                <connections>
+                                    <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="favoriteButton" destination="cuV-FF-voo" id="e9C-gj-hhl"/>
+                        <outlet property="rateButton" destination="aYz-1u-SRe" id="Rii-GZ-x4u"/>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
+                        <outlet property="watchlistButton" destination="sLV-iu-MVH" id="qLN-uV-lCy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0JT-9C-AX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -473,14 +488,138 @@
             </objects>
             <point key="canvasLocation" x="2792" y="-863"/>
         </scene>
+        <!--TV Show Details-->
+        <scene sceneID="nVb-95-rf2">
+            <objects>
+                <viewController storyboardIdentifier="TVShowDetailsViewController" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wnb-Z9-7bp"/>
+                        <viewControllerLayoutGuide type="bottom" id="g90-Te-gkM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Jnm-Mr-6hw">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PKf-Af-LCm">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="titleTableViewCell" id="CBh-D1-wHX" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CBh-D1-wHX" id="dFs-oy-5Fz">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="MfJ-BA-ceD" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MfJ-BA-ceD" id="z4D-tJ-9fQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="7v2-0F-JZz" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="180" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7v2-0F-JZz" id="f2H-WT-Hci">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="LAp-mx-azB" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="224" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LAp-mx-azB" id="PiQ-Wy-l0S">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postersTableViewCell" id="cFa-FJ-NbE" userLabel="postersTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="268" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cFa-FJ-NbE" id="FM7-W6-N39">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="wVx-Wm-bVh" id="zv2-Aj-Nd4"/>
+                                    <outlet property="delegate" destination="wVx-Wm-bVh" id="Dm7-Vy-n26"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PKf-Af-LCm" firstAttribute="top" secondItem="Jnm-Mr-6hw" secondAttribute="top" id="9Lw-Gq-Yew"/>
+                            <constraint firstAttribute="trailing" secondItem="PKf-Af-LCm" secondAttribute="trailing" id="K9T-4K-q9b"/>
+                            <constraint firstItem="PKf-Af-LCm" firstAttribute="bottom" secondItem="g90-Te-gkM" secondAttribute="top" id="Wds-qv-bfa"/>
+                            <constraint firstItem="PKf-Af-LCm" firstAttribute="leading" secondItem="Jnm-Mr-6hw" secondAttribute="leading" id="Yxi-Md-cBi"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq">
+                        <rightBarButtonItems>
+                            <barButtonItem image="star" id="Jah-Y1-GEw">
+                                <connections>
+                                    <action selector="rateAction:" destination="wVx-Wm-bVh" id="v9e-uf-aaY"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="heart" id="NCF-yy-Ioa">
+                                <connections>
+                                    <action selector="favoriteAction:" destination="wVx-Wm-bVh" id="bJy-Ti-5tw"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="eye" id="6la-k3-GH4">
+                                <connections>
+                                    <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="favoriteButton" destination="NCF-yy-Ioa" id="WiS-Lq-EuC"/>
+                        <outlet property="rateButton" destination="Jah-Y1-GEw" id="u1X-7y-EN6"/>
+                        <outlet property="tableView" destination="PKf-Af-LCm" id="HBq-ZP-eAe"/>
+                        <outlet property="watchlistButton" destination="6la-k3-GH4" id="Euo-1y-4LP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uPY-oa-goJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3604" y="-179"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pe2-EG-hnO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RkF-Mj-vks" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Elp-fJ-tg4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wVx-Wm-bVh" kind="relationship" relationship="rootViewController" id="9ca-FK-wyx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LGT-Zp-Caq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2792" y="-179"/>
+        </scene>
     </scenes>
     <resources>
         <image name="account" width="25" height="25"/>
-        <image name="eye-filled" width="25" height="25"/>
-        <image name="heart-filled" width="25" height="25"/>
+        <image name="eye" width="25" height="25"/>
+        <image name="heart" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="rtLogo" width="123" height="40"/>
-        <image name="star-filled" width="25" height="25"/>
+        <image name="star" width="25" height="25"/>
         <image name="tmdbLogo" width="535" height="113"/>
         <image name="tv" width="25" height="25"/>
     </resources>

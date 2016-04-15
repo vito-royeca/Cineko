@@ -31,26 +31,26 @@ class TMDBTests: XCTestCase {
     }
     
     func testExample() {
-        let httpMethod:HTTPMethod = .Get
-        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)"
-        let parameters = [
-            Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue
-        ]
-        
-        let success = { (results: AnyObject!) in
-            if let dict = results as? [String: AnyObject] {
-                print("\(dict)")
-                self.finished = true
-                
-            }
-        }
-        
-        let failure = { (error: NSError?) in
-            print("error=\(error)")
-            self.finished = true
-        }
-        
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+//        let httpMethod:HTTPMethod = .Get
+//        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)"
+//        let parameters = [
+//            Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue
+//        ]
+//        
+//        let success = { (results: AnyObject!) in
+//            if let dict = results as? [String: AnyObject] {
+//                print("\(dict)")
+//                self.finished = true
+//                
+//            }
+//        }
+//        
+//        let failure = { (error: NSError?) in
+//            print("error=\(error)")
+//            self.finished = true
+//        }
+//        
+//        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
         
         repeat {
             NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate:NSDate.distantFuture())

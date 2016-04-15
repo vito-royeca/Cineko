@@ -11,12 +11,13 @@ import CoreData
 import JJJUtils
 import MBProgressHUD
 import SDWebImage
-import Sync
-
 
 class MovieDetailsViewController: UIViewController {
 
     // MARK: Outlets
+    @IBOutlet weak var watchlistButton: UIBarButtonItem!
+    @IBOutlet weak var favoriteButton: UIBarButtonItem!
+    @IBOutlet weak var rateButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -24,11 +25,23 @@ class MovieDetailsViewController: UIViewController {
     var backdropFetchRequest:NSFetchRequest?
     var posterFetchRequest:NSFetchRequest?
     
+    // MARK: Actions
+    @IBAction func watchlistAction(sender: UIBarButtonItem) {
+        
+    }
+    
+    @IBAction func favoriteAction(sender: UIBarButtonItem) {
+        
+    }
+    
+    @IBAction func rateAction(sender: UIBarButtonItem) {
+        
+    }
+    
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.registerNib(UINib(nibName: "ActionTableViewCell", bundle: nil), forCellReuseIdentifier: "actionTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
@@ -108,7 +121,7 @@ class MovieDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().moviesImages(movie.movieID!, completion: completion)
+                try TMDBManager.sharedInstance().movieImages(movie.movieID!, completion: completion)
             } catch {}
         }
     }
@@ -143,13 +156,12 @@ class MovieDetailsViewController: UIViewController {
                     let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
                     
                     if let releaseDate = movie.releaseDate {
-                        c.releaseDateLabel.text = releaseDate
+                        c.dateLabel.text = releaseDate
                     }
                     c.durationLabel.text = movie.runtimeToString()
                     if let voteAverage = movie.voteAverage {
                         c.ratingLabel.text = NSString(format: "%.1f", voteAverage.doubleValue) as String
                     }
-
                 }
             }
         case 3:

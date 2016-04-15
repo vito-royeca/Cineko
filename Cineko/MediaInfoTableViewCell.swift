@@ -11,8 +11,12 @@ import UIKit
 class MediaInfoTableViewCell: UITableViewCell {
 
     // MARK: Outlets
-    @IBOutlet weak var releaseDateLabel: UILabel!
+    
+    @IBOutlet weak var dateIcon: UIImageView!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var durationIcon: UIImageView!
     @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var ratingIcon: UIImageView!
     @IBOutlet weak var ratingLabel: UILabel!
     
     

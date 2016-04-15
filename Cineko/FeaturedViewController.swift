@@ -198,7 +198,12 @@ extension FeaturedViewController : ThumbnailTableViewCellDelegate {
                 navigationController.pushViewController(controller, animated: true)
             }
         case 1:
-            print("\(tag)")
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
+                let navigationController = navigationController {
+                let tvShow = displayable as! TVShow
+                controller.tvShowID = tvShow.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
         case 2:
             print("\(tag)")
         default:

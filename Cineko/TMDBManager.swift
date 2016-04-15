@@ -87,11 +87,9 @@ struct TMDBConstants {
         struct NowPlaying {
             static let Path = "/movie/now_playing"
         }
-        
-        struct ID {
+        struct Details {
             static let Path = "/movie/{id}"
         }
-        
         struct Images {
             static let Path = "/movie/{id}/images"
         }
@@ -103,6 +101,12 @@ struct TMDBConstants {
         }
         struct AiringToday {
             static let Path = "/tv/airing_today"
+        }
+        struct Details {
+            static let Path = "/tv/{id}"
+        }
+        struct Images {
+            static let Path = "/tv/{id}/images"
         }
     }
     
@@ -268,7 +272,7 @@ class TMDBManager: NSObject {
         }
         
         let httpMethod:HTTPMethod = .Get
-        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.ID.Path)"
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Details.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
         let parameters = [TMDBConstants.APIKey: apiKey!]
     
@@ -289,7 +293,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func moviesImages(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+    func movieImages(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -392,6 +396,76 @@ class TMDBManager: NSObject {
         
         let failure = { (error: NSError?) -> Void in
             completion(arrayIDs: nil, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func tvShowDetails(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Details.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let m = self.findOrCreateTVShow(dict) {
+                    m.update(dict)
+                    CoreDataManager.sharedInstance().saveContext()
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func tvShowImages(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Images.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let movie = self.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let backdrops = dict["backdrops"] as? [[String: AnyObject]] {
+                    for backdrop in backdrops {
+                        if let image = self.findOrCreateImage(backdrop) {
+                            image.tvShowBackdrop = movie
+                        }
+                    }
+                }
+                
+                if let posters = dict["posters"] as? [[String: AnyObject]] {
+                    for poster in posters {
+                        if let image = self.findOrCreateImage(poster) {
+                            image.tvShowPoster = movie
+                        }
+                    }
+                }
+                
+                CoreDataManager.sharedInstance().saveContext()
+            }
+            
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

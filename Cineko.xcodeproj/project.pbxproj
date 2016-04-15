@@ -426,8 +426,8 @@
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
-				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
 				8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */,
+				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
