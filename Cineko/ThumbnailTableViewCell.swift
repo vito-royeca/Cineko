@@ -107,13 +107,17 @@ class ThumbnailTableViewCell: UITableViewCell {
                 if self.showCaption {
                     if let caption = displayable.caption() {
                         cell.captionLabel.text = caption
-                        let average = image.averageColor()
+                        cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+//                        cell.captionLabel.textColor = UIColor.whiteColor()
+                        
+//                        let average = image.averageColor()
 //                          cell.captionLabel.shadowColor = image.patternColor(average)
 //                          cell.captionLabel.textColor = average
-                        cell.captionLabel.textColor = image.patternColor(average)
+//                        cell.captionLabel.textColor = image.patternColor(average)
                     }
                 } else {
                     cell.captionLabel.text = nil
+                    cell.captionLabel.backgroundColor = nil
                 }
                 
                 if !self.imageSizeAdjusted &&
@@ -130,7 +134,7 @@ class ThumbnailTableViewCell: UITableViewCell {
                 cell.hasHUD = false
             }
             
-            if !cell.hasHUD {
+            if !cell.hasHUD && cell.thumbnailImage.image == nil {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 cell.hasHUD = true
             }
@@ -140,7 +144,8 @@ class ThumbnailTableViewCell: UITableViewCell {
             cell.thumbnailImage.image = UIImage(named: "noImage")
             if let caption = displayable.caption() {
                 cell.captionLabel.text = caption
-                cell.captionLabel.textColor = UIColor.redColor()
+                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+//                cell.captionLabel.textColor = UIColor.whiteColor()
             }
         }
     }

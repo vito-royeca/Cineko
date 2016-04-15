@@ -160,6 +160,9 @@
 		8CDAA4A11CB60B26008E9665 /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAA4971CB60B26008E9665 /* Credit.swift */; };
 		8CDAA4A21CB60B26008E9665 /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAA4971CB60B26008E9665 /* Credit.swift */; };
 		8CDAA4A31CB60B26008E9665 /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAA4971CB60B26008E9665 /* Credit.swift */; };
+		8CEBE9741CC08299006137DA /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */; };
+		8CEBE9751CC08299006137DA /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */; };
+		8CEBE9761CC08299006137DA /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */; };
 		A6EFC38E7DA51EF7EB697EB8 /* Pods_CinekoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */; };
 		D768F0933A6DD3BFB17AB637 /* Pods_Cineko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6361E0E48D7A9B4A4CB7CA /* Pods_Cineko.framework */; };
 /* End PBXBuildFile section */
@@ -255,6 +258,7 @@
 		8CD408C11CB1822E00F9132F /* TMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBManager.swift; sourceTree = "<group>"; };
 		8CDAA4961CB60B26008E9665 /* Credit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Credit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CDAA4971CB60B26008E9665 /* Credit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credit.swift; sourceTree = "<group>"; };
+		8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowDetailsViewController.swift; sourceTree = "<group>"; };
 		90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CinekoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9285EB472CD725C6F83ACA2D /* Pods-CinekoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CinekoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CinekoTests/Pods-CinekoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4AF6C6BFC48C4C843F58195 /* Pods-Cineko.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cineko.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cineko/Pods-Cineko.release.xcconfig"; sourceTree = "<group>"; };
@@ -423,6 +427,7 @@
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
 				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
+				8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -787,6 +792,7 @@
 				8C6789581CB5209200E4E14B /* Movie+CoreDataProperties.swift in Sources */,
 				8C6789551CB5209200E4E14B /* Image.swift in Sources */,
 				8C67895E1CB5209200E4E14B /* Country+CoreDataProperties.swift in Sources */,
+				8CEBE9741CC08299006137DA /* TVShowDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,6 +822,7 @@
 				8C32DD3A1CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */,
 				8CB749511CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C67895C1CB5209200E4E14B /* Movie.swift in Sources */,
+				8CEBE9751CC08299006137DA /* TVShowDetailsViewController.swift in Sources */,
 				8C6789681CB5209200E4E14B /* Company.swift in Sources */,
 				8C6789651CB5209200E4E14B /* Company+CoreDataProperties.swift in Sources */,
 				8C1378BE1CAE819F00FB6830 /* Constants.swift in Sources */,
@@ -850,6 +857,7 @@
 				8C6789481CB5209200E4E14B /* TVShow+CoreDataProperties.swift in Sources */,
 				8C3C82361CB22032008CCF4C /* LoginViewController.swift in Sources */,
 				8C6789511CB5209200E4E14B /* Genre.swift in Sources */,
+				8CEBE9761CC08299006137DA /* TVShowDetailsViewController.swift in Sources */,
 				8CD408C01CB17AC200F9132F /* StartViewController.swift in Sources */,
 				8C6789691CB5209200E4E14B /* Company.swift in Sources */,
 				8C642D8F1CB36537008D18F1 /* FacebookStyleBar.m in Sources */,

@@ -18,7 +18,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="xzJ-Z7-lKn">
                         <rect key="frame" x="0.0" y="91" width="80" height="21"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>

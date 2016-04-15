@@ -10,6 +10,7 @@ import UIKit
 
 import CoreData
 import JJJUtils
+import MBProgressHUD
 
 class FeaturedViewController: UIViewController {
 
@@ -20,15 +21,23 @@ class FeaturedViewController: UIViewController {
     var nowShowingFetchRequest:NSFetchRequest?
     var airingTodayFetchRequest:NSFetchRequest?
     var popularPeopleFetchRequest:NSFetchRequest?
+    private var dataHasBeenLoaded = false
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
-        loadFeaturedMovies()
-        loadFeaturedTVShows()
-        loadFeaturedPeople()
+        if !dataHasBeenLoaded {
+            loadFeaturedMovies()
+            loadFeaturedTVShows()
+            loadFeaturedPeople()
+            dataHasBeenLoaded = true
+        }
     }
     
     // MARK: Custom Methods
@@ -48,12 +57,19 @@ class FeaturedViewController: UIViewController {
                     NSSortDescriptor(key: "title", ascending: true)]
                 
                 performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
                     self.tableView.reloadData()
                 }
             }
         }
         
         do {
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+            }
+            
             try TMDBManager.sharedInstance().moviesNowPlaying(completion)
         } catch {}
     }
@@ -71,13 +87,20 @@ class FeaturedViewController: UIViewController {
                 self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.airingTodayFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "name", ascending: true)]
-            performUIUpdatesOnMain {
-                self.tableView.reloadData()
-            }
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
         }
         
         do {
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+            }
             try TMDBManager.sharedInstance().tvShowsAiringToday(completion)
         } catch {}
     }
@@ -96,14 +119,20 @@ class FeaturedViewController: UIViewController {
                 self.popularPeopleFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),
                     NSSortDescriptor(key: "name", ascending: true)]
-            performUIUpdatesOnMain {
-                self.tableView.reloadData()
-            }
-
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
         }
         
         do {
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+            }
             try TMDBManager.sharedInstance().peoplePopular(completion)
         } catch {}
     }

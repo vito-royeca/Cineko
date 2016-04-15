@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import JJJUtils
+import MBProgressHUD
 import SDWebImage
 import Sync
 
@@ -35,7 +36,10 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
-
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         loadDetails()
         loadPhotos()
     }
@@ -86,12 +90,24 @@ class MovieDetailsViewController: UIViewController {
                         NSSortDescriptor(key: "voteAverage", ascending: false)]
                     
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
             }
             
             do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
                 try TMDBManager.sharedInstance().moviesImages(movie.movieID!, completion: completion)
             } catch {}
         }
