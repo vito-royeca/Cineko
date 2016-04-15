@@ -49,6 +49,12 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
+        
+        if TMDBManager.sharedInstance().hasSessionID() {
+            watchlistButton.enabled = true
+            favoriteButton.enabled = true
+            rateButton.enabled = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

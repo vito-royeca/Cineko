@@ -183,17 +183,17 @@
                     </view>
                     <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
-                            <barButtonItem image="star" id="aYz-1u-SRe">
+                            <barButtonItem enabled="NO" image="star" id="aYz-1u-SRe">
                                 <connections>
                                     <action selector="rateAction:" destination="6At-tm-DiG" id="Tp0-XC-gr0"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="heart" id="cuV-FF-voo">
+                            <barButtonItem enabled="NO" image="heart" id="cuV-FF-voo">
                                 <connections>
                                     <action selector="favoriteAction:" destination="6At-tm-DiG" id="5jq-ti-D9C"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="eye" id="sLV-iu-MVH">
+                            <barButtonItem enabled="NO" image="eye" id="sLV-iu-MVH">
                                 <connections>
                                     <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
                                 </connections>
@@ -566,17 +566,17 @@
                     </view>
                     <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq">
                         <rightBarButtonItems>
-                            <barButtonItem image="star" id="Jah-Y1-GEw">
+                            <barButtonItem enabled="NO" image="star" id="Jah-Y1-GEw">
                                 <connections>
                                     <action selector="rateAction:" destination="wVx-Wm-bVh" id="v9e-uf-aaY"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="heart" id="NCF-yy-Ioa">
+                            <barButtonItem enabled="NO" image="heart" id="NCF-yy-Ioa">
                                 <connections>
                                     <action selector="favoriteAction:" destination="wVx-Wm-bVh" id="bJy-Ti-5tw"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="eye" id="6la-k3-GH4">
+                            <barButtonItem enabled="NO" image="eye" id="6la-k3-GH4">
                                 <connections>
                                     <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
                                 </connections>
