@@ -66,7 +66,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Custom Methods
     func loadDetails() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -89,7 +89,7 @@ class MovieDetailsViewController: UIViewController {
     
     func loadPhotos() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -137,7 +137,7 @@ class MovieDetailsViewController: UIViewController {
         case 0:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
                     
                     if let title = movie.title {
                         c.dynamicLabel.text = title
@@ -159,7 +159,7 @@ class MovieDetailsViewController: UIViewController {
         case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
                     
                     if let releaseDate = movie.releaseDate {
                         c.dateLabel.text = releaseDate
@@ -173,7 +173,7 @@ class MovieDetailsViewController: UIViewController {
         case 3:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
                     
                     if let overview = movie.overview {
                         c.dynamicLabel.text = overview

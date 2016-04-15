@@ -65,26 +65,54 @@ class CoreDataManager: NSObject {
         return coordinator
     }()
     
-    lazy var managedObjectContext: NSManagedObjectContext = {
+    lazy var mainObjectContext: NSManagedObjectContext = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
+        var mainObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        mainObjectContext.persistentStoreCoordinator = coordinator
+        return mainObjectContext
+    }()
+    
+    lazy var privateContext: NSManagedObjectContext = {
+        var privateContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        privateContext.parentContext = self.mainObjectContext
+        return privateContext
     }()
     
     // MARK: - Core Data Saving support
     
-    func saveContext () {
-        if managedObjectContext.hasChanges {
+    func saveMainContext () {
+        if mainObjectContext.hasChanges {
             do {
-                try managedObjectContext.save()
+                try mainObjectContext.save()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
                 print("Unresolved error \(nserror), \(nserror.userInfo)")
                 abort()
+            }
+        }
+    }
+    
+    func savePrivateContext() {
+        if privateContext.hasChanges {
+            do {
+                try privateContext.save()
+            } catch {
+                let nserror = error as NSError
+                print("Unresolved error \(nserror), \(nserror.userInfo)")
+                abort()
+            }
+            
+            mainObjectContext.performBlockAndWait {
+                do {
+                    try self.mainObjectContext.save()
+                } catch {
+                    let nserror = error as NSError
+                    print("Unresolved error \(nserror), \(nserror.userInfo)")
+                    abort()
+                }
             }
         }
     }

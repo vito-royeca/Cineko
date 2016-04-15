@@ -61,13 +61,12 @@ class TVShowDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         loadDetails()
         loadBackdrops()
-        loadSeasons()
     }
 
     // MARK: Custom Methods
     func loadDetails() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -76,13 +75,24 @@ class TVShowDetailsViewController: UIViewController {
                     }
                     
                 } else {
+                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
+                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
+                    self.tvSeasonFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
+                    
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
             }
             
             do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
                 try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
@@ -90,7 +100,7 @@ class TVShowDetailsViewController: UIViewController {
     
     func loadBackdrops() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -122,46 +132,46 @@ class TVShowDetailsViewController: UIViewController {
         }
     }
     
-    func loadSeasons() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
-            
-            let completion = { (error: NSError?) in
-                if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                    
-                } else {
-                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
-                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
-                    self.tvSeasonFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-            
-            do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
-            } catch {}
-        }
-    }
+//    func loadSeasons() {
+//        if let tvShowID = tvShowID {
+//            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+//            
+//            let completion = { (error: NSError?) in
+//                if let error = error {
+//                    performUIUpdatesOnMain {
+//                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+//                    }
+//                    
+//                } else {
+//                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
+//                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
+//                    self.tvSeasonFetchRequest!.sortDescriptors = [
+//                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
+//                    
+//                    performUIUpdatesOnMain {
+//                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+//                            MBProgressHUD.hideHUDForView(cell, animated: true)
+//                        }
+//                        self.tableView.reloadData()
+//                    }
+//                }
+//            }
+//            
+//            do {
+//                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+//                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+//                }
+//                try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
+//            } catch {}
+//        }
+//    }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
                     
                     if let name = tvShow.name {
                         c.dynamicLabel.text = name
@@ -183,7 +193,7 @@ class TVShowDetailsViewController: UIViewController {
         case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
                     var dateText = String()
                     
                     if let firstAirDate = tvShow.firstAirDate {
@@ -210,7 +220,7 @@ class TVShowDetailsViewController: UIViewController {
         case 3:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
                     
                     if let overview = tvShow.overview {
                         c.dynamicLabel.text = overview
@@ -223,7 +233,7 @@ class TVShowDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 var seasons = 0
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().managedObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
                     
                     if let numberOfSeasons = tvShow.numberOfSeasons {
                         seasons = numberOfSeasons.integerValue

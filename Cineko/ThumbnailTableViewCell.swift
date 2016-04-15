@@ -43,7 +43,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
-                                                                  managedObjectContext: CoreDataManager.sharedInstance().managedObjectContext,
+                                                                  managedObjectContext: CoreDataManager.sharedInstance().mainObjectContext,
                                                                   sectionNameKeyPath: nil,
                                                                   cacheName: nil)
         

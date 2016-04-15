@@ -40,9 +40,6 @@
 		8C1F106C1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
 		8C1F106D1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
 		8C1F106E1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
-		8C32DD391CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32DD381CBFEEC300AE42E6 /* DatabaseManager.swift */; };
-		8C32DD3A1CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32DD381CBFEEC300AE42E6 /* DatabaseManager.swift */; };
-		8C32DD3B1CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32DD381CBFEEC300AE42E6 /* DatabaseManager.swift */; };
 		8C340CDC1CBCC36B0065626A /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */; };
 		8C340CDD1CBCC4020065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
 		8C340CDE1CBCC4030065626A /* ThumbnailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */; };
@@ -212,7 +209,6 @@
 		8C1CC9811CBF457E001D5239 /* RTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTManager.swift; sourceTree = "<group>"; };
 		8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightTableViewCell.swift; sourceTree = "<group>"; };
 		8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
-		8C32DD381CBFEEC300AE42E6 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
 		8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
 		8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -436,7 +432,6 @@
 			isa = PBXGroup;
 			children = (
 				8C1378AE1CAE80D000FB6830 /* CoreDataManager.swift */,
-				8C32DD381CBFEEC300AE42E6 /* DatabaseManager.swift */,
 				8C1378AF1CAE80D000FB6830 /* GCDBlackBox.swift */,
 				8C1378B01CAE80D000FB6830 /* NetworkManager.swift */,
 				8C1CC9811CBF457E001D5239 /* RTManager.swift */,
@@ -778,7 +773,6 @@
 				8CD408BE1CB17AC200F9132F /* StartViewController.swift in Sources */,
 				8C67897F1CB5209200E4E14B /* Language.swift in Sources */,
 				8C67896D1CB5209200E4E14B /* Account.swift in Sources */,
-				8C32DD391CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */,
 				8C6789491CB5209200E4E14B /* TVShow.swift in Sources */,
 				8C340CDD1CBCC4020065626A /* ThumbnailTableViewCell.swift in Sources */,
 				8C6789701CB5209200E4E14B /* TVEpisode+CoreDataProperties.swift in Sources */,
@@ -819,7 +813,6 @@
 				8C67896B1CB5209200E4E14B /* Account+CoreDataProperties.swift in Sources */,
 				8C1378B21CAE80D000FB6830 /* CoreDataManager.swift in Sources */,
 				8C6789771CB5209200E4E14B /* TVSeason+CoreDataProperties.swift in Sources */,
-				8C32DD3A1CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */,
 				8CB749511CAEC21900EABB91 /* AccountViewController.swift in Sources */,
 				8C67895C1CB5209200E4E14B /* Movie.swift in Sources */,
 				8CEBE9751CC08299006137DA /* TVShowDetailsViewController.swift in Sources */,
@@ -871,7 +864,6 @@
 				8C1F106B1CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift in Sources */,
 				8CD408C41CB1822E00F9132F /* TMDBManager.swift in Sources */,
 				8CB749521CAEC21900EABB91 /* AccountViewController.swift in Sources */,
-				8C32DD3B1CBFEEC300AE42E6 /* DatabaseManager.swift in Sources */,
 				8C1378B61CAE80D000FB6830 /* GCDBlackBox.swift in Sources */,
 				8C67895D1CB5209200E4E14B /* Movie.swift in Sources */,
 				8C37CD851CBB65DC0093196C /* MediaInfoTableViewCell.swift in Sources */,
