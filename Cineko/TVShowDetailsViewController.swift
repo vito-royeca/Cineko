@@ -42,9 +42,8 @@ class TVShowDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "ActionTableViewCell", bundle: nil), forCellReuseIdentifier: "actionTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
@@ -54,6 +53,14 @@ class TVShowDetailsViewController: UIViewController {
             watchlistButton.enabled = true
             favoriteButton.enabled = true
             rateButton.enabled = true
+        }
+        
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(tvShow.posterPath!)")
+            let backgroundView = UIImageView()
+            tableView.backgroundView = backgroundView
+            backgroundView.sd_setImageWithURL(url)
         }
     }
 
@@ -132,40 +139,6 @@ class TVShowDetailsViewController: UIViewController {
         }
     }
     
-//    func loadSeasons() {
-//        if let tvShowID = tvShowID {
-//            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
-//            
-//            let completion = { (error: NSError?) in
-//                if let error = error {
-//                    performUIUpdatesOnMain {
-//                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-//                    }
-//                    
-//                } else {
-//                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
-//                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
-//                    self.tvSeasonFetchRequest!.sortDescriptors = [
-//                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
-//                    
-//                    performUIUpdatesOnMain {
-//                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-//                            MBProgressHUD.hideHUDForView(cell, animated: true)
-//                        }
-//                        self.tableView.reloadData()
-//                    }
-//                }
-//            }
-//            
-//            do {
-//                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-//                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-//                }
-//                try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
-//            } catch {}
-//        }
-//    }
-    
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
@@ -180,16 +153,11 @@ class TVShowDetailsViewController: UIViewController {
                 }
             }
         case 1:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 0
-                c.titleLabel.text = "Photos"
-                c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
-                c.fetchRequest = backdropFetchRequest
-                c.displayType = .Backdrop
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-                c.loadData()
+            cell.contentView.backgroundColor = UIColor.clearColor()
+            if let backgroundView = cell.backgroundView {
+                backgroundView.backgroundColor = UIColor.clearColor()
             }
+            cell.backgroundColor = UIColor.clearColor()
         case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let tvShowID = tvShowID {
@@ -228,8 +196,18 @@ class TVShowDetailsViewController: UIViewController {
                     }
                 }
             }
-            
         case 4:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 0
+                c.titleLabel.text = "Photos"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = backdropFetchRequest
+                c.displayType = .Backdrop
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 5:
             if let c = cell as? ThumbnailTableViewCell {
                 var seasons = 0
                 if let tvShowID = tvShowID {
@@ -267,7 +245,7 @@ class TVShowDetailsViewController: UIViewController {
 
 extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 6
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -277,12 +255,14 @@ extension TVShowDetailsViewController : UITableViewDataSource {
         case 0:
             cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell", forIndexPath: indexPath)
         case 1:
-            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
         case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
         case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
         case 4:
+            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+        case 5:
             cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -300,10 +280,14 @@ extension TVShowDetailsViewController : UITableViewDelegate {
         case 0:
             return dynamicHeightForCell("titleTableViewCell", indexPath: indexPath)
         case 1:
-            return ThumbnailTableViewCell.Height
+            return 180
+        case 2:
+            return UITableViewAutomaticDimension
         case 3:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
         case 4:
+            return ThumbnailTableViewCell.Height
+        case 5:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension

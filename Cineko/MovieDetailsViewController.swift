@@ -42,9 +42,8 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.registerNib(UINib(nibName: "ActionTableViewCell", bundle: nil), forCellReuseIdentifier: "actionTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
@@ -54,6 +53,14 @@ class MovieDetailsViewController: UIViewController {
             watchlistButton.enabled = true
             favoriteButton.enabled = true
             rateButton.enabled = true
+        }
+        
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(movie.posterPath!)")
+            let backgroundView = UIImageView()
+            tableView.backgroundView = backgroundView
+            backgroundView.sd_setImageWithURL(url)
         }
     }
     
@@ -146,16 +153,11 @@ class MovieDetailsViewController: UIViewController {
                 }
             }
         case 1:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 0
-                c.titleLabel.text = "Photos"
-                c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
-                c.fetchRequest = backdropFetchRequest
-                c.displayType = .Backdrop
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-                c.loadData()
+            cell.contentView.backgroundColor = UIColor.clearColor()
+            if let backgroundView = cell.backgroundView {
+                backgroundView.backgroundColor = UIColor.clearColor()
             }
+            cell.backgroundColor = UIColor.clearColor()
         case 2:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
@@ -181,8 +183,18 @@ class MovieDetailsViewController: UIViewController {
                     }
                 }
             }
-        
         case 4:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 0
+                c.titleLabel.text = "Photos"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = backdropFetchRequest
+                c.displayType = .Backdrop
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 5:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 4
                 c.titleLabel.text = "Posters"
@@ -212,7 +224,7 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 6
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -222,12 +234,14 @@ extension MovieDetailsViewController : UITableViewDataSource {
         case 0:
             cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell", forIndexPath: indexPath)
         case 1:
-            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
         case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
         case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
         case 4:
+            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+        case 5:
             cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -235,6 +249,14 @@ extension MovieDetailsViewController : UITableViewDataSource {
         
         configureCell(cell!, indexPath: indexPath)
         return cell!
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            return movie.title
+        }
+        return nil
     }
 }
 
@@ -245,10 +267,14 @@ extension MovieDetailsViewController : UITableViewDelegate {
         case 0:
             return dynamicHeightForCell("titleTableViewCell", indexPath: indexPath)
         case 1:
-            return ThumbnailTableViewCell.Height
+            return 180
+        case 2:
+            return UITableViewAutomaticDimension
         case 3:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
         case 4:
+            return ThumbnailTableViewCell.Height
+        case 5:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension

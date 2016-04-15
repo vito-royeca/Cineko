@@ -181,10 +181,7 @@ extension ThumbnailTableViewCell : UICollectionViewDelegate {
 
 // MARK: NSFetchedResultsControllerDelegate
 extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
-    func controller(controller: NSFetchedResultsController,
-                    didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-                                     atIndex sectionIndex: Int,
-                                             forChangeType type: NSFetchedResultsChangeType) {
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         
         switch type {
         case .Insert:
@@ -198,11 +195,7 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
         }
     }
     
-    func controller(controller: NSFetchedResultsController,
-                    didChangeObject anObject: AnyObject,
-                                    atIndexPath indexPath: NSIndexPath?,
-                                                forChangeType type: NSFetchedResultsChangeType,
-                                                              newIndexPath: NSIndexPath?) {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
         switch type {
         case .Insert:
