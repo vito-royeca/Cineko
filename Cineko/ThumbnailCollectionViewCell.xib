@@ -25,14 +25,14 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="H2j-OB-F1j"/>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="ZmD-17-Hy6"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="leading" secondItem="q8g-ky-vaN" secondAttribute="leading" id="76y-kC-XC1"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="91" id="9gQ-fc-wkb"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="TjA-eV-pNg"/>
                 <constraint firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="dDc-pi-PgL"/>
                 <constraint firstItem="q8g-ky-vaN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fVT-gG-Faz"/>
                 <constraint firstItem="q8g-ky-vaN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hfq-bJ-09a"/>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="91" id="qeT-Pg-Say"/>
+                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="mPO-lv-HS6"/>
                 <constraint firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="qhB-QZ-Gcs"/>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="leading" secondItem="q8g-ky-vaN" secondAttribute="leading" id="wOh-2f-ODv"/>
             </constraints>
             <connections>
                 <outlet property="captionLabel" destination="xzJ-Z7-lKn" id="qnn-db-Fjz"/>

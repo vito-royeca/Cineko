@@ -24,5 +24,6 @@ extension TVEpisode {
     @NSManaged var stillPath: String?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
+    @NSManaged var credits: NSSet?
     @NSManaged var tvSeason: TVSeason?
 }

@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class Person: NSManagedObject {
 
     struct Keys {

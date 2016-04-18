@@ -33,6 +33,7 @@ extension TVShow {
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
     @NSManaged var backdrops: NSSet?
+    @NSManaged var credits: NSSet?
     @NSManaged var genres: NSSet?
     @NSManaged var networks: NSSet?
     @NSManaged var posters: NSSet?

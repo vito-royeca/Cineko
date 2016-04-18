@@ -1,5 +1,5 @@
 //
-//  SpokenLanguage+CoreDataProperties.swift
+//  Language+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.

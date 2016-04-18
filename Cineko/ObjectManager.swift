@@ -192,6 +192,119 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Network", objectKey: "name", objectValue: dict[Network.Keys.Name] as! NSObject, initializer: initializer) as! Network
     }
     
+    func findOrCreateJob(dict: [String: AnyObject]) -> Job {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Job in
+            return Job(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Job", objectKey: "name", objectValue: dict[Job.Keys.Name] as! NSObject, initializer: initializer) as! Job
+    }
+    
+    func findOrCreateImage(dict: [String: AnyObject], imageType: ImageType, forObject object: AnyObject) -> Image {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Image in
+            return Image(dictionary: dict, context: context)
+        }
+        
+        let image = findOrCreateObject(dict, entityName: "Image", objectKey: "filePath", objectValue: dict[Image.Keys.FilePath] as! NSObject, initializer: initializer) as! Image
+        
+        
+        switch imageType {
+        case .MovieBackdrop:
+            image.movieBackdrop = object as? Movie
+        case .MoviePoster:
+            image.moviePoster = object as? Movie
+        case .TVShowBackdrop:
+            image.tvShowBackdrop = object as? TVShow
+        case .TVShowPoster:
+            image.tvShowPoster = object as? TVShow
+        }
+        CoreDataManager.sharedInstance().savePrivateContext()
+
+        
+        return image
+    }
+    
+    func findOrCreateCast(dict: [String: AnyObject], creditType: CreditType, creditParent: CreditParent, forObject object: AnyObject) -> Credit {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Credit in
+            return Credit(dictionary: dict, context: context)
+        }
+        
+        let credit = findOrCreateObject(dict, entityName: "Credit", objectKey: "creditID", objectValue: dict[Credit.Keys.CreditID] as! NSObject, initializer: initializer) as! Credit
+
+        switch creditParent {
+        case .Job:
+            // TODO: ...
+            credit.job = object as? Job
+        case .Movie:
+            credit.movie = object as? Movie
+            switch creditType {
+            case .Cast:
+                var person = [
+                    Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
+                    Person.Keys.Name: dict[Person.Keys.Name] as! String]
+                if let profilePath = dict[Person.Keys.ProfilePath] as? String {
+                    person[Person.Keys.ProfilePath] = profilePath
+                }
+                credit.person = findOrCreatePerson(person)
+            case .Crew:
+                let job = [
+                    Job.Keys.Department: dict[Job.Keys.Department] as! String,
+                    Job.Keys.Name: dict[Job.Keys.Job] as! String]
+                var person = [
+                    Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
+                    Person.Keys.Name: dict[Person.Keys.Name] as! String]
+                if let profilePath = dict[Person.Keys.ProfilePath] as? String {
+                    person[Person.Keys.ProfilePath] = profilePath
+                }
+                credit.job = findOrCreateJob(job)
+                credit.person = findOrCreatePerson(person)
+            case .GuestStar:
+                print("x")
+            }
+        case .Person:
+            // TODO: ...
+            credit.person = object as? Person
+        case .TVEpisode:
+            // TODO: ...
+            credit.tvEpisode = object as? TVEpisode
+        case .TVSeason:
+            // TODO: ...
+            credit.tvSeason = object as? TVSeason
+        case .TVShow:
+            credit.tvShow = object as? TVShow
+            switch creditType {
+            case .Cast:
+                var person = [
+                    Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
+                    Person.Keys.Name: dict[Person.Keys.Name] as! String]
+                if let profilePath = dict[Person.Keys.ProfilePath] as? String {
+                    person[Person.Keys.ProfilePath] = profilePath
+                }
+                credit.person = findOrCreatePerson(person)
+            case .Crew:
+                let job = [
+                    Job.Keys.Department: dict[Job.Keys.Department] as! String,
+                    Job.Keys.Name: dict[Job.Keys.Job] as! String]
+                var person = [
+                    Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
+                    Person.Keys.Name: dict[Person.Keys.Name] as! String]
+                if let profilePath = dict[Person.Keys.ProfilePath] as? String {
+                    person[Person.Keys.ProfilePath] = profilePath
+                }
+                credit.job = findOrCreateJob(job)
+                credit.person = findOrCreatePerson(person)
+            case .GuestStar:
+                print("x")
+            }
+        }
+        
+        credit.creditType = creditType.rawValue
+        
+        CoreDataManager.sharedInstance().savePrivateContext()
+        
+        return credit
+    }
+    
     func findOrCreateObject(dict: [String: AnyObject], entityName: String, objectKey: String, objectValue: NSObject, initializer: (dict: [String: AnyObject], context: NSManagedObjectContext) -> AnyObject) -> AnyObject {
         var object:AnyObject?
         
@@ -213,42 +326,7 @@ class ObjectManager: NSObject {
         
         return object!
     }
-    
-    func findOrCreateImage(dict: [String: AnyObject], imageType: ImageType, forObject object: AnyObject) -> Image? {
-        var image:Image?
-        
-        if let filePath = dict[Image.Keys.FilePath] as? String {
-            let fetchRequest = NSFetchRequest(entityName: "Image")
-            fetchRequest.predicate = NSPredicate(format: "filePath == %@", filePath)
-            
-            do {
-                if let m = try privateContext.executeFetchRequest(fetchRequest).first as? Image {
-                    image = m
-                    
-                } else {
-                    image = Image(dictionary: dict, context: privateContext)
-                }
-                
-                switch imageType {
-                case .MovieBackdrop:
-                    image!.movieBackdrop = object as? Movie
-                case .MoviePoster:
-                    image!.moviePoster = object as? Movie
-                case .TVShowBackdrop:
-                    image!.tvShowBackdrop = object as? TVShow
-                case .TVShowPoster:
-                    image!.tvShowPoster = object as? TVShow
-                }
-                CoreDataManager.sharedInstance().savePrivateContext()
-                
-            } catch let error as NSError {
-                print("Error in fetch \(error), \(error.userInfo)")
-            }
-        }
-        
-        return image
-    }
-    
+
     // MARK: - Shared Instance
     class func sharedInstance() -> ObjectManager {
         struct Static {

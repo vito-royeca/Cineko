@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Cineko
 
 class TMDBTests: XCTestCase {
     
@@ -16,13 +17,6 @@ class TMDBTests: XCTestCase {
         super.setUp()
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
     
     override func tearDown() {
@@ -30,31 +24,121 @@ class TMDBTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-//        let httpMethod:HTTPMethod = .Get
-//        let urlString = "\(Constants.TMDB.ApiScheme)://\(Constants.TMDB.ApiHost)"
-//        let parameters = [
-//            Constants.TMDB.APIKey: Constants.TMDB.APIKeyValue
-//        ]
-//        
-//        let success = { (results: AnyObject!) in
-//            if let dict = results as? [String: AnyObject] {
-//                print("\(dict)")
-//                self.finished = true
-//                
-//            }
-//        }
-//        
-//        let failure = { (error: NSError?) in
-//            print("error=\(error)")
-//            self.finished = true
-//        }
-//        
-//        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    func testCredits() {
+        let creditID = "52fe4d5bc3a368484e1e4c55"
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)/credit/\(creditID)"
+        let parameters = [TMDBConstants.APIKey: Constants.TMDBAPIKeyValue]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                print("json=\(dict)")
+            }
+            
+            self.finished = true
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            print("error: \(error!)")
+            self.finished = true
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
         
         repeat {
             NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate:NSDate.distantFuture())
         } while !finished
     }
     
+    func testMovieDetails() {
+        let movieID = "209112"
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)/movie/\(movieID)"
+        let parameters = [TMDBConstants.APIKey: Constants.TMDBAPIKeyValue]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                print("json=\(dict)")
+            }
+            
+            self.finished = true
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            print("error: \(error!)")
+            self.finished = true
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        
+        repeat {
+            NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate:NSDate.distantFuture())
+        } while !finished
+    }
+    
+    func testDownloadInitialData() {
+        CoreDataManager.sharedInstance().setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)/job/list"
+        let parameters = [TMDBConstants.APIKey: Constants.TMDBAPIKeyValue]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let jobs = dict["jobs"] as? [[String: AnyObject]] {
+                    for job in jobs {
+                        
+                        if let department = job["department"] as? String,
+                            let lists = job["job_list"] as? [String] {
+                            
+                            for list in lists {
+                                let d = ["name": list, "department": department]
+                                ObjectManager.sharedInstance().findOrCreateJob(d)
+                            }
+                        }
+                        
+                    }
+                }
+                
+//                self.downloadGenres()
+                self.finished = true
+            }
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            print("error: \(error!)")
+            self.finished = true
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        
+        repeat {
+            NSRunLoop.currentRunLoop().runMode(NSDefaultRunLoopMode, beforeDate:NSDate.distantFuture())
+        } while !finished
+    }
+    
+    func downloadGenres() {
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)/job/list"
+        let parameters = [TMDBConstants.APIKey: Constants.TMDBAPIKeyValue]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let jobs = dict["jobs"] as? [[String: AnyObject]] {
+                    print("jobs=\(jobs)")
+                }
+            }
+            
+            self.finished = true
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            print("error: \(error!)")
+            self.finished = true
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
 }

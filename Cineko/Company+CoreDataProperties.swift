@@ -1,5 +1,5 @@
 //
-//  ProductionCompany+CoreDataProperties.swift
+//  Company+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.

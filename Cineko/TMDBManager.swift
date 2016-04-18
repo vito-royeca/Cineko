@@ -92,6 +92,9 @@ struct TMDBConstants {
         struct Images {
             static let Path = "/movie/{id}/images"
         }
+        struct Credits {
+            static let Path = "/movie/{id}/credits"
+        }
     }
     
     struct TVShows {
@@ -107,11 +110,17 @@ struct TMDBConstants {
         struct Images {
             static let Path = "/tv/{id}/images"
         }
+        struct Credits {
+            static let Path = "/tv/{id}/credits"
+        }
     }
     
     struct People {
         struct Popular {
             static let Path = "/person/popular"
+        }
+        struct Credits {
+            static let Path = "/person/{id}/combined_credits"
         }
     }
 }
@@ -123,6 +132,20 @@ enum ImageType : Int {
     case TVShowPoster
 }
 
+enum CreditType : String {
+    case Cast = "cast",
+        Crew = "crew",
+        GuestStar = "guest_star"
+}
+
+enum CreditParent : String {
+    case Job = "Job",
+        Movie = "Movie",
+        Person = "Person",
+        TVEpisode = "TVEpisode",
+        TVSeason = "TVSeason",
+        TVShow = "TVShow"
+}
 
 class TMDBManager: NSObject {
     let keychain = Keychain(server: "\(TMDBConstants.APIURL)", protocolType: .HTTPS)
@@ -329,6 +352,42 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
+    func movieCredits(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Credits.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let cast = dict["cast"] as? [[String: AnyObject]] {
+                    for c in cast {
+                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Cast, creditParent: .Movie, forObject: movie)
+                    }
+                }
+                
+                if let crew = dict["crew"] as? [[String: AnyObject]] {
+                    for c in crew {
+                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Crew, creditParent: .Movie, forObject: movie)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     // MARK: TMDB TV Shows
     func tvShowsOnTheAir(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {

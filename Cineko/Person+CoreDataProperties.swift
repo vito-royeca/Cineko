@@ -25,5 +25,5 @@ extension Person {
     @NSManaged var placeOfBirth: String?
     @NSManaged var popularity: NSNumber?
     @NSManaged var profilePath: String?
-    
+    @NSManaged var credits: NSSet?
 }

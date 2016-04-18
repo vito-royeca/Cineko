@@ -36,6 +36,7 @@ extension Movie {
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
     @NSManaged var backdrops: NSSet?
+    @NSManaged var credits: NSSet?
     @NSManaged var genres: NSSet?
     @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?

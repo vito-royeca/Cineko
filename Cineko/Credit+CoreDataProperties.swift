@@ -13,6 +13,17 @@ import Foundation
 import CoreData
 
 extension Credit {
+    
+    @NSManaged var castID: NSNumber?
+    @NSManaged var character: String?
+    @NSManaged var creditID: String?
+    @NSManaged var creditType: String?
+    @NSManaged var order: NSNumber?
 
-
+    @NSManaged var job: Job?
+    @NSManaged var movie: Movie?
+    @NSManaged var person:Person?
+    @NSManaged var tvEpisode:TVEpisode?
+    @NSManaged var tvSeason:TVSeason?
+    @NSManaged var tvShow:TVShow?
 }

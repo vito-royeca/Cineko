@@ -23,6 +23,21 @@ class CoreDataManager: NSObject {
     func setup(sqliteFile: String, modelFile: String) {
         self.sqliteFile = sqliteFile
         self.modelFile = modelFile
+        
+        let documentPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first
+        let storePath = "\(documentPath!)/\(sqliteFile)"
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(storePath) {
+            let preloadPath = "\(NSBundle.mainBundle().bundlePath)/\(sqliteFile)"
+            
+            if NSFileManager.defaultManager().fileExistsAtPath(preloadPath) {
+                do {
+                    try NSFileManager.defaultManager().copyItemAtPath(preloadPath, toPath: storePath)
+                } catch {
+                    print("Error copying \(sqliteFile)")
+                }
+            }
+        }
     }
     
     // MARK: - The Core Data stack. The code has been moved, unaltered, from the AppDelegate.

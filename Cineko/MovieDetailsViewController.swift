@@ -23,6 +23,8 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Variables
     var movieID:NSManagedObjectID?
     var backdropFetchRequest:NSFetchRequest?
+    var castFetchRequest:NSFetchRequest?
+    var crewFetchRequest:NSFetchRequest?
     var posterFetchRequest:NSFetchRequest?
     
     // MARK: Actions
@@ -47,6 +49,8 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         
         if TMDBManager.sharedInstance().hasSessionID() {
@@ -70,6 +74,7 @@ class MovieDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         loadDetails()
         loadPhotos()
+        loadCastAndCrew()
     }
     
     // MARK: Custom Methods
@@ -141,6 +146,52 @@ class MovieDetailsViewController: UIViewController {
         }
     }
 
+    func loadCastAndCrew() {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                } else {
+                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.castFetchRequest!.predicate = NSPredicate(format: "movie = %@ and creditType = %@", movie, "cast")
+                    self.castFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "order", ascending: true)]
+                    
+                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.crewFetchRequest!.predicate = NSPredicate(format: "movie = %@ and creditType = %@", movie, "crew")
+                    self.crewFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "job.department", ascending: true),
+                        NSSortDescriptor(key: "job.name", ascending: true)]
+                    
+                    performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TMDBManager.sharedInstance().movieCredits(movie.movieID!, completion: completion)
+            } catch {}
+        }
+    }
+    
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
@@ -195,6 +246,30 @@ class MovieDetailsViewController: UIViewController {
             }
         case 5:
             if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 0
+                c.titleLabel.text = "Cast"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = castFetchRequest
+                c.displayType = .Profile
+                c.showCaption = true
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 6:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = 0
+                c.titleLabel.text = "Crew"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = crewFetchRequest
+                c.displayType = .Profile
+                c.showCaption = true
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 7:
+            if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 4
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
@@ -223,7 +298,7 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 8
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -241,6 +316,10 @@ extension MovieDetailsViewController : UITableViewDataSource {
         case 4:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
         case 5:
+            cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
+        case 6:
+            cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
+        case 7:
             cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -271,9 +350,7 @@ extension MovieDetailsViewController : UITableViewDelegate {
             return UITableViewAutomaticDimension
         case 3:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 4:
-            return ThumbnailTableViewCell.Height
-        case 5:
+        case 4, 5, 6, 7:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension

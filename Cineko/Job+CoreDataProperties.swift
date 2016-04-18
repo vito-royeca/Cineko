@@ -1,8 +1,8 @@
 //
-//  Genre+CoreDataProperties.swift
+//  Job+CoreDataProperties.swift
 //  Cineko
 //
-//  Created by Jovit Royeca on 06/04/2016.
+//  Created by Jovit Royeca on 18/04/2016.
 //  Copyright © 2016 Jovito Royeca. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -12,12 +12,9 @@
 import Foundation
 import CoreData
 
-extension Genre {
+extension Job {
 
-    @NSManaged var genreID: NSNumber?
-    @NSManaged var movieGenre: NSNumber?
     @NSManaged var name: String?
-    @NSManaged var tvGenre: NSNumber?
-    @NSManaged var movies: NSSet?
-    @NSManaged var tvShows: NSSet?
+    @NSManaged var department: String?
+    @NSManaged var credits: NSSet?
 }

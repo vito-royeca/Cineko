@@ -160,7 +160,7 @@ class ThumbnailTableViewCell: UITableViewCell {
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
             cell.captionLabel.text = displayable.caption()
-            cell.captionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+//            cell.captionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }
     }

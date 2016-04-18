@@ -21,6 +21,7 @@ extension TVSeason {
     @NSManaged var posterPath: String?
     @NSManaged var seasonNumber: NSNumber?
     @NSManaged var tvSeasonID: NSNumber?
+    @NSManaged var credits: NSSet?
     @NSManaged var tvEpisodes: NSSet?
     @NSManaged var tvShow: TVShow?
 }

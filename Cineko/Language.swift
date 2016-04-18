@@ -1,5 +1,5 @@
 //
-//  SpokenLanguage.swift
+//  Language.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 06/04/2016.
@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-
 
 class Language: NSManagedObject {
 

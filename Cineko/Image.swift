@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class Image: NSManagedObject {
 
     struct Keys {

@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class Network: NSManagedObject {
 
     struct Keys {

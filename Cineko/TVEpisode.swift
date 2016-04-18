@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 class TVEpisode: NSManagedObject {
 
     struct Keys {
