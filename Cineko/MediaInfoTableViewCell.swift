@@ -23,7 +23,9 @@ class MediaInfoTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-//        overviewLabel.sizeToFit()
+        dateLabel.adjustsFontSizeToFitWidth = true
+        durationLabel.adjustsFontSizeToFitWidth = true
+        ratingLabel.adjustsFontSizeToFitWidth = true
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

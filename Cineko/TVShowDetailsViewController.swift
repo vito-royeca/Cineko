@@ -63,6 +63,7 @@ class TVShowDetailsViewController: UIViewController {
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
         titleLabel!.textColor = UIColor.whiteColor()
+        titleLabel!.textAlignment = .Center
         titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
         titleLabel!.numberOfLines = 0
         titleLabel!.lineBreakMode = .ByWordWrapping
@@ -260,6 +261,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.delegate = self
                 c.loadData()
             }
         case 5:
@@ -272,6 +274,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.delegate = self
                 c.loadData()
             }
         case 6:
@@ -302,6 +305,7 @@ class TVShowDetailsViewController: UIViewController {
     }
 }
 
+// MARK: UITableViewDataSource
 extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
@@ -334,6 +338,7 @@ extension TVShowDetailsViewController : UITableViewDataSource {
     }
 }
 
+// MARK: UITableViewDelegate
 extension TVShowDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
@@ -349,5 +354,27 @@ extension TVShowDetailsViewController : UITableViewDelegate {
         default:
             return UITableViewAutomaticDimension
         }
+    }
+}
+
+// MARK: ThumbnailTableViewCellDelegate
+extension TVShowDetailsViewController : ThumbnailTableViewCellDelegate {
+    func seeAllAction(tag: Int) {
+        print("type = \(tag)")
+    }
+    
+    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {
+        switch tag {
+        case 4, 5:
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
+                let navigationController = navigationController {
+                let credit = displayable as! Credit
+                controller.personID = credit.person!.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
+        default:
+            return
+        }
+        
     }
 }

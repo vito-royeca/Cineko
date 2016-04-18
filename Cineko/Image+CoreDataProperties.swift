@@ -25,4 +25,5 @@ extension Image {
     @NSManaged var moviePoster: Movie?
     @NSManaged var tvShowBackdrop: TVShow?
     @NSManaged var tvShowPoster: TVShow?
+    @NSManaged var personProfile: Person?
 }

@@ -38,7 +38,7 @@ class Person: NSManagedObject {
     
     func update(dictionary: [String : AnyObject]) {
         adult = dictionary[Keys.Adult] as? NSNumber
-        alsoKnownAs = dictionary[Keys.AlsoKnownAs] as? NSData
+//        alsoKnownAs = dictionary[Keys.AlsoKnownAs] as? NSData
         biography = dictionary[Keys.Biography] as? String
         birthday = dictionary[Keys.Birthday] as? String
         deathday = dictionary[Keys.Deathday] as? String
@@ -46,7 +46,7 @@ class Person: NSManagedObject {
         name = dictionary[Keys.Name] as? String
         personID = dictionary[Keys.PersonID] as? NSNumber
         placeOfBirth = dictionary[Keys.PlaceOfBirth] as? String
-        popularity = dictionary[Keys.Popularity] as? NSNumber
+//        popularity = dictionary[Keys.Popularity] as? NSNumber
         profilePath = dictionary[Keys.ProfilePath] as? String
     }
 

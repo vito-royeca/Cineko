@@ -205,9 +205,14 @@ extension FeaturedViewController : ThumbnailTableViewCellDelegate {
                 navigationController.pushViewController(controller, animated: true)
             }
         case 2:
-            print("\(tag)")
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
+                let navigationController = navigationController {
+                let person = displayable as! Person
+                controller.personID = person.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
         default:
-            print("\(tag)")
+            return
         }
         
     }

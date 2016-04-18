@@ -119,6 +119,12 @@ struct TMDBConstants {
         struct Popular {
             static let Path = "/person/popular"
         }
+        struct Details {
+            static let Path = "/person/{id}"
+        }
+        struct Images {
+            static let Path = "/person/{id}/images"
+        }
         struct Credits {
             static let Path = "/person/{id}/combined_credits"
         }
@@ -130,6 +136,7 @@ enum ImageType : Int {
     case MoviePoster
     case TVShowBackdrop
     case TVShowPoster
+    case PersonProfile
 }
 
 enum CreditType : String {
@@ -568,6 +575,60 @@ class TMDBManager: NSObject {
         
         let failure = { (error: NSError?) -> Void in
             completion(arrayIDs: personIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func personDetails(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Details.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                ObjectManager.sharedInstance().updatePerson(dict)
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func personImages(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Images.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let person = ObjectManager.sharedInstance().findOrCreatePerson([Person.Keys.PersonID: personID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let profiles = dict["profiles"] as? [[String: AnyObject]] {
+                    for profile in profiles {
+                        ObjectManager.sharedInstance().findOrCreateImage(profile, imageType: .PersonProfile, forObject: person)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

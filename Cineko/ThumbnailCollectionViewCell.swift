@@ -20,6 +20,7 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        captionLabel.adjustsFontSizeToFitWidth = true
     }
 
 }

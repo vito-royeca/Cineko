@@ -105,7 +105,7 @@
             </objects>
             <point key="canvasLocation" x="1902" y="-863"/>
         </scene>
-        <!--Movie Details-->
+        <!--Movie-->
         <scene sceneID="NhU-hz-64w">
             <objects>
                 <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
@@ -198,7 +198,7 @@
                             <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="rIz-76-z6w"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY">
+                    <navigationItem key="navigationItem" title="Movie" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
                             <barButtonItem enabled="NO" image="star" id="aYz-1u-SRe">
                                 <connections>
@@ -504,7 +504,7 @@
             </objects>
             <point key="canvasLocation" x="2792" y="-863"/>
         </scene>
-        <!--TV Show Details-->
+        <!--TV Show-->
         <scene sceneID="nVb-95-rf2">
             <objects>
                 <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
@@ -598,7 +598,7 @@
                             <constraint firstItem="PKf-Af-LCm" firstAttribute="top" secondItem="wnb-Z9-7bp" secondAttribute="bottom" id="gaq-Ik-ezu"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq">
+                    <navigationItem key="navigationItem" title="TV Show" id="60C-GX-mVq">
                         <rightBarButtonItems>
                             <barButtonItem enabled="NO" image="star" id="Jah-Y1-GEw">
                                 <connections>
@@ -627,6 +627,62 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uPY-oa-goJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3604" y="-179"/>
+        </scene>
+        <!--Person Details View Controller-->
+        <scene sceneID="BSS-QG-tQ8">
+            <objects>
+                <viewController storyboardIdentifier="PersonDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="SIe-LV-vPe" customClass="PersonDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sKz-Qw-PMb"/>
+                        <viewControllerLayoutGuide type="bottom" id="VdI-eJ-WiF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EQ7-Cd-dMB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XZ9-su-1vm">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="QDq-hZ-KmJ" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QDq-hZ-KmJ" id="jh1-te-trU">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="biographyTableViewCell" id="n14-PP-9DK" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n14-PP-9DK" id="BTY-vz-AyO">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="SIe-LV-vPe" id="oSM-r6-CNO"/>
+                                    <outlet property="delegate" destination="SIe-LV-vPe" id="rjv-77-hns"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XZ9-su-1vm" firstAttribute="leading" secondItem="EQ7-Cd-dMB" secondAttribute="leading" id="Coh-LI-fy9"/>
+                            <constraint firstItem="XZ9-su-1vm" firstAttribute="bottom" secondItem="VdI-eJ-WiF" secondAttribute="top" id="K5r-sb-gIv"/>
+                            <constraint firstAttribute="trailing" secondItem="XZ9-su-1vm" secondAttribute="trailing" id="pSH-mG-vTf"/>
+                            <constraint firstItem="XZ9-su-1vm" firstAttribute="top" secondItem="sKz-Qw-PMb" secondAttribute="bottom" id="ppb-QL-6Ta"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="eX0-jh-5k0"/>
+                    <connections>
+                        <outlet property="tableView" destination="XZ9-su-1vm" id="a9O-4y-NHs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TKn-H3-oCK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3604" y="600"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pe2-EG-hnO">
@@ -664,6 +720,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N89-N3-G82" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1082" y="625"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="x4G-Zs-YRW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KVD-Hn-NAu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ai1-S3-yCr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="SIe-LV-vPe" kind="relationship" relationship="rootViewController" id="Qwd-yg-7q5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vkl-cH-WQs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2792" y="600"/>
         </scene>
     </scenes>
     <resources>

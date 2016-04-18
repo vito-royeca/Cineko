@@ -152,6 +152,23 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Person", objectKey: "personID", objectValue: dict[Person.Keys.PersonID] as! NSObject, initializer: initializer) as! Person
     }
     
+    func updatePerson(dict: [String: AnyObject]) {
+        if let personID = dict[Person.Keys.PersonID] as? NSNumber {
+            let fetchRequest = NSFetchRequest(entityName: "Person")
+            fetchRequest.predicate = NSPredicate(format: "personID == %@", personID)
+            
+            do {
+                if let m = try privateContext.executeFetchRequest(fetchRequest).first as? Person {
+                    m.update(dict)
+                    CoreDataManager.sharedInstance().savePrivateContext()
+                }
+            } catch let error as NSError {
+                print("Error in fetch \(error), \(error.userInfo)")
+            }
+        }
+    }
+
+    
     func findOrCreateGenre(dict: [String: AnyObject]) -> Genre {
         let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Genre in
             return Genre(dictionary: dict, context: context)
@@ -217,6 +234,8 @@ class ObjectManager: NSObject {
             image.tvShowBackdrop = object as? TVShow
         case .TVShowPoster:
             image.tvShowPoster = object as? TVShow
+        case .PersonProfile:
+            image.personProfile = object as? Person
         }
         CoreDataManager.sharedInstance().savePrivateContext()
 
