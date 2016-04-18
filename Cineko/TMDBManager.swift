@@ -505,6 +505,42 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
+    func tvShowCredits(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Credits.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let cast = dict["cast"] as? [[String: AnyObject]] {
+                    for c in cast {
+                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Cast, creditParent: .TVShow, forObject: tvShow)
+                    }
+                }
+                
+                if let crew = dict["crew"] as? [[String: AnyObject]] {
+                    for c in crew {
+                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     // MARK: TMDB People
     func peoplePopular(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {

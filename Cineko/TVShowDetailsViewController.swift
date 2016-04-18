@@ -24,6 +24,8 @@ class TVShowDetailsViewController: UIViewController {
     var titleLabel:UILabel?
     var tvShowID:NSManagedObjectID?
     var backdropFetchRequest:NSFetchRequest?
+    var castFetchRequest:NSFetchRequest?
+    var crewFetchRequest:NSFetchRequest?
     var tvSeasonFetchRequest:NSFetchRequest?
     
     // MARK: Actions
@@ -47,6 +49,8 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
         
         if TMDBManager.sharedInstance().hasSessionID() {
@@ -85,7 +89,8 @@ class TVShowDetailsViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         loadDetails()
-        loadBackdrops()
+        loadPhotos()
+        loadCastAndCrew()
     }
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -112,30 +117,18 @@ class TVShowDetailsViewController: UIViewController {
                         NSSortDescriptor(key: "seasonNumber", ascending: false)]
                     
                     performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
                         self.tableView.reloadData()
                     }
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
     }
     
-    func loadBackdrops() {
+    func loadPhotos() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
@@ -152,7 +145,7 @@ class TVShowDetailsViewController: UIViewController {
                         NSSortDescriptor(key: "voteAverage", ascending: false)]
                     
                     performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }
                         self.tableView.reloadData()
@@ -161,10 +154,44 @@ class TVShowDetailsViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
+            } catch {}
+        }
+    }
+    
+    func loadCastAndCrew() {
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                } else {
+                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.castFetchRequest!.predicate = NSPredicate(format: "tvShow = %@ and creditType = %@", tvShow, "cast")
+                    self.castFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "order", ascending: true)]
+                    
+                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow = %@ and creditType = %@", tvShow, "crew")
+                    self.crewFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "job.department", ascending: true),
+                        NSSortDescriptor(key: "job.name", ascending: true)]
+                    
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().tvShowCredits(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
     }
@@ -226,6 +253,30 @@ class TVShowDetailsViewController: UIViewController {
         case 4:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
+                c.titleLabel.text = "Cast"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = castFetchRequest
+                c.displayType = .Profile
+                c.showCaption = true
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 5:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
+                c.titleLabel.text = "Crew"
+                c.titleLabel.textColor = UIColor.whiteColor()
+                c.seeAllButton.hidden = true
+                c.fetchRequest = crewFetchRequest
+                c.displayType = .Profile
+                c.showCaption = true
+                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.loadData()
+            }
+        case 6:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
                 c.titleLabel.text = "Seasons"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -253,7 +304,7 @@ class TVShowDetailsViewController: UIViewController {
 
 extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 7
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -269,6 +320,10 @@ extension TVShowDetailsViewController : UITableViewDataSource {
         case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
         case 4:
+            cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
+        case 5:
+            cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
+        case 6:
             cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -289,7 +344,7 @@ extension TVShowDetailsViewController : UITableViewDelegate {
             return UITableViewAutomaticDimension
         case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 3, 4:
+        case 3, 4, 5, 6:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
