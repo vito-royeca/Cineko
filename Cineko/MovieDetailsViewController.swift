@@ -21,6 +21,7 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
+    var titleLabel: UILabel?
     var movieID:NSManagedObjectID?
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
@@ -44,7 +45,6 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
@@ -59,14 +59,30 @@ class MovieDetailsViewController: UIViewController {
             rateButton.enabled = true
         }
         
+        // manually setup the floating title header
+        titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
+        titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+        titleLabel!.textColor = UIColor.whiteColor()
+        titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
+        titleLabel!.numberOfLines = 0
+        titleLabel!.lineBreakMode = .ByWordWrapping
+        titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
+        tableView.addSubview(titleLabel!)
+        
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
             if let posterPath = movie.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(posterPath)")
                 let backgroundView = UIImageView()
                 tableView.backgroundView = backgroundView
                 backgroundView.sd_setImageWithURL(url)
             }
+            
+            titleLabel!.text = movie.title
+            titleLabel!.sizeToFit()
+            // resize the frame to cover the whole width
+            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
     }
     
@@ -75,6 +91,12 @@ class MovieDetailsViewController: UIViewController {
         loadDetails()
         loadPhotos()
         loadCastAndCrew()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var rect = titleLabel!.frame
+        rect.origin.y = min(0, tableView.contentOffset.y)
+        titleLabel!.frame = rect
     }
     
     // MARK: Custom Methods
@@ -195,23 +217,12 @@ class MovieDetailsViewController: UIViewController {
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
-            if let c = cell as? DynamicHeightTableViewCell {
-                if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
-                    
-                    if let title = movie.title {
-                        c.dynamicLabel.text = title
-                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
-                    }
-                }
-            }
-        case 1:
             cell.contentView.backgroundColor = UIColor.clearColor()
             if let backgroundView = cell.backgroundView {
                 backgroundView.backgroundColor = UIColor.clearColor()
             }
             cell.backgroundColor = UIColor.clearColor()
-        case 2:
+        case 1:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
                     let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
@@ -225,7 +236,7 @@ class MovieDetailsViewController: UIViewController {
                     }
                 }
             }
-        case 3:
+        case 2:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
                     let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
@@ -233,7 +244,7 @@ class MovieDetailsViewController: UIViewController {
                     c.dynamicLabel.text = movie.overview
                 }
             }
-        case 4:
+        case 3:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 0
                 c.titleLabel.text = "Photos"
@@ -244,7 +255,7 @@ class MovieDetailsViewController: UIViewController {
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.loadData()
             }
-        case 5:
+        case 4:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 0
                 c.titleLabel.text = "Cast"
@@ -256,7 +267,7 @@ class MovieDetailsViewController: UIViewController {
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.loadData()
             }
-        case 6:
+        case 5:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 0
                 c.titleLabel.text = "Crew"
@@ -268,7 +279,7 @@ class MovieDetailsViewController: UIViewController {
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.loadData()
             }
-        case 7:
+        case 6:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = 4
                 c.titleLabel.text = "Posters"
@@ -298,7 +309,7 @@ class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        return 7
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -306,20 +317,18 @@ extension MovieDetailsViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell", forIndexPath: indexPath)
-        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
-        case 2:
+        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-        case 4:
+        case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-        case 5:
+        case 4:
             cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
-        case 6:
+        case 5:
             cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
-        case 7:
+        case 6:
             cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -328,14 +337,6 @@ extension MovieDetailsViewController : UITableViewDataSource {
         configureCell(cell!, indexPath: indexPath)
         return cell!
     }
-    
-//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if let movieID = movieID {
-//            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
-//            return movie.title
-//        }
-//        return nil
-//    }
 }
 
 extension MovieDetailsViewController : UITableViewDelegate {
@@ -343,14 +344,12 @@ extension MovieDetailsViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            return dynamicHeightForCell("titleTableViewCell", indexPath: indexPath)
+            return 180 + titleLabel!.frame.size.height
         case 1:
-            return 180
-        case 2:
             return UITableViewAutomaticDimension
-        case 3:
+        case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 4, 5, 6, 7:
+        case 3, 4, 5, 6:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension

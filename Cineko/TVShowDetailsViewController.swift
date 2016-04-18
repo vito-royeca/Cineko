@@ -21,6 +21,7 @@ class TVShowDetailsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: Variables
+    var titleLabel:UILabel?
     var tvShowID:NSManagedObjectID?
     var backdropFetchRequest:NSFetchRequest?
     var tvSeasonFetchRequest:NSFetchRequest?
@@ -42,7 +43,6 @@ class TVShowDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "titleTableViewCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
@@ -55,6 +55,17 @@ class TVShowDetailsViewController: UIViewController {
             rateButton.enabled = true
         }
         
+        // manually setup the floating title header
+        titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
+        titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+        titleLabel!.textColor = UIColor.whiteColor()
+        titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
+        titleLabel!.numberOfLines = 0
+        titleLabel!.lineBreakMode = .ByWordWrapping
+        titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
+        tableView.addSubview(titleLabel!)
+        
+        
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             if let posterPath = tvShow.posterPath {
@@ -63,6 +74,11 @@ class TVShowDetailsViewController: UIViewController {
                 tableView.backgroundView = backgroundView
                 backgroundView.sd_setImageWithURL(url)
             }
+            
+            titleLabel!.text = tvShow.name
+            titleLabel!.sizeToFit()
+            // resize the frame to cover the whole width
+            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
     }
 
@@ -72,6 +88,12 @@ class TVShowDetailsViewController: UIViewController {
         loadBackdrops()
     }
 
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var rect = titleLabel!.frame
+        rect.origin.y = min(0, tableView.contentOffset.y)
+        titleLabel!.frame = rect
+    }
+    
     // MARK: Custom Methods
     func loadDetails() {
         if let tvShowID = tvShowID {
@@ -93,6 +115,9 @@ class TVShowDetailsViewController: UIViewController {
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
@@ -100,6 +125,9 @@ class TVShowDetailsViewController: UIViewController {
             
             do {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
@@ -144,23 +172,12 @@ class TVShowDetailsViewController: UIViewController {
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
-            if let c = cell as? DynamicHeightTableViewCell {
-                if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
-                    
-                    if let name = tvShow.name {
-                        c.dynamicLabel.text = name
-                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
-                    }
-                }
-            }
-        case 1:
             cell.contentView.backgroundColor = UIColor.clearColor()
             if let backgroundView = cell.backgroundView {
                 backgroundView.backgroundColor = UIColor.clearColor()
             }
             cell.backgroundColor = UIColor.clearColor()
-        case 2:
+        case 1:
             if let c = cell as? MediaInfoTableViewCell {
                 if let tvShowID = tvShowID {
                     let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
@@ -187,7 +204,7 @@ class TVShowDetailsViewController: UIViewController {
                     }
                 }
             }
-        case 3:
+        case 2:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
                     let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
@@ -195,9 +212,9 @@ class TVShowDetailsViewController: UIViewController {
                     c.dynamicLabel.text = tvShow.overview
                 }
             }
-        case 4:
+        case 3:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 0
+                c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -206,9 +223,9 @@ class TVShowDetailsViewController: UIViewController {
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.loadData()
             }
-        case 5:
+        case 4:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 4
+                c.tag = indexPath.row
                 c.titleLabel.text = "Seasons"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -236,7 +253,7 @@ class TVShowDetailsViewController: UIViewController {
 
 extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 5
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -244,16 +261,14 @@ extension TVShowDetailsViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("titleTableViewCell", forIndexPath: indexPath)
-        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
-        case 2:
+        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-        case 4:
+        case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-        case 5:
+        case 4:
             cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
@@ -269,16 +284,12 @@ extension TVShowDetailsViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            return dynamicHeightForCell("titleTableViewCell", indexPath: indexPath)
+            return 180 + titleLabel!.frame.size.height
         case 1:
-            return 180
-        case 2:
             return UITableViewAutomaticDimension
-        case 3:
+        case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 4:
-            return ThumbnailTableViewCell.Height
-        case 5:
+        case 3, 4:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
