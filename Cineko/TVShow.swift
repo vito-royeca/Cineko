@@ -51,14 +51,12 @@ class TVShow: NSManagedObject {
         firstAirDate = dictionary[Keys.FirstAirDate] as? String
         homepage = dictionary[Keys.Homepage] as? String
         inProduction = dictionary[Keys.InProduction] as? NSNumber
-        languages = dictionary[Keys.Languages] as? NSData
         lastAirDate = dictionary[Keys.LastAirDate] as? String
         name = dictionary[Keys.Name] as? String
         numberOfEpisodes = dictionary[Keys.NumberOfEpisodes] as? NSNumber
         numberOfSeasons = dictionary[Keys.NumberOfSeasons] as? NSNumber
         originalLanguage = dictionary[Keys.OriginalLanguage] as? String
         originalName = dictionary[Keys.OriginalName] as? String
-        originCountry = dictionary[Keys.OriginCountry] as? NSData
         overview = dictionary[Keys.Overview] as? String
         popularity = dictionary[Keys.Popularity] as? NSNumber
         posterPath = dictionary[Keys.PosterPath] as? String

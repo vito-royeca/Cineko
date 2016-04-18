@@ -174,14 +174,12 @@
         <attribute name="firstAirDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inProduction" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="languages" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="lastAirDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOfEpisodes" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="numberOfSeasons" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originCountry" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -219,6 +217,6 @@
         <element name="Person" positionX="-18" positionY="27" width="128" height="210"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="210"/>
         <element name="TVSeason" positionX="-9" positionY="54" width="128" height="180"/>
-        <element name="TVShow" positionX="-36" positionY="9" width="128" height="433"/>
+        <element name="TVShow" positionX="-36" positionY="9" width="128" height="405"/>
     </elements>
 </model>

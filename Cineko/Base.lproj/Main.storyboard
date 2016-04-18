@@ -9,7 +9,7 @@
         <!--Movies View Controller-->
         <scene sceneID="bs0-c9-CzO">
             <objects>
-                <viewController id="0KK-iT-w09" customClass="MoviesViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="0KK-iT-w09" customClass="MoviesViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="me9-IV-3pO"/>
                         <viewControllerLayoutGuide type="bottom" id="pby-mq-XKC"/>
@@ -25,10 +25,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ggp-WM-9pH" secondAttribute="trailing" id="HoE-yR-NxH"/>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="leading" secondItem="Sdw-Vb-l7P" secondAttribute="leading" id="OFR-tv-NZd"/>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="bottom" secondItem="pby-mq-XKC" secondAttribute="top" id="mrS-Rc-4uh"/>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="top" secondItem="me9-IV-3pO" secondAttribute="bottom" id="smP-tX-vJG"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="top" secondItem="me9-IV-3pO" secondAttribute="bottom" id="OX5-Rf-JOK"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="leading" secondItem="Sdw-Vb-l7P" secondAttribute="leading" id="VA5-l7-q0e"/>
+                            <constraint firstAttribute="trailing" secondItem="ggp-WM-9pH" secondAttribute="trailing" id="cZd-3h-boO"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="bottom" secondItem="pby-mq-XKC" secondAttribute="top" id="y2B-rc-eCW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cpj-LC-xy4"/>
@@ -183,10 +183,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="BFG-MM-wYV"/>
-                            <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="EvI-aC-Awl"/>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="bottom" secondItem="Q23-FN-YyM" secondAttribute="top" id="JVZ-7m-cA1"/>
-                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="qLp-Rv-VUg" secondAttribute="bottom" id="eRD-Ti-HTO"/>
+                            <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="UWu-f0-DBb"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="top" secondItem="qLp-Rv-VUg" secondAttribute="bottom" id="VsY-5A-ZPg"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="bottom" secondItem="Q23-FN-YyM" secondAttribute="top" id="b4n-L8-lky"/>
+                            <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="rIz-76-z6w"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY">

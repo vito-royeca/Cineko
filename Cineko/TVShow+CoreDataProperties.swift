@@ -18,14 +18,12 @@ extension TVShow {
     @NSManaged var firstAirDate: String?
     @NSManaged var homepage: String?
     @NSManaged var inProduction: NSNumber?
-    @NSManaged var languages: NSData?
     @NSManaged var lastAirDate: String?
     @NSManaged var name: String?
     @NSManaged var numberOfEpisodes: NSNumber?
     @NSManaged var numberOfSeasons: NSNumber?
     @NSManaged var originalLanguage: String?
     @NSManaged var originalName: String?
-    @NSManaged var originCountry: NSData?
     @NSManaged var overview: String?
     @NSManaged var popularity: NSNumber?
     @NSManaged var posterPath: String?

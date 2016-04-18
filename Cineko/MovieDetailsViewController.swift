@@ -57,10 +57,12 @@ class MovieDetailsViewController: UIViewController {
         
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
-            let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(movie.posterPath!)")
-            let backgroundView = UIImageView()
-            tableView.backgroundView = backgroundView
-            backgroundView.sd_setImageWithURL(url)
+            if let posterPath = movie.posterPath {
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(posterPath)")
+                let backgroundView = UIImageView()
+                tableView.backgroundView = backgroundView
+                backgroundView.sd_setImageWithURL(url)
+            }
         }
     }
     
@@ -69,7 +71,7 @@ class MovieDetailsViewController: UIViewController {
         loadDetails()
         loadPhotos()
     }
-
+    
     // MARK: Custom Methods
     func loadDetails() {
         if let movieID = movieID {
@@ -176,11 +178,8 @@ class MovieDetailsViewController: UIViewController {
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
                     let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
-                    
-                    if let overview = movie.overview {
-                        c.dynamicLabel.text = overview
-                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    }
+                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                    c.dynamicLabel.text = movie.overview
                 }
             }
         case 4:
@@ -251,13 +250,13 @@ extension MovieDetailsViewController : UITableViewDataSource {
         return cell!
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
-            return movie.title
-        }
-        return nil
-    }
+//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if let movieID = movieID {
+//            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+//            return movie.title
+//        }
+//        return nil
+//    }
 }
 
 extension MovieDetailsViewController : UITableViewDelegate {
@@ -281,3 +280,4 @@ extension MovieDetailsViewController : UITableViewDelegate {
         }
     }
 }
+

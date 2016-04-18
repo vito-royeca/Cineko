@@ -42,7 +42,7 @@ class FeaturedViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadFeaturedMovies() {
-        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 performUIUpdatesOnMain {
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
@@ -50,7 +50,7 @@ class FeaturedViewController: UIViewController {
                 
             } else {
                 self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
-                self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs!)
+                self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
                 self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.nowShowingFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "releaseDate", ascending: true),
@@ -75,7 +75,7 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedTVShows() {
-        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 performUIUpdatesOnMain {
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
@@ -83,7 +83,7 @@ class FeaturedViewController: UIViewController {
                 
             } else {
                 self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs!)
+                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
                 self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.airingTodayFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "name", ascending: true)]
@@ -106,7 +106,7 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedPeople() {
-        let completion = { (arrayIDs: [AnyObject]?, error: NSError?) in
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 performUIUpdatesOnMain {
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
@@ -114,7 +114,7 @@ class FeaturedViewController: UIViewController {
                 
             } else {
                 self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs!)
+                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
                 self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.popularPeopleFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),

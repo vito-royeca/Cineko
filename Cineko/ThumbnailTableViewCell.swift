@@ -39,6 +39,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     var displayType:DisplayType?
     var showCaption = false
     private var imageSizeAdjusted = false
+    private var noDataLabel:UILabel?
     var fetchRequest:NSFetchRequest?
     lazy var fetchedResultsController: NSFetchedResultsController = {
         
@@ -78,14 +79,38 @@ class ThumbnailTableViewCell: UITableViewCell {
     
     // MARK: Custom methods
     func loadData() {
+        var items = 0
+        
         if (fetchRequest) != nil {
             do {
                 try fetchedResultsController.performFetch()
             } catch {}
             fetchedResultsController.delegate = self
+            
+            if let sections = fetchedResultsController.sections {
+                let sectionInfo = sections[0]
+                items = sectionInfo.numberOfObjects
+            }
         }
         
-        collectionView.reloadData()
+        if items > 0 {
+            if let noDataLabel = noDataLabel {
+                noDataLabel.removeFromSuperview()
+            }
+            collectionView.reloadData()
+        } else {
+            if noDataLabel == nil {
+                let width = collectionView.frame.size.width/2
+                let height = collectionView.frame.size.height/2
+                let x = collectionView.frame.size.width/4
+                let y = collectionView.frame.size.height/4
+                noDataLabel = UILabel(frame: CGRectMake(x, y, width, height))
+                noDataLabel!.textAlignment = .Center
+                noDataLabel!.text = "No Data Found"
+                noDataLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+                collectionView.addSubview(noDataLabel!)
+            }
+        }
     }
     
     func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
@@ -105,10 +130,8 @@ class ThumbnailTableViewCell: UITableViewCell {
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 if self.showCaption {
-                    if let caption = displayable.caption() {
-                        cell.captionLabel.text = caption
-                        cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                    }
+                    cell.captionLabel.text = displayable.caption()
+                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
                 } else {
                     cell.captionLabel.text = nil
                     cell.captionLabel.backgroundColor = nil
@@ -136,11 +159,9 @@ class ThumbnailTableViewCell: UITableViewCell {
             
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
-            if let caption = displayable.caption() {
-                cell.captionLabel.text = caption
-                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-//                cell.captionLabel.textColor = UIColor.whiteColor()
-            }
+            cell.captionLabel.text = displayable.caption()
+            cell.captionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }
     }
 }

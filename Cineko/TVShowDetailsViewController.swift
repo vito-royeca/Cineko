@@ -57,10 +57,12 @@ class TVShowDetailsViewController: UIViewController {
         
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
-            let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(tvShow.posterPath!)")
-            let backgroundView = UIImageView()
-            tableView.backgroundView = backgroundView
-            backgroundView.sd_setImageWithURL(url)
+            if let posterPath = tvShow.posterPath {
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(posterPath)")
+                let backgroundView = UIImageView()
+                tableView.backgroundView = backgroundView
+                backgroundView.sd_setImageWithURL(url)
+            }
         }
     }
 
@@ -189,11 +191,8 @@ class TVShowDetailsViewController: UIViewController {
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
                     let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
-                    
-                    if let overview = tvShow.overview {
-                        c.dynamicLabel.text = overview
-                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    }
+                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                    c.dynamicLabel.text = tvShow.overview
                 }
             }
         case 4:
@@ -209,16 +208,8 @@ class TVShowDetailsViewController: UIViewController {
             }
         case 5:
             if let c = cell as? ThumbnailTableViewCell {
-                var seasons = 0
-                if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
-                    
-                    if let numberOfSeasons = tvShow.numberOfSeasons {
-                        seasons = numberOfSeasons.integerValue
-                    }
-                }
                 c.tag = 4
-                c.titleLabel.text = "Seasons (\(seasons))"
+                c.titleLabel.text = "Seasons"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
                 c.fetchRequest = tvSeasonFetchRequest
