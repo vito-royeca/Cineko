@@ -107,23 +107,26 @@ class TVShowDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
+                self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@", tvShow.tvShowID!)
+                self.tvSeasonFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "seasonNumber", ascending: false)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
-                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
-                    self.tvSeasonFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        self.tableView.reloadData()
-                    }
+                    self.tableView.reloadData()
                 }
             }
             
             do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
                 try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
@@ -135,22 +138,19 @@ class TVShowDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                self.backdropFetchRequest!.predicate = NSPredicate(format: "tvShowBackdrop.tvShowID = %@", tvShow.tvShowID!)
+                self.backdropFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
-                    self.backdropFetchRequest!.predicate = NSPredicate(format: "tvShowBackdrop = %@", tvShow)
-                    self.backdropFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "voteAverage", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        self.tableView.reloadData()
-                    }
+                    self.tableView.reloadData()
                 }
             }
             
@@ -169,29 +169,38 @@ class TVShowDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.castFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "cast")
+                self.castFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "order", ascending: true)]
+                
+                self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "crew")
+                self.crewFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "job.department", ascending: true),
+                    NSSortDescriptor(key: "job.name", ascending: true)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
-                    self.castFetchRequest!.predicate = NSPredicate(format: "tvShow = %@ and creditType = %@", tvShow, "cast")
-                    self.castFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "order", ascending: true)]
-                    
-                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
-                    self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow = %@ and creditType = %@", tvShow, "crew")
-                    self.crewFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "job.department", ascending: true),
-                        NSSortDescriptor(key: "job.name", ascending: true)]
-                    
-                    performUIUpdatesOnMain {
-                        self.tableView.reloadData()
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
+                    self.tableView.reloadData()
                 }
             }
             
             do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
                 try TMDBManager.sharedInstance().tvShowCredits(tvShow.tvShowID!, completion: completion)
             } catch {}
         }

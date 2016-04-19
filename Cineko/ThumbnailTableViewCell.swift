@@ -18,9 +18,8 @@ public enum DisplayType : Int {
 }
 
 protocol ThumbnailTableViewCellDisplayable : NSObjectProtocol {
-    func id() -> AnyObject?
-    func path() -> String?
-    func caption() -> String?
+    func path(displayType: DisplayType) -> String?
+    func caption(displayType: DisplayType) -> String?
 }
 
 
@@ -42,9 +41,9 @@ class ThumbnailTableViewCell: UITableViewCell {
     private var noDataLabel:UILabel?
     var fetchRequest:NSFetchRequest?
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        
+        let context = CoreDataManager.sharedInstance().mainObjectContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
-                                                                  managedObjectContext: CoreDataManager.sharedInstance().mainObjectContext,
+                                                                  managedObjectContext: context,
                                                                   sectionNameKeyPath: nil,
                                                                   cacheName: nil)
         
@@ -88,8 +87,9 @@ class ThumbnailTableViewCell: UITableViewCell {
             fetchedResultsController.delegate = self
             
             if let sections = fetchedResultsController.sections {
-                let sectionInfo = sections[0]
-                items = sectionInfo.numberOfObjects
+                if let sectionInfo = sections.first {
+                    items = sectionInfo.numberOfObjects
+                }
             }
         }
         
@@ -114,11 +114,10 @@ class ThumbnailTableViewCell: UITableViewCell {
     }
     
     func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
-        if let path = displayable.path(),
-            displayType = displayType {
+        if let path = displayable.path(displayType!) {
             var urlString:String?
             
-            switch displayType {
+            switch displayType! {
             case .Poster:
                 urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
             case .Profile:
@@ -130,7 +129,7 @@ class ThumbnailTableViewCell: UITableViewCell {
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 if self.showCaption {
-                    cell.captionLabel.text = displayable.caption()
+                    cell.captionLabel.text = displayable.caption(self.displayType!)
                     cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
                 } else {
                     cell.captionLabel.text = nil
@@ -159,7 +158,7 @@ class ThumbnailTableViewCell: UITableViewCell {
             
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
-            cell.captionLabel.text = displayable.caption()
+            cell.captionLabel.text = displayable.caption(displayType!)
 //            cell.captionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }

@@ -49,11 +49,11 @@ extension Image : ThumbnailTableViewCellDisplayable {
         return filePath
     }
     
-    func path() -> String? {
+    func path(displayType: DisplayType) -> String? {
         return filePath
     }
     
-    func caption() -> String? {
+    func caption(displayType: DisplayType) -> String? {
         return nil
     }
 }

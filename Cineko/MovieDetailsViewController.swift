@@ -107,14 +107,11 @@ class MovieDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                    
-                } else {
-                    performUIUpdatesOnMain {
-                        self.tableView.reloadData()
-                    }
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
                 }
             }
             
@@ -130,32 +127,35 @@ class MovieDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop.movieID = %@", movie.movieID!)
+                self.backdropFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
+                self.posterFetchRequest = NSFetchRequest(entityName: "Image")
+                self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
+                self.posterFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
-                    self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop = %@", movie)
-                    self.backdropFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "voteAverage", ascending: false)]
-                    
-                    self.posterFetchRequest = NSFetchRequest(entityName: "Image")
-                    self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster = %@", movie)
-                    self.posterFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "voteAverage", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        self.tableView.reloadData()
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
+                    self.tableView.reloadData()
                 }
             }
             
             do {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().movieImages(movie.movieID!, completion: completion)
@@ -169,29 +169,38 @@ class MovieDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+
+                self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
+                self.castFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "order", ascending: true)]
+                
+                self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
+                self.crewFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "job.department", ascending: true),
+                    NSSortDescriptor(key: "job.name", ascending: true)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
-                    self.castFetchRequest!.predicate = NSPredicate(format: "movie = %@ and creditType = %@", movie, "cast")
-                    self.castFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "order", ascending: true)]
-                    
-                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
-                    self.crewFetchRequest!.predicate = NSPredicate(format: "movie = %@ and creditType = %@", movie, "crew")
-                    self.crewFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "job.department", ascending: true),
-                        NSSortDescriptor(key: "job.name", ascending: true)]
-                    
-                    performUIUpdatesOnMain {
-                        self.tableView.reloadData()
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
+                    self.tableView.reloadData()
                 }
             }
             
             do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
                 try TMDBManager.sharedInstance().movieCredits(movie.movieID!, completion: completion)
             } catch {}
         }
@@ -229,7 +238,7 @@ class MovieDetailsViewController: UIViewController {
             }
         case 3:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 0
+                c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -240,7 +249,7 @@ class MovieDetailsViewController: UIViewController {
             }
         case 4:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 4
+                c.tag = indexPath.row
                 c.titleLabel.text = "Cast"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -253,7 +262,7 @@ class MovieDetailsViewController: UIViewController {
             }
         case 5:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 5
+                c.tag = indexPath.row
                 c.titleLabel.text = "Crew"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true
@@ -266,7 +275,7 @@ class MovieDetailsViewController: UIViewController {
             }
         case 6:
             if let c = cell as? ThumbnailTableViewCell {
-                c.tag = 4
+                c.tag = indexPath.row
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
                 c.seeAllButton.hidden = true

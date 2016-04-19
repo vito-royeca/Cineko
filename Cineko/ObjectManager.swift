@@ -243,7 +243,7 @@ class ObjectManager: NSObject {
         return image
     }
     
-    func findOrCreateCast(dict: [String: AnyObject], creditType: CreditType, creditParent: CreditParent, forObject object: AnyObject) -> Credit {
+    func findOrCreateCredit(dict: [String: AnyObject], creditType: CreditType, creditParent: CreditParent, forObject object: AnyObject) -> Credit {
         let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Credit in
             return Credit(dictionary: dict, context: context)
         }
@@ -258,31 +258,70 @@ class ObjectManager: NSObject {
             credit.movie = object as? Movie
             switch creditType {
             case .Cast:
-                var person = [
+                var personDict = [
                     Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
                     Person.Keys.Name: dict[Person.Keys.Name] as! String]
                 if let profilePath = dict[Person.Keys.ProfilePath] as? String {
-                    person[Person.Keys.ProfilePath] = profilePath
+                    personDict[Person.Keys.ProfilePath] = profilePath
                 }
-                credit.person = findOrCreatePerson(person)
+                credit.person = findOrCreatePerson(personDict)
             case .Crew:
-                let job = [
+                let jobDict = [
                     Job.Keys.Department: dict[Job.Keys.Department] as! String,
                     Job.Keys.Name: dict[Job.Keys.Job] as! String]
-                var person = [
+                var personDict = [
                     Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
                     Person.Keys.Name: dict[Person.Keys.Name] as! String]
                 if let profilePath = dict[Person.Keys.ProfilePath] as? String {
-                    person[Person.Keys.ProfilePath] = profilePath
+                    personDict[Person.Keys.ProfilePath] = profilePath
                 }
-                credit.job = findOrCreateJob(job)
-                credit.person = findOrCreatePerson(person)
+                credit.job = findOrCreateJob(jobDict)
+                credit.person = findOrCreatePerson(personDict)
             case .GuestStar:
                 print("x")
             }
         case .Person:
-            // TODO: ...
+            if let mediaType = dict["media_type"] as? String {
+                if mediaType == "movie" {
+                    var movieDict = [
+                        Movie.Keys.MovieID: dict[Movie.Keys.MovieID] as! NSNumber,
+                        Movie.Keys.Title: dict[Movie.Keys.Title] as! String]
+                    if let originalTitle = dict[Movie.Keys.OriginalTitle] as? String {
+                        movieDict[Movie.Keys.OriginalTitle] = originalTitle
+                    }
+                    if let posterPath = dict[Movie.Keys.PosterPath] as? String {
+                        movieDict[Movie.Keys.PosterPath] = posterPath
+                    }
+                    if let releaseDate = dict[Movie.Keys.ReleaseDate] as? String {
+                        movieDict[Movie.Keys.ReleaseDate] = releaseDate
+                    }
+                    credit.movie = findOrCreateMovie(movieDict)
+                } else if mediaType == "tv" {
+                    var tvDict = [
+                        TVShow.Keys.TVShowID: dict[TVShow.Keys.TVShowID] as! NSNumber,
+                        TVShow.Keys.Name: dict[TVShow.Keys.Name] as! String]
+                    if let firstAirDate = dict[TVShow.Keys.FirstAirDate] as? String {
+                        tvDict[TVShow.Keys.FirstAirDate] = firstAirDate
+                    }
+                    if let originalName = dict[TVShow.Keys.OriginalName] as? String {
+                        tvDict[TVShow.Keys.OriginalName] = originalName
+                    }
+                    if let posterPath = dict[TVShow.Keys.PosterPath] as? String {
+                        tvDict[TVShow.Keys.PosterPath] = posterPath
+                    }
+                    credit.tvShow = findOrCreateTVShow(tvDict)
+                }
+            }
+            
+            if creditType == .Crew {
+                let jobDict = [
+                    Job.Keys.Department: dict[Job.Keys.Department] as! String,
+                    Job.Keys.Name: dict[Job.Keys.Job] as! String]
+                credit.job = findOrCreateJob(jobDict)
+            }
+            
             credit.person = object as? Person
+            
         case .TVEpisode:
             // TODO: ...
             credit.tvEpisode = object as? TVEpisode
@@ -293,25 +332,25 @@ class ObjectManager: NSObject {
             credit.tvShow = object as? TVShow
             switch creditType {
             case .Cast:
-                var person = [
+                var personDict = [
                     Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
                     Person.Keys.Name: dict[Person.Keys.Name] as! String]
                 if let profilePath = dict[Person.Keys.ProfilePath] as? String {
-                    person[Person.Keys.ProfilePath] = profilePath
+                    personDict[Person.Keys.ProfilePath] = profilePath
                 }
-                credit.person = findOrCreatePerson(person)
+                credit.person = findOrCreatePerson(personDict)
             case .Crew:
-                let job = [
+                let jobDict = [
                     Job.Keys.Department: dict[Job.Keys.Department] as! String,
                     Job.Keys.Name: dict[Job.Keys.Job] as! String]
-                var person = [
+                var personDict = [
                     Person.Keys.PersonID: dict[Person.Keys.PersonID] as! NSNumber,
                     Person.Keys.Name: dict[Person.Keys.Name] as! String]
                 if let profilePath = dict[Person.Keys.ProfilePath] as? String {
-                    person[Person.Keys.ProfilePath] = profilePath
+                    personDict[Person.Keys.ProfilePath] = profilePath
                 }
-                credit.job = findOrCreateJob(job)
-                credit.person = findOrCreatePerson(person)
+                credit.job = findOrCreateJob(jobDict)
+                credit.person = findOrCreatePerson(personDict)
             case .GuestStar:
                 print("x")
             }

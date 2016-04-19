@@ -46,7 +46,10 @@ class Person: NSManagedObject {
         name = dictionary[Keys.Name] as? String
         personID = dictionary[Keys.PersonID] as? NSNumber
         placeOfBirth = dictionary[Keys.PlaceOfBirth] as? String
-//        popularity = dictionary[Keys.Popularity] as? NSNumber
+        // TODO: Fix this bug!!!
+//        if let p = dictionary[Keys.Popularity] as? NSNumber {
+//            popularity = p
+//        }
         profilePath = dictionary[Keys.ProfilePath] as? String
     }
 
@@ -57,11 +60,11 @@ extension Person : ThumbnailTableViewCellDisplayable {
         return personID
     }
     
-    func path() -> String? {
+    func path(displayType: DisplayType) -> String? {
         return profilePath
     }
     
-    func caption() -> String? {
+    func caption(displayType: DisplayType) -> String? {
         return name
     }
 }

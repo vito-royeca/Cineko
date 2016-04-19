@@ -19,6 +19,10 @@ class PersonDetailsViewController: UIViewController {
     // MARK: Variables
     var personID:NSManagedObjectID?
     var photosFetchRequest:NSFetchRequest?
+    var moviesFetchRequest:NSFetchRequest?
+    var tvShowsFetchRequest:NSFetchRequest?
+    var movieCreditsFetchRequest:NSFetchRequest?
+    var tvShowCreditsFetchRequest:NSFetchRequest?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -26,6 +30,10 @@ class PersonDetailsViewController: UIViewController {
 
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowsTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "movieCreditsTableViewCell")
+        tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowCreditsTableViewCell")
         
         if let personID = personID {
             let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
@@ -38,6 +46,7 @@ class PersonDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         loadPhotos()
         loadDetails()
+        loadCombinedCredits()
     }
     
     // MARK: Custom Methods
@@ -47,22 +56,19 @@ class PersonDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    print("Error in: \(#function)... \(error)")
+                }
+
+                self.photosFetchRequest = NSFetchRequest(entityName: "Image")
+                self.photosFetchRequest!.predicate = NSPredicate(format: "personProfile.personID = %@", person.personID!)
+                self.photosFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    
-                } else {
-                    self.photosFetchRequest = NSFetchRequest(entityName: "Image")
-                    self.photosFetchRequest!.predicate = NSPredicate(format: "personProfile = %@", person)
-                    self.photosFetchRequest!.sortDescriptors = [
-                        NSSortDescriptor(key: "voteAverage", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                            MBProgressHUD.hideHUDForView(cell, animated: true)
-                        }
-                        self.tableView.reloadData()
-                    }
+                    self.tableView.reloadData()
                 }
             }
             
@@ -81,19 +87,11 @@ class PersonDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                    
-                } else {
-//                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
-//                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow = %@", tvShow)
-//                    self.tvSeasonFetchRequest!.sortDescriptors = [
-//                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
-                    
-                    performUIUpdatesOnMain {
-                        self.tableView.reloadData()
-                    }
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
                 }
             }
             
@@ -103,6 +101,96 @@ class PersonDetailsViewController: UIViewController {
         }
     }
 
+    func loadCombinedCredits() {
+        if let personID = personID {
+            let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                var movieIDs = [NSNumber]()
+                var tvShowIDs = [NSNumber]()
+                var movieCreditIDs = [NSNumber]()
+                var tvShowCreditIDs = [NSNumber]()
+                
+                for credit in person.credits!.allObjects {
+                    let c = credit as! Credit
+                    
+                    if let creditType = c.creditType {
+                        if creditType == "cast" {
+                            if c.job == nil && c.tvShow == nil && c.movie != nil {
+                                movieIDs.append(c.movie!.movieID!)
+                            }
+                            else if c.job == nil && c.tvShow != nil && c.movie == nil {
+                                tvShowIDs.append(c.tvShow!.tvShowID!)
+                            }
+                        } else if creditType == "crew" {
+                            if c.job != nil && c.tvShow == nil && c.movie != nil {
+                                movieCreditIDs.append(c.movie!.movieID!)
+                            }
+                            else if c.job != nil && c.tvShow != nil && c.movie == nil {
+                                tvShowCreditIDs.append(c.tvShow!.tvShowID!)
+                            }
+                        }
+                    }
+                }
+                
+                self.moviesFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieIDs, person.personID!)
+                self.moviesFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
+                
+                self.tvShowsFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowIDs, person.personID!)
+                self.tvShowsFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
+
+                self.movieCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieCreditIDs, person.personID!)
+                self.movieCreditsFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
+                
+                self.tvShowCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
+                self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowCreditIDs, person.personID!)
+                self.tvShowCreditsFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TMDBManager.sharedInstance().personCredits(person.personID!, completion: completion)
+            } catch {}
+        }
+    }
+    
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         switch indexPath.row {
         case 0:
@@ -124,6 +212,42 @@ class PersonDetailsViewController: UIViewController {
                     c.backgroundColor = UIColor.whiteColor()
                 }
             }
+        case 2:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
+                c.titleLabel.text = "Movies"
+                c.seeAllButton.hidden = true
+                c.fetchRequest = moviesFetchRequest
+                c.displayType = .Poster
+                c.loadData()
+            }
+        case 3:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
+                c.titleLabel.text = "TV Shows"
+                c.seeAllButton.hidden = true
+                c.fetchRequest = tvShowsFetchRequest
+                c.displayType = .Poster
+                c.loadData()
+            }
+        case 4:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
+                c.titleLabel.text = "Movie Credits"
+                c.seeAllButton.hidden = true
+                c.fetchRequest = movieCreditsFetchRequest
+                c.displayType = .Poster
+                c.loadData()
+            }
+        case 5:
+            if let c = cell as? ThumbnailTableViewCell {
+                c.tag = indexPath.row
+                c.titleLabel.text = "TV Show Credits"
+                c.seeAllButton.hidden = true
+                c.fetchRequest = tvShowCreditsFetchRequest
+                c.displayType = .Poster
+                c.loadData()
+            }
         default:
             return
         }
@@ -139,13 +263,12 @@ class PersonDetailsViewController: UIViewController {
             return UITableViewAutomaticDimension
         }
     }
-    
 }
 
 // MARK: UITableViewDataSource
 extension PersonDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 6
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -156,6 +279,14 @@ extension PersonDetailsViewController : UITableViewDataSource {
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
         case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
+        case 2:
+            cell = tableView.dequeueReusableCellWithIdentifier("moviesTableViewCell", forIndexPath: indexPath)
+        case 3:
+            cell = tableView.dequeueReusableCellWithIdentifier("tvShowsTableViewCell", forIndexPath: indexPath)
+        case 4:
+            cell = tableView.dequeueReusableCellWithIdentifier("movieCreditsTableViewCell", forIndexPath: indexPath)
+        case 5:
+            cell = tableView.dequeueReusableCellWithIdentifier("tvShowCreditsTableViewCell", forIndexPath: indexPath)
         default:
             cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         }
@@ -174,6 +305,8 @@ extension PersonDetailsViewController : UITableViewDelegate {
             return ThumbnailTableViewCell.Height
         case 1:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
+        case 2, 3, 4, 5:
+            return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
         }

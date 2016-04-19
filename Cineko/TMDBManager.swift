@@ -375,13 +375,13 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let cast = dict["cast"] as? [[String: AnyObject]] {
                     for c in cast {
-                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Cast, creditParent: .Movie, forObject: movie)
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .Movie, forObject: movie)
                     }
                 }
                 
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
-                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Crew, creditParent: .Movie, forObject: movie)
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .Movie, forObject: movie)
                     }
                 }
             }
@@ -528,13 +528,13 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let cast = dict["cast"] as? [[String: AnyObject]] {
                     for c in cast {
-                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Cast, creditParent: .TVShow, forObject: tvShow)
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .TVShow, forObject: tvShow)
                     }
                 }
                 
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
-                        ObjectManager.sharedInstance().findOrCreateCast(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
                     }
                 }
             }
@@ -621,6 +621,42 @@ class TMDBManager: NSObject {
                 if let profiles = dict["profiles"] as? [[String: AnyObject]] {
                     for profile in profiles {
                         ObjectManager.sharedInstance().findOrCreateImage(profile, imageType: .PersonProfile, forObject: person)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func personCredits(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Credits.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let person = ObjectManager.sharedInstance().findOrCreatePerson([Person.Keys.PersonID: personID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let cast = dict["cast"] as? [[String: AnyObject]] {
+                    for c in cast {
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .Person, forObject: person)
+                    }
+                }
+                
+                if let crew = dict["crew"] as? [[String: AnyObject]] {
+                    for c in crew {
+                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .Person, forObject: person)
                     }
                 }
             }

@@ -86,11 +86,18 @@ extension Movie : ThumbnailTableViewCellDisplayable {
         return movieID
     }
     
-    func path() -> String? {
-        return posterPath
+    func path(displayType: DisplayType) -> String? {
+        switch displayType {
+        case .Poster:
+            return posterPath
+        case .Backdrop:
+            return backdropPath
+        case .Profile:
+            return nil
+        }
     }
     
-    func caption() -> String? {
+    func caption(displayType: DisplayType) -> String? {
         return title
     }
 }

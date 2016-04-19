@@ -44,38 +44,52 @@ extension Credit : ThumbnailTableViewCellDisplayable {
         return creditID
     }
     
-    func path() -> String? {
-        if let creditType = creditType {
-            if creditType == "cast" ||
-                creditType == "crew"{
-                return person?.profilePath
-                
-            } else if creditType == "guest_star" {
-                
+    func path(displayType: DisplayType) -> String? {
+        switch displayType {
+        case .Poster, .Backdrop:
+            if movie != nil && tvShow == nil {
+                return movie!.path(displayType)
+            } else if movie == nil && tvShow != nil {
+                return tvShow!.path(displayType)
+            }
+        case .Profile:
+            if person != nil {
+                return person!.path(displayType)
             }
         }
         
         return nil
     }
     
-    func caption() -> String? {
+    func caption(displayType: DisplayType) -> String? {
         var caption = ""
         
-        if let creditType = creditType {
-            if creditType == "cast" {
-                caption += "\(person!.name!)"
-                if let character = character {
-                    if !character.isEmpty {
-                        caption += "\nas \(character)"
+        switch displayType {
+        case .Poster, .Backdrop:
+            if movie != nil && tvShow == nil {
+                return movie!.caption(displayType)
+            } else if movie == nil && tvShow != nil {
+                return tvShow!.caption(displayType)
+            }
+        case .Profile:
+            if person != nil {
+                if let creditType = creditType {
+                    if creditType == "cast" {
+                        caption += "\(person!.name!)"
+                        if let character = character {
+                            if !character.isEmpty {
+                                caption += "\nas \(character)"
+                            }
+                        }
+                        
+                    } else if creditType == "crew" {
+                        caption += "\(person!.name!)"
+                        caption += "\n\(job!.name!)"
+                        
+                    } else if creditType == "guest_star" {
+                        
                     }
                 }
-                
-            } else if creditType == "crew" {
-                caption += "\(person!.name!)"
-                caption += "\n\(job!.name!)"
-                
-            } else if creditType == "guest_star" {
-                
             }
         }
         

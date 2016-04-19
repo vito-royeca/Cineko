@@ -48,11 +48,11 @@ extension TVSeason : ThumbnailTableViewCellDisplayable {
         return tvSeasonID
     }
     
-    func path() -> String? {
+    func path(displayType: DisplayType) -> String? {
         return posterPath
     }
     
-    func caption() -> String? {
+    func caption(displayType: DisplayType) -> String? {
         if let seasonNumber = seasonNumber {
             return "Season \(seasonNumber.integerValue)"
         }

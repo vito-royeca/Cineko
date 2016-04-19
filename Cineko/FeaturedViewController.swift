@@ -44,24 +44,21 @@ class FeaturedViewController: UIViewController {
     func loadFeaturedMovies() {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
-                performUIUpdatesOnMain {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                print("Error in: \(#function)... \(error)")
+            }
+            
+            self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
+            self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+            self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.nowShowingFetchRequest!.sortDescriptors = [
+                NSSortDescriptor(key: "releaseDate", ascending: true),
+                NSSortDescriptor(key: "title", ascending: true)]
+            
+            performUIUpdatesOnMain {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
                 }
-                
-            } else {
-                self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
-                self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.nowShowingFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "releaseDate", ascending: true),
-                    NSSortDescriptor(key: "title", ascending: true)]
-                
-                performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             }
         }
         
@@ -77,23 +74,20 @@ class FeaturedViewController: UIViewController {
     func loadFeaturedTVShows() {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
-                performUIUpdatesOnMain {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                print("Error in: \(#function)... \(error)")
+            }
+            
+            self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
+            self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+            self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.airingTodayFetchRequest!.sortDescriptors = [
+                NSSortDescriptor(key: "name", ascending: true)]
+            
+            performUIUpdatesOnMain {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
                 }
-                
-            } else {
-                self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.airingTodayFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "name", ascending: true)]
-                
-                performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             }
         }
         
@@ -108,24 +102,21 @@ class FeaturedViewController: UIViewController {
     func loadFeaturedPeople() {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
-                performUIUpdatesOnMain {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                print("Error in: \(#function)... \(error)")
+            }
+            
+            self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
+            self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
+            self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.popularPeopleFetchRequest!.sortDescriptors = [
+                NSSortDescriptor(key: "popularity", ascending: false),
+                NSSortDescriptor(key: "name", ascending: true)]
+            
+            performUIUpdatesOnMain {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
                 }
-                
-            } else {
-                self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
-                self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.popularPeopleFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "name", ascending: true)]
-                
-                performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             }
         }
         
@@ -149,17 +140,17 @@ extension FeaturedViewController : UITableViewDataSource {
         
         switch indexPath.row {
             case 0:
-                cell.tag = 0
+                cell.tag = indexPath.row
                 cell.titleLabel.text = "Now Showing"
                 cell.fetchRequest = nowShowingFetchRequest
                 cell.displayType = .Poster
             case 1:
-                cell.tag = 1
+                cell.tag = indexPath.row
                 cell.titleLabel.text = "Airing Today"
                 cell.fetchRequest = airingTodayFetchRequest
                 cell.displayType = .Poster
             case 2:
-                cell.tag = 2
+                cell.tag = indexPath.row
                 cell.titleLabel.text = "Popular People"
                 cell.fetchRequest = popularPeopleFetchRequest
                 cell.displayType = .Profile
@@ -214,6 +205,5 @@ extension FeaturedViewController : ThumbnailTableViewCellDelegate {
         default:
             return
         }
-        
     }
 }
