@@ -144,18 +144,12 @@ class MovieDetailsViewController: UIViewController {
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().movieImages(movie.movieID!, completion: completion)
@@ -184,23 +178,11 @@ class MovieDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "job.name", ascending: true)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().movieCredits(movie.movieID!, completion: completion)
             } catch {}
         }

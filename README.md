@@ -1,4 +1,4 @@
-# Cineko
+# Cine Ko!
 
 A movie and TV database.
 

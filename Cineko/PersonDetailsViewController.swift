@@ -157,35 +157,11 @@ class PersonDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().personCredits(person.personID!, completion: completion)
             } catch {}
         }
@@ -215,19 +191,21 @@ class PersonDetailsViewController: UIViewController {
         case 2:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
-                c.titleLabel.text = "Movies"
+                c.titleLabel.text = "Movie Appearances"
                 c.seeAllButton.hidden = true
                 c.fetchRequest = moviesFetchRequest
                 c.displayType = .Poster
+                c.delegate = self
                 c.loadData()
             }
         case 3:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
-                c.titleLabel.text = "TV Shows"
+                c.titleLabel.text = "TV Show Appearances"
                 c.seeAllButton.hidden = true
                 c.fetchRequest = tvShowsFetchRequest
                 c.displayType = .Poster
+                c.delegate = self
                 c.loadData()
             }
         case 4:
@@ -237,6 +215,7 @@ class PersonDetailsViewController: UIViewController {
                 c.seeAllButton.hidden = true
                 c.fetchRequest = movieCreditsFetchRequest
                 c.displayType = .Poster
+                c.delegate = self
                 c.loadData()
             }
         case 5:
@@ -246,6 +225,7 @@ class PersonDetailsViewController: UIViewController {
                 c.seeAllButton.hidden = true
                 c.fetchRequest = tvShowCreditsFetchRequest
                 c.displayType = .Poster
+                c.delegate = self
                 c.loadData()
             }
         default:
@@ -309,6 +289,34 @@ extension PersonDetailsViewController : UITableViewDelegate {
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
+        }
+    }
+}
+
+// MARK: ThumbnailTableViewCellDelegate
+extension PersonDetailsViewController : ThumbnailTableViewCellDelegate {
+    func seeAllAction(tag: Int) {
+        print("type = \(tag)")
+    }
+    
+    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {
+        switch tag {
+        case 2, 4:
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
+                let navigationController = navigationController {
+                let credit = displayable as! Credit
+                controller.movieID = credit.movie!.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
+        case 3, 5:
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
+                let navigationController = navigationController {
+                let credit = displayable as! Credit
+                controller.tvShowID = credit.tvShow!.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
+        default:
+            return
         }
     }
 }

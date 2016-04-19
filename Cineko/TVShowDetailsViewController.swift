@@ -116,17 +116,11 @@ class TVShowDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "seasonNumber", ascending: false)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 6, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
@@ -184,23 +178,11 @@ class TVShowDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "job.name", ascending: true)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 4, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 5, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().tvShowCredits(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
