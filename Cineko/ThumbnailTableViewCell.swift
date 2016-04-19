@@ -154,12 +154,11 @@ class ThumbnailTableViewCell: UITableViewCell {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 cell.hasHUD = true
             }
-            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
+            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
             
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
             cell.captionLabel.text = displayable.caption(displayType!)
-//            cell.captionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }
     }

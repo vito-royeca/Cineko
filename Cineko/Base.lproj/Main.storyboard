@@ -9,7 +9,7 @@
         <!--Movies View Controller-->
         <scene sceneID="bs0-c9-CzO">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="0KK-iT-w09" customClass="MoviesViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="0KK-iT-w09" customClass="MoviesViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="me9-IV-3pO"/>
                         <viewControllerLayoutGuide type="bottom" id="pby-mq-XKC"/>
@@ -43,7 +43,7 @@
         <!--Featured-->
         <scene sceneID="nUf-6K-ZGy">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="CxK-ZS-wL2" customClass="FeaturedViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="CxK-ZS-wL2" customClass="FeaturedViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="c1T-fq-RHA"/>
                         <viewControllerLayoutGuide type="bottom" id="TgA-ZX-Y0F"/>
@@ -56,7 +56,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="nowShowingTableViewCell" id="Eyv-yi-qS6" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="nowShowingTableViewCell" id="Eyv-yi-qS6" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eyv-yi-qS6" id="nYI-3u-cLF">
@@ -64,7 +64,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="airingTodayTableViewCell" id="aOS-DL-hNB" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="airingTodayTableViewCell" id="aOS-DL-hNB" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aOS-DL-hNB" id="bCk-sA-UwY">
@@ -72,7 +72,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="popularPeopleTableViewCell" id="Vtz-IO-qE3" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="popularPeopleTableViewCell" id="Vtz-IO-qE3" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vtz-IO-qE3" id="k6c-eK-AoJ">
@@ -108,7 +108,7 @@
         <!--Movie-->
         <scene sceneID="NhU-hz-64w">
             <objects>
-                <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qLp-Rv-VUg"/>
                         <viewControllerLayoutGuide type="bottom" id="Q23-FN-YyM"/>
@@ -129,7 +129,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="Ngs-o2-IsK" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="Ngs-o2-IsK" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ngs-o2-IsK" id="U63-lq-syO">
@@ -138,7 +138,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="z2F-vW-Usg" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="z2F-vW-Usg" customClass="DynamicHeightTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2F-vW-Usg" id="WIu-qk-ZCh">
@@ -147,7 +147,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="Kws-x1-NCx" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="Kws-x1-NCx" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="160" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kws-x1-NCx" id="kH4-OV-Isq">
@@ -156,7 +156,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="castTableViewCell" id="490-ib-rFm" userLabel="castTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="castTableViewCell" id="490-ib-rFm" userLabel="castTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="204" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="490-ib-rFm" id="Nly-hM-WLH">
@@ -165,7 +165,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="crewTableViewCell" id="baN-Ki-JvK" userLabel="crewTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="crewTableViewCell" id="baN-Ki-JvK" userLabel="crewTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="248" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="baN-Ki-JvK" id="YPp-4T-OYd">
@@ -174,7 +174,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postersTableViewCell" id="w4v-mn-XfE" userLabel="postersTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postersTableViewCell" id="w4v-mn-XfE" userLabel="postersTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="292" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w4v-mn-XfE" id="vvm-Kk-k9U">
@@ -231,7 +231,7 @@
         <!--Start View Controller-->
         <scene sceneID="qPU-x9-dlN">
             <objects>
-                <viewController storyboardIdentifier="StartViewController" id="LWW-aB-g2m" customClass="StartViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StartViewController" id="LWW-aB-g2m" customClass="StartViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mIx-LT-1cR"/>
                         <viewControllerLayoutGuide type="bottom" id="tJb-WY-bwh"/>
@@ -241,9 +241,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4c-YP-zCy">
-                                <rect key="frame" x="238" y="247" width="124" height="30"/>
+                                <rect key="frame" x="238" y="311" width="124" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="124" id="KdP-Pf-C67"/>
+                                    <constraint firstAttribute="width" constant="124" id="w8t-9u-Utj"/>
                                 </constraints>
                                 <state key="normal" title="Login or Sign Up"/>
                                 <connections>
@@ -251,9 +251,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-UP-NoW">
-                                <rect key="frame" x="262" y="285" width="77" height="30"/>
+                                <rect key="frame" x="262" y="349" width="77" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="77" id="NAW-vt-dhz"/>
+                                    <constraint firstAttribute="width" constant="77" id="M1y-Zn-xsp"/>
                                 </constraints>
                                 <state key="normal" title="Skip Login"/>
                                 <connections>
@@ -261,53 +261,58 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tmdbLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-fk-yCC">
-                                <rect key="frame" x="151" y="417" width="300" height="63"/>
+                                <rect key="frame" x="151" y="416" width="300" height="63"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="aVH-8H-gPy"/>
+                                    <constraint firstAttribute="width" constant="300" id="4ah-Ra-4g6"/>
+                                    <constraint firstAttribute="height" constant="63" id="y4a-ak-uzy"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cineko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
-                                <rect key="frame" x="247" y="121" width="108" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="108" id="qzj-PE-dHz"/>
-                                    <constraint firstAttribute="height" constant="30" id="tJH-hg-f8E"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered By" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alf-mi-1F0">
-                                <rect key="frame" x="248" y="388" width="106" height="21"/>
+                                <rect key="frame" x="248" y="387" width="106" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="106" id="rMX-Pb-4bA"/>
-                                    <constraint firstAttribute="height" constant="21" id="tP3-dr-dcM"/>
+                                    <constraint firstAttribute="width" constant="106" id="SSe-zn-MRw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rtLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0xr-T4-PcG">
-                                <rect key="frame" x="240" y="488" width="123" height="40"/>
+                                <rect key="frame" x="240" y="487" width="123" height="40"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="film" translatesAutoresizingMaskIntoConstraints="NO" id="coQ-ju-GB3">
+                                <rect key="frame" x="0.0" y="20" width="600" height="145"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="Uon-vB-J3S"/>
+                                    <constraint firstAttribute="height" constant="145" id="5Mi-Qx-O2N"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cine Ko!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
+                                <rect key="frame" x="161" y="65" width="278" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2XI-V4-hJG"/>
+                                    <constraint firstAttribute="width" constant="278" id="gJ0-Gp-pf0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Cze-fk-yCC" firstAttribute="top" secondItem="alf-mi-1F0" secondAttribute="bottom" constant="8" symbolic="YES" id="0b2-Jb-5Aq"/>
-                            <constraint firstItem="tJb-WY-bwh" firstAttribute="top" secondItem="0xr-T4-PcG" secondAttribute="bottom" constant="72" id="0eQ-Gi-pFA"/>
-                            <constraint firstItem="Cze-fk-yCC" firstAttribute="centerX" secondItem="0xr-T4-PcG" secondAttribute="centerX" id="3Ze-XP-fo0"/>
-                            <constraint firstItem="alf-mi-1F0" firstAttribute="top" secondItem="2Ci-UP-NoW" secondAttribute="bottom" constant="73" id="GOK-yG-m8B"/>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="centerY" secondItem="l98-5n-i0N" secondAttribute="centerY" id="Ptx-46-vGg"/>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="U5W-nw-aSU"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="az0-01-v4r"/>
-                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="bGu-Ge-AHD"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="l98-5n-i0N" secondAttribute="centerX" id="dIN-qu-83E"/>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="centerX" secondItem="alf-mi-1F0" secondAttribute="centerX" id="g8i-hd-KKv"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="top" secondItem="hcC-Bk-94e" secondAttribute="bottom" constant="96" id="jlh-ny-ZTa"/>
-                            <constraint firstItem="alf-mi-1F0" firstAttribute="centerX" secondItem="Cze-fk-yCC" secondAttribute="centerX" id="pgt-yl-C0w"/>
-                            <constraint firstItem="0xr-T4-PcG" firstAttribute="top" secondItem="Cze-fk-yCC" secondAttribute="bottom" constant="8" symbolic="YES" id="uMQ-yS-Ego"/>
+                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="centerX" secondItem="alf-mi-1F0" secondAttribute="centerX" id="7LR-T8-YSh"/>
+                            <constraint firstItem="Cze-fk-yCC" firstAttribute="centerX" secondItem="0xr-T4-PcG" secondAttribute="centerX" id="ArZ-L7-iG8"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="CJx-Wx-gXg"/>
+                            <constraint firstItem="alf-mi-1F0" firstAttribute="centerX" secondItem="Cze-fk-yCC" secondAttribute="centerX" id="DWP-4k-eZC"/>
+                            <constraint firstAttribute="trailing" secondItem="coQ-ju-GB3" secondAttribute="trailing" id="EVc-dr-QU2"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="GjO-3h-kUe"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="top" secondItem="mIx-LT-1cR" secondAttribute="bottom" constant="45" id="M2Q-xY-And"/>
+                            <constraint firstItem="coQ-ju-GB3" firstAttribute="top" secondItem="mIx-LT-1cR" secondAttribute="bottom" id="Nga-BA-JX5"/>
+                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="Pby-sb-NCo"/>
+                            <constraint firstItem="coQ-ju-GB3" firstAttribute="centerX" secondItem="hcC-Bk-94e" secondAttribute="centerX" id="W9f-Xq-OvH"/>
+                            <constraint firstItem="Cze-fk-yCC" firstAttribute="top" secondItem="alf-mi-1F0" secondAttribute="bottom" constant="8" symbolic="YES" id="WQs-09-2ll"/>
+                            <constraint firstItem="tJb-WY-bwh" firstAttribute="top" secondItem="0xr-T4-PcG" secondAttribute="bottom" constant="73" id="aIH-9J-SjT"/>
+                            <constraint firstItem="coQ-ju-GB3" firstAttribute="leading" secondItem="l98-5n-i0N" secondAttribute="leading" id="baV-Sn-fln"/>
+                            <constraint firstItem="0xr-T4-PcG" firstAttribute="top" secondItem="Cze-fk-yCC" secondAttribute="bottom" constant="8" symbolic="YES" id="okk-Tc-Gwg"/>
+                            <constraint firstItem="alf-mi-1F0" firstAttribute="top" secondItem="2Ci-UP-NoW" secondAttribute="bottom" constant="8" symbolic="YES" id="siZ-Cg-N1Z"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -318,7 +323,7 @@
         <!--Login View Controller-->
         <scene sceneID="1gZ-hr-BQj">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="R7y-Gi-aqr" customClass="LoginViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="R7y-Gi-aqr" customClass="LoginViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dhi-6D-ZyO"/>
                         <viewControllerLayoutGuide type="bottom" id="sdo-av-TCB"/>
@@ -389,7 +394,7 @@
         <!--Shows View Controller-->
         <scene sceneID="nVY-oC-pzh">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="G93-kW-eQc" customClass="TVShowsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="G93-kW-eQc" customClass="TVShowsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dmG-2u-2G5"/>
                         <viewControllerLayoutGuide type="bottom" id="hGG-v3-hPV"/>
@@ -427,7 +432,7 @@
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
             <objects>
-                <viewController id="GDC-zP-ktd" customClass="AccountViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="GDC-zP-ktd" customClass="AccountViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FOc-dW-Qvl"/>
                         <viewControllerLayoutGuide type="bottom" id="USP-fE-PrV"/>
@@ -503,7 +508,7 @@
         <!--TV Show-->
         <scene sceneID="nVb-95-rf2">
             <objects>
-                <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wnb-Z9-7bp"/>
                         <viewControllerLayoutGuide type="bottom" id="g90-Te-gkM"/>
@@ -525,7 +530,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="7v2-0F-JZz" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mediaInfoTableViewCell" id="7v2-0F-JZz" userLabel="mediaInfoTableViewCell" customClass="MediaInfoTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7v2-0F-JZz" id="f2H-WT-Hci">
@@ -534,7 +539,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="LAp-mx-azB" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="overviewTableViewCell" id="LAp-mx-azB" customClass="DynamicHeightTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LAp-mx-azB" id="PiQ-Wy-l0S">
@@ -543,7 +548,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="MfJ-BA-ceD" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="MfJ-BA-ceD" userLabel="photosTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="160" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MfJ-BA-ceD" id="z4D-tJ-9fQ">
@@ -552,7 +557,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="castTableViewCell" id="cFa-FJ-NbE" userLabel="castTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="castTableViewCell" id="cFa-FJ-NbE" userLabel="castTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="204" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cFa-FJ-NbE" id="FM7-W6-N39">
@@ -561,7 +566,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="crewTableViewCell" id="wIj-km-gvb" userLabel="crewTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="crewTableViewCell" id="wIj-km-gvb" userLabel="crewTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="248" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wIj-km-gvb" id="wCf-iD-71s">
@@ -570,7 +575,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="seasonsTableViewCell" id="u9m-BM-Ec4" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="seasonsTableViewCell" id="u9m-BM-Ec4" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="292" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u9m-BM-Ec4" id="Vbv-sR-kaV">
@@ -627,7 +632,7 @@
         <!--Person Details View Controller-->
         <scene sceneID="BSS-QG-tQ8">
             <objects>
-                <viewController storyboardIdentifier="PersonDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="SIe-LV-vPe" customClass="PersonDetailsViewController" customModule="Cineko" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="SIe-LV-vPe" customClass="PersonDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sKz-Qw-PMb"/>
                         <viewControllerLayoutGuide type="bottom" id="VdI-eJ-WiF"/>
@@ -640,7 +645,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="QDq-hZ-KmJ" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="photosTableViewCell" id="QDq-hZ-KmJ" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QDq-hZ-KmJ" id="jh1-te-trU">
@@ -648,7 +653,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="biographyTableViewCell" id="n14-PP-9DK" customClass="DynamicHeightTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="biographyTableViewCell" id="n14-PP-9DK" customClass="DynamicHeightTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n14-PP-9DK" id="BTY-vz-AyO">
@@ -656,7 +661,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="moviesTableViewCell" id="hTj-xO-nFj" userLabel="moviesTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="moviesTableViewCell" id="hTj-xO-nFj" userLabel="moviesTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTj-xO-nFj" id="Ckl-SP-uib">
@@ -664,7 +669,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tvShowsTableViewCell" id="PBt-qD-6g2" userLabel="tvShowsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tvShowsTableViewCell" id="PBt-qD-6g2" userLabel="tvShowsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="160" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PBt-qD-6g2" id="3UP-Ae-L9z">
@@ -672,7 +677,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="movieCreditsTableViewCell" id="6dU-EA-1fU" userLabel="movieCreditsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="movieCreditsTableViewCell" id="6dU-EA-1fU" userLabel="movieCreditsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="204" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6dU-EA-1fU" id="TVu-IS-2WK">
@@ -680,7 +685,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tvShowCreditsTableViewCell" id="N5e-BU-JGp" userLabel="tvShowCreditsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cineko" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tvShowCreditsTableViewCell" id="N5e-BU-JGp" userLabel="tvShowCreditsTableViewCell" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="248" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N5e-BU-JGp" id="Vr8-ht-2q0">
@@ -771,6 +776,7 @@
     <resources>
         <image name="account" width="25" height="25"/>
         <image name="eye" width="25" height="25"/>
+        <image name="film" width="950" height="600"/>
         <image name="heart" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="rtLogo" width="123" height="40"/>
