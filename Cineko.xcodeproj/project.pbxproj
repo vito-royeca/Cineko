@@ -147,7 +147,6 @@
 		8CD53BEC1CC62B400035AD45 /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */; };
 		8CD53BED1CC62B400035AD45 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB33EB1CC4C70600441861 /* Job.swift */; };
 		8CD53BEF1CC62B400035AD45 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1378BA1CAE812900FB6830 /* CoreData.framework */; };
-		8CD53BF01CC62B400035AD45 /* Pods_Cineko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6361E0E48D7A9B4A4CB7CA /* Pods_Cineko.framework */; };
 		8CD53BF11CC62B400035AD45 /* Pods_Cine_Ko_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F00D928D96F520ED161C83 /* Pods_Cine_Ko_.framework */; };
 		8CD53BF41CC62B400035AD45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */; };
 		8CD53BF61CC62B400035AD45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C13787A1CAE16B700FB6830 /* Assets.xcassets */; };
@@ -272,7 +271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CD53BEF1CC62B400035AD45 /* CoreData.framework in Frameworks */,
-				8CD53BF01CC62B400035AD45 /* Pods_Cineko.framework in Frameworks */,
 				8CD53BF11CC62B400035AD45 /* Pods_Cine_Ko_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,6 +541,9 @@
 					8C13788E1CAE16B800FB6830 = {
 						CreatedOnToolsVersion = 7.3;
 						TestTargetID = 8C13786F1CAE16B300FB6830;
+					};
+					8CD53BB81CC62B400035AD45 = {
+						DevelopmentTeam = 43CD66539H;
 					};
 				};
 			};
@@ -1081,12 +1082,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "$(SRCROOT)/Cineko/Cine Ko!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "Cine Ko!";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1099,11 +1103,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jovito Royeca (43CD66539H)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jovito Royeca (43CD66539H)";
 				INFOPLIST_FILE = "$(SRCROOT)/Cineko/Cine Ko!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "Cine Ko!";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

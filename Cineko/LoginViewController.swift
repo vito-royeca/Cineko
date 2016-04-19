@@ -106,25 +106,28 @@ extension LoginViewController: UIWebViewDelegate {
         
         if let request = webView.request {
             if let url = request.URL {
-                if let lastPath = url.lastPathComponent {
-                    do {
-                    
-                    if try lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
-                        hasHUD = false
-                        
-                    } else if lastPath == "deny" {
-                        try TMDBManager.sharedInstance().removeRequestToken()
-                        doneButton.enabled = true
-                        cancelButton.enabled = false
-                        
-                    } else if lastPath == "allow" {
-                        requestSessionID()
-                        
-                    }  else if lastPath == "signup" {
-                        
+                if url.absoluteString.containsString("/account/") {
+                    requestSessionID()
+                } else {
+                    if let lastPath = url.lastPathComponent {
+                        do {
+                            if try lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
+                                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                                hasHUD = false
+                                
+                            } else if lastPath == "deny" {
+                                try TMDBManager.sharedInstance().removeRequestToken()
+                                doneButton.enabled = true
+                                cancelButton.enabled = false
+                                
+                            } else if lastPath == "allow" {
+                                requestSessionID()
+                                
+                            }  else if lastPath == "signup" {
+                                
+                            }
+                        } catch {}
                     }
-                    } catch {}
                 }
             }
         }
