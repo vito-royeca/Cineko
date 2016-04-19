@@ -122,14 +122,14 @@ class PersonDetailsViewController: UIViewController {
                             if c.job == nil && c.tvShow == nil && c.movie != nil {
                                 movieIDs.append(c.movie!.movieID!)
                             }
-                            else if c.job == nil && c.tvShow != nil && c.movie == nil {
+                            if c.job == nil && c.tvShow != nil && c.movie == nil {
                                 tvShowIDs.append(c.tvShow!.tvShowID!)
                             }
                         } else if creditType == "crew" {
                             if c.job != nil && c.tvShow == nil && c.movie != nil {
                                 movieCreditIDs.append(c.movie!.movieID!)
                             }
-                            else if c.job != nil && c.tvShow != nil && c.movie == nil {
+                            if c.job != nil && c.tvShow != nil && c.movie == nil {
                                 tvShowCreditIDs.append(c.tvShow!.tvShowID!)
                             }
                         }

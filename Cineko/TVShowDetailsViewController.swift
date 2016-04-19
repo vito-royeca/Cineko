@@ -141,17 +141,11 @@ class TVShowDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
                 try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
