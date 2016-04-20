@@ -48,8 +48,8 @@ class FeaturedViewController: UIViewController {
             }
             
             self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
             self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
             self.nowShowingFetchRequest!.sortDescriptors = [
                 NSSortDescriptor(key: "releaseDate", ascending: true),
                 NSSortDescriptor(key: "title", ascending: true)]
@@ -78,8 +78,8 @@ class FeaturedViewController: UIViewController {
             }
             
             self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-            self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
             self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
             self.airingTodayFetchRequest!.sortDescriptors = [
                 NSSortDescriptor(key: "name", ascending: true)]
             
@@ -106,8 +106,8 @@ class FeaturedViewController: UIViewController {
             }
             
             self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-            self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
             self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+            self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
             self.popularPeopleFetchRequest!.sortDescriptors = [
                 NSSortDescriptor(key: "popularity", ascending: false),
                 NSSortDescriptor(key: "name", ascending: true)]
@@ -177,7 +177,29 @@ extension FeaturedViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension FeaturedViewController : ThumbnailTableViewCellDelegate {
     func seeAllAction(tag: Int) {
-        print("type = \(tag)")
+        var fetchRequest:NSFetchRequest?
+        var title:String?
+        
+        switch tag {
+        case 0:
+            fetchRequest = nowShowingFetchRequest
+            title = "Now Showing"
+        case 1:
+            fetchRequest = airingTodayFetchRequest
+            title = "Airing Today"
+        case 2:
+            fetchRequest = popularPeopleFetchRequest
+            title = "Popular People"
+        default:
+            return
+        }
+        
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
+            let navigationController = navigationController {
+            controller.fetchRequest = fetchRequest
+            controller.navigationItem.title = title
+            navigationController.pushViewController(controller, animated: true)
+        }
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {

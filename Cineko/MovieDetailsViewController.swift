@@ -136,8 +136,8 @@ class MovieDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
                 
                 self.posterFetchRequest = NSFetchRequest(entityName: "Image")
-                self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
                 self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
                 self.posterFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
                 
@@ -162,14 +162,14 @@ class MovieDetailsViewController: UIViewController {
                 }
 
                 self.castFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
                 self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
                 self.castFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "order", ascending: true)]
                 
                 self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
                 self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
                 self.crewFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "job.department", ascending: true),
                     NSSortDescriptor(key: "job.name", ascending: true)]
@@ -220,7 +220,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.showSeeAllButton = false
                 c.fetchRequest = backdropFetchRequest
                 c.displayType = .Backdrop
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
@@ -263,6 +263,7 @@ class MovieDetailsViewController: UIViewController {
                 c.fetchRequest = posterFetchRequest
                 c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.delegate = self
                 c.loadData()
             }
         default:
@@ -337,7 +338,29 @@ extension MovieDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension MovieDetailsViewController : ThumbnailTableViewCellDelegate {
     func seeAllAction(tag: Int) {
-        print("type = \(tag)")
+        var fetchRequest:NSFetchRequest?
+        var title:String?
+        
+        switch tag {
+        case 4:
+            fetchRequest = castFetchRequest
+            title = "Cast"
+        case 5:
+            fetchRequest = crewFetchRequest
+            title = "Crew"
+        case 6:
+            fetchRequest = posterFetchRequest
+            title = "Posters"
+        default:
+            return
+        }
+        
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
+            let navigationController = navigationController {
+            controller.fetchRequest = fetchRequest
+            controller.navigationItem.title = title
+            navigationController.pushViewController(controller, animated: true)
+        }
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {

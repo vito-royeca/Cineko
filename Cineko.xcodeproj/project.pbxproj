@@ -26,6 +26,7 @@
 		8C37CD881CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD821CBB65DC0093196C /* MediaInfoTableViewCell.xib */; };
 		8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
+		8C9018DE1CC764CB001EB1A6 /* SeeAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */; };
 		8CAB33F21CC4E38900441861 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378AE1CAE80D000FB6830 /* CoreDataManager.swift */; };
 		8CAB33F31CC4E4BC00441861 /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB33E21CC4891C00441861 /* ObjectManager.swift */; };
 		8CAB33F41CC4E4BD00441861 /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB33E21CC4891C00441861 /* ObjectManager.swift */; };
@@ -220,6 +221,7 @@
 		8C67893E1CB5209200E4E14B /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8C67893F1CB5209200E4E14B /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeAllViewController.swift; sourceTree = "<group>"; };
 		8CAB33E21CC4891C00441861 /* ObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
 		8CAB33EA1CC4C70600441861 /* Job+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Job+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CAB33EB1CC4C70600441861 /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8C17D5A01CC54B9800D81F66 /* PersonDetailsViewController.swift */,
+				8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
 				8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */,
 				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
@@ -885,6 +888,7 @@
 				8CD53BD61CC62B400035AD45 /* Cineko.xcdatamodeld in Sources */,
 				8CD53BD71CC62B400035AD45 /* Network.swift in Sources */,
 				8CD53BD81CC62B400035AD45 /* GCDBlackBox.swift in Sources */,
+				8C9018DE1CC764CB001EB1A6 /* SeeAllViewController.swift in Sources */,
 				8CD53BD91CC62B400035AD45 /* StartViewController.swift in Sources */,
 				8CD53BDA1CC62B400035AD45 /* Language.swift in Sources */,
 				8CD53BDB1CC62B400035AD45 /* ObjectManager.swift in Sources */,
@@ -1090,7 +1094,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "Cine Ko!";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "51bd44c8-3814-4fd0-9628-1c30a0d9371b";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1110,7 +1114,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jovitoroyeca.Cineko;
 				PRODUCT_NAME = "Cine Ko!";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "51bd44c8-3814-4fd0-9628-1c30a0d9371b";
 				SWIFT_OBJC_BRIDGING_HEADER = "Cineko/Cineko-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -39,13 +39,14 @@ protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
-    static let MaxItems = 10
+    static let MaxItems = 9
     
     // MARK: Variables
     weak var delegate: ThumbnailTableViewCellDelegate?
     var displayType:DisplayType = .Poster
     var captionType:CaptionType = .Title
     var showCaption = false
+    var showSeeAllButton = true
     private var imageSizeAdjusted = false
     private var noDataLabel:UILabel?
     var fetchRequest:NSFetchRequest?
@@ -83,6 +84,8 @@ class ThumbnailTableViewCell: UITableViewCell {
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        seeAllButton.hidden = showSeeAllButton
     }
     
     // MARK: Custom methods
@@ -120,6 +123,10 @@ class ThumbnailTableViewCell: UITableViewCell {
                 collectionView.addSubview(noDataLabel!)
             }
         }
+        
+        if showSeeAllButton {
+            seeAllButton.hidden = items < ThumbnailTableViewCell.MaxItems
+        }
     }
     
     func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
@@ -154,6 +161,7 @@ class ThumbnailTableViewCell: UITableViewCell {
                     self.flowLayout.itemSize = CGSizeMake(newWidth, height)
                     self.imageSizeAdjusted = true
                 }
+                cell.contentMode = .ScaleToFill
                 
                 MBProgressHUD.hideHUDForView(cell, animated: true)
                 cell.hasHUD = false
@@ -163,11 +171,11 @@ class ThumbnailTableViewCell: UITableViewCell {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 cell.hasHUD = true
             }
-            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
+            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
-            cell.contentMode = .Center
+            cell.contentMode = .ScaleAspectFit
             cell.captionLabel.text = displayable.caption(captionType)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }

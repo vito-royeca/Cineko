@@ -60,6 +60,7 @@ class PersonDetailsViewController: UIViewController {
                 }
 
                 self.photosFetchRequest = NSFetchRequest(entityName: "Image")
+                self.photosFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.photosFetchRequest!.predicate = NSPredicate(format: "personProfile.personID = %@", person.personID!)
                 self.photosFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
@@ -137,26 +138,26 @@ class PersonDetailsViewController: UIViewController {
                 }
                 
                 self.moviesFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieIDs, person.personID!)
                 self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieIDs, person.personID!)
                 self.moviesFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowsFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowIDs, person.personID!)
                 self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowIDs, person.personID!)
                 self.tvShowsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
 
                 self.movieCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieCreditIDs, person.personID!)
                 self.movieCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieCreditIDs, person.personID!)
                 self.movieCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowCreditIDs, person.personID!)
                 self.tvShowCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowCreditIDs, person.personID!)
                 self.tvShowCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
                 
@@ -177,9 +178,9 @@ class PersonDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
-                c.seeAllButton.hidden = true
                 c.fetchRequest = photosFetchRequest
                 c.displayType = .Profile
+                c.delegate = self
                 c.loadData()
             }
         case 1:
@@ -304,7 +305,35 @@ extension PersonDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension PersonDetailsViewController : ThumbnailTableViewCellDelegate {
     func seeAllAction(tag: Int) {
-        print("type = \(tag)")
+        var fetchRequest:NSFetchRequest?
+        var title:String?
+        
+        switch tag {
+        case 0:
+            fetchRequest = photosFetchRequest
+            title = "Photos"
+        case 2:
+            fetchRequest = moviesFetchRequest
+            title = "Movie Appearances"
+        case 3:
+            fetchRequest = tvShowsFetchRequest
+            title = "TV Show Appearances"
+        case 4:
+            fetchRequest = movieCreditsFetchRequest
+            title = "Movie Credits"
+        case 5:
+            fetchRequest = tvShowCreditsFetchRequest
+            title = "TV Show Credits"
+        default:
+            return
+        }
+        
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
+            let navigationController = navigationController {
+            controller.fetchRequest = fetchRequest
+            controller.navigationItem.title = title
+            navigationController.pushViewController(controller, animated: true)
+        }
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {
