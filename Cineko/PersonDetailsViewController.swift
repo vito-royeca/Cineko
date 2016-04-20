@@ -139,25 +139,25 @@ class PersonDetailsViewController: UIViewController {
                 
                 self.moviesFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieIDs, person.personID!)
+                self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@ AND creditType = %@", movieIDs, person.personID!, "cast")
                 self.moviesFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowIDs, person.personID!)
+                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@ AND creditType = %@", tvShowIDs, person.personID!, "cast")
                 self.tvShowsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
 
                 self.movieCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.movieCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieCreditIDs, person.personID!)
+                self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@ AND creditType = %@", movieCreditIDs, person.personID!, "crew")
                 self.movieCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.tvShowCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowCreditIDs, person.personID!)
+                self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@ AND creditType = %@", tvShowCreditIDs, person.personID!, "crew")
                 self.tvShowCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
                 

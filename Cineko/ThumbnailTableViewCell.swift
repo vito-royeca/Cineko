@@ -163,14 +163,14 @@ class ThumbnailTableViewCell: UITableViewCell {
                 }
                 cell.contentMode = .ScaleToFill
                 
-                MBProgressHUD.hideHUDForView(cell, animated: true)
-                cell.hasHUD = false
+//                MBProgressHUD.hideHUDForView(cell, animated: true)
+//                cell.hasHUD = false
             }
             
-            if !cell.hasHUD && cell.thumbnailImage.image == nil {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                cell.hasHUD = true
-            }
+//            if !cell.hasHUD && cell.thumbnailImage.image == nil {
+//                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+//                cell.hasHUD = true
+//            }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             
         } else {
