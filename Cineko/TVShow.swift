@@ -68,11 +68,7 @@ class TVShow: NSManagedObject {
 }
 
 extension TVShow : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
-        return tvShowID
-    }
-    
-    func path(displayType: DisplayType) -> String? {
+    func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster:
             return posterPath
@@ -83,7 +79,7 @@ extension TVShow : ThumbnailTableViewCellDisplayable {
         }
     }
     
-    func caption(displayType: DisplayType) -> String? {
+    func caption(captionType: CaptionType) -> String? {
         return name
     }
 }

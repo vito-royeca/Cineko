@@ -112,6 +112,7 @@ class TVShowDetailsViewController: UIViewController {
                 
                 self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
                 self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@", tvShow.tvShowID!)
+                self.tvSeasonFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.tvSeasonFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "seasonNumber", ascending: false)]
                 
@@ -162,11 +163,13 @@ class TVShowDetailsViewController: UIViewController {
                 
                 self.castFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.castFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "cast")
+                self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.castFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "order", ascending: true)]
                 
                 self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "crew")
+                self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.crewFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "job.department", ascending: true),
                     NSSortDescriptor(key: "job.name", ascending: true)]
@@ -241,9 +244,10 @@ class TVShowDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Cast"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = castFetchRequest
                 c.displayType = .Profile
+                c.captionType = .NameAndRole
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.delegate = self
@@ -254,9 +258,10 @@ class TVShowDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Crew"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = crewFetchRequest
                 c.displayType = .Profile
+                c.captionType = .NameAndJob
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.delegate = self
@@ -267,7 +272,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Seasons"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = tvSeasonFetchRequest
                 c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)

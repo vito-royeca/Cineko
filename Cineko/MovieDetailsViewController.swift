@@ -137,6 +137,7 @@ class MovieDetailsViewController: UIViewController {
                 
                 self.posterFetchRequest = NSFetchRequest(entityName: "Image")
                 self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
+                self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.posterFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
                 
@@ -162,11 +163,13 @@ class MovieDetailsViewController: UIViewController {
 
                 self.castFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
+                self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.castFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "order", ascending: true)]
                 
                 self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
+                self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.crewFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "job.department", ascending: true),
                     NSSortDescriptor(key: "job.name", ascending: true)]
@@ -228,9 +231,10 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Cast"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = castFetchRequest
                 c.displayType = .Profile
+                c.captionType = .NameAndRole
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.delegate = self
@@ -241,9 +245,10 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Crew"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = crewFetchRequest
                 c.displayType = .Profile
+                c.captionType = .NameAndJob
                 c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.delegate = self
@@ -254,7 +259,7 @@ class MovieDetailsViewController: UIViewController {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Posters"
                 c.titleLabel.textColor = UIColor.whiteColor()
-                c.seeAllButton.hidden = true
+                c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = posterFetchRequest
                 c.displayType = .Poster
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)

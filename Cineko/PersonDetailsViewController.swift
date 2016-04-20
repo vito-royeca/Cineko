@@ -138,21 +138,25 @@ class PersonDetailsViewController: UIViewController {
                 
                 self.moviesFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.moviesFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieIDs, person.personID!)
+                self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.moviesFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowIDs, person.personID!)
+                self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.tvShowsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
 
                 self.movieCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.movieCreditsFetchRequest!.predicate = NSPredicate(format: "movie.movieID IN %@ AND person.personID = %@", movieCreditIDs, person.personID!)
+                self.movieCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.movieCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "movie.releaseDate", ascending: false)]
                 
                 self.tvShowCreditsFetchRequest = NSFetchRequest(entityName: "Credit")
                 self.tvShowCreditsFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID IN %@ AND person.personID = %@", tvShowCreditIDs, person.personID!)
+                self.tvShowCreditsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
                 self.tvShowCreditsFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "tvShow.firstAirDate", ascending: false)]
                 
@@ -192,9 +196,10 @@ class PersonDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Movie Appearances"
-                c.seeAllButton.hidden = true
                 c.fetchRequest = moviesFetchRequest
                 c.displayType = .Poster
+                c.captionType = .Role
+                c.showCaption = true
                 c.delegate = self
                 c.loadData()
             }
@@ -202,9 +207,10 @@ class PersonDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "TV Show Appearances"
-                c.seeAllButton.hidden = true
                 c.fetchRequest = tvShowsFetchRequest
                 c.displayType = .Poster
+                c.captionType = .Role
+                c.showCaption = true
                 c.delegate = self
                 c.loadData()
             }
@@ -212,9 +218,10 @@ class PersonDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Movie Credits"
-                c.seeAllButton.hidden = true
                 c.fetchRequest = movieCreditsFetchRequest
                 c.displayType = .Poster
+                c.captionType = .Job
+                c.showCaption = true
                 c.delegate = self
                 c.loadData()
             }
@@ -222,9 +229,10 @@ class PersonDetailsViewController: UIViewController {
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "TV Show Credits"
-                c.seeAllButton.hidden = true
                 c.fetchRequest = tvShowCreditsFetchRequest
                 c.displayType = .Poster
+                c.captionType = .Job
+                c.showCaption = true
                 c.delegate = self
                 c.loadData()
             }

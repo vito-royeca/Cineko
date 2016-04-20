@@ -40,59 +40,55 @@ class Credit: NSManagedObject {
 }
 
 extension Credit : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
-        return creditID
-    }
-    
-    func path(displayType: DisplayType) -> String? {
+    func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster, .Backdrop:
             if movie != nil && tvShow == nil {
-                return movie!.path(displayType)
+                return movie!.imagePath(displayType)
             } else if movie == nil && tvShow != nil {
-                return tvShow!.path(displayType)
+                return tvShow!.imagePath(displayType)
             }
         case .Profile:
-            if person != nil {
-                return person!.path(displayType)
+            if let person = person {
+                return person.imagePath(displayType)
             }
         }
         
         return nil
     }
     
-    func caption(displayType: DisplayType) -> String? {
-        var caption = ""
-        
-        switch displayType {
-        case .Poster, .Backdrop:
+    func caption(captionType: CaptionType) -> String? {
+        switch captionType {
+        case .Title:
             if movie != nil && tvShow == nil {
-                return movie!.caption(displayType)
+                return movie!.caption(captionType)
             } else if movie == nil && tvShow != nil {
-                return tvShow!.caption(displayType)
+                return tvShow!.caption(captionType)
             }
-        case .Profile:
-            if person != nil {
-                if let creditType = creditType {
-                    if creditType == "cast" {
-                        caption += "\(person!.name!)"
-                        if let character = character {
-                            if !character.isEmpty {
-                                caption += "\nas \(character)"
-                            }
-                        }
-                        
-                    } else if creditType == "crew" {
-                        caption += "\(person!.name!)"
-                        caption += "\n\(job!.name!)"
-                        
-                    } else if creditType == "guest_star" {
-                        
-                    }
-                }
+        case .Name:
+            if let person = person {
+                return person.name
+            }
+        case .Job:
+            if let job = job {
+                return job.name
+            }
+        case .Role:
+            if let character = character {
+                return "as \(character)"
+            }
+        case .NameAndJob:
+            if let person = person,
+                let job = job {
+                return "\(person.name!)\n\(job.name!)"
+            }
+        case .NameAndRole:
+            if let person = person,
+                let character = character {
+                return "\(person.name!)\nas \(character)"
             }
         }
         
-        return caption
+        return nil
     }
 }

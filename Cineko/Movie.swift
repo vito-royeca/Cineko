@@ -82,11 +82,7 @@ class Movie: NSManagedObject {
 }
 
 extension Movie : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
-        return movieID
-    }
-    
-    func path(displayType: DisplayType) -> String? {
+    func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster:
             return posterPath
@@ -97,7 +93,7 @@ extension Movie : ThumbnailTableViewCellDisplayable {
         }
     }
     
-    func caption(displayType: DisplayType) -> String? {
+    func caption(captionType: CaptionType) -> String? {
         return title
     }
 }

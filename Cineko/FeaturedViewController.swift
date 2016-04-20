@@ -154,6 +154,7 @@ extension FeaturedViewController : UITableViewDataSource {
                 cell.titleLabel.text = "Popular People"
                 cell.fetchRequest = popularPeopleFetchRequest
                 cell.displayType = .Profile
+                cell.captionType = .Name
                 cell.showCaption = true
             default:
                 break

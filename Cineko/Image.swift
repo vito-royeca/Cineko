@@ -45,15 +45,11 @@ class Image: NSManagedObject {
 }
 
 extension Image : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
+    func imagePath(displayType: DisplayType) -> String? {
         return filePath
     }
     
-    func path(displayType: DisplayType) -> String? {
-        return filePath
-    }
-    
-    func caption(displayType: DisplayType) -> String? {
+    func caption(captionType: CaptionType) -> String? {
         return nil
     }
 }

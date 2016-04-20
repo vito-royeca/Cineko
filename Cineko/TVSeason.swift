@@ -44,15 +44,11 @@ class TVSeason: NSManagedObject {
 }
 
 extension TVSeason : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
-        return tvSeasonID
-    }
-    
-    func path(displayType: DisplayType) -> String? {
+    func imagePath(displayType: DisplayType) -> String? {
         return posterPath
     }
     
-    func caption(displayType: DisplayType) -> String? {
+    func caption(captionType: CaptionType) -> String? {
         if let seasonNumber = seasonNumber {
             return "Season \(seasonNumber.integerValue)"
         }

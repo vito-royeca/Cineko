@@ -16,10 +16,18 @@ public enum DisplayType : Int {
     case Backdrop
     case Profile
 }
+public enum CaptionType : Int {
+    case Title
+    case Name
+    case Job
+    case Role
+    case NameAndJob
+    case NameAndRole
+}
 
 protocol ThumbnailTableViewCellDisplayable : NSObjectProtocol {
-    func path(displayType: DisplayType) -> String?
-    func caption(displayType: DisplayType) -> String?
+    func imagePath(displayType: DisplayType) -> String?
+    func caption(captionType: CaptionType) -> String?
 }
 
 
@@ -31,11 +39,12 @@ protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
-    static let MaxItems = 12
+    static let MaxItems = 10
     
     // MARK: Variables
     weak var delegate: ThumbnailTableViewCellDelegate?
-    var displayType:DisplayType?
+    var displayType:DisplayType = .Poster
+    var captionType:CaptionType = .Title
     var showCaption = false
     private var imageSizeAdjusted = false
     private var noDataLabel:UILabel?
@@ -114,10 +123,10 @@ class ThumbnailTableViewCell: UITableViewCell {
     }
     
     func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
-        if let path = displayable.path(displayType!) {
+        if let path = displayable.imagePath(displayType) {
             var urlString:String?
             
-            switch displayType! {
+            switch displayType {
             case .Poster:
                 urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
             case .Profile:
@@ -129,7 +138,7 @@ class ThumbnailTableViewCell: UITableViewCell {
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.displayType!)
+                    cell.captionLabel.text = displayable.caption(self.captionType)
                     cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
                 } else {
                     cell.captionLabel.text = nil
@@ -158,7 +167,8 @@ class ThumbnailTableViewCell: UITableViewCell {
             
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
-            cell.captionLabel.text = displayable.caption(displayType!)
+            cell.contentMode = .Center
+            cell.captionLabel.text = displayable.caption(captionType)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }
     }

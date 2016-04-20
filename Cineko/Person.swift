@@ -56,15 +56,11 @@ class Person: NSManagedObject {
 }
 
 extension Person : ThumbnailTableViewCellDisplayable {
-    func id() -> AnyObject? {
-        return personID
-    }
-    
-    func path(displayType: DisplayType) -> String? {
+    func imagePath(displayType: DisplayType) -> String? {
         return profilePath
     }
     
-    func caption(displayType: DisplayType) -> String? {
+    func caption(captionType: CaptionType) -> String? {
         return name
     }
 }

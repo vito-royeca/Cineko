@@ -141,8 +141,8 @@ enum ImageType : Int {
 
 enum CreditType : String {
     case Cast = "cast",
-        Crew = "crew",
-        GuestStar = "guest_star"
+         Crew = "crew",
+         GuestStar = "guest_star"
 }
 
 enum CreditParent : String {
