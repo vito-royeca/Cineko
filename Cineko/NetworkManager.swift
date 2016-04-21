@@ -36,7 +36,7 @@ class NetworkManager: NSObject {
         headers: [String:AnyObject]?,
         parameters: [String:AnyObject]?,
         values: [String:AnyObject]?,
-        body: String?,
+        body: NSData?,
         dataOffset: Int,
         isJSON: Bool,
         success: (results: AnyObject!) -> Void,
@@ -81,9 +81,8 @@ class NetworkManager: NSObject {
         }
         
         if let body = body {
-            request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
+            request.HTTPBody = body
         }
-        
         
         let session = NSURLSession.sharedSession()
         
@@ -123,14 +122,17 @@ class NetworkManager: NSObject {
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                // weird Xcode Swift warning
-                // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
-                if let errorMessage = parsedResult!["error"] as? String {
-                    self.fail(errorMessage, failure: failure)
-                    
+                if let parsedResult = parsedResult {
+                    if let errorMessage = parsedResult["error"] as? String {
+                        self.fail(errorMessage, failure: failure)
+                        
+                    } else {
+                        self.fail("Your request returned a status code of \((response as? NSHTTPURLResponse)?.statusCode).", failure: failure)
+                    }
                 } else {
                     self.fail("Your request returned a status code of \((response as? NSHTTPURLResponse)?.statusCode).", failure: failure)
                 }
+                
                 return
             }
             

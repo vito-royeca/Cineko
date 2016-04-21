@@ -184,6 +184,7 @@
 		8C1378BA1CAE812900FB6830 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C1378BC1CAE819F00FB6830 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8C17D5A01CC54B9800D81F66 /* PersonDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonDetailsViewController.swift; sourceTree = "<group>"; };
+		8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Cineko 04212016.xcdatamodel"; sourceTree = "<group>"; };
 		8C1CC9811CBF457E001D5239 /* RTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTManager.swift; sourceTree = "<group>"; };
 		8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightTableViewCell.swift; sourceTree = "<group>"; };
 		8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
@@ -1165,9 +1166,10 @@
 		8C1378A71CAE7BF300FB6830 /* Cineko.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */,
 				8C1378A81CAE7BF300FB6830 /* Cineko.xcdatamodel */,
 			);
-			currentVersion = 8C1378A81CAE7BF300FB6830 /* Cineko.xcdatamodel */;
+			currentVersion = 8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */;
 			path = Cineko.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

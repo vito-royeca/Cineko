@@ -6,7 +6,7 @@
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
-        <!--Movies View Controller-->
+        <!--Movies-->
         <scene sceneID="bs0-c9-CzO">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="0KK-iT-w09" customClass="MoviesViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,20 +18,61 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ggp-WM-9pH">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ggp-WM-9pH">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dynamicTableViewCell" id="jW0-A2-3Ek" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jW0-A2-3Ek" id="iwb-Ws-why">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="watchlistTableViewCell" id="vQt-e3-W60" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vQt-e3-W60" id="QME-On-GeE">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoritesTableViewCell" id="F1u-AS-g9E" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1u-AS-g9E" id="gnO-eF-z0s">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="0KK-iT-w09" id="mdb-cm-nwA"/>
+                                    <outlet property="delegate" destination="0KK-iT-w09" id="LkY-3s-Jkz"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="top" secondItem="me9-IV-3pO" secondAttribute="bottom" id="OX5-Rf-JOK"/>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="leading" secondItem="Sdw-Vb-l7P" secondAttribute="leading" id="VA5-l7-q0e"/>
-                            <constraint firstAttribute="trailing" secondItem="ggp-WM-9pH" secondAttribute="trailing" id="cZd-3h-boO"/>
-                            <constraint firstItem="ggp-WM-9pH" firstAttribute="bottom" secondItem="pby-mq-XKC" secondAttribute="top" id="y2B-rc-eCW"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="leading" secondItem="Sdw-Vb-l7P" secondAttribute="leading" id="dti-kR-BvK"/>
+                            <constraint firstAttribute="trailing" secondItem="ggp-WM-9pH" secondAttribute="trailing" id="jXO-9v-74t"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="top" secondItem="me9-IV-3pO" secondAttribute="bottom" id="pVS-JR-GZy"/>
+                            <constraint firstItem="ggp-WM-9pH" firstAttribute="bottom" secondItem="pby-mq-XKC" secondAttribute="top" id="ugu-wn-62T"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="cpj-LC-xy4"/>
+                    <navigationItem key="navigationItem" title="Movies" id="cpj-LC-xy4">
+                        <barButtonItem key="leftBarButtonItem" title="Genre" id="Ghh-Aj-oPm">
+                            <connections>
+                                <action selector="genreAction:" destination="0KK-iT-w09" id="mZI-Zb-Vw2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="2Zj-mu-qlG">
+                            <connections>
+                                <action selector="organizeAction:" destination="0KK-iT-w09" id="ByG-Cg-nsw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="ggp-WM-9pH" id="qpg-Ch-y4I"/>
                     </connections>
@@ -200,9 +241,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Movie" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
-                            <barButtonItem enabled="NO" image="star" id="aYz-1u-SRe">
+                            <barButtonItem enabled="NO" image="eye" id="sLV-iu-MVH">
                                 <connections>
-                                    <action selector="rateAction:" destination="6At-tm-DiG" id="Tp0-XC-gr0"/>
+                                    <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem enabled="NO" image="heart" id="cuV-FF-voo">
@@ -210,16 +251,10 @@
                                     <action selector="favoriteAction:" destination="6At-tm-DiG" id="5jq-ti-D9C"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem enabled="NO" image="eye" id="sLV-iu-MVH">
-                                <connections>
-                                    <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
-                                </connections>
-                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="favoriteButton" destination="cuV-FF-voo" id="e9C-gj-hhl"/>
-                        <outlet property="rateButton" destination="aYz-1u-SRe" id="Rii-GZ-x4u"/>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
                         <outlet property="watchlistButton" destination="sLV-iu-MVH" id="qLN-uV-lCy"/>
                     </connections>
@@ -385,6 +420,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="0ZO-6o-vxF" kind="relationship" relationship="viewControllers" id="qw2-uF-X2u"/>
+                        <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="Y4F-x7-kSB"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -601,9 +637,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="TV Show" id="60C-GX-mVq">
                         <rightBarButtonItems>
-                            <barButtonItem enabled="NO" image="star" id="Jah-Y1-GEw">
+                            <barButtonItem enabled="NO" image="eye" id="6la-k3-GH4">
                                 <connections>
-                                    <action selector="rateAction:" destination="wVx-Wm-bVh" id="v9e-uf-aaY"/>
+                                    <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem enabled="NO" image="heart" id="NCF-yy-Ioa">
@@ -611,16 +647,10 @@
                                     <action selector="favoriteAction:" destination="wVx-Wm-bVh" id="bJy-Ti-5tw"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem enabled="NO" image="eye" id="6la-k3-GH4">
-                                <connections>
-                                    <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
-                                </connections>
-                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="favoriteButton" destination="NCF-yy-Ioa" id="WiS-Lq-EuC"/>
-                        <outlet property="rateButton" destination="Jah-Y1-GEw" id="u1X-7y-EN6"/>
                         <outlet property="tableView" destination="PKf-Af-LCm" id="HBq-ZP-eAe"/>
                         <outlet property="watchlistButton" destination="6la-k3-GH4" id="Euo-1y-4LP"/>
                     </connections>
@@ -843,7 +873,6 @@
         <image name="heart" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="rtLogo" width="123" height="40"/>
-        <image name="star" width="25" height="25"/>
         <image name="tmdbLogo" width="535" height="113"/>
         <image name="tv" width="25" height="25"/>
     </resources>

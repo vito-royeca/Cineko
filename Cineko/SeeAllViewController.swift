@@ -13,7 +13,7 @@ import SDWebImage
 class SeeAllViewController: UIViewController {
     // MARK: Constants
     static let Height:CGFloat = 180
-    static let MaxItems = 9
+    static let MaxItems = 12
     
     // MARK: Outlets
     @IBOutlet weak var collectionView: UICollectionView!

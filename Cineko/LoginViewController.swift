@@ -59,33 +59,22 @@ class LoginViewController: UIViewController {
             hasHUD = true
         }
         
-        let success = { (results: AnyObject!) in
-            if let dict = results as? [String: AnyObject] {
-                if let sessionID = dict[TMDBConstants.Authentication.SessionNew.Keys.SessionID] as? String {
-                    do {
-                        try TMDBManager.sharedInstance().saveSessionID(sessionID)
-                    } catch {}
-                    
-                    performUIUpdatesOnMain {
-                        MBProgressHUD.hideHUDForView(self.webView, animated: true)
-                        self.hasHUD = false
-                        self.doneButton.enabled = true
-                        self.cancelButton.enabled = false
-                    }
+        let completion = { (error: NSError?) in
+            performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.webView, animated: true)
+                self.hasHUD = false
+                
+                if let error = error {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                } else {
+                    self.doneButton.enabled = true
+                    self.cancelButton.enabled = false
                 }
             }
         }
         
-        let failure = { (error: NSError?) in
-            performUIUpdatesOnMain {
-                MBProgressHUD.hideHUDForView(self.webView, animated: true)
-                self.hasHUD = false
-                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                
-            }
-        }
         do {
-            try TMDBManager.sharedInstance().authenticationSessionNew(success, failure: failure)
+            try TMDBManager.sharedInstance().authenticationSessionNew(completion)
         } catch {}
     }
 }

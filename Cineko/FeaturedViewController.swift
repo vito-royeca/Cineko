@@ -21,23 +21,29 @@ class FeaturedViewController: UIViewController {
     var nowShowingFetchRequest:NSFetchRequest?
     var airingTodayFetchRequest:NSFetchRequest?
     var popularPeopleFetchRequest:NSFetchRequest?
-    private var dataHasBeenLoaded = false
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        
+        if TMDBManager.sharedInstance().hasSessionID() {
+            let completion = { (error: NSError?) in
+                // nothing to do here...
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().downloadInitialData(completion)
+            } catch {}
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if !dataHasBeenLoaded {
-            loadFeaturedMovies()
-            loadFeaturedTVShows()
-            loadFeaturedPeople()
-            dataHasBeenLoaded = true
-        }
+        loadFeaturedMovies()
+        loadFeaturedTVShows()
+        loadFeaturedPeople()
     }
     
     // MARK: Custom Methods
@@ -140,17 +146,14 @@ extension FeaturedViewController : UITableViewDataSource {
         
         switch indexPath.row {
             case 0:
-                cell.tag = indexPath.row
                 cell.titleLabel.text = "Now Showing"
                 cell.fetchRequest = nowShowingFetchRequest
                 cell.displayType = .Poster
             case 1:
-                cell.tag = indexPath.row
                 cell.titleLabel.text = "Airing Today"
                 cell.fetchRequest = airingTodayFetchRequest
                 cell.displayType = .Poster
             case 2:
-                cell.tag = indexPath.row
                 cell.titleLabel.text = "Popular People"
                 cell.fetchRequest = popularPeopleFetchRequest
                 cell.displayType = .Profile
@@ -160,6 +163,7 @@ extension FeaturedViewController : UITableViewDataSource {
                 break
         }
         
+        cell.tag = indexPath.row
         cell.delegate = self
         cell.loadData()
         return cell
@@ -169,7 +173,6 @@ extension FeaturedViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension FeaturedViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return tableView.frame.size.height / 3
         return ThumbnailTableViewCell.Height
     }
 }

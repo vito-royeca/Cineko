@@ -15,9 +15,8 @@ import SDWebImage
 class MovieDetailsViewController: UIViewController {
 
     // MARK: Outlets
-    @IBOutlet weak var watchlistButton: UIBarButtonItem!
     @IBOutlet weak var favoriteButton: UIBarButtonItem!
-    @IBOutlet weak var rateButton: UIBarButtonItem!
+    @IBOutlet weak var watchlistButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -27,18 +26,48 @@ class MovieDetailsViewController: UIViewController {
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
     var posterFetchRequest:NSFetchRequest?
+    var isFavorite = false
+    var isWatchlist = false
     
     // MARK: Actions
-    @IBAction func watchlistAction(sender: UIBarButtonItem) {
-        
-    }
-    
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
-        
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.updateButtons()
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
+            } catch {}
+        }
     }
     
-    @IBAction func rateAction(sender: UIBarButtonItem) {
-        
+    @IBAction func watchlistAction(sender: UIBarButtonItem) {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.updateButtons()
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
+            } catch {}
+        }
     }
     
     // MARK: Overrides
@@ -53,12 +82,6 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         
-        if TMDBManager.sharedInstance().hasSessionID() {
-            watchlistButton.enabled = true
-            favoriteButton.enabled = true
-            rateButton.enabled = true
-        }
-        
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
@@ -69,6 +92,12 @@ class MovieDetailsViewController: UIViewController {
         titleLabel!.lineBreakMode = .ByWordWrapping
         titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
         tableView.addSubview(titleLabel!)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+     
+        updateButtons()
         
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
@@ -101,6 +130,26 @@ class MovieDetailsViewController: UIViewController {
     }
     
     // MARK: Custom Methods
+    func updateButtons() {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            if let favorite = movie.favorite {
+                isFavorite = favorite.boolValue
+            }
+            favoriteButton.image = isFavorite ? UIImage(named: "heart-filled") : UIImage(named: "heart")
+            
+            if let watchlist = movie.watchlist {
+                isWatchlist = watchlist.boolValue
+            }
+            watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
+        }
+        
+        let hasSession = TMDBManager.sharedInstance().hasSessionID()
+        favoriteButton.enabled = hasSession
+        watchlistButton.enabled = hasSession
+    }
+
     func loadDetails() {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie

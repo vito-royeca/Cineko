@@ -13,6 +13,14 @@ import Foundation
 import CoreData
 
 extension Account {
-
-
+    
+    @NSManaged var accountID: NSNumber?
+    @NSManaged var gravatarHash: String?
+    @NSManaged var includeAdult: NSNumber?
+    @NSManaged var iso6391: String?
+    @NSManaged var iso31661: String?
+    @NSManaged var name: String?
+    @NSManaged var username: String?
+    @NSManaged var favoriteMovies: NSSet?
+    @NSManaged var favoriteTVShows: NSSet?
 }

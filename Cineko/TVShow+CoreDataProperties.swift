@@ -15,6 +15,7 @@ import CoreData
 extension TVShow {
 
     @NSManaged var backdropPath: String?
+    @NSManaged var favorite: NSNumber?
     @NSManaged var firstAirDate: String?
     @NSManaged var homepage: String?
     @NSManaged var inProduction: NSNumber?
@@ -32,6 +33,7 @@ extension TVShow {
     @NSManaged var tvShowType: String?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
+    @NSManaged var watchlist: NSNumber?
     @NSManaged var backdrops: NSSet?
     @NSManaged var credits: NSSet?
     @NSManaged var genres: NSSet?

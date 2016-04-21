@@ -14,7 +14,7 @@ import SDWebImage
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
-    static let MaxItems = 9
+    static let MaxItems = 12
     
     // MARK: Variables
     weak var delegate: ThumbnailDelegate?
@@ -151,8 +151,10 @@ class ThumbnailTableViewCell: UITableViewCell {
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
             cell.contentMode = .ScaleAspectFit
-            cell.captionLabel.text = displayable.caption(captionType!)
-            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            if showCaption {
+                cell.captionLabel.text = displayable.caption(captionType!)
+                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            }
         }
     }
 }

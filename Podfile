@@ -5,7 +5,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target "Cine Ko!" do
-pod 'BLKFlexibleHeightBar'
 pod 'Crashlytics'
 pod 'Fabric'
 pod 'JJJUtils'
@@ -16,7 +15,6 @@ pod 'SDWebImage'
 end
 
 target "CinekoTests" do
-pod 'BLKFlexibleHeightBar'
 pod 'Crashlytics'
 pod 'Fabric'
 pod 'JJJUtils'
@@ -27,7 +25,6 @@ pod 'SDWebImage'
 end
 
 target "CinekoUITests" do
-pod 'BLKFlexibleHeightBar'
 pod 'Crashlytics'
 pod 'Fabric'
 pod 'JJJUtils'

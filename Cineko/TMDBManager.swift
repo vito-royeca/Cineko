@@ -16,6 +16,7 @@ enum TMDBError: ErrorType {
 
 struct TMDBConstants {
     static let APIKey          = "api_key"
+    static let SessionID       = "session_id"
     static let APIURL          = "https://api.themoviedb.org/3"
     static let SignupURL       = "https://www.themoviedb.org/account/signup"
     static let AuthenticateURL = "https://www.themoviedb.org/authenticate"
@@ -62,7 +63,6 @@ struct TMDBConstants {
         struct Keys {
             static let RequestToken     = "request_token"
             static let RequestTokenDate = "request_token_date"
-            static let SessionID        = "session_id"
         }
     }
     
@@ -81,7 +81,31 @@ struct TMDBConstants {
             }
         }
     }
-    
+
+    struct Account {
+        struct Details {
+            static let Path = "/account"
+        }
+        struct Favorite {
+            static let Path = "/account/{id}/favorite"
+        }
+        struct FavoriteMovies {
+            static let Path = "/account/{id}/favorite/movies"
+        }
+        struct FavoriteTVShows {
+            static let Path = "/account/{id}/favorite/tv"
+        }
+        struct Watchlist {
+            static let Path = "/account/{id}/watchlist"
+        }
+        struct WatchlistMovies {
+            static let Path = "/account/{id}/watchlist/movies"
+        }
+        struct WatchlistTVShows {
+            static let Path = "/account/{id}/watchlist/tv"
+        }
+    }
+
     struct Movies {
         struct NowPlaying {
             static let Path = "/movie/now_playing"
@@ -154,15 +178,23 @@ enum CreditParent : String {
         TVShow = "TVShow"
 }
 
+enum MediaType : String {
+    case Movie = "movie",
+        TVShow = "tv"
+}
+
+
 class TMDBManager: NSObject {
     let keychain = Keychain(server: "\(TMDBConstants.APIURL)", protocolType: .HTTPS)
 
     // MARK: Variables
     private var apiKey:String?
+    var account:Account?
     
     // MARK: Setup
     func setup(apiKey: String) {
         self.apiKey = apiKey
+        // TODO: load account here...
         checkFirstRun()
     }
     
@@ -170,8 +202,8 @@ class TMDBManager: NSObject {
     func checkFirstRun() {
         if !NSUserDefaults.standardUserDefaults().boolForKey("FirstRun") {
             // remove prior keychain items if this is our first run
-            TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.SessionID] = nil
-            TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
+            keychain[TMDBConstants.SessionID] = nil
+            keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
             NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
             
             // then mark this us our first run
@@ -197,8 +229,8 @@ class TMDBManager: NSObject {
                 return requestToken
                 
             } else {
-                TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.SessionID] = nil
-                TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
+                keychain[TMDBConstants.SessionID] = nil
+                keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
                 NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
             }
         }
@@ -211,7 +243,7 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.RequestToken] = requestToken
+        keychain[TMDBConstants.iPad.Keys.RequestToken] = requestToken
         NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: TMDBConstants.iPad.Keys.RequestTokenDate)
     }
     
@@ -220,7 +252,7 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
+        keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
     }
     
@@ -229,14 +261,14 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.SessionID] = sessionID
+        keychain[TMDBConstants.SessionID] = sessionID
     }
     
     func hasSessionID() -> Bool {
-        return TMDBManager.sharedInstance().keychain[TMDBConstants.iPad.Keys.SessionID] != nil
+        return keychain[TMDBConstants.SessionID] != nil
     }
     
-    // MARK: TMDB Authentication
+    // MARK: Authentication
     func authenticationTokenNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
@@ -249,7 +281,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func authenticationSessionNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func authenticationSessionNew(completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -260,14 +292,339 @@ class TMDBManager: NSObject {
             let parameters = [TMDBConstants.APIKey: apiKey!,
                               TMDBConstants.Authentication.TokenNew.Keys.RequestToken: requestToken]
             
+            let success = { (results: AnyObject!) in
+                if let dict = results as? [String: AnyObject] {
+                    if let sessionID = dict[TMDBConstants.Authentication.SessionNew.Keys.SessionID] as? String {
+                        do {
+                            try self.saveSessionID(sessionID)
+                            completion(error: nil)
+                        } catch {}
+                    }
+                }
+            }
+            
+            let failure = { (error: NSError?) -> Void in
+                completion(error: error)
+            }
+            
             NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
         
         } else {
-            failure(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))
+            completion(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))
         }
     }
     
-    // MARK: TMDB Movies
+    // MARK: Account
+    func downloadInitialData(completion: (error: NSError?) -> Void?) throws {
+        let accountCompletion = { (error: NSError?) in
+            do {
+                let fmCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                    let ftvCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                        let wmCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                            let wtvCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                                completion(error: error)
+                            }
+                            do {
+                                try self.accountWatchlistTVShows(wtvCompletion)
+                            } catch {}
+                        }
+                        do {
+                            try self.accountWatchlistMovies(wmCompletion)
+                        } catch {}
+                    }
+                    do {
+                        try self.accountFavoriteTVShows(ftvCompletion)
+                    } catch {}
+                }
+                try self.accountFavoriteMovies(fmCompletion)
+            } catch {}
+        }
+        do {
+            try accountDetails(accountCompletion)
+        } catch {}
+    }
+    
+    func accountDetails(completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.Details.Path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                self.account = ObjectManager.sharedInstance().findOrCreateAccount(dict)
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountFavorite(mediaID: NSNumber, mediaType: MediaType, favorite: Bool, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Post
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.Favorite.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        
+        let bodyDict = ["media_type": mediaType.rawValue,
+                        "media_id": "\(mediaID)",
+                        "favorite": favorite]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
+        
+        let success = { (results: AnyObject!) -> Void in
+            switch mediaType {
+            case .Movie:
+                let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: mediaID])
+                movie.favorite = NSNumber(bool: favorite)
+            case .TVShow:
+                let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
+                tvShow.favorite = NSNumber(bool: favorite)
+            }
+            CoreDataManager.sharedInstance().savePrivateContext()
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountWatchlist(mediaID: NSNumber, mediaType: MediaType, watchlist: Bool, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Post
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.Watchlist.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        
+        let bodyDict = ["media_type": mediaType.rawValue,
+                        "media_id": "\(mediaID)",
+                        "watchlist": watchlist]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
+        
+        let success = { (results: AnyObject!) -> Void in
+            switch mediaType {
+            case .Movie:
+                let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: mediaID])
+                movie.watchlist = NSNumber(bool: watchlist)
+            case .TVShow:
+                let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
+                tvShow.watchlist = NSNumber(bool: watchlist)
+            }
+            CoreDataManager.sharedInstance().savePrivateContext()
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountFavoriteMovies(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteMovies.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        var movieIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for movie in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        // TODO: batch update: set m.watchlist = false for all movies
+                        // @see http://matthewmorey.com/core-data-batch-updates/
+                        m.favorite = NSNumber(bool: true)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        if let movieID = m.movieID {
+                            movieIDs.append(movieID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: movieIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: movieIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountFavoriteTVShows(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteTVShows.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        var tvShowIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for tvShow in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
+                        // TODO: batch update: set m.watchlist = false for all tvShows
+                        // @see http://matthewmorey.com/core-data-batch-updates/
+                        m.favorite = NSNumber(bool: true)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        if let tvShowID = m.tvShowID {
+                            tvShowIDs.append(tvShowID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: tvShowIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: tvShowIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountWatchlistMovies(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistMovies.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        var movieIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for movie in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        // TODO: batch update: set m.watchlist = false for all movies
+                        // @see http://matthewmorey.com/core-data-batch-updates/
+                        m.watchlist = NSNumber(bool: true)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        if let movieID = m.movieID {
+                            movieIDs.append(movieID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: movieIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: movieIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func accountWatchlistTVShows(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistTVShows.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        var tvShowIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for tvShow in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
+                        // TODO: batch update: set m.watchlist = false for all tvShows
+                        // @see http://matthewmorey.com/core-data-batch-updates/
+                        m.watchlist = NSNumber(bool: true)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        if let tvShowID = m.tvShowID {
+                            tvShowIDs.append(tvShowID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: tvShowIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: tvShowIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: Movies
     func moviesNowPlaying(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
@@ -395,7 +752,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    // MARK: TMDB TV Shows
+    // MARK: TV Shows
     func tvShowsOnTheAir(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
@@ -548,7 +905,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    // MARK: TMDB People
+    // MARK: People
     func peoplePopular(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey

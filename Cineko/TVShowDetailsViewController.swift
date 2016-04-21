@@ -15,9 +15,8 @@ import SDWebImage
 class TVShowDetailsViewController: UIViewController {
 
     // MARK: Outlets
-    @IBOutlet weak var watchlistButton: UIBarButtonItem!
     @IBOutlet weak var favoriteButton: UIBarButtonItem!
-    @IBOutlet weak var rateButton: UIBarButtonItem!
+    @IBOutlet weak var watchlistButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: Variables
@@ -27,18 +26,48 @@ class TVShowDetailsViewController: UIViewController {
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
     var tvSeasonFetchRequest:NSFetchRequest?
+    var isFavorite = false
+    var isWatchlist = false
     
     // MARK: Actions
-    @IBAction func watchlistAction(sender: UIBarButtonItem) {
-        
-    }
-    
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
-        
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.updateButtons()
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().accountFavorite(tvShow.tvShowID!, mediaType: .TVShow, favorite: !isFavorite, completion: completion)
+            } catch {}
+        }
     }
     
-    @IBAction func rateAction(sender: UIBarButtonItem) {
-        
+    @IBAction func watchlistAction(sender: UIBarButtonItem) {
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            
+            let completion = { (error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                performUIUpdatesOnMain {
+                    self.updateButtons()
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().accountWatchlist(tvShow.tvShowID!, mediaType: .TVShow, watchlist: !isWatchlist, completion: completion)
+            } catch {}
+        }
     }
     
     // MARK: Overrides
@@ -53,12 +82,6 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
         
-        if TMDBManager.sharedInstance().hasSessionID() {
-            watchlistButton.enabled = true
-            favoriteButton.enabled = true
-            rateButton.enabled = true
-        }
-        
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
@@ -69,7 +92,12 @@ class TVShowDetailsViewController: UIViewController {
         titleLabel!.lineBreakMode = .ByWordWrapping
         titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
         tableView.addSubview(titleLabel!)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
+        updateButtons()
         
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
@@ -86,7 +114,7 @@ class TVShowDetailsViewController: UIViewController {
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         loadDetails()
@@ -101,6 +129,26 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     // MARK: Custom Methods
+    func updateButtons() {
+        if let tvShowID = tvShowID {
+            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            
+            if let favorite = tvShow.favorite {
+                isFavorite = favorite.boolValue
+            }
+            favoriteButton.image = isFavorite ? UIImage(named: "heart-filled") : UIImage(named: "heart")
+            
+            if let watchlist = tvShow.watchlist {
+                isWatchlist = watchlist.boolValue
+            }
+            watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
+        }
+        
+        let hasSession = TMDBManager.sharedInstance().hasSessionID()
+        favoriteButton.enabled = hasSession
+        watchlistButton.enabled = hasSession
+    }
+    
     func loadDetails() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow

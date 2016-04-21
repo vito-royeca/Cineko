@@ -1,1 +1,0 @@
-../../../BLKFlexibleHeightBar/BLKFlexibleHeightBar/BLKFlexibleHeightBarBehaviorDefiner.h

@@ -84,14 +84,12 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-Cine Ko!/BLKFlexibleHeightBar.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
   install_framework "Pods-Cine Ko!/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-Cine Ko!/BLKFlexibleHeightBar.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"

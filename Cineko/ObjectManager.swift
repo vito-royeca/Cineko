@@ -363,6 +363,14 @@ class ObjectManager: NSObject {
         return credit
     }
     
+    func findOrCreateAccount(dict: [String: AnyObject]) -> Account {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Account in
+            return Account(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Account", objectKey: "accountID", objectValue: dict[Account.Keys.AccountID] as! NSObject, initializer: initializer) as! Account
+    }
+    
     func findOrCreateObject(dict: [String: AnyObject], entityName: String, objectKey: String, objectValue: NSObject, initializer: (dict: [String: AnyObject], context: NSManagedObjectContext) -> AnyObject) -> AnyObject {
         var object:AnyObject?
         
