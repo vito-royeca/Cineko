@@ -55,7 +55,7 @@ class Person: NSManagedObject {
 
 }
 
-extension Person : ThumbnailTableViewCellDisplayable {
+extension Person : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         return profilePath
     }

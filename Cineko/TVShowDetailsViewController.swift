@@ -275,6 +275,8 @@ class TVShowDetailsViewController: UIViewController {
                 c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = tvSeasonFetchRequest
                 c.displayType = .Poster
+                c.captionType = .Title
+                c.showCaption = true
                 c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
                 c.delegate = self
                 c.loadData()
@@ -349,34 +351,52 @@ extension TVShowDetailsViewController : UITableViewDelegate {
 }
 
 // MARK: ThumbnailTableViewCellDelegate
-extension TVShowDetailsViewController : ThumbnailTableViewCellDelegate {
+extension TVShowDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        var fetchRequest:NSFetchRequest?
-        var title:String?
-        
-        switch tag {
-        case 4:
-            fetchRequest = castFetchRequest
-            title = "Cast"
-        case 5:
-            fetchRequest = crewFetchRequest
-            title = "Crew"
-        case 6:
-            fetchRequest = tvSeasonFetchRequest
-            title = "Seasons"
-        default:
-            return
-        }
-        
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
             let navigationController = navigationController {
-            controller.fetchRequest = fetchRequest
+            
+            var title:String?
+            var fetchRequest:NSFetchRequest?
+            var displayType:DisplayType?
+            var captionType:CaptionType?
+            var showCaption = false
+            
+            switch tag {
+            case 4:
+                title = "Cast"
+                fetchRequest = castFetchRequest
+                displayType = .Profile
+                captionType = .NameAndRole
+                showCaption = true
+            case 5:
+                title = "Crew"
+                fetchRequest = crewFetchRequest
+                displayType = .Profile
+                captionType = .NameAndJob
+                showCaption = true
+            case 6:
+                title = "Seasons"
+                fetchRequest = tvSeasonFetchRequest
+                displayType = .Poster
+                captionType = .Title
+                showCaption = true
+            default:
+                return
+            }
+            
             controller.navigationItem.title = title
+            controller.fetchRequest = fetchRequest
+            controller.displayType = displayType
+            controller.captionType = captionType
+            controller.showCaption = showCaption
+            controller.view.tag = tag
+            controller.delegate = self
             navigationController.pushViewController(controller, animated: true)
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
         switch tag {
         case 4, 5:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,

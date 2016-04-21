@@ -81,7 +81,7 @@ class Movie: NSManagedObject {
     }
 }
 
-extension Movie : ThumbnailTableViewCellDisplayable {
+extension Movie : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster:

@@ -336,34 +336,50 @@ extension MovieDetailsViewController : UITableViewDelegate {
 }
 
 // MARK: ThumbnailTableViewCellDelegate
-extension MovieDetailsViewController : ThumbnailTableViewCellDelegate {
+extension MovieDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        var fetchRequest:NSFetchRequest?
-        var title:String?
-        
-        switch tag {
-        case 4:
-            fetchRequest = castFetchRequest
-            title = "Cast"
-        case 5:
-            fetchRequest = crewFetchRequest
-            title = "Crew"
-        case 6:
-            fetchRequest = posterFetchRequest
-            title = "Posters"
-        default:
-            return
-        }
-        
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
             let navigationController = navigationController {
-            controller.fetchRequest = fetchRequest
+            
+            var title:String?
+            var fetchRequest:NSFetchRequest?
+            var displayType:DisplayType?
+            var captionType:CaptionType?
+            var showCaption = false
+            
+            switch tag {
+            case 4:
+                title = "Cast"
+                fetchRequest = castFetchRequest
+                displayType = .Profile
+                captionType = .NameAndRole
+                showCaption = true
+            case 5:
+                title = "Crew"
+                fetchRequest = crewFetchRequest
+                displayType = .Profile
+                captionType = .NameAndJob
+                showCaption = true
+            case 6:
+                title = "Posters"
+                fetchRequest = posterFetchRequest
+                displayType = .Poster
+            default:
+                return
+            }
+            
             controller.navigationItem.title = title
+            controller.fetchRequest = fetchRequest
+            controller.displayType = displayType
+            controller.captionType = captionType
+            controller.showCaption = showCaption
+            controller.view.tag = tag
+            controller.delegate = self
             navigationController.pushViewController(controller, animated: true)
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
         switch tag {
         case 4, 5:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,

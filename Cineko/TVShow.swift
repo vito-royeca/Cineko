@@ -67,7 +67,7 @@ class TVShow: NSManagedObject {
     }
 }
 
-extension TVShow : ThumbnailTableViewCellDisplayable {
+extension TVShow : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster:

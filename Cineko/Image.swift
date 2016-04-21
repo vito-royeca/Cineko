@@ -44,7 +44,7 @@ class Image: NSManagedObject {
 
 }
 
-extension Image : ThumbnailTableViewCellDisplayable {
+extension Image : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         return filePath
     }

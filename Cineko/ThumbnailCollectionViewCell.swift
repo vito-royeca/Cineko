@@ -8,6 +8,32 @@
 
 import UIKit
 
+public enum DisplayType : Int {
+    case Poster
+    case Backdrop
+    case Profile
+}
+public enum CaptionType : Int {
+    case Title
+    case Name
+    case Job
+    case Role
+    case NameAndJob
+    case NameAndRole
+}
+
+protocol ThumbnailDisplayable : NSObjectProtocol {
+    func imagePath(displayType: DisplayType) -> String?
+    func caption(captionType: CaptionType) -> String?
+}
+
+
+protocol ThumbnailDelegate : NSObjectProtocol {
+    func seeAllAction(tag: Int)
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable)
+}
+
+
 class ThumbnailCollectionViewCell: UICollectionViewCell {
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!

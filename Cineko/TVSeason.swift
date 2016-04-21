@@ -43,7 +43,7 @@ class TVSeason: NSManagedObject {
     }
 }
 
-extension TVSeason : ThumbnailTableViewCellDisplayable {
+extension TVSeason : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         return posterPath
     }

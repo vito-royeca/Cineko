@@ -11,40 +11,15 @@ import CoreData
 import MBProgressHUD
 import SDWebImage
 
-public enum DisplayType : Int {
-    case Poster
-    case Backdrop
-    case Profile
-}
-public enum CaptionType : Int {
-    case Title
-    case Name
-    case Job
-    case Role
-    case NameAndJob
-    case NameAndRole
-}
-
-protocol ThumbnailTableViewCellDisplayable : NSObjectProtocol {
-    func imagePath(displayType: DisplayType) -> String?
-    func caption(captionType: CaptionType) -> String?
-}
-
-
-protocol ThumbnailTableViewCellDelegate : NSObjectProtocol {
-    func seeAllAction(tag: Int)
-    func didSelectItem(tag: Int, displayable: ThumbnailTableViewCellDisplayable)
-}
-
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
     static let Height:CGFloat = 180
     static let MaxItems = 9
     
     // MARK: Variables
-    weak var delegate: ThumbnailTableViewCellDelegate?
-    var displayType:DisplayType = .Poster
-    var captionType:CaptionType = .Title
+    weak var delegate: ThumbnailDelegate?
+    var displayType:DisplayType?
+    var captionType:CaptionType?
     var showCaption = false
     var showSeeAllButton = true
     private var imageSizeAdjusted = false
@@ -129,11 +104,11 @@ class ThumbnailTableViewCell: UITableViewCell {
         }
     }
     
-    func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailTableViewCellDisplayable) {
-        if let path = displayable.imagePath(displayType) {
+    func configureCell(cell: ThumbnailCollectionViewCell, displayable: ThumbnailDisplayable) {
+        if let path = displayable.imagePath(displayType!) {
             var urlString:String?
             
-            switch displayType {
+            switch displayType! {
             case .Poster:
                 urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
             case .Profile:
@@ -145,7 +120,7 @@ class ThumbnailTableViewCell: UITableViewCell {
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.captionType)
+                    cell.captionLabel.text = displayable.caption(self.captionType!)
                     cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
                 } else {
                     cell.captionLabel.text = nil
@@ -176,7 +151,7 @@ class ThumbnailTableViewCell: UITableViewCell {
         } else {
             cell.thumbnailImage.image = UIImage(named: "noImage")
             cell.contentMode = .ScaleAspectFit
-            cell.captionLabel.text = displayable.caption(captionType)
+            cell.captionLabel.text = displayable.caption(captionType!)
             cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
         }
     }
@@ -198,7 +173,7 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ThumbnailCollectionViewCell
         
-        if let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+        if let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
             configureCell(cell, displayable: displayable)
         }
         
@@ -210,7 +185,7 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
 extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
-            let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+            let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
             delegate.didSelectItem(self.tag, displayable: displayable)
         }
     }
@@ -246,7 +221,7 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
                 if let cell = collectionView.cellForItemAtIndexPath(indexPath) {
                     
                     if let c = cell as? ThumbnailCollectionViewCell,
-                        let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailTableViewCellDisplayable {
+                        let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
                         configureCell(c, displayable: displayable)
                     }
                 }

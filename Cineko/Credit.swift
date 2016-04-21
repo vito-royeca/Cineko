@@ -39,7 +39,7 @@ class Credit: NSManagedObject {
     }
 }
 
-extension Credit : ThumbnailTableViewCellDisplayable {
+extension Credit : ThumbnailDisplayable {
     func imagePath(displayType: DisplayType) -> String? {
         switch displayType {
         case .Poster, .Backdrop:
