@@ -12,6 +12,7 @@ import KeychainAccess
 enum TMDBError: ErrorType {
     case NoAPIKey
     case NoSessionID
+    case NoAccount
 }
 
 struct TMDBConstants {
@@ -381,6 +382,10 @@ class TMDBManager: NSObject {
             throw TMDBError.NoSessionID
         }
         
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
         let httpMethod:HTTPMethod = .Post
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.Favorite.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
@@ -421,6 +426,10 @@ class TMDBManager: NSObject {
         
         guard hasSessionID() else {
             throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
         }
         
         let httpMethod:HTTPMethod = .Post
@@ -465,6 +474,10 @@ class TMDBManager: NSObject {
             throw TMDBError.NoSessionID
         }
         
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteMovies.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
@@ -475,10 +488,11 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
+                    // reset all to false
+//                    ObjectManager.sharedInstance().batchUpdate("Movie", propertiesToUpdate: ["favorite": NSNumber(bool: false)], predicate: NSPredicate(format: "favorite == %@", NSNumber(bool: true)))
+                    
                     for movie in json {
                         let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
-                        // TODO: batch update: set m.watchlist = false for all movies
-                        // @see http://matthewmorey.com/core-data-batch-updates/
                         m.favorite = NSNumber(bool: true)
                         CoreDataManager.sharedInstance().savePrivateContext()
                         
@@ -507,6 +521,10 @@ class TMDBManager: NSObject {
             throw TMDBError.NoSessionID
         }
         
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteTVShows.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
@@ -517,10 +535,11 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
+                    // reset all to false
+//                    ObjectManager.sharedInstance().batchUpdate("TVShow", propertiesToUpdate: ["favorite": NSNumber(bool: false)], predicate: NSPredicate(format: "favorite == %@", NSNumber(bool: true)))
+                    
                     for tvShow in json {
                         let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
-                        // TODO: batch update: set m.watchlist = false for all tvShows
-                        // @see http://matthewmorey.com/core-data-batch-updates/
                         m.favorite = NSNumber(bool: true)
                         CoreDataManager.sharedInstance().savePrivateContext()
                         
@@ -549,6 +568,10 @@ class TMDBManager: NSObject {
             throw TMDBError.NoSessionID
         }
         
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistMovies.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
@@ -559,10 +582,11 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
+                    // reset all to false
+//                    ObjectManager.sharedInstance().batchUpdate("Movie", propertiesToUpdate: ["watchlist": NSNumber(bool: false)], predicate: NSPredicate(format: "watchlist == %@", NSNumber(bool: true)))
+                    
                     for movie in json {
                         let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
-                        // TODO: batch update: set m.watchlist = false for all movies
-                        // @see http://matthewmorey.com/core-data-batch-updates/
                         m.watchlist = NSNumber(bool: true)
                         CoreDataManager.sharedInstance().savePrivateContext()
                         
@@ -591,6 +615,10 @@ class TMDBManager: NSObject {
             throw TMDBError.NoSessionID
         }
         
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistTVShows.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
@@ -601,10 +629,11 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
+                    // reset all to false
+//                    ObjectManager.sharedInstance().batchUpdate("TVShow", propertiesToUpdate: ["watchlist": NSNumber(bool: false)], predicate: NSPredicate(format: "watchlist == %@", NSNumber(bool: true)))
+                    
                     for tvShow in json {
                         let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
-                        // TODO: batch update: set m.watchlist = false for all tvShows
-                        // @see http://matthewmorey.com/core-data-batch-updates/
                         m.watchlist = NSNumber(bool: true)
                         CoreDataManager.sharedInstance().savePrivateContext()
                         

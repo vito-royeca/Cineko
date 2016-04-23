@@ -49,6 +49,10 @@ class PersonDetailsViewController: UIViewController {
         loadCombinedCredits()
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.reloadData()
+    }
+    
     // MARK: Custom Methods
     func loadPhotos() {
         if let personID = personID {
@@ -78,7 +82,12 @@ class PersonDetailsViewController: UIViewController {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().personImages(person.personID!, completion: completion)
-            } catch {}
+            } catch {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
+                self.tableView.reloadData()
+            }
         }
     }
     

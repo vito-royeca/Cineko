@@ -24,7 +24,26 @@ class ThumbnailTableViewCell: UITableViewCell {
     var showSeeAllButton = true
     private var imageSizeAdjusted = false
     private var noDataLabel:UILabel?
-    var fetchRequest:NSFetchRequest?
+    private var _fetchRequest:NSFetchRequest? = nil
+    var fetchRequest:NSFetchRequest? {
+        get {
+            return _fetchRequest
+        }
+        set (aNewValue) {
+            if (_fetchRequest != aNewValue) {
+                _fetchRequest = aNewValue
+                
+                // force reset the fetchedResultsController
+                if let _fetchRequest = _fetchRequest {
+                    let context = CoreDataManager.sharedInstance().mainObjectContext
+                    fetchedResultsController = NSFetchedResultsController(fetchRequest: _fetchRequest,
+                                                                  managedObjectContext: context,
+                                                                    sectionNameKeyPath: nil,
+                                                                            cacheName: nil)
+                }
+            }
+        }
+    }
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance().mainObjectContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
@@ -51,7 +70,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
         let space = CGFloat(5.0)
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
@@ -84,7 +103,6 @@ class ThumbnailTableViewCell: UITableViewCell {
             if let noDataLabel = noDataLabel {
                 noDataLabel.removeFromSuperview()
             }
-            collectionView.reloadData()
         } else {
             if noDataLabel == nil {
                 let width = collectionView.frame.size.width/2
@@ -98,6 +116,8 @@ class ThumbnailTableViewCell: UITableViewCell {
                 collectionView.addSubview(noDataLabel!)
             }
         }
+        
+        collectionView.reloadData()
         
         if showSeeAllButton {
             seeAllButton.hidden = items < ThumbnailTableViewCell.MaxItems
@@ -116,16 +136,10 @@ class ThumbnailTableViewCell: UITableViewCell {
             case .Backdrop:
                 urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(path)"
             }
-            
+
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.captionType!)
-                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                } else {
-                    cell.captionLabel.text = nil
-                    cell.captionLabel.backgroundColor = nil
-                }
+                cell.contentMode = .ScaleToFill
                 
                 if !self.imageSizeAdjusted &&
                     image != nil  {
@@ -136,24 +150,35 @@ class ThumbnailTableViewCell: UITableViewCell {
                     self.flowLayout.itemSize = CGSizeMake(newWidth, height)
                     self.imageSizeAdjusted = true
                 }
-                cell.contentMode = .ScaleToFill
-                
-//                MBProgressHUD.hideHUDForView(cell, animated: true)
-//                cell.hasHUD = false
+            }
+            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
+            
+            if self.showCaption {
+                cell.captionLabel.text = displayable.caption(self.captionType!)
+                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            } else {
+                cell.captionLabel.text = nil
+                cell.captionLabel.backgroundColor = nil
             }
             
-//            if !cell.hasHUD && cell.thumbnailImage.image == nil {
-//                MBProgressHUD.showHUDAddedTo(cell, animated: true)
-//                cell.hasHUD = true
-//            }
-            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
-            
         } else {
-            cell.thumbnailImage.image = UIImage(named: "noImage")
-            cell.contentMode = .ScaleAspectFit
-            if showCaption {
-                cell.captionLabel.text = displayable.caption(captionType!)
-                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            if let image = UIImage(named: "noImage") {
+                cell.thumbnailImage.image = image
+                cell.contentMode = .ScaleToFill
+                
+                if !self.imageSizeAdjusted {
+                    let imageWidth = image.size.width
+                    let imageHeight = image.size.height
+                    let height = self.collectionView.frame.size.height
+                    let newWidth = (imageWidth * height) / imageHeight
+                    self.flowLayout.itemSize = CGSizeMake(newWidth, height)
+                    self.imageSizeAdjusted = true
+                }
+                
+                if let captionType = self.captionType {
+                    cell.captionLabel.text = displayable.caption(captionType)
+                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+                }
             }
         }
     }

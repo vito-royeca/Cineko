@@ -138,7 +138,6 @@
 		8CD53BE21CC62B400035AD45 /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAA4971CB60B26008E9665 /* Credit.swift */; };
 		8CD53BE31CC62B400035AD45 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6789351CB5209200E4E14B /* Country.swift */; };
 		8CD53BE41CC62B400035AD45 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */; };
-		8CD53BE51CC62B400035AD45 /* FacebookStyleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */; };
 		8CD53BE61CC62B400035AD45 /* Genre+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67892E1CB5209200E4E14B /* Genre+CoreDataProperties.swift */; };
 		8CD53BE71CC62B400035AD45 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */; };
 		8CD53BE81CC62B400035AD45 /* TMDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD408C11CB1822E00F9132F /* TMDBManager.swift */; };
@@ -195,8 +194,6 @@
 		8C3C82331CB22032008CCF4C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8C4FDB981CB6132200E2997F /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		8C4FDB991CB6132200E2997F /* Network+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Network+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookStyleBar.h; sourceTree = "<group>"; };
-		8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStyleBar.m; sourceTree = "<group>"; };
 		8C6789221CB4C24A00E4E14B /* ThumbnailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C67892A1CB5209200E4E14B /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -394,8 +391,6 @@
 			children = (
 				8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */,
 				8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */,
-				8C642D8B1CB36537008D18F1 /* FacebookStyleBar.h */,
-				8C642D8C1CB36537008D18F1 /* FacebookStyleBar.m */,
 				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
 				8C1378771CAE16B700FB6830 /* Main.storyboard */,
 				8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */,
@@ -902,7 +897,6 @@
 				8CD53BE21CC62B400035AD45 /* Credit.swift in Sources */,
 				8CD53BE31CC62B400035AD45 /* Country.swift in Sources */,
 				8CD53BE41CC62B400035AD45 /* DynamicHeightTableViewCell.swift in Sources */,
-				8CD53BE51CC62B400035AD45 /* FacebookStyleBar.m in Sources */,
 				8CD53BE61CC62B400035AD45 /* Genre+CoreDataProperties.swift in Sources */,
 				8CD53BE71CC62B400035AD45 /* MoviesViewController.swift in Sources */,
 				8CD53BE81CC62B400035AD45 /* TMDBManager.swift in Sources */,

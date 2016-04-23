@@ -11,9 +11,15 @@ import CoreData
 
 class ObjectManager: NSObject {
 
+    // MARK: Constants
+    static let BatchUpdateNotification = "BatchUpdateNotification"
+    
     // MARK: Variables
     private var privateContext: NSManagedObjectContext {
         return CoreDataManager.sharedInstance().privateContext
+    }
+    private var mainObjectContext: NSManagedObjectContext {
+        return CoreDataManager.sharedInstance().mainObjectContext
     }
     
     func findOrCreateMovie(dict: [String: AnyObject]) -> Movie {
@@ -393,6 +399,32 @@ class ObjectManager: NSObject {
         return object!
     }
 
+    func batchUpdate(entityName: String, propertiesToUpdate: [String: AnyObject], predicate: NSPredicate) {
+        // code adapted from: http://code.tutsplus.com/tutorials/core-data-and-swift-batch-updates--cms-25120
+        // Initialize Batch Update Request
+        let batchUpdateRequest = NSBatchUpdateRequest(entityName: entityName)
+        
+        // Configure Batch Update Request
+        batchUpdateRequest.resultType = .UpdatedObjectIDsResultType
+        batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
+        batchUpdateRequest.predicate = predicate
+        
+        do {
+            // Execute Batch Request
+            let batchUpdateResult = try privateContext.executeRequest(batchUpdateRequest) as! NSBatchUpdateResult
+            
+            // Extract Object IDs
+            let objectIDs = batchUpdateResult.result as! [NSManagedObjectID]
+            
+            for objectID in objectIDs {
+                let managedObject = privateContext.objectWithID(objectID)
+                privateContext.refreshObject(managedObject, mergeChanges: false)
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(ObjectManager.BatchUpdateNotification, object: nil, userInfo: nil)
+            
+        } catch {}
+    }
+    
     // MARK: - Shared Instance
     class func sharedInstance() -> ObjectManager {
         struct Static {

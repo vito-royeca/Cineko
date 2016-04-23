@@ -14,6 +14,7 @@ class SeeAllViewController: UIViewController {
     // MARK: Constants
     static let Height:CGFloat = 180
     static let MaxItems = 12
+    static let MaxImageWidth = CGFloat(112)
     
     // MARK: Outlets
     @IBOutlet weak var collectionView: UICollectionView!
@@ -24,7 +25,6 @@ class SeeAllViewController: UIViewController {
     var displayType:DisplayType?
     var captionType:CaptionType?
     var showCaption = false
-    private var imageSizeAdjusted = false
     var fetchRequest:NSFetchRequest?
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance().mainObjectContext
@@ -50,6 +50,10 @@ class SeeAllViewController: UIViewController {
         loadData()
     }
 
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.reloadData()
+    }
+    
     // MARK: Custom methods
     func loadData() {
         if (fetchRequest) != nil {
@@ -75,36 +79,48 @@ class SeeAllViewController: UIViewController {
             
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.captionType!)
-                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                } else {
-                    cell.captionLabel.text = nil
-                    cell.captionLabel.backgroundColor = nil
-                }
-                
-                if !self.imageSizeAdjusted &&
-                    image != nil  {
-                    let space: CGFloat = 1.0
-                    let imageHeight = image.size.height
-                    let imageWidth = image.size.width
-                    let width = (self.view.frame.size.width - (3*space)) / 3.0
-                    let height = (imageHeight*width)/imageWidth
-                    self.flowLayout.minimumInteritemSpacing = space
-                    self.flowLayout.minimumLineSpacing = space
-                    self.flowLayout.itemSize = CGSizeMake(width, height)
-                    
-                    self.imageSizeAdjusted = true
-                }
                 cell.contentMode = .ScaleToFill
+                
+                let space: CGFloat = 1.0
+                let imageHeight = image.size.height
+                let imageWidth = image.size.width
+                let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
+                let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                let height = (imageHeight*width)/imageWidth
+                self.flowLayout.minimumInteritemSpacing = space
+                self.flowLayout.minimumLineSpacing = space
+                self.flowLayout.itemSize = CGSizeMake(width, height)
             }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             
+            if self.showCaption {
+                cell.captionLabel.text = displayable.caption(self.captionType!)
+                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            } else {
+                cell.captionLabel.text = nil
+                cell.captionLabel.backgroundColor = nil
+            }
+            
         } else {
-            cell.thumbnailImage.image = UIImage(named: "noImage")
-            cell.contentMode = .ScaleAspectFit
-            cell.captionLabel.text = displayable.caption(captionType!)
-            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            if let image = UIImage(named: "noImage") {
+                cell.thumbnailImage.image = image
+                cell.contentMode = .ScaleToFill
+                
+                let space: CGFloat = 1.0
+                let imageHeight = image.size.height
+                let imageWidth = image.size.width
+                let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
+                let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                let height = (imageHeight*width)/imageWidth
+                self.flowLayout.minimumInteritemSpacing = space
+                self.flowLayout.minimumLineSpacing = space
+                self.flowLayout.itemSize = CGSizeMake(width, height)
+                
+                if let captionType = self.captionType {
+                    cell.captionLabel.text = displayable.caption(captionType)
+                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+                }
+            }
         }
     }
 }

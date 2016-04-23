@@ -46,7 +46,9 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 try TMDBManager.sharedInstance().accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
-            } catch {}
+            } catch {
+                self.updateButtons()
+            }
         }
     }
     
@@ -66,7 +68,9 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 try TMDBManager.sharedInstance().accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
-            } catch {}
+            } catch {
+                self.updateButtons()
+            }
         }
     }
     
@@ -127,6 +131,10 @@ class MovieDetailsViewController: UIViewController {
         var rect = titleLabel!.frame
         rect.origin.y = min(0, tableView.contentOffset.y)
         titleLabel!.frame = rect
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.reloadData()
     }
     
     // MARK: Custom Methods

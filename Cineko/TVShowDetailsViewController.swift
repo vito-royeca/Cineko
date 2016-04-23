@@ -128,6 +128,10 @@ class TVShowDetailsViewController: UIViewController {
         titleLabel!.frame = rect
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.reloadData()
+    }
+    
     // MARK: Custom Methods
     func updateButtons() {
         if let tvShowID = tvShowID {

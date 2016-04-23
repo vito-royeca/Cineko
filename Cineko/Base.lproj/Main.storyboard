@@ -62,12 +62,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="cpj-LC-xy4">
-                        <barButtonItem key="leftBarButtonItem" title="Genre" id="Ghh-Aj-oPm">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" title="Genre" id="Ghh-Aj-oPm">
                             <connections>
                                 <action selector="genreAction:" destination="0KK-iT-w09" id="mZI-Zb-Vw2"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="2Zj-mu-qlG">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="organize" id="2Zj-mu-qlG">
                             <connections>
                                 <action selector="organizeAction:" destination="0KK-iT-w09" id="ByG-Cg-nsw"/>
                             </connections>

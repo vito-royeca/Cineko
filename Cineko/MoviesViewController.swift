@@ -34,6 +34,12 @@ class MoviesViewController: UIViewController {
         loadWatchlist()
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        if let tableView = tableView {
+            tableView.reloadData()
+        }
+    }
+    
     // MARK: Actions
     @IBAction func genreAction(sender: UIBarButtonItem) {
         
@@ -49,63 +55,55 @@ class MoviesViewController: UIViewController {
     }
     
     func loadFavorites() {
+        favoritesFetchRequest = NSFetchRequest(entityName: "Movie")
+        favoritesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        favoritesFetchRequest!.sortDescriptors = [
+            NSSortDescriptor(key: "releaseDate", ascending: true),
+            NSSortDescriptor(key: "title", ascending: true)]
+        
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 print("Error in: \(#function)... \(error)")
             }
             
-            self.favoritesFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.favoritesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
             self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            self.favoritesFetchRequest!.sortDescriptors = [
-                NSSortDescriptor(key: "releaseDate", ascending: true),
-                NSSortDescriptor(key: "title", ascending: true)]
-            
             performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
                 self.tableView.reloadData()
             }
         }
         
         do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
-            }
-            
             try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
-        } catch {}
+        } catch {
+            favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            self.tableView.reloadData()
+        }
     }
     
     func loadWatchlist() {
+        watchlistFetchRequest = NSFetchRequest(entityName: "Movie")
+        watchlistFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        watchlistFetchRequest!.sortDescriptors = [
+            NSSortDescriptor(key: "releaseDate", ascending: true),
+            NSSortDescriptor(key: "title", ascending: true)]
+        
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 print("Error in: \(#function)... \(error)")
             }
             
-            self.watchlistFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.watchlistFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
             self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            self.watchlistFetchRequest!.sortDescriptors = [
-                NSSortDescriptor(key: "releaseDate", ascending: true),
-                NSSortDescriptor(key: "title", ascending: true)]
-            
             performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
                 self.tableView.reloadData()
             }
         }
         
         do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
-            }
-            
             try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
-        } catch {}
+        } catch {
+            favoritesFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -120,17 +118,20 @@ extension MoviesViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell.titleLabel.text = "Now Showing"
+            cell.titleLabel.text = "Popular Movies"
             cell.fetchRequest = dynamicFetchRequest
             cell.displayType = .Poster
+            cell.captionType = .Title
         case 1:
             cell.titleLabel.text = "My Favorites"
             cell.fetchRequest = favoritesFetchRequest
             cell.displayType = .Poster
+            cell.captionType = .Title
         case 2:
             cell.titleLabel.text = "My Watchlist"
             cell.fetchRequest = watchlistFetchRequest
             cell.displayType = .Poster
+            cell.captionType = .Title
         default:
             break
         }
@@ -186,16 +187,11 @@ extension MoviesViewController : ThumbnailDelegate {
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
-        switch tag {
-        case 0:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-                let navigationController = navigationController {
-                let movie = displayable as! Movie
-                controller.movieID = movie.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
-        default:
-            return
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
+            let navigationController = navigationController {
+            let movie = displayable as! Movie
+            controller.movieID = movie.objectID
+            navigationController.pushViewController(controller, animated: true)
         }
     }
 }

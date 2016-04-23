@@ -46,6 +46,10 @@ class FeaturedViewController: UIViewController {
         loadFeaturedPeople()
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.reloadData()
+    }
+    
     // MARK: Custom Methods
     func loadFeaturedMovies() {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
@@ -149,10 +153,12 @@ extension FeaturedViewController : UITableViewDataSource {
                 cell.titleLabel.text = "Now Showing"
                 cell.fetchRequest = nowShowingFetchRequest
                 cell.displayType = .Poster
+                cell.captionType = .Title
             case 1:
                 cell.titleLabel.text = "Airing Today"
                 cell.fetchRequest = airingTodayFetchRequest
                 cell.displayType = .Poster
+                cell.captionType = .Title
             case 2:
                 cell.titleLabel.text = "Popular People"
                 cell.fetchRequest = popularPeopleFetchRequest

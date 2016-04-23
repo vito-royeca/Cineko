@@ -9,5 +9,8 @@
 import UIKit
 
 class TVShowsViewController: UIViewController {
-
+    // MARK: Overrides
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        tableView.reloadData()
+    }
 }
