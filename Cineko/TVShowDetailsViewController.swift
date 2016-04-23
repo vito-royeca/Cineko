@@ -46,7 +46,9 @@ class TVShowDetailsViewController: UIViewController {
             
             do {
                 try TMDBManager.sharedInstance().accountFavorite(tvShow.tvShowID!, mediaType: .TVShow, favorite: !isFavorite, completion: completion)
-            } catch {}
+            } catch {
+                self.updateButtons()
+            }
         }
     }
     
@@ -66,7 +68,9 @@ class TVShowDetailsViewController: UIViewController {
             
             do {
                 try TMDBManager.sharedInstance().accountWatchlist(tvShow.tvShowID!, mediaType: .TVShow, watchlist: !isWatchlist, completion: completion)
-            } catch {}
+            } catch {
+                self.updateButtons()
+            }
         }
     }
     
