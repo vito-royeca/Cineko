@@ -27,15 +27,13 @@ class FeaturedViewController: UIViewController {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-//        if TMDBManager.sharedInstance().hasSessionID() {
-            let completion = { (error: NSError?) in
-                // nothing to do here...
-            }
-            
-            do {
-                try TMDBManager.sharedInstance().downloadInitialData(completion)
-            } catch {}
-//        }
+        let completion = { (error: NSError?) in
+            // nothing to do here...
+        }
+        
+        do {
+            try TMDBManager.sharedInstance().downloadInitialData(completion)
+        } catch {}
     }
     
     override func viewDidAppear(animated: Bool) {

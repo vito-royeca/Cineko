@@ -63,7 +63,7 @@ class MoviesViewController: UIViewController {
         
         for genre in movieGenres! {
             // add a checkmark for the current group using Unicode
-            let title = genre.name
+            let title = genre.name == dynamicTitle ? "\u{2713} \(dynamicTitle!)" : genre.name
             
             let handler = {(alert: UIAlertAction!) in
                 self.movieGenre = genre.name
@@ -82,7 +82,7 @@ class MoviesViewController: UIViewController {
         
         for group in movieGroups {
             // add a checkmark for the current group using Unicode
-            let title = group
+            let title = group == dynamicTitle ? "\u{2713} \(dynamicTitle!)" : group
             
             let handler = {(alert: UIAlertAction!) in
                 self.movieGroup = group

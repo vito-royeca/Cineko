@@ -422,6 +422,7 @@
                         <segue destination="0ZO-6o-vxF" kind="relationship" relationship="viewControllers" id="qw2-uF-X2u"/>
                         <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="Y4F-x7-kSB"/>
                         <segue destination="CjW-CM-KAG" kind="relationship" relationship="viewControllers" id="iL9-v5-6Yu"/>
+                        <segue destination="Enm-nE-dfr" kind="relationship" relationship="viewControllers" id="WAr-2r-CNY"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -498,10 +499,10 @@
             </objects>
             <point key="canvasLocation" x="1894" y="625"/>
         </scene>
-        <!--View Controller-->
+        <!--Search View Controller-->
         <scene sceneID="Qq4-bx-MnO">
             <objects>
-                <viewController id="uwc-6F-GSl" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="uwc-6F-GSl" customClass="SearchViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f9R-tH-DH0"/>
                         <viewControllerLayoutGuide type="bottom" id="EKQ-6v-gYu"/>
@@ -509,13 +510,67 @@
                     <view key="view" contentMode="scaleToFill" id="Bpl-hR-qTH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KLD-Fm-Bhw">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="moviesTableViewCell" id="MHz-Qz-eKe" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MHz-Qz-eKe" id="Kmm-k7-VNN">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="tvShowsTableViewCell" id="2bL-rY-is7" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2bL-rY-is7" id="bgG-yO-WME">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="peopleTableViewCell" id="WL8-xN-bnC" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WL8-xN-bnC" id="lGC-OT-qTg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="uwc-6F-GSl" id="zwP-kS-Mhb"/>
+                                    <outlet property="delegate" destination="uwc-6F-GSl" id="eEg-Oh-RnE"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KLD-Fm-Bhw" firstAttribute="bottom" secondItem="EKQ-6v-gYu" secondAttribute="top" id="Oj7-19-TvJ"/>
+                            <constraint firstItem="KLD-Fm-Bhw" firstAttribute="leading" secondItem="Bpl-hR-qTH" secondAttribute="leading" id="Rrn-76-tam"/>
+                            <constraint firstAttribute="trailing" secondItem="KLD-Fm-Bhw" secondAttribute="trailing" id="WeB-oc-ROy"/>
+                            <constraint firstItem="KLD-Fm-Bhw" firstAttribute="top" secondItem="f9R-tH-DH0" secondAttribute="bottom" id="YfY-8N-OWB"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="search" id="noe-WY-P8P"/>
+                    <navigationItem key="navigationItem" id="eD0-Iy-N82"/>
+                    <connections>
+                        <outlet property="searchBar" destination="OhY-vt-4Ga" id="WIp-cG-GMO"/>
+                        <outlet property="tableView" destination="KLD-Fm-Bhw" id="d9A-gL-nib"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uS0-8J-ETv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" placeholder="Search for a movie, tv show, people..." id="OhY-vt-4Ga">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits" keyboardType="webSearch" returnKeyType="search"/>
+                    <connections>
+                        <outlet property="delegate" destination="uwc-6F-GSl" id="R8O-aS-ZIM"/>
+                    </connections>
+                </searchBar>
             </objects>
-            <point key="canvasLocation" x="1082" y="1404"/>
+            <point key="canvasLocation" x="1894" y="1404"/>
         </scene>
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
@@ -916,6 +971,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MPQ-op-7ME" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4430" y="-179"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ax7-xb-0Wt">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Enm-nE-dfr" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="search" id="noe-WY-P8P"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="K4T-pH-bfB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uwc-6F-GSl" kind="relationship" relationship="rootViewController" id="M08-YV-gos"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9fz-5F-i8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1082" y="1404"/>
         </scene>
     </scenes>
     <resources>

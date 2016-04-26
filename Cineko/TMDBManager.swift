@@ -181,6 +181,12 @@ struct TMDBConstants {
             static let Path = "/genre/tv/list"
         }
     }
+    
+    struct Search {
+        struct Multi {
+            static let Path = "/search/multi"
+        }
+    }
 }
 
 enum ImageType : Int {
@@ -208,7 +214,8 @@ enum CreditParent : String {
 
 enum MediaType : String {
     case Movie = "movie",
-        TVShow = "tv"
+        TVShow = "tv",
+        Person = "person"
 }
 
 
@@ -459,6 +466,8 @@ class TMDBManager: NSObject {
             case .TVShow:
                 let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.favorite = NSNumber(bool: favorite)
+            default:
+                break
             }
             CoreDataManager.sharedInstance().savePrivateContext()
             completion(error: nil)
@@ -505,6 +514,8 @@ class TMDBManager: NSObject {
             case .TVShow:
                 let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.watchlist = NSNumber(bool: watchlist)
+            default:
+                break
             }
             CoreDataManager.sharedInstance().savePrivateContext()
             completion(error: nil)
@@ -1171,6 +1182,75 @@ class TMDBManager: NSObject {
         
         let failure = { (error: NSError?) -> Void in
             completion(arrayIDs: genreIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: Search
+    func searchMulti(query: String, completion: (results: [MediaType: [AnyObject]], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Multi.Path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          "query": query]
+        
+        var media = [MediaType: [AnyObject]]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for dict in json {
+                        if let mediaType = dict["media_type"] as? String {
+                            var ids:[NSNumber]?
+                            
+                            if mediaType == "movie" {
+                                let m = ObjectManager.sharedInstance().findOrCreateMovie(dict)
+                                if let movieID = m.movieID {
+                                    if let x = media[MediaType.Movie] as? [NSNumber] {
+                                        ids = x
+                                    } else {
+                                        ids = [NSNumber]()
+                                    }
+                                    ids!.append(movieID)
+                                    media[MediaType.Movie] = ids
+                                }
+                            } else if mediaType == "tv" {
+                                let m = ObjectManager.sharedInstance().findOrCreateTVShow(dict)
+                                if let tvShowID = m.tvShowID {
+                                    if let x = media[MediaType.TVShow] as? [NSNumber] {
+                                        ids = x
+                                    } else {
+                                        ids = [NSNumber]()
+                                    }
+                                    ids!.append(tvShowID)
+                                    media[MediaType.TVShow] = ids
+                                }
+                            } else if mediaType == "person" {
+                                let m = ObjectManager.sharedInstance().findOrCreatePerson(dict)
+                                if let personID = m.personID {
+                                    if let x = media[MediaType.Person] as? [NSNumber] {
+                                        ids = x
+                                    } else {
+                                        ids = [NSNumber]()
+                                    }
+                                    ids!.append(personID)
+                                    media[MediaType.Person] = ids
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        
+            completion(results: media, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(results: media, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

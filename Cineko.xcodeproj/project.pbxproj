@@ -155,6 +155,7 @@
 		8CD53C091CC62B570035AD45 /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C051CC62B570035AD45 /* ThumbnailTableViewCell.xib */; };
 		8CD53C0A1CC62B570035AD45 /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C061CC62B570035AD45 /* ThumbnailCollectionViewCell.xib */; };
 		8CD53C0B1CC62B570035AD45 /* MediaInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C071CC62B570035AD45 /* MediaInfoTableViewCell.xib */; };
+		8CF5ECDB1CCF71E700260045 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */; };
 		A6EFC38E7DA51EF7EB697EB8 /* Pods_CinekoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -241,6 +242,7 @@
 		8CDAA4961CB60B26008E9665 /* Credit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Credit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CDAA4971CB60B26008E9665 /* Credit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credit.swift; sourceTree = "<group>"; };
 		8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowDetailsViewController.swift; sourceTree = "<group>"; };
+		8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CinekoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9285EB472CD725C6F83ACA2D /* Pods-CinekoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CinekoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CinekoTests/Pods-CinekoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B0EE007EC6645ABA2B937150 /* Pods-Cine Ko!.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cine Ko!.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cine Ko!/Pods-Cine Ko!.release.xcconfig"; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8C17D5A01CC54B9800D81F66 /* PersonDetailsViewController.swift */,
+				8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */,
 				8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
 				8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */,
@@ -888,6 +891,7 @@
 				8CD53BD91CC62B400035AD45 /* StartViewController.swift in Sources */,
 				8CD53BDA1CC62B400035AD45 /* Language.swift in Sources */,
 				8CD53BDB1CC62B400035AD45 /* ObjectManager.swift in Sources */,
+				8CF5ECDB1CCF71E700260045 /* SearchViewController.swift in Sources */,
 				8CD53BDC1CC62B400035AD45 /* Account.swift in Sources */,
 				8CD53BDD1CC62B400035AD45 /* TVShow.swift in Sources */,
 				8CD53BDE1CC62B400035AD45 /* PersonDetailsViewController.swift in Sources */,
