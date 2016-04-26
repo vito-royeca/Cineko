@@ -70,22 +70,16 @@ class PersonDetailsViewController: UIViewController {
                     NSSortDescriptor(key: "voteAverage", ascending: false)]
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.tableView.reloadData()
                 }
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
                 try TMDBManager.sharedInstance().personImages(person.personID!, completion: completion)
             } catch {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
+                MBProgressHUD.hideHUDForView(view, animated: true)
                 self.tableView.reloadData()
             }
         }

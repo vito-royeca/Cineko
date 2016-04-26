@@ -19,7 +19,7 @@ class MediaInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var ratingIcon: UIImageView!
     @IBOutlet weak var ratingLabel: UILabel!
     
-    
+    // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -32,5 +32,13 @@ class MediaInfoTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    // MARK: Custom Methods
+    func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
+        self.backgroundColor = backgroundColor
+        dateLabel.textColor = fontColor
+        durationLabel.textColor = fontColor
+        ratingLabel.textColor = fontColor
     }
 }

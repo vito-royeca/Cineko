@@ -12,7 +12,7 @@ class DynamicHeightTableViewCell: UITableViewCell {
     
     @IBOutlet weak var dynamicLabel: UILabel!
     
-
+    // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -24,4 +24,9 @@ class DynamicHeightTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    // MARK: Custom Methods
+    func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
+        self.backgroundColor = backgroundColor
+        dynamicLabel.textColor = fontColor
+    }
 }

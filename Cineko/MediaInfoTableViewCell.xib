@@ -78,7 +78,6 @@
                     <constraint firstItem="ZOR-Tc-BJE" firstAttribute="baseline" secondItem="m7O-W8-ctG" secondAttribute="baseline" id="s6h-i9-kjQ"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.33333333333333331" alpha="0.95146220439189189" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="dateIcon" destination="MmG-sn-Nis" id="E2m-fh-s9x"/>
                 <outlet property="dateLabel" destination="s7X-iG-Dta" id="knm-Do-PSN"/>

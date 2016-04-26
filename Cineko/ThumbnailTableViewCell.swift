@@ -55,7 +55,8 @@ class ThumbnailTableViewCell: UITableViewCell {
     }()
     private var shouldReloadCollectionView = false
     private var blockOperation:NSBlockOperation?
-    
+    private var fontColor:UIColor?
+
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var seeAllButton: UIButton!
@@ -158,6 +159,7 @@ class ThumbnailTableViewCell: UITableViewCell {
             if self.showCaption {
                 cell.captionLabel.text = displayable.caption(self.captionType!)
                 cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+                cell.captionLabel.textColor = fontColor
             } else {
                 cell.captionLabel.text = nil
                 cell.captionLabel.backgroundColor = nil
@@ -180,8 +182,22 @@ class ThumbnailTableViewCell: UITableViewCell {
                 if let captionType = self.captionType {
                     cell.captionLabel.text = displayable.caption(captionType)
                     cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+                    cell.captionLabel.textColor = fontColor
                 }
             }
+        }
+    }
+    
+    // MARK: Custom Methods
+    func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
+        self.backgroundColor = backgroundColor
+        self.fontColor = fontColor
+        
+        titleLabel.textColor = fontColor
+        seeAllButton.setTitleColor(fontColor, forState: .Normal)
+        
+        if let noDataLabel = noDataLabel {
+            noDataLabel.textColor = fontColor
         }
     }
 }

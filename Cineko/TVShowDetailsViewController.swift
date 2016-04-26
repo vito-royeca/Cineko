@@ -28,6 +28,8 @@ class TVShowDetailsViewController: UIViewController {
     var tvSeasonFetchRequest:NSFetchRequest?
     var isFavorite = false
     var isWatchlist = false
+    private var averageColor:UIColor?
+    private var patternColor:UIColor?
     
     // MARK: Actions
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
@@ -88,8 +90,8 @@ class TVShowDetailsViewController: UIViewController {
         
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
-        titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-        titleLabel!.textColor = UIColor.whiteColor()
+//        titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+//        titleLabel!.textColor = UIColor.whiteColor()
         titleLabel!.textAlignment = .Center
         titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
         titleLabel!.numberOfLines = 0
@@ -109,7 +111,14 @@ class TVShowDetailsViewController: UIViewController {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(posterPath)")
                 let backgroundView = UIImageView()
                 tableView.backgroundView = backgroundView
-                backgroundView.sd_setImageWithURL(url)
+                
+                let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                    self.averageColor = image.averageColor().colorWithAlphaComponent(0.95)
+                    self.patternColor = image.patternColor(self.averageColor)
+                    self.titleLabel!.backgroundColor = self.averageColor
+                    self.titleLabel!.textColor = self.patternColor
+                }
+                backgroundView.sd_setImageWithURL(url, completed: comppleted)
             }
             
             titleLabel!.text = tvShow.name
@@ -275,6 +284,7 @@ class TVShowDetailsViewController: UIViewController {
                         c.ratingLabel.text = NSString(format: "%.1f", voteAverage.doubleValue) as String
                     }
                 }
+                c.changeColor(averageColor, fontColor: patternColor)
             }
         case 2:
             if let c = cell as? DynamicHeightTableViewCell {
@@ -295,6 +305,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = text
                 }
+                c.changeColor(averageColor, fontColor: patternColor)
             }
         case 3:
             if let c = cell as? ThumbnailTableViewCell {
@@ -304,7 +315,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.showSeeAllButton = false
                 c.fetchRequest = backdropFetchRequest
                 c.displayType = .Backdrop
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.changeColor(averageColor, fontColor: patternColor)
                 c.loadData()
             }
         case 4:
@@ -317,7 +328,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.captionType = .NameAndRole
                 c.showCaption = true
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.changeColor(averageColor, fontColor: patternColor)
                 c.delegate = self
                 c.loadData()
             }
@@ -331,7 +342,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.captionType = .NameAndJob
                 c.showCaption = true
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.changeColor(averageColor, fontColor: patternColor)
                 c.delegate = self
                 c.loadData()
             }
@@ -345,7 +356,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.displayType = .Poster
                 c.captionType = .Title
                 c.showCaption = true
-                c.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
+                c.changeColor(averageColor, fontColor: patternColor)
                 c.delegate = self
                 c.loadData()
             }
