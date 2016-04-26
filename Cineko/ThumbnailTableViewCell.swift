@@ -53,6 +53,8 @@ class ThumbnailTableViewCell: UITableViewCell {
         
         return fetchedResultsController
     }()
+    private var shouldReloadCollectionView = false
+    private var blockOperation:NSBlockOperation?
     
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
@@ -190,8 +192,8 @@ extension ThumbnailTableViewCell : UICollectionViewDataSource {
         if (fetchRequest) != nil,
             let sections = fetchedResultsController.sections {
             let sectionInfo = sections[section]
-        
             return sectionInfo.numberOfObjects
+            
         } else {
             return 0
         }
@@ -220,14 +222,28 @@ extension ThumbnailTableViewCell : UICollectionViewDelegate {
 
 // MARK: NSFetchedResultsControllerDelegate
 extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        shouldReloadCollectionView = false
+        blockOperation = NSBlockOperation()
+    }
+    
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         
         switch type {
         case .Insert:
-            collectionView.insertSections(NSIndexSet(index: sectionIndex))
+            blockOperation!.addExecutionBlock({
+                self.collectionView.insertSections(NSIndexSet(index: sectionIndex))
+            })
             
         case .Delete:
-            collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+            blockOperation!.addExecutionBlock({
+                self.collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+            })
+        
+        case .Update:
+            blockOperation!.addExecutionBlock({
+                self.collectionView.reloadSections(NSIndexSet(index: sectionIndex))
+            })
             
         default:
             return
@@ -238,10 +254,28 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            if collectionView.numberOfSections() > 0 {
+                if let indexPath = indexPath {
+                    if collectionView.numberOfItemsInSection(indexPath.section) == 0 {
+                        shouldReloadCollectionView = true
+                    } else {
+                        blockOperation!.addExecutionBlock({
+                            self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+                        })
+                    }
+                }
+            } else {
+                shouldReloadCollectionView = true
+            }
             
         case .Delete:
-            collectionView.deleteItemsAtIndexPaths([indexPath!])
+            if collectionView.numberOfItemsInSection(indexPath!.section) == 1 {
+                shouldReloadCollectionView = true
+            } else {
+                blockOperation!.addExecutionBlock({
+                    self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+                })
+            }
             
         case .Update:
             if let indexPath = indexPath {
@@ -249,14 +283,30 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
                     
                     if let c = cell as? ThumbnailCollectionViewCell,
                         let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
-                        configureCell(c, displayable: displayable)
+                        
+                        blockOperation!.addExecutionBlock({
+                            self.configureCell(c, displayable: displayable)
+                        })
                     }
                 }
             }
             
         case .Move:
-            collectionView.deleteItemsAtIndexPaths([indexPath!])
-            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            blockOperation!.addExecutionBlock({
+                self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+                self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            })
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
+        if shouldReloadCollectionView {
+            collectionView.reloadData()
+        } else {
+            collectionView.performBatchUpdates({
+                self.blockOperation!.start()
+                }, completion:nil)
         }
     }
 }

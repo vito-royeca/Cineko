@@ -280,8 +280,20 @@ class TVShowDetailsViewController: UIViewController {
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
                     let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+                    var text = String()
+                    var genreStrings = String()
+                    if let genres = tvShow.genres {
+                        let objects = genres.allObjects as! [Genre]
+                        let names = objects.map { $0.name! } as [String]
+                        genreStrings = names.sort().joinWithSeparator(", ")
+                    }
+                    text += genreStrings
+                    if let overview = tvShow.overview {
+                        text += "\n\n\(overview)"
+                    }
+                    
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = tvShow.overview
+                    c.dynamicLabel.text = text
                 }
             }
         case 3:

@@ -25,6 +25,7 @@ class SeeAllViewController: UIViewController {
     var displayType:DisplayType?
     var captionType:CaptionType?
     var showCaption = false
+    private var imageSizeAdjusted = false
     var fetchRequest:NSFetchRequest?
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance().mainObjectContext
@@ -36,6 +37,8 @@ class SeeAllViewController: UIViewController {
         
         return fetchedResultsController
     }()
+    private var shouldReloadCollectionView = false
+    private var blockOperation:NSBlockOperation?
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -81,17 +84,21 @@ class SeeAllViewController: UIViewController {
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 cell.contentMode = .ScaleToFill
                 
-                let space: CGFloat = 1.0
-                let imageHeight = image.size.height
-                let imageWidth = image.size.width
-                let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
-                let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
-                let height = (imageHeight*width)/imageWidth
-                self.flowLayout.minimumInteritemSpacing = space
-                self.flowLayout.minimumLineSpacing = space
-                self.flowLayout.itemSize = CGSizeMake(width, height)
+                if !self.imageSizeAdjusted &&
+                    image != nil {
+                    let space: CGFloat = 1.0
+                    let imageHeight = image.size.height
+                    let imageWidth = image.size.width
+                    let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
+                    let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                    let height = (imageHeight*width)/imageWidth
+                    self.flowLayout.minimumInteritemSpacing = space
+                    self.flowLayout.minimumLineSpacing = space
+                    self.flowLayout.itemSize = CGSizeMake(width, height)
+                    self.imageSizeAdjusted = true
+                }
             }
-            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
+            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
             
             if self.showCaption {
                 cell.captionLabel.text = displayable.caption(self.captionType!)
@@ -106,15 +113,18 @@ class SeeAllViewController: UIViewController {
                 cell.thumbnailImage.image = image
                 cell.contentMode = .ScaleToFill
                 
-                let space: CGFloat = 1.0
-                let imageHeight = image.size.height
-                let imageWidth = image.size.width
-                let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
-                let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
-                let height = (imageHeight*width)/imageWidth
-                self.flowLayout.minimumInteritemSpacing = space
-                self.flowLayout.minimumLineSpacing = space
-                self.flowLayout.itemSize = CGSizeMake(width, height)
+                if !self.imageSizeAdjusted {
+                    let space: CGFloat = 1.0
+                    let imageHeight = image.size.height
+                    let imageWidth = image.size.width
+                    let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
+                    let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                    let height = (imageHeight*width)/imageWidth
+                    self.flowLayout.minimumInteritemSpacing = space
+                    self.flowLayout.minimumLineSpacing = space
+                    self.flowLayout.itemSize = CGSizeMake(width, height)
+                    self.imageSizeAdjusted = true
+                }
                 
                 if let captionType = self.captionType {
                     cell.captionLabel.text = displayable.caption(captionType)
@@ -161,14 +171,28 @@ extension SeeAllViewController : UICollectionViewDelegate {
 
 // MARK: NSFetchedResultsControllerDelegate
 extension SeeAllViewController : NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        shouldReloadCollectionView = false
+        blockOperation = NSBlockOperation()
+    }
+    
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         
         switch type {
         case .Insert:
-            collectionView.insertSections(NSIndexSet(index: sectionIndex))
+            blockOperation!.addExecutionBlock({
+                self.collectionView.insertSections(NSIndexSet(index: sectionIndex))
+            })
             
         case .Delete:
-            collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+            blockOperation!.addExecutionBlock({
+                self.collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+            })
+            
+        case .Update:
+            blockOperation!.addExecutionBlock({
+                self.collectionView.reloadSections(NSIndexSet(index: sectionIndex))
+            })
             
         default:
             return
@@ -179,10 +203,28 @@ extension SeeAllViewController : NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            if collectionView.numberOfSections() > 0 {
+                if let indexPath = indexPath {
+                    if collectionView.numberOfItemsInSection(indexPath.section) == 0 {
+                        shouldReloadCollectionView = true
+                    } else {
+                        blockOperation!.addExecutionBlock({
+                            self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+                        })
+                    }
+                }
+            } else {
+                shouldReloadCollectionView = true
+            }
             
         case .Delete:
-            collectionView.deleteItemsAtIndexPaths([indexPath!])
+            if collectionView.numberOfItemsInSection(indexPath!.section) == 1 {
+                shouldReloadCollectionView = true
+            } else {
+                blockOperation!.addExecutionBlock({
+                    self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+                })
+            }
             
         case .Update:
             if let indexPath = indexPath {
@@ -190,14 +232,29 @@ extension SeeAllViewController : NSFetchedResultsControllerDelegate {
                     
                     if let c = cell as? ThumbnailCollectionViewCell,
                         let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
-                        configureCell(c, displayable: displayable)
+                        blockOperation!.addExecutionBlock({
+                            self.configureCell(c, displayable: displayable)
+                        })
                     }
                 }
             }
             
         case .Move:
-            collectionView.deleteItemsAtIndexPaths([indexPath!])
-            collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            blockOperation!.addExecutionBlock({
+                self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+                self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            })
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
+        if shouldReloadCollectionView {
+            collectionView.reloadData()
+        } else {
+            collectionView.performBatchUpdates({
+                self.blockOperation!.start()
+                }, completion:nil)
         }
     }
 }

@@ -268,8 +268,20 @@ class MovieDetailsViewController: UIViewController {
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
                     let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+                    var text = String()
+                    var genreStrings = String()
+                    if let genres = movie.genres {
+                        let objects = genres.allObjects as! [Genre]
+                        let names = objects.map { $0.name! } as [String]
+                        genreStrings = names.sort().joinWithSeparator(", ")
+                    }
+                    text += genreStrings
+                    if let overview = movie.overview {
+                        text += "\n\n\(overview)"
+                    }
+                    
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = movie.overview
+                    c.dynamicLabel.text = text
                 }
             }
         case 3:

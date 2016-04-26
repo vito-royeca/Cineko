@@ -111,6 +111,18 @@ struct TMDBConstants {
         struct NowPlaying {
             static let Path = "/movie/now_playing"
         }
+        struct Upcoming {
+            static let Path = "/movie/upcoming"
+        }
+        struct TopRated {
+            static let Path = "/movie/top_rated"
+        }
+        struct Popular {
+            static let Path = "/movie/popular"
+        }
+        struct ByGenre {
+            static let Path = "/genre/{id}/movies"
+        }
         struct Details {
             static let Path = "/movie/{id}"
         }
@@ -128,6 +140,12 @@ struct TMDBConstants {
         }
         struct AiringToday {
             static let Path = "/tv/airing_today"
+        }
+        struct TopRated {
+            static let Path = "/tv/top_rated"
+        }
+        struct Popular {
+            static let Path = "/tv/popular"
         }
         struct Details {
             static let Path = "/tv/{id}"
@@ -152,6 +170,15 @@ struct TMDBConstants {
         }
         struct Credits {
             static let Path = "/person/{id}/combined_credits"
+        }
+    }
+    
+    struct Genres {
+        struct Movie {
+            static let Path = "/genre/movie/list"
+        }
+        struct TVShow {
+            static let Path = "/genre/tv/list"
         }
     }
 }
@@ -195,7 +222,6 @@ class TMDBManager: NSObject {
     // MARK: Setup
     func setup(apiKey: String) {
         self.apiKey = apiKey
-        // TODO: load account here...
         checkFirstRun()
     }
     
@@ -317,13 +343,26 @@ class TMDBManager: NSObject {
     
     // MARK: Account
     func downloadInitialData(completion: (error: NSError?) -> Void?) throws {
+        // download account details, then favorite movies, then favorite TV shows,
+        // then watchlist movies, then watchlist TV shows,
+        // then movie genres, then TV show genres
         let accountCompletion = { (error: NSError?) in
             do {
                 let fmCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
                     let ftvCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
                         let wmCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
                             let wtvCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
-                                completion(error: error)
+                                let gMCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                                    let gTVCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                                        completion(error: error)
+                                    }
+                                    do {
+                                        try self.genresTVShow(gTVCompletion)
+                                    } catch {}
+                                }
+                                do {
+                                    try self.genresMovie(gMCompletion)
+                                } catch {}
                             }
                             do {
                                 try self.accountWatchlistTVShows(wtvCompletion)
@@ -342,7 +381,20 @@ class TMDBManager: NSObject {
         }
         do {
             try accountDetails(accountCompletion)
-        } catch {}
+        } catch {
+            // down load movie and TV genres even if User did not log in
+            let gMCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                let gTVCompletion =  { (arrayIDs: [AnyObject], error: NSError?) in
+                    completion(error: error)
+                }
+                do {
+                    try self.genresTVShow(gTVCompletion)
+                } catch {}
+            }
+            do {
+                try self.genresMovie(gMCompletion)
+            } catch {}
+        }
     }
     
     func accountDetails(completion: (error: NSError?) -> Void?) throws {
@@ -654,13 +706,45 @@ class TMDBManager: NSObject {
     }
     
     // MARK: Movies
-    func moviesNowPlaying(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+    func movies(path: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
         
         let httpMethod:HTTPMethod = .Get
-        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.NowPlaying.Path)"
+        let urlString = "\(TMDBConstants.APIURL)\(path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        var movieIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for movie in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        if let movieID = m.movieID {
+                            movieIDs.append(movieID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: movieIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: movieIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+
+    func moviesByGenre(genreID: Int, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.ByGenre.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(genreID)")
         let parameters = [TMDBConstants.APIKey: apiKey!]
         var movieIDs = [NSNumber]()
         
@@ -782,44 +866,13 @@ class TMDBManager: NSObject {
     }
     
     // MARK: TV Shows
-    func tvShowsOnTheAir(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+    func tvShows(path: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
         
         let httpMethod:HTTPMethod = .Get
-        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.OnTheAir.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
-        var tvShowIDs = [NSNumber]()
-        
-        let success = { (results: AnyObject!) in
-            if let dict = results as? [String: AnyObject] {
-                if let json = dict["results"] as? [[String: AnyObject]] {
-                    for tvShow in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
-                        if let tvShowID = m.tvShowID {
-                            tvShowIDs.append(tvShowID)
-                        }
-                    }
-                }
-            }
-            completion(arrayIDs: tvShowIDs, error: nil)
-        }
-        
-        let failure = { (error: NSError?) -> Void in
-            completion(arrayIDs: tvShowIDs, error: error)
-        }
-        
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
-    }
-
-    func tvShowsAiringToday(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
-        guard (apiKey) != nil else {
-            throw TMDBError.NoAPIKey
-        }
-        
-        let httpMethod:HTTPMethod = .Get
-        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.AiringToday.Path)"
+        let urlString = "\(TMDBConstants.APIURL)\(path)"
         let parameters = [TMDBConstants.APIKey: apiKey!]
         var tvShowIDs = [NSNumber]()
         
@@ -1051,6 +1104,73 @@ class TMDBManager: NSObject {
         
         let failure = { (error: NSError?) -> Void in
             completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: Genre
+    func genresMovie(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Genres.Movie.Path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        var genreIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["genres"] as? [[String: AnyObject]] {
+                    for genre in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateGenre(genre)
+                        if let genreID = m.genreID {
+                            genreIDs.append(genreID)
+                        }
+                        m.movieGenre = NSNumber(bool: true)
+                    }
+                }
+            }
+            CoreDataManager.sharedInstance().savePrivateContext()
+            completion(arrayIDs: genreIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: genreIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func genresTVShow(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Genres.Movie.Path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        var genreIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["genres"] as? [[String: AnyObject]] {
+                    for genre in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateGenre(genre)
+                        if let genreID = m.genreID {
+                            genreIDs.append(genreID)
+                        }
+                        m.tvGenre = NSNumber(bool: true)
+                    }
+                }
+            }
+            CoreDataManager.sharedInstance().savePrivateContext()
+            completion(arrayIDs: genreIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: genreIDs, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

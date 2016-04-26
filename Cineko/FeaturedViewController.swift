@@ -27,7 +27,7 @@ class FeaturedViewController: UIViewController {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        if TMDBManager.sharedInstance().hasSessionID() {
+//        if TMDBManager.sharedInstance().hasSessionID() {
             let completion = { (error: NSError?) in
                 // nothing to do here...
             }
@@ -35,7 +35,7 @@ class FeaturedViewController: UIViewController {
             do {
                 try TMDBManager.sharedInstance().downloadInitialData(completion)
             } catch {}
-        }
+//        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -77,7 +77,7 @@ class FeaturedViewController: UIViewController {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
             
-            try TMDBManager.sharedInstance().moviesNowPlaying(completion)
+            try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
         } catch {}
     }
     
@@ -105,7 +105,7 @@ class FeaturedViewController: UIViewController {
             if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
-            try TMDBManager.sharedInstance().tvShowsAiringToday(completion)
+            try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
         } catch {}
     }
     

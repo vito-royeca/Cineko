@@ -30,7 +30,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="watchlistTableViewCell" id="vQt-e3-W60" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoritesTableViewCell" id="vQt-e3-W60" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vQt-e3-W60" id="QME-On-GeE">
@@ -38,7 +38,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoritesTableViewCell" id="F1u-AS-g9E" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="watchlistTableViewCell" id="F1u-AS-g9E" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1u-AS-g9E" id="gnO-eF-z0s">
@@ -62,12 +62,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="cpj-LC-xy4">
-                        <barButtonItem key="leftBarButtonItem" enabled="NO" title="Genre" id="Ghh-Aj-oPm">
+                        <barButtonItem key="leftBarButtonItem" title="Genre" id="Ghh-Aj-oPm">
                             <connections>
                                 <action selector="genreAction:" destination="0KK-iT-w09" id="mZI-Zb-Vw2"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="organize" id="2Zj-mu-qlG">
+                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="2Zj-mu-qlG">
                             <connections>
                                 <action selector="organizeAction:" destination="0KK-iT-w09" id="ByG-Cg-nsw"/>
                             </connections>
@@ -421,13 +421,14 @@
                     <connections>
                         <segue destination="0ZO-6o-vxF" kind="relationship" relationship="viewControllers" id="qw2-uF-X2u"/>
                         <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="Y4F-x7-kSB"/>
+                        <segue destination="CjW-CM-KAG" kind="relationship" relationship="viewControllers" id="iL9-v5-6Yu"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="176" y="625"/>
         </scene>
-        <!--Shows View Controller-->
+        <!--TV Shows-->
         <scene sceneID="nVY-oC-pzh">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="G93-kW-eQc" customClass="TVShowsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
@@ -438,9 +439,60 @@
                     <view key="view" contentMode="scaleToFill" id="8W2-4z-CNu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Evf-iq-36w">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dynamicTableViewCell" id="LxI-od-Wej" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LxI-od-Wej" id="xuq-Um-39k">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoritesTableViewCell" id="iqz-qF-3oe" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iqz-qF-3oe" id="BoZ-vX-zs8">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="watchlistTableViewCell" id="to2-a4-s9j" customClass="ThumbnailTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="to2-a4-s9j" id="fgf-2c-Tce">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="G93-kW-eQc" id="4OO-Jg-fl4"/>
+                                    <outlet property="delegate" destination="G93-kW-eQc" id="XpG-Kq-mGo"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Evf-iq-36w" secondAttribute="trailing" id="EIX-wz-VPV"/>
+                            <constraint firstItem="Evf-iq-36w" firstAttribute="bottom" secondItem="hGG-v3-hPV" secondAttribute="top" id="GLz-Uc-R4I"/>
+                            <constraint firstItem="Evf-iq-36w" firstAttribute="top" secondItem="dmG-2u-2G5" secondAttribute="bottom" id="aVR-gD-rOV"/>
+                            <constraint firstItem="Evf-iq-36w" firstAttribute="leading" secondItem="8W2-4z-CNu" secondAttribute="leading" id="ytl-qZ-FsM"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="tch-lK-YOL"/>
+                    <navigationItem key="navigationItem" title="TV Shows" id="tch-lK-YOL">
+                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="kDd-mQ-CCu">
+                            <connections>
+                                <action selector="organizeAction:" destination="G93-kW-eQc" id="8L8-b4-WLC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="Evf-iq-36w" id="gRr-B5-KoG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctu-08-CTJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
