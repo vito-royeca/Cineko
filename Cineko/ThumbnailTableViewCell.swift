@@ -199,15 +199,12 @@ class ThumbnailTableViewCell: UITableViewCell {
     
     func setDefaultImageForCell(cell: ThumbnailCollectionViewCell, caption: String?) {
         if let image = UIImage(named: "noImage") {
-            if !imageSizeAdjusted {
-                let imageWidth = image.size.width
-                let imageHeight = image.size.height
-                let height = self.collectionView.frame.size.height
-                let newWidth = (imageWidth * height) / imageHeight
-                let width = newWidth > ThumbnailTableViewCell.MaxImageWidth ? ThumbnailTableViewCell.MaxImageWidth : newWidth
-                self.flowLayout.itemSize = CGSizeMake(width, height)
-                imageSizeAdjusted = true
-            }
+            let imageWidth = image.size.width
+            let imageHeight = image.size.height
+            let height = self.collectionView.frame.size.height
+            let newWidth = (imageWidth * height) / imageHeight
+            let width = newWidth > ThumbnailTableViewCell.MaxImageWidth ? ThumbnailTableViewCell.MaxImageWidth : newWidth
+            self.flowLayout.itemSize = CGSizeMake(width, height)
 
             cell.thumbnailImage.image = image
             cell.contentMode = .ScaleToFill
@@ -250,7 +247,7 @@ extension ThumbnailTableViewCell : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
             let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
-            delegate.didSelectItem(self.tag, displayable: displayable)
+            delegate.didSelectItem(self.tag, displayable: displayable, path: indexPath)
         }
     }
 }

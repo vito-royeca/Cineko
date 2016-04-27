@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
 
@@ -255,6 +256,24 @@ class PersonDetailsViewController: UIViewController {
             return UITableViewAutomaticDimension
         }
     }
+    
+    func showProfilesBrowser(path: NSIndexPath) {
+        if let photosFetchRequest = photosFetchRequest {
+            var photos = [IDMPhoto]()
+            
+            for image in ObjectManager.sharedInstance().fetchObjects(photosFetchRequest) as! [Image] {
+                if let filePath = image.filePath {
+                    let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[4])\(filePath)")
+                    let photo = IDMPhoto(URL: url)
+                    photos.append(photo)
+                }
+            }
+
+            let browser = IDMPhotoBrowser(photos: photos)
+            browser.setInitialPageIndex(UInt(path.row))
+            presentViewController(browser, animated:true, completion:nil)
+        }
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -361,8 +380,10 @@ extension PersonDetailsViewController : ThumbnailDelegate {
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         switch tag {
+        case 0:
+            showProfilesBrowser(path)
         case 2, 4:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
                 let navigationController = navigationController {

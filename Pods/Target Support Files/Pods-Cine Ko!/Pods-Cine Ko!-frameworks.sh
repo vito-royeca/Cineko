@@ -84,18 +84,20 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-Cine Ko!/FLAnimatedImage.framework"
+  install_framework "Pods-Cine Ko!/DACircularProgress.framework"
+  install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
-  install_framework "Pods-Cine Ko!/NYTPhotoViewer.framework"
   install_framework "Pods-Cine Ko!/SDWebImage.framework"
+  install_framework "Pods-Cine Ko!/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-Cine Ko!/FLAnimatedImage.framework"
+  install_framework "Pods-Cine Ko!/DACircularProgress.framework"
+  install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
-  install_framework "Pods-Cine Ko!/NYTPhotoViewer.framework"
   install_framework "Pods-Cine Ko!/SDWebImage.framework"
+  install_framework "Pods-Cine Ko!/pop.framework"
 fi

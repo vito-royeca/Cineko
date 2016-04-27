@@ -412,7 +412,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Kri-Hn-J2M">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabBarController" id="n8I-RI-Y2G" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" automaticallyAdjustsScrollViewInsets="NO" id="n8I-RI-Y2G" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="4Ze-fx-PDH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -575,7 +575,7 @@
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
             <objects>
-                <viewController id="GDC-zP-ktd" customClass="AccountViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="GDC-zP-ktd" customClass="AccountViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FOc-dW-Qvl"/>
                         <viewControllerLayoutGuide type="bottom" id="USP-fE-PrV"/>

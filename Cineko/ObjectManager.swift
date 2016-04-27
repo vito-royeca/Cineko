@@ -416,6 +416,19 @@ class ObjectManager: NSObject {
         return objects!
     }
     
+    func fetchObjects(fetchRequest: NSFetchRequest) -> [AnyObject] {
+        var objects:[AnyObject]?
+        
+        do {
+            objects = try privateContext.executeFetchRequest(fetchRequest)
+            
+        } catch let error as NSError {
+            print("Error in fetch \(error), \(error.userInfo)")
+        }
+        
+        return objects!
+    }
+    
     func batchUpdate(entityName: String, propertiesToUpdate: [String: AnyObject], predicate: NSPredicate) {
         // code adapted from: http://code.tutsplus.com/tutorials/core-data-and-swift-batch-updates--cms-25120
         // Initialize Batch Update Request

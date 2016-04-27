@@ -180,7 +180,7 @@ extension SeeAllViewController : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let delegate = delegate,
             let displayable = fetchedResultsController.objectAtIndexPath(indexPath) as? ThumbnailDisplayable {
-            delegate.didSelectItem(self.view.tag, displayable: displayable)
+            delegate.didSelectItem(self.view.tag, displayable: displayable, path: indexPath)
         }
     }
 }

@@ -244,7 +244,7 @@ extension TVShowsViewController : ThumbnailDelegate {
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
             let navigationController = navigationController {
             let tvShow = displayable as! TVShow

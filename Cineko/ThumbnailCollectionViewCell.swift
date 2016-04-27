@@ -30,7 +30,7 @@ protocol ThumbnailDisplayable : NSObjectProtocol {
 
 protocol ThumbnailDelegate : NSObjectProtocol {
     func seeAllAction(tag: Int)
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable)
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath)
 }
 
 

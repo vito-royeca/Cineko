@@ -225,7 +225,7 @@ extension FeaturedViewController : ThumbnailDelegate {
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         switch tag {
         case 0:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,

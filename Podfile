@@ -7,10 +7,10 @@ use_frameworks!
 target "Cine Ko!" do
 pod 'Crashlytics'
 pod 'Fabric'
+pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
-pod 'NYTPhotoViewer'
 pod 'SDWebImage'
 #pod 'TLYShyNavBar'
 end
@@ -18,10 +18,10 @@ end
 target "CinekoTests" do
 pod 'Crashlytics'
 pod 'Fabric'
+pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
-pod 'NYTPhotoViewer'
 pod 'SDWebImage'
 #pod 'TLYShyNavBar'
 end
@@ -29,10 +29,10 @@ end
 target "CinekoUITests" do
 pod 'Crashlytics'
 pod 'Fabric'
+pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
-pod 'NYTPhotoViewer'
 pod 'SDWebImage'
 #pod 'TLYShyNavBar'
 end

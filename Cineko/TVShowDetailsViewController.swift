@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
 import SDWebImage
@@ -316,6 +317,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.fetchRequest = backdropFetchRequest
                 c.displayType = .Backdrop
                 c.changeColor(averageColor, fontColor: patternColor)
+                c.delegate = self
                 c.loadData()
             }
         case 4:
@@ -373,6 +375,24 @@ class TVShowDetailsViewController: UIViewController {
             return size.height
         } else {
             return UITableViewAutomaticDimension
+        }
+    }
+    
+    func showBackdropsBrowser(path: NSIndexPath) {
+        if let backdropFetchRequest = backdropFetchRequest {
+            var photos = [IDMPhoto]()
+            
+            for image in ObjectManager.sharedInstance().fetchObjects(backdropFetchRequest) as! [Image] {
+                if let filePath = image.filePath {
+                    let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[3])\(filePath)")
+                    let photo = IDMPhoto(URL: url)
+                    photos.append(photo)
+                }
+            }
+            
+            let browser = IDMPhotoBrowser(photos: photos)
+            browser.setInitialPageIndex(UInt(path.row))
+            presentViewController(browser, animated:true, completion:nil)
         }
     }
 }
@@ -475,8 +495,10 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         switch tag {
+        case 3:
+            showBackdropsBrowser(path)
         case 4, 5:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
                 let navigationController = navigationController {

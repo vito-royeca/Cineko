@@ -314,7 +314,7 @@ extension MoviesViewController : ThumbnailDelegate {
         }
     }
     
-    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable) {
+    func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
             let navigationController = navigationController {
             let movie = displayable as! Movie
