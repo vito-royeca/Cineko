@@ -198,10 +198,12 @@ extension FeaturedViewController : ThumbnailDelegate {
                 title = "Now Showing"
                 fetchRequest = nowShowingFetchRequest
                 displayType = .Poster
+                captionType = .Title
             case 1:
                 title = "Airing Today"
                 fetchRequest = airingTodayFetchRequest
                 displayType = .Poster
+                captionType = .Title
             case 2:
                 title = "Popular People"
                 fetchRequest = popularPeopleFetchRequest

@@ -153,10 +153,12 @@ extension SearchViewController : ThumbnailDelegate {
                 title = "Movies"
                 fetchRequest = moviesFetchRequest
                 displayType = .Poster
+                captionType = .Title
             case 1:
                 title = "TV Shows"
                 fetchRequest = tvShowsFetchRequest
                 displayType = .Poster
+                captionType = .Title
             case 2:
                 title = "People"
                 fetchRequest = peopleFetchRequest

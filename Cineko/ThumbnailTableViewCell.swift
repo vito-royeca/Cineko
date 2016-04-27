@@ -13,8 +13,9 @@ import SDWebImage
 
 class ThumbnailTableViewCell: UITableViewCell {
     // MARK: Constants
-    static let Height:CGFloat = 180
+    static let Height = CGFloat(180)
     static let MaxItems = 12
+    static let MaxImageWidth = CGFloat(80)
     
     // MARK: Variables
     weak var delegate: ThumbnailDelegate?
@@ -22,7 +23,6 @@ class ThumbnailTableViewCell: UITableViewCell {
     var captionType:CaptionType?
     var showCaption = false
     var showSeeAllButton = true
-    private var imageSizeAdjusted = false
     private var noDataLabel:UILabel?
     private var _fetchRequest:NSFetchRequest? = nil
     var fetchRequest:NSFetchRequest? {
@@ -56,6 +56,7 @@ class ThumbnailTableViewCell: UITableViewCell {
     private var shouldReloadCollectionView = false
     private var blockOperation:NSBlockOperation?
     private var fontColor:UIColor?
+    private var imageSizeAdjusted = false
 
     // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
@@ -105,6 +106,7 @@ class ThumbnailTableViewCell: UITableViewCell {
         if items > 0 {
             if let noDataLabel = noDataLabel {
                 noDataLabel.removeFromSuperview()
+                self.noDataLabel = nil
             }
         } else {
             if noDataLabel == nil {
@@ -144,51 +146,45 @@ class ThumbnailTableViewCell: UITableViewCell {
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 cell.contentMode = .ScaleToFill
                 
-                if !self.imageSizeAdjusted &&
-                    image != nil  {
-                    let imageWidth = image.size.width
-                    let imageHeight = image.size.height
-                    let height = self.collectionView.frame.size.height
-                    let newWidth = (imageWidth * height) / imageHeight
-                    self.flowLayout.itemSize = CGSizeMake(newWidth, height)
-                    self.imageSizeAdjusted = true
+                if let image = image {
+                    if !self.imageSizeAdjusted {
+                        let imageWidth = image.size.width
+                        let imageHeight = image.size.height
+                        let height = self.collectionView.frame.size.height
+                        let newWidth = (imageWidth * height) / imageHeight
+                        self.flowLayout.itemSize = CGSizeMake(newWidth, height)
+                        self.imageSizeAdjusted = true
+                    }
+                } else {
+                    var caption:String?
+                    if let captionType = self.captionType {
+                        caption = displayable.caption(captionType)
+                    }
+                    self.setDefaultImageForCell(cell, caption: caption)
+                }
+                
+                if self.showCaption {
+                    cell.captionLabel.text = displayable.caption(self.captionType!)
+                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+                    cell.captionLabel.textColor = UIColor.blackColor()
+                } else {
+                    cell.captionLabel.text = nil
+                    cell.captionLabel.backgroundColor = nil
                 }
             }
-            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
+            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             
-            if self.showCaption {
-                cell.captionLabel.text = displayable.caption(self.captionType!)
-                cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                cell.captionLabel.textColor = fontColor
-            } else {
-                cell.captionLabel.text = nil
-                cell.captionLabel.backgroundColor = nil
-            }
+            
             
         } else {
-            if let image = UIImage(named: "noImage") {
-                cell.thumbnailImage.image = image
-                cell.contentMode = .ScaleToFill
-                
-                if !self.imageSizeAdjusted {
-                    let imageWidth = image.size.width
-                    let imageHeight = image.size.height
-                    let height = self.collectionView.frame.size.height
-                    let newWidth = (imageWidth * height) / imageHeight
-                    self.flowLayout.itemSize = CGSizeMake(newWidth, height)
-                    self.imageSizeAdjusted = true
-                }
-                
-                if let captionType = self.captionType {
-                    cell.captionLabel.text = displayable.caption(captionType)
-                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                    cell.captionLabel.textColor = fontColor
-                }
+            var caption:String?
+            if let captionType = self.captionType {
+                caption = displayable.caption(captionType)
             }
+            setDefaultImageForCell(cell, caption: caption)
         }
     }
     
-    // MARK: Custom Methods
     func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
         self.backgroundColor = backgroundColor
         self.fontColor = fontColor
@@ -198,6 +194,29 @@ class ThumbnailTableViewCell: UITableViewCell {
         
         if let noDataLabel = noDataLabel {
             noDataLabel.textColor = fontColor
+        }
+    }
+    
+    func setDefaultImageForCell(cell: ThumbnailCollectionViewCell, caption: String?) {
+        if let image = UIImage(named: "noImage") {
+            if !imageSizeAdjusted {
+                let imageWidth = image.size.width
+                let imageHeight = image.size.height
+                let height = self.collectionView.frame.size.height
+                let newWidth = (imageWidth * height) / imageHeight
+                let width = newWidth > ThumbnailTableViewCell.MaxImageWidth ? ThumbnailTableViewCell.MaxImageWidth : newWidth
+                self.flowLayout.itemSize = CGSizeMake(width, height)
+                imageSizeAdjusted = true
+            }
+
+            cell.thumbnailImage.image = image
+            cell.contentMode = .ScaleToFill
+        }
+        
+        if let caption = caption {
+            cell.captionLabel.text = caption
+            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
+            cell.captionLabel.textColor = UIColor.blackColor()
         }
     }
 }

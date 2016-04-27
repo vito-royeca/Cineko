@@ -185,23 +185,19 @@ extension TVShowsViewController : UITableViewDataSource {
         case 0:
             cell.titleLabel.text = tvShowGroup
             cell.fetchRequest = dynamicFetchRequest
-            cell.displayType = .Poster
-            cell.captionType = .Title
         case 1:
             cell.titleLabel.text = "My Favorites"
             cell.fetchRequest = favoritesFetchRequest
-            cell.displayType = .Poster
-            cell.captionType = .Title
         case 2:
             cell.titleLabel.text = "My Watchlist"
             cell.fetchRequest = watchlistFetchRequest
-            cell.displayType = .Poster
-            cell.captionType = .Title
         default:
             break
         }
         
         cell.tag = indexPath.row
+        cell.displayType = .Poster
+        cell.captionType = .Title
         cell.delegate = self
         cell.loadData()
         return cell
@@ -223,28 +219,25 @@ extension TVShowsViewController : ThumbnailDelegate {
             
             var title:String?
             var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
             
             switch tag {
             case 0:
                 title = tvShowGroup
                 fetchRequest = dynamicFetchRequest
-                displayType = .Poster
             case 1:
                 title = "My Favorites"
                 fetchRequest = favoritesFetchRequest
-                displayType = .Poster
             case 2:
                 title = "My Watchlist"
                 fetchRequest = watchlistFetchRequest
-                displayType = .Profile
             default:
                 return
             }
             
             controller.navigationItem.title = title
             controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
+            controller.displayType = .Poster
+            controller.captionType = .Title
             controller.view.tag = tag
             controller.delegate = self
             navigationController.pushViewController(controller, animated: true)
