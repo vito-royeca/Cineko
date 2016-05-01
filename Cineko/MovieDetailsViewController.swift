@@ -30,7 +30,7 @@ class MovieDetailsViewController: UIViewController {
     var isFavorite = false
     var isWatchlist = false
     private var averageColor:UIColor?
-    private var patternColor:UIColor?
+    private var inverseColor:UIColor?
     
     // MARK: Actions
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
@@ -43,11 +43,13 @@ class MovieDetailsViewController: UIViewController {
                 }
                 
                 performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
             }
             
             do {
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
                 try TMDBManager.sharedInstance().accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
             } catch {
                 self.updateButtons()
@@ -65,11 +67,13 @@ class MovieDetailsViewController: UIViewController {
                 }
                 
                 performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
             }
             
             do {
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
                 try TMDBManager.sharedInstance().accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
             } catch {
                 self.updateButtons()
@@ -91,8 +95,6 @@ class MovieDetailsViewController: UIViewController {
         
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
-//        titleLabel!.backgroundColor = UIColor.darkGrayColor().colorWithAlphaComponent(0.95)
-//        titleLabel!.textColor = UIColor.whiteColor()
         titleLabel!.textAlignment = .Center
         titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
         titleLabel!.numberOfLines = 0
@@ -116,9 +118,9 @@ class MovieDetailsViewController: UIViewController {
                 
                 let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                     self.averageColor = image.averageColor().colorWithAlphaComponent(0.95)
-                    self.patternColor = image.patternColor(self.averageColor)
+                    self.inverseColor = image.inverseColor(self.averageColor)
                     self.titleLabel!.backgroundColor = self.averageColor
-                    self.titleLabel!.textColor = self.patternColor
+                    self.titleLabel!.textColor = self.inverseColor
                 }
                 backgroundView.sd_setImageWithURL(url, completed: comppleted)
             }
@@ -273,7 +275,7 @@ class MovieDetailsViewController: UIViewController {
                         c.ratingLabel.text = NSString(format: "%.1f", voteAverage.doubleValue) as String
                     }
                 }
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
             }
         case 2:
             if let c = cell as? DynamicHeightTableViewCell {
@@ -294,7 +296,7 @@ class MovieDetailsViewController: UIViewController {
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = text
                 }
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
             }
         case 3:
             if let c = cell as? ThumbnailTableViewCell {
@@ -304,7 +306,7 @@ class MovieDetailsViewController: UIViewController {
                 c.showSeeAllButton = false
                 c.fetchRequest = backdropFetchRequest
                 c.displayType = .Backdrop
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
                 c.delegate = self
                 c.loadData()
             }
@@ -318,7 +320,7 @@ class MovieDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.captionType = .NameAndRole
                 c.showCaption = true
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
                 c.delegate = self
                 c.loadData()
             }
@@ -332,7 +334,7 @@ class MovieDetailsViewController: UIViewController {
                 c.displayType = .Profile
                 c.captionType = .NameAndJob
                 c.showCaption = true
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
                 c.delegate = self
                 c.loadData()
             }
@@ -344,7 +346,7 @@ class MovieDetailsViewController: UIViewController {
                 c.seeAllButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 c.fetchRequest = posterFetchRequest
                 c.displayType = .Poster
-                c.changeColor(averageColor, fontColor: patternColor)
+                c.changeColor(averageColor, fontColor: inverseColor)
                 c.delegate = self
                 c.loadData()
             }

@@ -14,4 +14,6 @@
 
 -(UIColor *) patternColor:(UIColor*) averageColor;
 
+-(UIColor*) inverseColor:(UIColor*) color;
+
 @end

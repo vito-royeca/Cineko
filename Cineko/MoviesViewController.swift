@@ -13,6 +13,9 @@ import MBProgressHUD
 class MoviesViewController: UIViewController {
 
     // MARK: Outlets
+    
+    @IBOutlet weak var genreButton: UIBarButtonItem!
+    @IBOutlet weak var organizeButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -41,6 +44,7 @@ class MoviesViewController: UIViewController {
         } else {
             movieGroup = movieGroups.first
         }
+        dynamicTitle = movieGroup
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -74,7 +78,16 @@ class MoviesViewController: UIViewController {
             }
             alert.addAction(UIAlertAction(title: title, style: UIAlertActionStyle.Default, handler: handler))
         }
-        presentViewController(alert, animated: true, completion: nil)
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let popover = alert.popoverPresentationController {
+                popover.barButtonItem = genreButton
+                popover.permittedArrowDirections = .Any
+                showDetailViewController(alert, sender:genreButton)
+            }
+        } else {
+            presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func organizeAction(sender: UIBarButtonItem) {
@@ -93,7 +106,16 @@ class MoviesViewController: UIViewController {
             }
             alert.addAction(UIAlertAction(title: title, style: UIAlertActionStyle.Default, handler: handler))
         }
-        presentViewController(alert, animated: true, completion: nil)
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let popover = alert.popoverPresentationController {
+                popover.barButtonItem = organizeButton
+                popover.permittedArrowDirections = .Any
+                showDetailViewController(alert, sender:organizeButton)
+            }
+        } else {
+            presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     // MARK: Custom methods
@@ -256,10 +278,10 @@ extension MoviesViewController : UITableViewDataSource {
             cell.titleLabel.text = dynamicTitle
             cell.fetchRequest = dynamicFetchRequest
         case 1:
-            cell.titleLabel.text = "My Favorites"
+            cell.titleLabel.text = "Favorites"
             cell.fetchRequest = favoritesFetchRequest
         case 2:
-            cell.titleLabel.text = "My Watchlist"
+            cell.titleLabel.text = "Watchlist"
             cell.fetchRequest = watchlistFetchRequest
         default:
             break
@@ -295,10 +317,10 @@ extension MoviesViewController : ThumbnailDelegate {
                 title = dynamicTitle
                 fetchRequest = dynamicFetchRequest
             case 1:
-                title = "My Favorites"
+                title = "Favorites"
                 fetchRequest = favoritesFetchRequest
             case 2:
-                title = "My Watchlist"
+                title = "Watchlist"
                 fetchRequest = watchlistFetchRequest
             default:
                 return

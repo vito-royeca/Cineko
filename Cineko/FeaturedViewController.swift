@@ -50,6 +50,12 @@ class FeaturedViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadFeaturedMovies() {
+//        var needToRefresh = false
+//        
+//        if !needToRefresh {
+//            return
+//        }
+        
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 print("Error in: \(#function)... \(error)")

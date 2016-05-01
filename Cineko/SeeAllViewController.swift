@@ -73,11 +73,11 @@ class SeeAllViewController: UIViewController {
             
             switch displayType! {
             case .Poster:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[1])\(path)"
             case .Profile:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[1])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[2])\(path)"
             case .Backdrop:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[1])\(path)"
             }
             
             let url = NSURL(string: urlString!)
@@ -89,8 +89,7 @@ class SeeAllViewController: UIViewController {
                         let space: CGFloat = 1.0
                         let imageHeight = image.size.height
                         let imageWidth = image.size.width
-                        let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
-                        let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                        let width = (self.view.frame.size.width - (3*space)) / 3.0
                         let height = (imageHeight*width)/imageWidth
                         self.flowLayout.minimumInteritemSpacing = space
                         self.flowLayout.minimumLineSpacing = space
@@ -131,14 +130,14 @@ class SeeAllViewController: UIViewController {
                 let space: CGFloat = 1.0
                 let imageHeight = image.size.height
                 let imageWidth = image.size.width
-                let idealWidth = (self.view.frame.size.width - (3*space)) / 3.0
-                let width = idealWidth > SeeAllViewController.MaxImageWidth ? SeeAllViewController.MaxImageWidth : idealWidth
+                let width = (self.view.frame.size.width - (3*space)) / 3.0
                 let height = (imageHeight*width)/imageWidth
                 self.flowLayout.minimumInteritemSpacing = space
                 self.flowLayout.minimumLineSpacing = space
                 self.flowLayout.itemSize = CGSizeMake(width, height)
-//                imageSizeAdjusted = true
+                imageSizeAdjusted = true
             }
+
             cell.thumbnailImage.image = image
             cell.contentMode = .ScaleToFill
         }

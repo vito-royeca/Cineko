@@ -12,6 +12,7 @@ import MBProgressHUD
 
 class TVShowsViewController: UIViewController {
     // MARK: Outlets
+    @IBOutlet weak var organizeButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -37,7 +38,16 @@ class TVShowsViewController: UIViewController {
             }
             alert.addAction(UIAlertAction(title: title, style: UIAlertActionStyle.Default, handler: handler))
         }
-        presentViewController(alert, animated: true, completion: nil)
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if let popover = alert.popoverPresentationController {
+                popover.barButtonItem = organizeButton
+                popover.permittedArrowDirections = .Any
+                showDetailViewController(alert, sender:organizeButton)
+            }
+        } else {
+            presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     // MARK: Overrides
@@ -186,10 +196,10 @@ extension TVShowsViewController : UITableViewDataSource {
             cell.titleLabel.text = tvShowGroup
             cell.fetchRequest = dynamicFetchRequest
         case 1:
-            cell.titleLabel.text = "My Favorites"
+            cell.titleLabel.text = "Favorites"
             cell.fetchRequest = favoritesFetchRequest
         case 2:
-            cell.titleLabel.text = "My Watchlist"
+            cell.titleLabel.text = "Watchlist"
             cell.fetchRequest = watchlistFetchRequest
         default:
             break
@@ -225,10 +235,10 @@ extension TVShowsViewController : ThumbnailDelegate {
                 title = tvShowGroup
                 fetchRequest = dynamicFetchRequest
             case 1:
-                title = "My Favorites"
+                title = "Favorites"
                 fetchRequest = favoritesFetchRequest
             case 2:
-                title = "My Watchlist"
+                title = "Watchlist"
                 fetchRequest = watchlistFetchRequest
             default:
                 return

@@ -74,6 +74,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="genreButton" destination="Ghh-Aj-oPm" id="Svx-tU-rdM"/>
+                        <outlet property="organizeButton" destination="2Zj-mu-qlG" id="1Lo-ln-aWf"/>
                         <outlet property="tableView" destination="ggp-WM-9pH" id="qpg-Ch-y4I"/>
                     </connections>
                 </viewController>
@@ -276,9 +278,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4c-YP-zCy">
-                                <rect key="frame" x="238" y="311" width="124" height="30"/>
+                                <rect key="frame" x="238" y="285" width="124" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="124" id="w8t-9u-Utj"/>
+                                    <constraint firstAttribute="width" constant="124" id="A8a-UO-7ek"/>
                                 </constraints>
                                 <state key="normal" title="Login or Sign Up"/>
                                 <connections>
@@ -286,68 +288,39 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-UP-NoW">
-                                <rect key="frame" x="262" y="349" width="77" height="30"/>
+                                <rect key="frame" x="262" y="323" width="77" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="77" id="M1y-Zn-xsp"/>
+                                    <constraint firstAttribute="width" constant="77" id="NGf-dz-71X"/>
                                 </constraints>
                                 <state key="normal" title="Skip Login"/>
                                 <connections>
                                     <action selector="skipLoginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="Wa8-Lh-jZv"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tmdbLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-fk-yCC">
-                                <rect key="frame" x="151" y="416" width="300" height="63"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="4ah-Ra-4g6"/>
-                                    <constraint firstAttribute="height" constant="63" id="y4a-ak-uzy"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered By" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alf-mi-1F0">
-                                <rect key="frame" x="248" y="387" width="106" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="106" id="SSe-zn-MRw"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rtLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0xr-T4-PcG">
-                                <rect key="frame" x="240" y="487" width="123" height="40"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="film" translatesAutoresizingMaskIntoConstraints="NO" id="coQ-ju-GB3">
-                                <rect key="frame" x="0.0" y="20" width="600" height="145"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="145" id="5Mi-Qx-O2N"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginIcon" translatesAutoresizingMaskIntoConstraints="NO" id="lRn-UO-1d4">
+                                <rect key="frame" x="271" y="162" width="57" height="57"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cine Ko!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
-                                <rect key="frame" x="161" y="65" width="278" height="50"/>
+                                <rect key="frame" x="184" y="227" width="233" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="2XI-V4-hJG"/>
-                                    <constraint firstAttribute="width" constant="278" id="gJ0-Gp-pf0"/>
+                                    <constraint firstAttribute="height" constant="50" id="fG3-N8-oYU"/>
+                                    <constraint firstAttribute="width" constant="233" id="h7O-vO-4jA"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="1" alpha="0.51137563344594594" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="centerX" secondItem="alf-mi-1F0" secondAttribute="centerX" id="7LR-T8-YSh"/>
-                            <constraint firstItem="Cze-fk-yCC" firstAttribute="centerX" secondItem="0xr-T4-PcG" secondAttribute="centerX" id="ArZ-L7-iG8"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="CJx-Wx-gXg"/>
-                            <constraint firstItem="alf-mi-1F0" firstAttribute="centerX" secondItem="Cze-fk-yCC" secondAttribute="centerX" id="DWP-4k-eZC"/>
-                            <constraint firstAttribute="trailing" secondItem="coQ-ju-GB3" secondAttribute="trailing" id="EVc-dr-QU2"/>
-                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="GjO-3h-kUe"/>
-                            <constraint firstItem="hcC-Bk-94e" firstAttribute="top" secondItem="mIx-LT-1cR" secondAttribute="bottom" constant="45" id="M2Q-xY-And"/>
-                            <constraint firstItem="coQ-ju-GB3" firstAttribute="top" secondItem="mIx-LT-1cR" secondAttribute="bottom" id="Nga-BA-JX5"/>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="Pby-sb-NCo"/>
-                            <constraint firstItem="coQ-ju-GB3" firstAttribute="centerX" secondItem="hcC-Bk-94e" secondAttribute="centerX" id="W9f-Xq-OvH"/>
-                            <constraint firstItem="Cze-fk-yCC" firstAttribute="top" secondItem="alf-mi-1F0" secondAttribute="bottom" constant="8" symbolic="YES" id="WQs-09-2ll"/>
-                            <constraint firstItem="tJb-WY-bwh" firstAttribute="top" secondItem="0xr-T4-PcG" secondAttribute="bottom" constant="73" id="aIH-9J-SjT"/>
-                            <constraint firstItem="coQ-ju-GB3" firstAttribute="leading" secondItem="l98-5n-i0N" secondAttribute="leading" id="baV-Sn-fln"/>
-                            <constraint firstItem="0xr-T4-PcG" firstAttribute="top" secondItem="Cze-fk-yCC" secondAttribute="bottom" constant="8" symbolic="YES" id="okk-Tc-Gwg"/>
-                            <constraint firstItem="alf-mi-1F0" firstAttribute="top" secondItem="2Ci-UP-NoW" secondAttribute="bottom" constant="8" symbolic="YES" id="siZ-Cg-N1Z"/>
+                            <constraint firstItem="lRn-UO-1d4" firstAttribute="centerX" secondItem="l98-5n-i0N" secondAttribute="centerX" id="1f1-LD-HHH"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="4vP-DG-ar6"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="6g0-Fy-y0l"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="top" secondItem="lRn-UO-1d4" secondAttribute="bottom" constant="8" symbolic="YES" id="FcV-Bs-qQ8"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="top" secondItem="hcC-Bk-94e" secondAttribute="bottom" constant="8" symbolic="YES" id="GHz-U5-Owk"/>
+                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="n0c-l4-x6g"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerY" secondItem="l98-5n-i0N" secondAttribute="centerY" id="n14-Df-E69"/>
+                            <constraint firstItem="lRn-UO-1d4" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="wqk-Dt-ADR"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -492,6 +465,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="organizeButton" destination="kDd-mQ-CCu" id="jyU-mc-mcK"/>
                         <outlet property="tableView" destination="Evf-iq-36w" id="gRr-B5-KoG"/>
                     </connections>
                 </viewController>
@@ -872,11 +846,11 @@
             </objects>
             <point key="canvasLocation" x="2792" y="-179"/>
         </scene>
-        <!--TV-->
+        <!--TV Shows-->
         <scene sceneID="kIu-Bb-VQf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CjW-CM-KAG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="TV" image="tv" id="Vas-UA-T1F"/>
+                    <tabBarItem key="tabBarItem" title="TV Shows" image="tv" id="Vas-UA-T1F"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HAC-mY-P2J">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -996,11 +970,9 @@
     <resources>
         <image name="account" width="25" height="25"/>
         <image name="eye" width="25" height="25"/>
-        <image name="film" width="950" height="600"/>
         <image name="heart" width="25" height="25"/>
+        <image name="loginIcon" width="57" height="57"/>
         <image name="movie" width="25" height="25"/>
-        <image name="rtLogo" width="123" height="40"/>
-        <image name="tmdbLogo" width="535" height="113"/>
         <image name="tv" width="25" height="25"/>
     </resources>
 </document>
