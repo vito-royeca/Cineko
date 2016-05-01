@@ -123,6 +123,7 @@ class MovieDetailsViewController: UIViewController {
                         self.inverseColor = image.inverseColor(self.averageColor)
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.inverseColor
+                        self.tableView.reloadData()
                     }
                 }
                 backgroundView.sd_setImageWithURL(url, completed: comppleted)

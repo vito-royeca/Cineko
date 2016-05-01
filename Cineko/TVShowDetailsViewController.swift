@@ -122,6 +122,7 @@ class TVShowDetailsViewController: UIViewController {
                         self.inverseColor = image.inverseColor(self.averageColor)
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.inverseColor
+                        self.tableView.reloadData()
                     }
                 }
                 backgroundView.sd_setImageWithURL(url, completed: comppleted)
@@ -132,10 +133,7 @@ class TVShowDetailsViewController: UIViewController {
             // resize the frame to cover the whole width
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-//    }
-    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
+
         loadDetails()
         loadPhotos()
         loadCastAndCrew()
