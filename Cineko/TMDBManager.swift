@@ -60,10 +60,26 @@ struct TMDBConstants {
         "w300",
         "original"]
     
-    struct iPad {
+    struct Device {
         struct Keys {
             static let RequestToken     = "request_token"
             static let RequestTokenDate = "request_token_date"
+            
+            static let MoviesNowShowing   = "MoviesNowShowing"
+            static let MoviesPopular      = "MoviesPopular"
+            static let MoviesTopRated     = "MoviesTopRated"
+            static let MoviesComingSoon   = "MoviesComingSoon"
+            static let MoviesDynamic      = "MoviesDynamic"
+            static let TVShowsAiringToday = "TVShowsAiringToday"
+            static let TVShowsPopular     = "TVShowsPopular"
+            static let TVShowsTopRated    = "TVShowsTopRated"
+            static let TVShowsOnTheAir    = "TVShowsOnTheAir"
+            static let TVShowsDynamic     = "TVShowsDymanic"
+            static let PeoplePopular      = "PeoplePopular"
+            static let FavoriteMovies     = "FavoriteMovies"
+            static let FavoriteTVShows    = "FavoriteTVShows"
+            static let WatchlistMovies    = "WatchlistMovies"
+            static let WatchlistTVShows   = "WatchlistTVShows"
         }
     }
     
@@ -218,6 +234,7 @@ enum MediaType : String {
         Person = "person"
 }
 
+let HoursNeededForRefresh = Double(60*60*3) // 3 hours
 
 class TMDBManager: NSObject {
     let keychain = Keychain(server: "\(TMDBConstants.APIURL)", protocolType: .HTTPS)
@@ -232,13 +249,13 @@ class TMDBManager: NSObject {
         checkFirstRun()
     }
     
-    // MARK: iPad
+    // MARK: Device
     func checkFirstRun() {
         if !NSUserDefaults.standardUserDefaults().boolForKey("FirstRun") {
             // remove prior keychain items if this is our first run
             keychain[TMDBConstants.SessionID] = nil
-            keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
+            keychain[TMDBConstants.Device.Keys.RequestToken] = nil
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.RequestTokenDate)
             
             // then mark this us our first run
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "FirstRun")
@@ -250,8 +267,8 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        if let requestToken = keychain[TMDBConstants.iPad.Keys.RequestToken],
-            let requestTokenDate = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.iPad.Keys.RequestTokenDate) as? NSDate {
+        if let requestToken = keychain[TMDBConstants.Device.Keys.RequestToken],
+            let requestTokenDate = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.RequestTokenDate) as? NSDate {
             
             // let's calculate the age of the request token
             let interval = requestTokenDate.timeIntervalSinceNow
@@ -264,8 +281,8 @@ class TMDBManager: NSObject {
                 
             } else {
                 keychain[TMDBConstants.SessionID] = nil
-                keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
+                keychain[TMDBConstants.Device.Keys.RequestToken] = nil
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.RequestTokenDate)
             }
         }
         
@@ -277,8 +294,8 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        keychain[TMDBConstants.iPad.Keys.RequestToken] = requestToken
-        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: TMDBConstants.iPad.Keys.RequestTokenDate)
+        keychain[TMDBConstants.Device.Keys.RequestToken] = requestToken
+        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: TMDBConstants.Device.Keys.RequestTokenDate)
     }
     
     func removeRequestToken() throws {
@@ -286,8 +303,8 @@ class TMDBManager: NSObject {
             throw TMDBError.NoAPIKey
         }
         
-        keychain[TMDBConstants.iPad.Keys.RequestToken] = nil
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.iPad.Keys.RequestTokenDate)
+        keychain[TMDBConstants.Device.Keys.RequestToken] = nil
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.RequestTokenDate)
     }
     
     func saveSessionID(sessionID: String) throws {
@@ -300,6 +317,40 @@ class TMDBManager: NSObject {
     
     func hasSessionID() -> Bool {
         return keychain[TMDBConstants.SessionID] != nil
+    }
+    
+    func needsRefresh(data: String) -> Bool {
+        let timeNow = NSDate()
+        var needsRefresh = false
+        
+        if let dataTime = NSUserDefaults.standardUserDefaults().valueForKey(data) as? NSDate {
+            if dataTime.timeIntervalSinceNow >= HoursNeededForRefresh {
+                needsRefresh = true
+            }
+            
+        } else {
+            needsRefresh = true
+        }
+        
+        if needsRefresh {
+            NSUserDefaults.standardUserDefaults().setObject(timeNow, forKey: data)
+        }
+        
+        return needsRefresh
+    }
+    
+    func deleteRefreshData() {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesNowShowing)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesPopular)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesTopRated)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesComingSoon)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesDynamic)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsAiringToday)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsPopular)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsTopRated)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsOnTheAir)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsDynamic)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.PeoplePopular)
     }
     
     // MARK: Authentication
@@ -1196,7 +1247,8 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Multi.Path)"
         let parameters = [TMDBConstants.APIKey: apiKey!,
-                          "query": query]
+                          "query": query,
+                          "include_adult": "true"]
         
         var media = [MediaType: [AnyObject]]()
         

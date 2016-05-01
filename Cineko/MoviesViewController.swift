@@ -23,10 +23,9 @@ class MoviesViewController: UIViewController {
     var favoritesFetchRequest:NSFetchRequest?
     var watchlistFetchRequest:NSFetchRequest?
     var movieGenres:[Genre]?
-    var movieGenre:String?
     let movieGroups = ["Popular", "Top Rated", "Coming Soon"]
-    var movieGroup:String?
     var dynamicTitle:String?
+    private var dataDict = [String: [AnyObject]]()
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -35,22 +34,28 @@ class MoviesViewController: UIViewController {
         
         movieGenres = ObjectManager.sharedInstance().findObjects("Genre", predicate: NSPredicate(format: "movieGenre = %@", NSNumber(bool: true)), sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [Genre]
         
-        if let movieGenre = NSUserDefaults.standardUserDefaults().valueForKey("movieGenre") as? String {
-            self.movieGenre = movieGenre
-        }
-        
-        if let movieGroup = NSUserDefaults.standardUserDefaults().valueForKey("movieGroup") as? String {
-            self.movieGroup = movieGroup
+        if let dynamicTitle = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.MoviesDynamic) as? String {
+            self.dynamicTitle = dynamicTitle
         } else {
-            movieGroup = movieGroups.first
+            dynamicTitle = movieGroups.first
         }
-        dynamicTitle = movieGroup
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        loadMovieGroup()
+        if let dynamicTitle = dynamicTitle {
+            if dynamicTitle == movieGroups[0] ||
+                dynamicTitle == movieGroups[1] ||
+                dynamicTitle == movieGroups[2] {
+                loadMovieGroup()
+            } else {
+                loadMovieGenre()
+            }
+        } else {
+            loadMovieGroup()
+        }
+        
         loadFavorites()
         loadWatchlist()
     }
@@ -70,9 +75,8 @@ class MoviesViewController: UIViewController {
             let title = genre.name == dynamicTitle ? "\u{2713} \(dynamicTitle!)" : genre.name
             
             let handler = {(alert: UIAlertAction!) in
-                self.movieGenre = genre.name
-                self.dynamicTitle = self.movieGenre
-                NSUserDefaults.standardUserDefaults().setValue(self.movieGenre, forKey: "movieGenre")
+                self.dynamicTitle = genre.name
+                NSUserDefaults.standardUserDefaults().setValue(self.dynamicTitle, forKey: TMDBConstants.Device.Keys.MoviesDynamic)
                 NSUserDefaults.standardUserDefaults().synchronize()
                 self.loadMovieGenre()
             }
@@ -98,9 +102,8 @@ class MoviesViewController: UIViewController {
             let title = group == dynamicTitle ? "\u{2713} \(dynamicTitle!)" : group
             
             let handler = {(alert: UIAlertAction!) in
-                self.movieGroup = group
-                self.dynamicTitle = self.movieGroup
-                NSUserDefaults.standardUserDefaults().setValue(self.movieGroup, forKey: "movieGroup")
+                self.dynamicTitle = group
+                NSUserDefaults.standardUserDefaults().setValue(group, forKey: TMDBConstants.Device.Keys.MoviesDynamic)
                 NSUserDefaults.standardUserDefaults().synchronize()
                 self.loadMovieGroup()
             }
@@ -122,93 +125,115 @@ class MoviesViewController: UIViewController {
     func loadMovieGroup() {
         var path:String?
         var descriptors:[NSSortDescriptor]?
+        var refreshData:String?
         
-        if let movieGroup = movieGroup {
+        if let movieGroup = dynamicTitle {
             switch movieGroup {
             case movieGroups[0]:
                 path = TMDBConstants.Movies.Popular.Path
                 descriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),
                     NSSortDescriptor(key: "title", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.MoviesPopular
             case movieGroups[1]:
                 path = TMDBConstants.Movies.TopRated.Path
                 descriptors = [
                     NSSortDescriptor(key: "voteAverage", ascending: false),
                     NSSortDescriptor(key: "title", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.MoviesTopRated
             case movieGroups[2]:
                 path = TMDBConstants.Movies.Upcoming.Path
                 descriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),
                     NSSortDescriptor(key: "title", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.MoviesComingSoon
             default:
                 return
             }
         }
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.dynamicFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            self.dynamicFetchRequest!.sortDescriptors = descriptors
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
-                self.tableView.reloadData()
-            }
-        }
+        dynamicFetchRequest = NSFetchRequest(entityName: "Movie")
+        dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        dynamicFetchRequest!.sortDescriptors = descriptors
         
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.dataDict[refreshData!] = arrayIDs
+                self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
             
-            try TMDBManager.sharedInstance().movies(path!, completion: completion)
-        } catch {}
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                
+                try TMDBManager.sharedInstance().movies(path!, completion: completion)
+            } catch {}
+            
+        } else {
+            dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[refreshData!] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
     
     func loadMovieGenre() {
         var genreID:Int?
+        var genreName:String?
         let descriptors = [NSSortDescriptor(key: "popularity", ascending: false),
         NSSortDescriptor(key: "title", ascending: true)]
-        
+    
         for genre in movieGenres! {
-            if genre.name == movieGenre {
+            if genre.name == dynamicTitle {
                 genreID = genre.genreID!.integerValue
+                genreName = genre.name
                 break
             }
         }
+    
+        dynamicFetchRequest = NSFetchRequest(entityName: "Movie")
+        dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        dynamicFetchRequest!.sortDescriptors = descriptors
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.dynamicFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            self.dynamicFetchRequest!.sortDescriptors = descriptors
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(genreName!) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
                 }
-                self.tableView.reloadData()
-            }
-        }
-        
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                
+                self.dataDict[genreName!] = arrayIDs
+                self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
             
-            try TMDBManager.sharedInstance().moviesByGenre(genreID!, completion: completion)
-        } catch {}
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                
+                try TMDBManager.sharedInstance().moviesByGenre(genreID!, completion: completion)
+            } catch {}
+        
+        } else {
+            dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[genreName!] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
     
     func loadFavorites() {
@@ -218,20 +243,26 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteMovies) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
+                }
             }
             
-            self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            performUIUpdatesOnMain {
+            do {
+                try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
+            } catch {
+                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
                 self.tableView.reloadData()
             }
-        }
-        
-        do {
-            try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
-        } catch {
+
+        } else {
             favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             self.tableView.reloadData()
         }
@@ -244,20 +275,26 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistMovies) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
+                }
             }
             
-            self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            performUIUpdatesOnMain {
+            do {
+                try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
+            } catch {
+                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
                 self.tableView.reloadData()
             }
-        }
-        
-        do {
-            try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
-        } catch {
+            
+        } else {
             watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             self.tableView.reloadData()
         }

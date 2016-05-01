@@ -95,6 +95,7 @@ class TVShowDetailsViewController: UIViewController {
         
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
+        titleLabel!.backgroundColor = UIColor.whiteColor()
         titleLabel!.textAlignment = .Center
         titleLabel!.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
         titleLabel!.numberOfLines = 0
@@ -116,10 +117,12 @@ class TVShowDetailsViewController: UIViewController {
                 tableView.backgroundView = backgroundView
                 
                 let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                    self.averageColor = image.averageColor().colorWithAlphaComponent(0.95)
-                    self.inverseColor = image.inverseColor(self.averageColor)
-                    self.titleLabel!.backgroundColor = self.averageColor
-                    self.titleLabel!.textColor = self.inverseColor
+                    if let image = image {
+                        self.averageColor = image.averageColor().colorWithAlphaComponent(0.95)
+                        self.inverseColor = image.inverseColor(self.averageColor)
+                        self.titleLabel!.backgroundColor = self.averageColor
+                        self.titleLabel!.textColor = self.inverseColor
+                    }
                 }
                 backgroundView.sd_setImageWithURL(url, completed: comppleted)
             }

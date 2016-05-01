@@ -20,7 +20,8 @@ class TVShowsViewController: UIViewController {
     var favoritesFetchRequest:NSFetchRequest?
     var watchlistFetchRequest:NSFetchRequest?
     let tvShowGroups = ["Popular", "Top Rated", "On The Air"]
-    var tvShowGroup:String?
+    var dynamicTitle:String?
+    private var dataDict = [String: [AnyObject]]()
     
     // MARK: Actions
     @IBAction func organizeAction(sender: UIBarButtonItem) {
@@ -28,13 +29,13 @@ class TVShowsViewController: UIViewController {
         
         for group in tvShowGroups {
             // add a checkmark for the current group using Unicode
-            let title = group == tvShowGroup ? "\u{2713} \(tvShowGroup!)" : group
+            let title = group == dynamicTitle ? "\u{2713} \(dynamicTitle!)" : group
             
             let handler = {(alert: UIAlertAction!) in
-                self.tvShowGroup = group
-                NSUserDefaults.standardUserDefaults().setValue(self.tvShowGroup, forKey: "tvShowGroup")
+                self.dynamicTitle = group
+                NSUserDefaults.standardUserDefaults().setValue(self.dynamicTitle, forKey: TMDBConstants.Device.Keys.TVShowsDynamic)
                 NSUserDefaults.standardUserDefaults().synchronize()
-                self.loadDynamic()
+                self.loadTVShowGroup()
             }
             alert.addAction(UIAlertAction(title: title, style: UIAlertActionStyle.Default, handler: handler))
         }
@@ -55,17 +56,17 @@ class TVShowsViewController: UIViewController {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        if let tvShowGroup = NSUserDefaults.standardUserDefaults().valueForKey("tvShowGroup") as? String {
-            self.tvShowGroup = tvShowGroup
+        if let dynamicTitle = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.MoviesDynamic) as? String {
+            self.dynamicTitle = dynamicTitle
         } else {
-            tvShowGroup = tvShowGroups.first
+            dynamicTitle = tvShowGroups.first
         }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        loadDynamic()
+        loadTVShowGroup()
         loadFavorites()
         loadWatchlist()
     }
@@ -77,56 +78,68 @@ class TVShowsViewController: UIViewController {
     }
     
     // MARK: Custom methods
-    func loadDynamic() {
+    func loadTVShowGroup() {
         var path:String?
         var descriptors:[NSSortDescriptor]?
+        var refreshData:String?
         
-        if let tvShowGroup = tvShowGroup {
+        if let tvShowGroup = dynamicTitle {
             switch tvShowGroup {
             case tvShowGroups[0]:
                 path = TMDBConstants.TVShows.Popular.Path
                 descriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),
                     NSSortDescriptor(key: "name", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.TVShowsPopular
             case tvShowGroups[1]:
                 path = TMDBConstants.TVShows.TopRated.Path
                 descriptors = [
                     NSSortDescriptor(key: "voteAverage", ascending: false),
                     NSSortDescriptor(key: "name", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.TVShowsTopRated
             case tvShowGroups[2]:
                 path = TMDBConstants.TVShows.OnTheAir.Path
                 descriptors = [
                     NSSortDescriptor(key: "name", ascending: true)]
+                refreshData = TMDBConstants.Device.Keys.TVShowsOnTheAir
             default:
                 return
             }
         }
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.dynamicFetchRequest = NSFetchRequest(entityName: "TVShow")
-            self.dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-            self.dynamicFetchRequest!.sortDescriptors = descriptors
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
-                self.tableView.reloadData()
-            }
-        }
+        dynamicFetchRequest = NSFetchRequest(entityName: "TVShow")
+        dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        dynamicFetchRequest!.sortDescriptors = descriptors
         
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+        
+                self.dataDict[refreshData!] = arrayIDs
+                self.dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
             
-            try TMDBManager.sharedInstance().tvShows(path!, completion: completion)
-        } catch {}
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                
+                try TMDBManager.sharedInstance().tvShows(path!, completion: completion)
+            } catch {}
+            
+        } else {
+            dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[refreshData!] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
     
     func loadFavorites() {
@@ -136,20 +149,26 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "firstAirDate", ascending: true),
             NSSortDescriptor(key: "name", ascending: true)]
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteTVShows) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
+                }
             }
             
-            self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-            performUIUpdatesOnMain {
+            do {
+                try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
+            } catch {
+                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
                 self.tableView.reloadData()
             }
-        }
-        
-        do {
-            try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
-        } catch {
+            
+        } else {
             favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             self.tableView.reloadData()
         }
@@ -162,20 +181,26 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "firstAirDate", ascending: true),
             NSSortDescriptor(key: "name", ascending: true)]
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistTVShows) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                performUIUpdatesOnMain {
+                    self.tableView.reloadData()
+                }
             }
             
-            self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-            performUIUpdatesOnMain {
+            do {
+                try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
+            } catch {
+                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
                 self.tableView.reloadData()
             }
-        }
-        
-        do {
-            try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
-        } catch {
+
+        } else {
             watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             self.tableView.reloadData()
         }
@@ -193,7 +218,7 @@ extension TVShowsViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell.titleLabel.text = tvShowGroup
+            cell.titleLabel.text = dynamicTitle
             cell.fetchRequest = dynamicFetchRequest
         case 1:
             cell.titleLabel.text = "Favorites"
@@ -232,7 +257,7 @@ extension TVShowsViewController : ThumbnailDelegate {
             
             switch tag {
             case 0:
-                title = tvShowGroup
+                title = dynamicTitle
                 fetchRequest = dynamicFetchRequest
             case 1:
                 title = "Favorites"

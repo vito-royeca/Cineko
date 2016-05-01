@@ -21,6 +21,7 @@ class FeaturedViewController: UIViewController {
     var nowShowingFetchRequest:NSFetchRequest?
     var airingTodayFetchRequest:NSFetchRequest?
     var popularPeopleFetchRequest:NSFetchRequest?
+    private var dataDict = [String: [AnyObject]]()
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -50,96 +51,114 @@ class FeaturedViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadFeaturedMovies() {
-//        var needToRefresh = false
-//        
-//        if !needToRefresh {
-//            return
-//        }
+        self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
+        self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        self.nowShowingFetchRequest!.sortDescriptors = [
+            NSSortDescriptor(key: "releaseDate", ascending: true),
+            NSSortDescriptor(key: "title", ascending: true)]
         
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
-            self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-            self.nowShowingFetchRequest!.sortDescriptors = [
-                NSSortDescriptor(key: "releaseDate", ascending: true),
-                NSSortDescriptor(key: "title", ascending: true)]
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.MoviesNowShowing) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
                 }
-                self.tableView.reloadData()
-            }
-        }
-        
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                
+                self.dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] = arrayIDs
+                self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
             
-            try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
-        } catch {}
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                
+                try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
+            } catch {}
+        
+        } else {
+            nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
     
     func loadFeaturedTVShows() {
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-            self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-            self.airingTodayFetchRequest!.sortDescriptors = [
-                NSSortDescriptor(key: "name", ascending: true)]
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
-                self.tableView.reloadData()
-            }
-        }
+        self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
+        self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        self.airingTodayFetchRequest!.sortDescriptors = [
+            NSSortDescriptor(key: "name", ascending: true)]
         
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.TVShowsAiringToday) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] = arrayIDs
+                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
-            try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
-        } catch {}
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
+            } catch {}
+        
+        } else {
+            airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
     
     func loadFeaturedPeople() {
-        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-            }
-            
-            self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-            self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-            self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
-            self.popularPeopleFetchRequest!.sortDescriptors = [
-                NSSortDescriptor(key: "popularity", ascending: false),
-                NSSortDescriptor(key: "name", ascending: true)]
-            
-            performUIUpdatesOnMain {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                }
-                self.tableView.reloadData()
-            }
-        }
+        self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
+        self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        self.popularPeopleFetchRequest!.sortDescriptors = [
+            NSSortDescriptor(key: "popularity", ascending: false),
+            NSSortDescriptor(key: "name", ascending: true)]
         
-        do {
-            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
-                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.PeoplePopular) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                self.dataDict[TMDBConstants.Device.Keys.PeoplePopular] = arrayIDs
+                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
+                
+                performUIUpdatesOnMain {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    self.tableView.reloadData()
+                }
             }
-            try TMDBManager.sharedInstance().peoplePopular(completion)
-        } catch {}
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TMDBManager.sharedInstance().peoplePopular(completion)
+            } catch {}
+            
+        } else {
+            popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", dataDict[TMDBConstants.Device.Keys.PeoplePopular] as! [NSNumber])
+            tableView.reloadData()
+        }
     }
 }
 

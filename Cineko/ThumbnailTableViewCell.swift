@@ -289,28 +289,14 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            if collectionView.numberOfSections() > 0 {
-                if let indexPath = indexPath {
-                    if collectionView.numberOfItemsInSection(indexPath.section) == 0 {
-                        shouldReloadCollectionView = true
-                    } else {
-                        blockOperation!.addExecutionBlock({
-                            self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
-                        })
-                    }
-                }
-            } else {
-                shouldReloadCollectionView = true
-            }
+            blockOperation!.addExecutionBlock({
+                self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+            })
             
         case .Delete:
-            if collectionView.numberOfItemsInSection(indexPath!.section) == 1 {
-                shouldReloadCollectionView = true
-            } else {
-                blockOperation!.addExecutionBlock({
-                    self.collectionView.deleteItemsAtIndexPaths([indexPath!])
-                })
-            }
+            blockOperation!.addExecutionBlock({
+                self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+            })
             
         case .Update:
             if let indexPath = indexPath {

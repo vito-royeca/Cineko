@@ -37,6 +37,25 @@ class MediaInfoTableViewCell: UITableViewCell {
     // MARK: Custom Methods
     func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
         self.backgroundColor = backgroundColor
+        
+        if let image = dateIcon.image {
+            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+            dateIcon.image = tintedImage
+            dateIcon.tintColor = fontColor
+        }
+        
+        if let image = durationIcon.image {
+            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+            durationIcon.image = tintedImage
+            durationIcon.tintColor = fontColor
+        }
+        
+        if let image = ratingIcon.image {
+            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+            ratingIcon.image = tintedImage
+            ratingIcon.tintColor = fontColor
+        }
+        
         dateLabel.textColor = fontColor
         durationLabel.textColor = fontColor
         ratingLabel.textColor = fontColor
