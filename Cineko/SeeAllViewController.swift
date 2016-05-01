@@ -89,7 +89,8 @@ class SeeAllViewController: UIViewController {
                         let space: CGFloat = 1.0
                         let imageHeight = image.size.height
                         let imageWidth = image.size.width
-                        let width = (self.view.frame.size.width - (3*space)) / 3.0
+                        let longerSize = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width
+                        let width = (longerSize - (3*space)) / 3.0
                         let height = (imageHeight*width)/imageWidth
                         self.flowLayout.minimumInteritemSpacing = space
                         self.flowLayout.minimumLineSpacing = space
@@ -130,7 +131,8 @@ class SeeAllViewController: UIViewController {
                 let space: CGFloat = 1.0
                 let imageHeight = image.size.height
                 let imageWidth = image.size.width
-                let width = (self.view.frame.size.width - (3*space)) / 3.0
+                let longerSize = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width
+                let width = (longerSize - (3*space)) / 3.0
                 let height = (imageHeight*width)/imageWidth
                 self.flowLayout.minimumInteritemSpacing = space
                 self.flowLayout.minimumLineSpacing = space
