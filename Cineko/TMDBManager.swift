@@ -278,11 +278,8 @@ class TMDBManager: NSObject {
             // request token's expiration is 1 hour
             if elapsedTime <= 60 {
                 return requestToken
-                
             } else {
-                keychain[TMDBConstants.SessionID] = nil
-                keychain[TMDBConstants.Device.Keys.RequestToken] = nil
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.RequestTokenDate)
+                logout()
             }
         }
         
@@ -341,16 +338,35 @@ class TMDBManager: NSObject {
     
     func deleteRefreshData() {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesNowShowing)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsAiringToday)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.PeoplePopular)
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesDynamic)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesPopular)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesTopRated)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesComingSoon)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesDynamic)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsAiringToday)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.FavoriteMovies)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.WatchlistMovies)
+        
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsPopular)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsTopRated)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsOnTheAir)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsDynamic)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.PeoplePopular)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.FavoriteTVShows)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.WatchlistTVShows)
+    }
+    
+    func logout() {
+        account = nil
+        keychain[TMDBConstants.SessionID] = nil
+        keychain[TMDBConstants.Device.Keys.RequestToken] = nil
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.RequestTokenDate)
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.FavoriteMovies)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.WatchlistMovies)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.FavoriteTVShows)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.WatchlistTVShows)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     // MARK: Authentication
@@ -382,7 +398,7 @@ class TMDBManager: NSObject {
                     if let sessionID = dict[TMDBConstants.Authentication.SessionNew.Keys.SessionID] as? String {
                         do {
                             try self.saveSessionID(sessionID)
-                            completion(error: nil)
+                            try self.downloadInitialData(completion)
                         } catch {}
                     }
                 }

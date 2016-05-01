@@ -133,10 +133,7 @@ class MovieDetailsViewController: UIViewController {
             // resize the frame to cover the whole width
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+
         loadDetails()
         loadPhotos()
         loadCastAndCrew()
@@ -151,8 +148,6 @@ class MovieDetailsViewController: UIViewController {
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
         tableView.reloadData()
-//        titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
-//        titleLabel!.textAlignment = .Center
     }
     
     // MARK: Custom Methods

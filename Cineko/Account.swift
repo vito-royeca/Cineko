@@ -48,7 +48,13 @@ class Account: NSManagedObject {
         iso31661 = dictionary[Keys.ISO31661] as? String
         name = dictionary[Keys.Name] as? String
         username = dictionary[Keys.Username] as? String
-
     }
 
+    func imageURL() -> NSURL? {
+        if let gravatarHash = gravatarHash {
+            return NSURL(string: "https://www.gravatar.com/avatar/\(gravatarHash)")
+        } else {
+            return nil
+        }
+    }
 }

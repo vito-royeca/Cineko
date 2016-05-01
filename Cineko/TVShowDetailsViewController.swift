@@ -132,10 +132,10 @@ class TVShowDetailsViewController: UIViewController {
             // resize the frame to cover the whole width
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-    }
+//    }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+//    override func viewDidAppear(animated: Bool) {
+//        super.viewDidAppear(animated)
         loadDetails()
         loadPhotos()
         loadCastAndCrew()

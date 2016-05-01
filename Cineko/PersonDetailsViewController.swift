@@ -39,7 +39,6 @@ class PersonDetailsViewController: UIViewController {
         if let personID = personID {
             let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
             navigationItem.title = person.name
-            
         }
     }
 

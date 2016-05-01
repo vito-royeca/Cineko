@@ -58,7 +58,7 @@ class StartViewController: UIViewController {
     
     @IBAction func skipLoginAction(sender: UIButton) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
-            presentViewController(controller, animated: true, completion: nil)
+            self.presentViewController(controller, animated: true, completion: nil)
         }
     }
     
@@ -66,7 +66,22 @@ class StartViewController: UIViewController {
     func presentLoginViewController(authenticateURLString: String) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController {
             controller.authenticationURLString = authenticateURLString
+            controller.delegate = self
             self.presentViewController(controller, animated: true, completion: nil)
+        }
+    }
+}
+
+// MARK: LoginViewControllerDelegate
+extension StartViewController : LoginViewControllerDelegate {
+    func loginSuccess(viewController: UIViewController) {
+        if TMDBManager.sharedInstance().hasSessionID() {
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
+                viewController.presentViewController(controller, animated: true, completion: nil)
+            }
+            
+        } else {
+            viewController.dismissViewControllerAnimated(true, completion: nil)
         }
     }
 }

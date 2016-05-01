@@ -63,8 +63,8 @@ class TVShowsViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         loadTVShowGroup()
         loadFavorites()
@@ -150,26 +150,36 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "name", ascending: true)]
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteTVShows) {
-            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
+            if TMDBManager.sharedInstance().hasSessionID() {
+                let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                    }
+                    
+                    self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
+                    }
                 }
                 
-                self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                performUIUpdatesOnMain {
+                do {
+                    try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
+                } catch {
+                    favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
                     self.tableView.reloadData()
                 }
-            }
-            
-            do {
-                try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
-            } catch {
-                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+
+            } else {
+                favoritesFetchRequest = nil
                 self.tableView.reloadData()
             }
             
         } else {
-            favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            if TMDBManager.sharedInstance().hasSessionID() {
+                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            } else {
+                favoritesFetchRequest = nil
+            }
             self.tableView.reloadData()
         }
     }
@@ -182,26 +192,35 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "name", ascending: true)]
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistTVShows) {
-            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
+            if TMDBManager.sharedInstance().hasSessionID() {
+                let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                    }
+                    
+                    self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
+                    }
                 }
                 
-                self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                performUIUpdatesOnMain {
+                do {
+                    try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
+                } catch {
+                    watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
                     self.tableView.reloadData()
                 }
-            }
-            
-            do {
-                try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
-            } catch {
-                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            } else {
+                watchlistFetchRequest = nil
                 self.tableView.reloadData()
             }
 
         } else {
-            watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            if TMDBManager.sharedInstance().hasSessionID() {
+                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            } else {
+                watchlistFetchRequest = nil
+            }
             self.tableView.reloadData()
         }
     }

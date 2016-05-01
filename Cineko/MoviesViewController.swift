@@ -41,8 +41,8 @@ class MoviesViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         if let dynamicTitle = dynamicTitle {
             if dynamicTitle == movieGroups[0] ||
@@ -244,26 +244,35 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "title", ascending: true)]
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteMovies) {
-            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
+            if TMDBManager.sharedInstance().hasSessionID() {
+                let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                    }
+                    
+                    self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
+                    }
                 }
                 
-                self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                performUIUpdatesOnMain {
+                do {
+                    try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
+                } catch {
+                    favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
                     self.tableView.reloadData()
                 }
-            }
-            
-            do {
-                try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
-            } catch {
-                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            } else {
+                favoritesFetchRequest = nil
                 self.tableView.reloadData()
             }
 
         } else {
-            favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            if TMDBManager.sharedInstance().hasSessionID() {
+                favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+            } else {
+                favoritesFetchRequest = nil
+            }
             self.tableView.reloadData()
         }
     }
@@ -276,26 +285,35 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "title", ascending: true)]
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistMovies) {
-            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
+            if TMDBManager.sharedInstance().hasSessionID() {
+                let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                    }
+                    
+                    self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    performUIUpdatesOnMain {
+                        self.tableView.reloadData()
+                    }
                 }
                 
-                self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                performUIUpdatesOnMain {
+                do {
+                    try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
+                } catch {
+                    watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
                     self.tableView.reloadData()
                 }
-            }
-            
-            do {
-                try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
-            } catch {
-                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            } else {
+                watchlistFetchRequest = nil
                 self.tableView.reloadData()
             }
             
         } else {
-            watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            if TMDBManager.sharedInstance().hasSessionID() {
+                watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+            } else {
+                watchlistFetchRequest = nil
+            }
             self.tableView.reloadData()
         }
     }

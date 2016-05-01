@@ -396,6 +396,7 @@
                         <segue destination="KED-la-csh" kind="relationship" relationship="viewControllers" id="Y4F-x7-kSB"/>
                         <segue destination="CjW-CM-KAG" kind="relationship" relationship="viewControllers" id="iL9-v5-6Yu"/>
                         <segue destination="Enm-nE-dfr" kind="relationship" relationship="viewControllers" id="WAr-2r-CNY"/>
+                        <segue destination="KH8-4n-0r1" kind="relationship" relationship="viewControllers" id="xe2-M8-2bd"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -557,14 +558,39 @@
                     <view key="view" contentMode="scaleToFill" id="k69-kI-Ozw">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ugt-lx-3QY">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="GDC-zP-ktd" id="eMs-S3-Vx3"/>
+                                    <outlet property="delegate" destination="GDC-zP-ktd" id="n4q-Cv-CHc"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ugt-lx-3QY" firstAttribute="bottom" secondItem="USP-fE-PrV" secondAttribute="top" id="J4D-2X-4QL"/>
+                            <constraint firstAttribute="trailing" secondItem="Ugt-lx-3QY" secondAttribute="trailing" id="JmM-Gk-d00"/>
+                            <constraint firstItem="Ugt-lx-3QY" firstAttribute="leading" secondItem="k69-kI-Ozw" secondAttribute="leading" id="TXl-By-stO"/>
+                            <constraint firstItem="Ugt-lx-3QY" firstAttribute="top" secondItem="FOc-dW-Qvl" secondAttribute="bottom" id="gF7-MJ-dUR"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Account" image="account" id="ocp-s0-udn"/>
-                    <navigationItem key="navigationItem" id="4f9-zi-ROI"/>
+                    <navigationItem key="navigationItem" title="Account" id="4f9-zi-ROI">
+                        <barButtonItem key="rightBarButtonItem" title="Login" id="rzn-if-9VX">
+                            <connections>
+                                <action selector="loginAction:" destination="GDC-zP-ktd" id="vKS-op-boz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="loginButton" destination="rzn-if-9VX" id="3RP-bM-itG"/>
+                        <outlet property="tableView" destination="Ugt-lx-3QY" id="8Vw-7q-c9r"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJd-b5-IBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="2193"/>
+            <point key="canvasLocation" x="1894" y="2193"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -965,6 +991,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9fz-5F-i8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1082" y="1404"/>
+        </scene>
+        <!--Account-->
+        <scene sceneID="wWq-uB-xnH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KH8-4n-0r1" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Account" image="account" id="ocp-s0-udn"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uC6-7M-Fa5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="GDC-zP-ktd" kind="relationship" relationship="rootViewController" id="Ykh-VR-bKP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="upO-LN-CSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1082" y="2193"/>
         </scene>
     </scenes>
     <resources>

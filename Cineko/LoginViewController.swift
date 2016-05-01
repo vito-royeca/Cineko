@@ -11,6 +11,10 @@ import UIKit
 import JJJUtils
 import MBProgressHUD
 
+protocol LoginViewControllerDelegate : NSObjectProtocol {
+    func loginSuccess(viewController: UIViewController)
+}
+
 class LoginViewController: UIViewController {
 
     // MARK: Outlets
@@ -21,16 +25,12 @@ class LoginViewController: UIViewController {
     // MARK: Variables
     var authenticationURLString:String?
     var hasHUD = false
+    var delegate:LoginViewControllerDelegate?
     
     // MARK: Actions
     @IBAction func doneAction(sender: UIBarButtonItem) {
-        if TMDBManager.sharedInstance().hasSessionID() {
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
-                presentViewController(controller, animated: true, completion: nil)
-            }
-            
-        } else {
-            dismissViewControllerAnimated(true, completion: nil)
+        if let delegate = delegate {
+            delegate.loginSuccess(self)
         }
     }
     
