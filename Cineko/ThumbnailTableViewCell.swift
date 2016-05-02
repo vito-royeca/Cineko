@@ -30,6 +30,8 @@ class ThumbnailTableViewCell: UITableViewCell {
             return _fetchRequest
         }
         set (aNewValue) {
+            imageSizeAdjusted = false
+            
             if (_fetchRequest != aNewValue) {
                 _fetchRequest = aNewValue
                 

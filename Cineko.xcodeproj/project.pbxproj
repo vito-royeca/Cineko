@@ -22,6 +22,7 @@
 		8C1CC9841CBF457E001D5239 /* RTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1CC9811CBF457E001D5239 /* RTManager.swift */; };
 		8C1F106D1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
 		8C1F106E1CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */; };
+		8C2D0DC61CD64C0300DE888C /* NYTimesReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D0DC51CD64C0300DE888C /* NYTimesReviewManager.swift */; };
 		8C37CD871CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD821CBB65DC0093196C /* MediaInfoTableViewCell.xib */; };
 		8C37CD881CBB65DC0093196C /* MediaInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C37CD821CBB65DC0093196C /* MediaInfoTableViewCell.xib */; };
 		8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
@@ -188,6 +189,7 @@
 		8C1CC9811CBF457E001D5239 /* RTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTManager.swift; sourceTree = "<group>"; };
 		8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightTableViewCell.swift; sourceTree = "<group>"; };
 		8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicHeightTableViewCell.xib; sourceTree = "<group>"; };
+		8C2D0DC51CD64C0300DE888C /* NYTimesReviewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NYTimesReviewManager.swift; sourceTree = "<group>"; };
 		8C340CD91CBCC36B0065626A /* ThumbnailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailTableViewCell.swift; sourceTree = "<group>"; };
 		8C340CDA1CBCC36B0065626A /* ThumbnailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailTableViewCell.xib; sourceTree = "<group>"; };
 		8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -427,9 +429,10 @@
 			isa = PBXGroup;
 			children = (
 				8C1378AE1CAE80D000FB6830 /* CoreDataManager.swift */,
-				8CAB33E21CC4891C00441861 /* ObjectManager.swift */,
 				8C1378AF1CAE80D000FB6830 /* GCDBlackBox.swift */,
 				8C1378B01CAE80D000FB6830 /* NetworkManager.swift */,
+				8C2D0DC51CD64C0300DE888C /* NYTimesReviewManager.swift */,
+				8CAB33E21CC4891C00441861 /* ObjectManager.swift */,
 				8C1CC9811CBF457E001D5239 /* RTManager.swift */,
 				8CD408C11CB1822E00F9132F /* TMDBManager.swift */,
 			);
@@ -904,6 +907,7 @@
 				8CD53BE61CC62B400035AD45 /* Genre+CoreDataProperties.swift in Sources */,
 				8CD53BE71CC62B400035AD45 /* MoviesViewController.swift in Sources */,
 				8CD53BE81CC62B400035AD45 /* TMDBManager.swift in Sources */,
+				8C2D0DC61CD64C0300DE888C /* NYTimesReviewManager.swift in Sources */,
 				8CD53BE91CC62B400035AD45 /* Movie+CoreDataProperties.swift in Sources */,
 				8CD53BEA1CC62B400035AD45 /* Image.swift in Sources */,
 				8CD53BEB1CC62B400035AD45 /* Country+CoreDataProperties.swift in Sources */,

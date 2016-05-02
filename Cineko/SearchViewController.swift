@@ -132,7 +132,7 @@ extension SearchViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension SearchViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return ThumbnailTableViewCell.Height
+        return tableView.frame.size.height / 3
     }
 }
 

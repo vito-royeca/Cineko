@@ -354,7 +354,7 @@ extension MoviesViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension MoviesViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return ThumbnailTableViewCell.Height
+        return tableView.frame.size.height / 3
     }
 }
 

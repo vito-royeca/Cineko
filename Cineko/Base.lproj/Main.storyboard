@@ -282,7 +282,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="124" id="A8a-UO-7ek"/>
                                 </constraints>
-                                <state key="normal" title="Login or Sign Up"/>
+                                <state key="normal" title="Login or Sign Up">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="loginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="WIq-4Y-ig4"/>
                                 </connections>
@@ -292,7 +294,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="77" id="NGf-dz-71X"/>
                                 </constraints>
-                                <state key="normal" title="Skip Login"/>
+                                <state key="normal" title="Skip Login">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="skipLoginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="Wa8-Lh-jZv"/>
                                 </connections>
@@ -307,11 +311,11 @@
                                     <constraint firstAttribute="width" constant="233" id="h7O-vO-4jA"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.59999999999999998" blue="1" alpha="0.51137563344594594" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="lRn-UO-1d4" firstAttribute="centerX" secondItem="l98-5n-i0N" secondAttribute="centerX" id="1f1-LD-HHH"/>
                             <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="4vP-DG-ar6"/>
