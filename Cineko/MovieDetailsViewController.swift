@@ -11,6 +11,7 @@ import CoreData
 import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
+import SafariServices
 import SDWebImage
 
 class MovieDetailsViewController: UIViewController {
@@ -23,6 +24,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Variables
     var titleLabel: UILabel?
     var movieID:NSManagedObjectID?
+    var movieReviews:NSSet?
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
@@ -88,6 +90,7 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
+        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "reviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
@@ -180,7 +183,8 @@ class MovieDetailsViewController: UIViewController {
                 if let error = error {
                     print("Error in: \(#function)... \(error)")
                 }
-                
+            
+                self.movieReviews = movie.reviews
                 performUIUpdatesOnMain {
                     self.tableView.reloadData()
                 }
@@ -257,6 +261,16 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        var reviewCount = 0
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.count
+        }
+        
+        // reset the accessory button
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+        
         switch indexPath.row {
         case 0:
             cell.contentView.backgroundColor = UIColor.clearColor()
@@ -300,7 +314,7 @@ class MovieDetailsViewController: UIViewController {
                 }
                 c.changeColor(averageColor, fontColor: inverseColor)
             }
-        case 3:
+        case 3+reviewCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
@@ -312,7 +326,7 @@ class MovieDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 4:
+        case 4+reviewCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Cast"
@@ -326,7 +340,7 @@ class MovieDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 5:
+        case 5+reviewCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Crew"
@@ -340,7 +354,7 @@ class MovieDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 6:
+        case 6+reviewCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Posters"
@@ -353,7 +367,17 @@ class MovieDetailsViewController: UIViewController {
                 c.loadData()
             }
         default:
-            return
+            if let c = cell as? DynamicHeightTableViewCell,
+                let movieReviews = movieReviews {
+                
+                let movieReview = movieReviews.allObjects[indexPath.row-3] as! Review
+                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
+                c.accessoryType = .DisclosureIndicator
+                c.selectionStyle = .Default
+                c.changeColor(averageColor, fontColor: inverseColor)
+            }
+            break
         }
     }
     
@@ -408,11 +432,21 @@ class MovieDetailsViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        var rows = 7
+        
+        if let movieReviews = movieReviews {
+            rows += movieReviews.count
+        }
+        return rows
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
+        var reviewCount = 0
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.count
+        }
         
         switch indexPath.row {
         case 0:
@@ -421,18 +455,18 @@ extension MovieDetailsViewController : UITableViewDataSource {
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
         case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 3+reviewCount:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-        case 4:
+        case 4+reviewCount:
             cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
-        case 5:
+        case 5+reviewCount:
             cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
-        case 6:
+        case 6+reviewCount:
             cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
         default:
-            cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
         }
-        
+    
         configureCell(cell!, indexPath: indexPath)
         return cell!
     }
@@ -441,18 +475,46 @@ extension MovieDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension MovieDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var reviewCount = 0
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.count
+        }
         
         switch indexPath.row {
         case 0:
-            return 180 + titleLabel!.frame.size.height
+            return tableView.frame.size.height / 2
         case 1:
             return UITableViewAutomaticDimension
         case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 3, 4, 5, 6:
+        case 3+reviewCount, 4+reviewCount, 5+reviewCount, 6+reviewCount:
             return ThumbnailTableViewCell.Height
         default:
             return UITableViewAutomaticDimension
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var reviewCount = 0
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.count
+        }
+        
+        if let movieReviews = movieReviews,
+           let navigationController = navigationController {
+            switch indexPath.row {
+            case 0, 1, 2, 3+reviewCount, 4+reviewCount, 5+reviewCount, 6+reviewCount:
+                return
+            default:
+                let moviewReview = movieReviews.allObjects[indexPath.row-3] as! Review
+                let URL = NSURL(string: moviewReview.link!)
+                
+                let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
+                svc.delegate = self
+                navigationController.presentViewController(svc, animated: true, completion: nil)
+            }
         }
     }
 }
@@ -462,6 +524,11 @@ extension MovieDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
             let navigationController = navigationController {
+            var reviewCount = 0
+            
+            if let movieReviews = movieReviews {
+                reviewCount = movieReviews.count
+            }
             
             var title:String?
             var fetchRequest:NSFetchRequest?
@@ -470,19 +537,19 @@ extension MovieDetailsViewController : ThumbnailDelegate {
             var showCaption = false
             
             switch tag {
-            case 4:
+            case 4+reviewCount:
                 title = "Cast"
                 fetchRequest = castFetchRequest
                 displayType = .Profile
                 captionType = .NameAndRole
                 showCaption = true
-            case 5:
+            case 5+reviewCount:
                 title = "Crew"
                 fetchRequest = crewFetchRequest
                 displayType = .Profile
                 captionType = .NameAndJob
                 showCaption = true
-            case 6:
+            case 6+reviewCount:
                 title = "Posters"
                 fetchRequest = posterFetchRequest
                 displayType = .Poster
@@ -495,28 +562,40 @@ extension MovieDetailsViewController : ThumbnailDelegate {
             controller.displayType = displayType
             controller.captionType = captionType
             controller.showCaption = showCaption
-            controller.view.tag = tag
+            controller.view.tag = tag+reviewCount
             controller.delegate = self
             navigationController.pushViewController(controller, animated: true)
         }
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
+        var reviewCount = 0
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.count
+        }
+        
         switch tag {
-        case 3:
+        case 3+reviewCount:
             showBackdropsBrowser(path)
-        case 4, 5:
+        case 4+reviewCount, 5+reviewCount:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
                 let navigationController = navigationController {
                 let credit = displayable as! Credit
                 controller.personID = credit.person!.objectID
                 navigationController.pushViewController(controller, animated: true)
             }
-        case 6:
+        case 6+reviewCount:
             showPostersBrowser(path)
         default:
             return
         }
-        
+    }
+}
+
+// MARK: SFSafariViewControllerDelegate
+extension MovieDetailsViewController : SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(controller: SFSafariViewController) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
 }

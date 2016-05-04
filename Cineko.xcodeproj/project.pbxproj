@@ -97,6 +97,8 @@
 		8CAB34341CC4E6AB00441861 /* MediaInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C37CD811CBB65DC0093196C /* MediaInfoTableViewCell.swift */; };
 		8CAB34351CC4E6B200441861 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */; };
 		8CAB34361CC4E6B200441861 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */; };
+		8CBDFD481CD9BE8C006E6D30 /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBDFD461CD9BE8C006E6D30 /* Review+CoreDataProperties.swift */; };
+		8CBDFD491CD9BE8C006E6D30 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBDFD471CD9BE8C006E6D30 /* Review.swift */; };
 		8CD53BBB1CC62B400035AD45 /* Network+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FDB991CB6132200E2997F /* Network+CoreDataProperties.swift */; };
 		8CD53BBC1CC62B400035AD45 /* TVShow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67892C1CB5209200E4E14B /* TVShow+CoreDataProperties.swift */; };
 		8CD53BBD1CC62B400035AD45 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378B01CAE80D000FB6830 /* NetworkManager.swift */; };
@@ -233,6 +235,9 @@
 		8CBDC34C1CB2BA1200FA15F8 /* Cineko-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cineko-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CBDC34D1CB2BA1200FA15F8 /* CinekoTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CinekoTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CBDC34E1CB2BA1300FA15F8 /* CinekoUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CinekoUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Cineko 05042016.xcdatamodel"; sourceTree = "<group>"; };
+		8CBDFD461CD9BE8C006E6D30 /* Review+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Review+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8CBDFD471CD9BE8C006E6D30 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		8CD408BD1CB17AC200F9132F /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		8CD408C11CB1822E00F9132F /* TMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBManager.swift; sourceTree = "<group>"; };
 		8CD53C011CC62B400035AD45 /* Cine Ko!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cine Ko!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -380,6 +385,8 @@
 				8C4FDB991CB6132200E2997F /* Network+CoreDataProperties.swift */,
 				8C67892B1CB5209200E4E14B /* Person.swift */,
 				8C67892A1CB5209200E4E14B /* Person+CoreDataProperties.swift */,
+				8CBDFD471CD9BE8C006E6D30 /* Review.swift */,
+				8CBDFD461CD9BE8C006E6D30 /* Review+CoreDataProperties.swift */,
 				8C67893B1CB5209200E4E14B /* TVEpisode.swift */,
 				8C67893A1CB5209200E4E14B /* TVEpisode+CoreDataProperties.swift */,
 				8C67893D1CB5209200E4E14B /* TVSeason.swift */,
@@ -909,6 +916,8 @@
 				8CD53BE81CC62B400035AD45 /* TMDBManager.swift in Sources */,
 				8C2D0DC61CD64C0300DE888C /* NYTimesReviewManager.swift in Sources */,
 				8CD53BE91CC62B400035AD45 /* Movie+CoreDataProperties.swift in Sources */,
+				8CBDFD481CD9BE8C006E6D30 /* Review+CoreDataProperties.swift in Sources */,
+				8CBDFD491CD9BE8C006E6D30 /* Review.swift in Sources */,
 				8CD53BEA1CC62B400035AD45 /* Image.swift in Sources */,
 				8CD53BEB1CC62B400035AD45 /* Country+CoreDataProperties.swift in Sources */,
 				8CD53BEC1CC62B400035AD45 /* TVShowDetailsViewController.swift in Sources */,
@@ -1168,10 +1177,11 @@
 		8C1378A71CAE7BF300FB6830 /* Cineko.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */,
 				8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */,
 				8C1378A81CAE7BF300FB6830 /* Cineko.xcdatamodel */,
 			);
-			currentVersion = 8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */;
+			currentVersion = 8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */;
 			path = Cineko.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

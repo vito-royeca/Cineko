@@ -27,8 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TMDB
         TMDBManager.sharedInstance().setup(Constants.TMDBAPIKeyValue)
         TMDBManager.sharedInstance().deleteRefreshData()
-        // RT
-        RTManager.sharedInstance().setup(Constants.RTAPIKeyValue)
+        
+        // NYTimes Movie Reviews
+        NYTimesReviewManager.sharedInstance().setup(Constants.NYTimesReviewAPIKeyValue)
         
         // Docs Directory
         print("docs = \(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!)")

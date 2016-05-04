@@ -201,15 +201,14 @@ class ThumbnailTableViewCell: UITableViewCell {
     
     func setDefaultImageForCell(cell: ThumbnailCollectionViewCell, caption: String?) {
         if let image = UIImage(named: "noImage") {
-//            if !self.imageSizeAdjusted {
+            if !self.imageSizeAdjusted {
                 let imageWidth = image.size.width
                 let imageHeight = image.size.height
                 let height = self.collectionView.frame.size.height
                 let newWidth = (imageWidth * height) / imageHeight
                 let width = newWidth > ThumbnailTableViewCell.MaxImageWidth ? ThumbnailTableViewCell.MaxImageWidth : newWidth
                 self.flowLayout.itemSize = CGSizeMake(width, height)
-//                self.imageSizeAdjusted = true
-//            }
+            }
             
             cell.thumbnailImage.image = image
             cell.contentMode = .ScaleToFill

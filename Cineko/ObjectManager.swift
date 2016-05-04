@@ -30,7 +30,7 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Movie", objectKey: "movieID", objectValue: dict[Movie.Keys.MovieID] as! NSObject, initializer: initializer) as! Movie
     }
     
-    func updateMovie(dict: [String: AnyObject]) {
+    func updateMovie(dict: [String: AnyObject], reviewIDs: [AnyObject]) {
         if let movieID = dict[Movie.Keys.MovieID] as? NSNumber {
             let fetchRequest = NSFetchRequest(entityName: "Movie")
             fetchRequest.predicate = NSPredicate(format: "movieID == %@", movieID)
@@ -72,6 +72,11 @@ class ObjectManager: NSObject {
                             set.addObject(findOrCreateLanguage(language))
                         }
                         m.spokenLanguages = set
+                    }
+                    
+                    for reviewID in reviewIDs {
+                        let review = privateContext.objectWithID(reviewID as! NSManagedObjectID) as! Review
+                        review.movie = m
                     }
                     
                     m.update(dict)
@@ -375,6 +380,14 @@ class ObjectManager: NSObject {
         }
         
         return findOrCreateObject(dict, entityName: "Account", objectKey: "accountID", objectValue: dict[Account.Keys.AccountID] as! NSObject, initializer: initializer) as! Account
+    }
+    
+    func findOrCreateReview(dict: [String: AnyObject]) -> Review {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Review in
+            return Review(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "Review", objectKey: "link", objectValue: dict["link"]![Review.Keys.Link] as! NSObject, initializer: initializer) as! Review
     }
     
     func findOrCreateObject(dict: [String: AnyObject], entityName: String, objectKey: String, objectValue: NSObject, initializer: (dict: [String: AnyObject], context: NSManagedObjectContext) -> AnyObject) -> AnyObject {

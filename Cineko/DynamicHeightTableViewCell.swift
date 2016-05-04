@@ -28,5 +28,14 @@ class DynamicHeightTableViewCell: UITableViewCell {
     func changeColor(backgroundColor: UIColor?, fontColor: UIColor?) {
         self.backgroundColor = backgroundColor
         dynamicLabel.textColor = fontColor
+        
+        if accessoryType != .None {
+            if let image = UIImage(named: "forward") {
+                let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                let imageView = UIImageView(image: tintedImage)
+                imageView.tintColor = fontColor
+                accessoryView = imageView
+            }
+        }
     }
 }

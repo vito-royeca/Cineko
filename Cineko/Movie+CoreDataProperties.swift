@@ -43,5 +43,6 @@ extension Movie {
     @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?
     @NSManaged var productionCountries: NSSet?
+    @NSManaged var reviews: NSSet?
     @NSManaged var spokenLanguages: NSSet?
 }

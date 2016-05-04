@@ -127,7 +127,7 @@ class SeeAllViewController: UIViewController {
     
     func setDefaultImageForCell(cell: ThumbnailCollectionViewCell, caption: String?) {
         if let image = UIImage(named: "noImage") {
-//            if !imageSizeAdjusted {
+            if !imageSizeAdjusted {
                 let space: CGFloat = 1.0
                 let imageHeight = image.size.height
                 let imageWidth = image.size.width
@@ -137,8 +137,7 @@ class SeeAllViewController: UIViewController {
                 self.flowLayout.minimumInteritemSpacing = space
                 self.flowLayout.minimumLineSpacing = space
                 self.flowLayout.itemSize = CGSizeMake(width, height)
-//                imageSizeAdjusted = true
-//            }
+            }
 
             cell.thumbnailImage.image = image
             cell.contentMode = .ScaleToFill

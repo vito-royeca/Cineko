@@ -618,8 +618,6 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
-                    // reset all to false
-//                    ObjectManager.sharedInstance().batchUpdate("Movie", propertiesToUpdate: ["favorite": NSNumber(bool: false)], predicate: NSPredicate(format: "favorite == %@", NSNumber(bool: true)))
                     
                     for movie in json {
                         let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
@@ -665,8 +663,6 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
-                    // reset all to false
-//                    ObjectManager.sharedInstance().batchUpdate("TVShow", propertiesToUpdate: ["favorite": NSNumber(bool: false)], predicate: NSPredicate(format: "favorite == %@", NSNumber(bool: true)))
                     
                     for tvShow in json {
                         let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
@@ -712,8 +708,6 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
-                    // reset all to false
-//                    ObjectManager.sharedInstance().batchUpdate("Movie", propertiesToUpdate: ["watchlist": NSNumber(bool: false)], predicate: NSPredicate(format: "watchlist == %@", NSNumber(bool: true)))
                     
                     for movie in json {
                         let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
@@ -759,8 +753,6 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
-                    // reset all to false
-//                    ObjectManager.sharedInstance().batchUpdate("TVShow", propertiesToUpdate: ["watchlist": NSNumber(bool: false)], predicate: NSPredicate(format: "watchlist == %@", NSNumber(bool: true)))
                     
                     for tvShow in json {
                         let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
@@ -859,9 +851,20 @@ class TMDBManager: NSObject {
     
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                ObjectManager.sharedInstance().updateMovie(dict)
+                if let title = dict[Movie.Keys.Title] as? String {
+              
+                    let comp2 = { (objectIDs: [AnyObject], error: NSError?) in
+                        ObjectManager.sharedInstance().updateMovie(dict, reviewIDs: objectIDs)
+                        completion(error: nil)
+                    }
+                    
+                    do {
+                        try NYTimesReviewManager.sharedInstance().movieReviews(title, completion: comp2)
+                    } catch {
+                        completion(error: nil)
+                    }
+                }
             }
-            completion(error: nil)
         }
         
         let failure = { (error: NSError?) -> Void in

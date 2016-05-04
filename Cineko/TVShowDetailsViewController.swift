@@ -439,7 +439,7 @@ extension TVShowDetailsViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            return 180 + titleLabel!.frame.size.height
+            return tableView.frame.size.height / 2
         case 1:
             return UITableViewAutomaticDimension
         case 2:
