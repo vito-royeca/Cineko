@@ -106,12 +106,7 @@ class SeeAllViewController: UIViewController {
                 }
                 
                 if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.captionType!)
-                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                    cell.captionLabel.textColor = UIColor.blackColor()
-                } else {
-                    cell.captionLabel.text = nil
-                    cell.captionLabel.backgroundColor = nil
+                    cell.addCaptionImage(displayable.caption(self.captionType!)!)
                 }
             }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
@@ -144,9 +139,7 @@ class SeeAllViewController: UIViewController {
         }
         
         if let caption = caption {
-            cell.captionLabel.text = caption
-            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-            cell.captionLabel.textColor = UIColor.blackColor()
+            cell.addCaptionImage(caption)
         }
     }
 }

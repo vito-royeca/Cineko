@@ -243,12 +243,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="Movie" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
-                            <barButtonItem enabled="NO" image="eye" id="sLV-iu-MVH">
+                            <barButtonItem image="eye" id="sLV-iu-MVH">
                                 <connections>
                                     <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem enabled="NO" image="heart" id="cuV-FF-voo">
+                            <barButtonItem image="heart" id="cuV-FF-voo">
                                 <connections>
                                     <action selector="favoriteAction:" destination="6At-tm-DiG" id="5jq-ti-D9C"/>
                                 </connections>
@@ -278,9 +278,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4c-YP-zCy">
-                                <rect key="frame" x="238" y="285" width="124" height="30"/>
+                                <rect key="frame" x="238" y="215" width="124" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="124" id="A8a-UO-7ek"/>
+                                    <constraint firstAttribute="width" constant="124" id="CE9-Bx-zDr"/>
                                 </constraints>
                                 <state key="normal" title="Login or Sign Up">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -290,9 +290,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ci-UP-NoW">
-                                <rect key="frame" x="262" y="323" width="77" height="30"/>
+                                <rect key="frame" x="262" y="253" width="77" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="77" id="NGf-dz-71X"/>
+                                    <constraint firstAttribute="width" constant="77" id="33D-VH-lGU"/>
                                 </constraints>
                                 <state key="normal" title="Skip Login">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -301,30 +301,43 @@
                                     <action selector="skipLoginAction:" destination="LWW-aB-g2m" eventType="touchUpInside" id="Wa8-Lh-jZv"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginIcon" translatesAutoresizingMaskIntoConstraints="NO" id="lRn-UO-1d4">
-                                <rect key="frame" x="271" y="162" width="57" height="57"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cine Ko!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcC-Bk-94e">
-                                <rect key="frame" x="184" y="227" width="233" height="50"/>
+                                <rect key="frame" x="184" y="157" width="233" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="fG3-N8-oYU"/>
-                                    <constraint firstAttribute="width" constant="233" id="h7O-vO-4jA"/>
+                                    <constraint firstAttribute="width" constant="233" id="0YE-oR-AMp"/>
+                                    <constraint firstAttribute="height" constant="50" id="BJk-UC-Zt8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="film edge" translatesAutoresizingMaskIntoConstraints="NO" id="0R5-Or-X5I">
+                                <rect key="frame" x="0.0" y="20" width="600" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="iGb-Wy-vhv"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="film edge up" translatesAutoresizingMaskIntoConstraints="NO" id="Td7-Pt-bRv">
+                                <rect key="frame" x="0.0" y="558" width="600" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="JGE-Q2-Cqc"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="lRn-UO-1d4" firstAttribute="centerX" secondItem="l98-5n-i0N" secondAttribute="centerX" id="1f1-LD-HHH"/>
-                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="4vP-DG-ar6"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="6g0-Fy-y0l"/>
-                            <constraint firstItem="hcC-Bk-94e" firstAttribute="top" secondItem="lRn-UO-1d4" secondAttribute="bottom" constant="8" symbolic="YES" id="FcV-Bs-qQ8"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="top" secondItem="hcC-Bk-94e" secondAttribute="bottom" constant="8" symbolic="YES" id="GHz-U5-Owk"/>
-                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="n0c-l4-x6g"/>
-                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerY" secondItem="l98-5n-i0N" secondAttribute="centerY" id="n14-Df-E69"/>
-                            <constraint firstItem="lRn-UO-1d4" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="wqk-Dt-ADR"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="centerX" secondItem="2Ci-UP-NoW" secondAttribute="centerX" id="1Ao-K9-VkJ"/>
+                            <constraint firstAttribute="trailing" secondItem="0R5-Or-X5I" secondAttribute="trailing" id="3TQ-IX-Yqz"/>
+                            <constraint firstItem="Td7-Pt-bRv" firstAttribute="bottom" secondItem="tJb-WY-bwh" secondAttribute="top" id="F4t-oO-exZ"/>
+                            <constraint firstItem="0R5-Or-X5I" firstAttribute="centerX" secondItem="hcC-Bk-94e" secondAttribute="centerX" id="GKz-OV-WH4"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="centerX" secondItem="p4c-YP-zCy" secondAttribute="centerX" id="Lvi-8E-FNa"/>
+                            <constraint firstItem="0R5-Or-X5I" firstAttribute="top" secondItem="mIx-LT-1cR" secondAttribute="bottom" id="WcA-7B-8yh"/>
+                            <constraint firstItem="0R5-Or-X5I" firstAttribute="leading" secondItem="l98-5n-i0N" secondAttribute="leading" id="dse-LF-QCU"/>
+                            <constraint firstItem="p4c-YP-zCy" firstAttribute="top" secondItem="hcC-Bk-94e" secondAttribute="bottom" constant="8" symbolic="YES" id="lsA-9q-Siv"/>
+                            <constraint firstItem="0R5-Or-X5I" firstAttribute="leading" secondItem="Td7-Pt-bRv" secondAttribute="leading" id="p0z-Dm-toM"/>
+                            <constraint firstItem="hcC-Bk-94e" firstAttribute="top" secondItem="0R5-Or-X5I" secondAttribute="bottom" constant="95" id="pCD-1S-Bub"/>
+                            <constraint firstItem="0R5-Or-X5I" firstAttribute="trailing" secondItem="Td7-Pt-bRv" secondAttribute="trailing" id="sWE-sl-3Gs"/>
+                            <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="tMY-OQ-ChA"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -581,13 +594,19 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Account" id="4f9-zi-ROI">
-                        <barButtonItem key="rightBarButtonItem" title="Login" id="rzn-if-9VX">
+                        <barButtonItem key="leftBarButtonItem" title="Login" id="rzn-if-9VX">
                             <connections>
                                 <action selector="loginAction:" destination="GDC-zP-ktd" id="vKS-op-boz"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="gvW-4h-bOI">
+                            <connections>
+                                <action selector="addAction:" destination="GDC-zP-ktd" id="Rig-DT-vvh"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="gvW-4h-bOI" id="kuc-0a-iXr"/>
                         <outlet property="loginButton" destination="rzn-if-9VX" id="3RP-bM-itG"/>
                         <outlet property="tableView" destination="Ugt-lx-3QY" id="8Vw-7q-c9r"/>
                     </connections>
@@ -748,12 +767,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="TV Show" id="60C-GX-mVq">
                         <rightBarButtonItems>
-                            <barButtonItem enabled="NO" image="eye" id="6la-k3-GH4">
+                            <barButtonItem image="eye" id="6la-k3-GH4">
                                 <connections>
                                     <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem enabled="NO" image="heart" id="NCF-yy-Ioa">
+                            <barButtonItem image="heart" id="NCF-yy-Ioa">
                                 <connections>
                                     <action selector="favoriteAction:" destination="wVx-Wm-bVh" id="bJy-Ti-5tw"/>
                                 </connections>
@@ -1019,8 +1038,9 @@
     <resources>
         <image name="account" width="25" height="25"/>
         <image name="eye" width="25" height="25"/>
+        <image name="film edge" width="535" height="51"/>
+        <image name="film edge up" width="535" height="51"/>
         <image name="heart" width="25" height="25"/>
-        <image name="loginIcon" width="57" height="57"/>
         <image name="movie" width="25" height="25"/>
         <image name="tv" width="25" height="25"/>
     </resources>

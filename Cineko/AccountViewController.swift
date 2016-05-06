@@ -13,6 +13,7 @@ import MBProgressHUD
 class AccountViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var loginButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Actions
@@ -64,6 +65,10 @@ class AccountViewController: UIViewController {
         }
     }
     
+    @IBAction func addAction(sender: UIBarButtonItem) {
+        
+    }
+    
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +81,10 @@ class AccountViewController: UIViewController {
         
         if let _ = TMDBManager.sharedInstance().account {
             loginButton.title = "Logout"
+            addButton.enabled = true
         } else {
             loginButton.title = "Login"
+            addButton.enabled = false
         }
     }
     
@@ -95,24 +102,6 @@ class AccountViewController: UIViewController {
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }
-    
-//    func loadPhotos() {
-//        if let account = TMDBManager.sharedInstance().account {
-//            let completion = { (error: NSError?) in
-//                if let error = error {
-//                    print("Error in: \(#function)... \(error)")
-//                }
-//                
-//                performUIUpdatesOnMain {
-//                    self.tableView.reloadData()
-//                }
-//            }
-//            
-//            do {
-//                try TMDBManager.sharedInstance().accountImages(movie.movieID!, completion: completion)
-//            } catch {}
-//        }
-//    }
 }
 
 // MARK: UITableViewDataSource

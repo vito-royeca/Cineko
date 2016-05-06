@@ -84,7 +84,6 @@ class ThumbnailTableViewCell: UITableViewCell {
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         collectionView.dataSource = self
         collectionView.delegate = self
-        
         seeAllButton.hidden = showSeeAllButton
     }
     
@@ -137,11 +136,11 @@ class ThumbnailTableViewCell: UITableViewCell {
             
             switch displayType! {
             case .Poster:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[0])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[1])\(path)"
             case .Profile:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[1])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[2])\(path)"
             case .Backdrop:
-                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[0])\(path)"
+                urlString = "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[1])\(path)"
             }
 
             let url = NSURL(string: urlString!)
@@ -166,12 +165,7 @@ class ThumbnailTableViewCell: UITableViewCell {
                 }
                 
                 if self.showCaption {
-                    cell.captionLabel.text = displayable.caption(self.captionType!)
-                    cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-                    cell.captionLabel.textColor = UIColor.blackColor()
-                } else {
-                    cell.captionLabel.text = nil
-                    cell.captionLabel.backgroundColor = nil
+                    cell.addCaptionImage(displayable.caption(self.captionType!)!)
                 }
             }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
@@ -215,9 +209,7 @@ class ThumbnailTableViewCell: UITableViewCell {
         }
         
         if let caption = caption {
-            cell.captionLabel.text = caption
-            cell.captionLabel.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.6)
-            cell.captionLabel.textColor = UIColor.blackColor()
+            cell.addCaptionImage(caption)
         }
     }
 }

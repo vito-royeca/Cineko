@@ -37,16 +37,49 @@ protocol ThumbnailDelegate : NSObjectProtocol {
 class ThumbnailCollectionViewCell: UICollectionViewCell {
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
-    @IBOutlet weak var captionLabel: UILabel!
     
     // MARK: Variables
-    var hasHUD = false
     
     // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        captionLabel.adjustsFontSizeToFitWidth = true
+        
     }
+    
+    // MARK: Custom methods
+    func addCaptionImage(text: String) {
+        if let image = thumbnailImage.image {
+            let textColor = UIColor.blackColor()
+            let font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
 
+            // Compute rect to draw the text inside
+            let imageSize = image.size
+            let attr = [NSForegroundColorAttributeName: textColor, NSFontAttributeName: font]
+            let textSize = text.sizeWithAttributes(attr)
+            let width = imageSize.width
+            let widthNum = textSize.width > imageSize.width ? Int(textSize.width/imageSize.width) : 1
+            let widthExcess = textSize.width > imageSize.width ? Int(textSize.width%imageSize.width) : 0
+            let height = (textSize.height * CGFloat(widthNum)) + (widthExcess > 0 ? textSize.height : 0)
+            let textRect = CGRectMake(0, imageSize.height - height, width, height)
+
+            // Create the image
+            UIGraphicsBeginImageContextWithOptions(imageSize, true, 0.0)
+            image.drawInRect(CGRectMake(0, 0, imageSize.width, imageSize.height))
+            
+            // Background
+            let context = UIGraphicsGetCurrentContext()
+            UIColor.whiteColor().colorWithAlphaComponent(0.95).set()
+            CGContextFillRect(context, textRect)
+            
+            // Text
+            text.drawInRect(CGRectIntegral(textRect), withAttributes:attr)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            
+            // done creating the image
+            UIGraphicsEndImageContext()
+            
+            thumbnailImage.image = newImage
+        }
+    }
 }

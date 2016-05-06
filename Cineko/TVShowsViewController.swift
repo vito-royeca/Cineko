@@ -56,7 +56,7 @@ class TVShowsViewController: UIViewController {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        if let dynamicTitle = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.MoviesDynamic) as? String {
+        if let dynamicTitle = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.TVShowsDynamic) as? String {
             self.dynamicTitle = dynamicTitle
         } else {
             dynamicTitle = tvShowGroups.first

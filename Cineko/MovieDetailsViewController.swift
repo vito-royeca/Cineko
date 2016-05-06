@@ -96,7 +96,6 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         
-        // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.whiteColor()
         titleLabel!.textAlignment = .Center
@@ -116,8 +115,9 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             if let posterPath = movie.posterPath {
-                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[3])\(posterPath)")
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
                 let backgroundView = UIImageView()
+                backgroundView.contentMode = .ScaleAspectFit
                 tableView.backgroundView = backgroundView
                 
                 let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
@@ -126,6 +126,7 @@ class MovieDetailsViewController: UIViewController {
                         self.inverseColor = image.inverseColor(self.averageColor)
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.inverseColor
+                        backgroundView.backgroundColor = self.averageColor
                         self.tableView.reloadData()
                     }
                 }
@@ -151,6 +152,7 @@ class MovieDetailsViewController: UIViewController {
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
+        titleLabel!.frame = CGRectMake(0, 0, size.width, 44)
         tableView.reloadData()
     }
     
@@ -483,13 +485,13 @@ extension MovieDetailsViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            return tableView.frame.size.height / 2
+            return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
         case 1:
             return UITableViewAutomaticDimension
         case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
         case 3+reviewCount, 4+reviewCount, 5+reviewCount, 6+reviewCount:
-            return ThumbnailTableViewCell.Height
+            return tableView.frame.size.height / 3
         default:
             return UITableViewAutomaticDimension
         }

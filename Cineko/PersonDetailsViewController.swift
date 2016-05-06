@@ -312,11 +312,11 @@ extension PersonDetailsViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            return ThumbnailTableViewCell.Height
+            return tableView.frame.size.height / 3
         case 1:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
         case 2, 3, 4, 5:
-            return ThumbnailTableViewCell.Height
+            return tableView.frame.size.height / 3
         default:
             return UITableViewAutomaticDimension
         }
