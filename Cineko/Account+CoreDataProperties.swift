@@ -23,4 +23,5 @@ extension Account {
     @NSManaged var username: String?
     @NSManaged var favoriteMovies: NSSet?
     @NSManaged var favoriteTVShows: NSSet?
+    @NSManaged var lists: NSSet?
 }

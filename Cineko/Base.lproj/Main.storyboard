@@ -243,6 +243,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Movie" id="hKK-Iw-wLY">
                         <rightBarButtonItems>
+                            <barButtonItem image="list" id="uPv-Lp-20Y">
+                                <connections>
+                                    <action selector="addToListAction:" destination="6At-tm-DiG" id="t7E-kO-G61"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="eye" id="sLV-iu-MVH">
                                 <connections>
                                     <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
@@ -256,6 +261,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addToListButton" destination="uPv-Lp-20Y" id="pkG-jH-unn"/>
                         <outlet property="favoriteButton" destination="cuV-FF-voo" id="e9C-gj-hhl"/>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
                         <outlet property="watchlistButton" destination="sLV-iu-MVH" id="qLN-uV-lCy"/>
@@ -1041,6 +1047,7 @@
         <image name="film edge" width="535" height="51"/>
         <image name="film edge up" width="535" height="51"/>
         <image name="heart" width="25" height="25"/>
+        <image name="list" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="tv" width="25" height="25"/>
     </resources>

@@ -40,6 +40,7 @@ extension Movie {
     @NSManaged var backdrops: NSSet?
     @NSManaged var credits: NSSet?
     @NSManaged var genres: NSSet?
+    @NSManaged var lists: NSSet?
     @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?
     @NSManaged var productionCountries: NSSet?

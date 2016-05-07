@@ -390,6 +390,14 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Review", objectKey: "link", objectValue: dict["link"]![Review.Keys.Link] as! NSObject, initializer: initializer) as! Review
     }
     
+    func findOrCreateList(dict: [String: AnyObject]) -> List {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> List in
+            return List(dictionary: dict, context: context)
+        }
+        
+        return findOrCreateObject(dict, entityName: "List", objectKey: "listID", objectValue: dict[List.Keys.ListID] as! NSObject, initializer: initializer) as! List
+    }
+    
     func findOrCreateObject(dict: [String: AnyObject], entityName: String, objectKey: String, objectValue: NSObject, initializer: (dict: [String: AnyObject], context: NSManagedObjectContext) -> AnyObject) -> AnyObject {
         var object:AnyObject?
         

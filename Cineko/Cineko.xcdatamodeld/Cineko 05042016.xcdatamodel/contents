@@ -8,6 +8,7 @@
         <attribute name="iso31661" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="createdBy" inverseEntity="List" syncable="YES"/>
     </entity>
     <entity name="Company" representedClassName=".Company" syncable="YES">
         <attribute name="companyDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -98,6 +99,18 @@
         </attribute>
         <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="spokenLanguages" inverseEntity="Movie" syncable="YES"/>
     </entity>
+    <entity name="List" representedClassName=".List" syncable="YES">
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favoriteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="listID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="listType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="createdBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="lists" inverseEntity="Account" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="lists" inverseEntity="Movie" syncable="YES"/>
+    </entity>
     <entity name="Movie" representedClassName=".Movie" syncable="YES">
         <attribute name="adult" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -130,6 +143,7 @@
         <relationship name="backdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="movieBackdrop" inverseEntity="Image" syncable="YES"/>
         <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="movie" inverseEntity="Credit" syncable="YES"/>
         <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="movies" inverseEntity="Genre" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="movies" inverseEntity="List" syncable="YES"/>
         <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="moviePoster" inverseEntity="Image" syncable="YES"/>
         <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Company" inverseName="movies" inverseEntity="Company" syncable="YES"/>
         <relationship name="productionCountries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Country" inverseName="movies" inverseEntity="Country" syncable="YES"/>
@@ -252,7 +266,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="150"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="165"/>
         <element name="Company" positionX="0" positionY="45" width="128" height="165"/>
         <element name="Country" positionX="9" positionY="108" width="128" height="90"/>
         <element name="Credit" positionX="9" positionY="162" width="128" height="210"/>
@@ -260,12 +274,13 @@
         <element name="Image" positionX="36" positionY="81" width="128" height="225"/>
         <element name="Job" positionX="-9" positionY="144" width="128" height="90"/>
         <element name="Language" positionX="18" positionY="144" width="128" height="90"/>
-        <element name="Movie" positionX="-54" positionY="-9" width="128" height="510"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="525"/>
         <element name="Network" positionX="-9" positionY="144" width="128" height="90"/>
         <element name="Person" positionX="-18" positionY="27" width="128" height="240"/>
+        <element name="Review" positionX="-9" positionY="144" width="128" height="135"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="225"/>
         <element name="TVSeason" positionX="-9" positionY="54" width="128" height="195"/>
         <element name="TVShow" positionX="-36" positionY="9" width="128" height="450"/>
-        <element name="Review" positionX="-9" positionY="144" width="128" height="135"/>
+        <element name="List" positionX="-9" positionY="144" width="128" height="195"/>
     </elements>
 </model>

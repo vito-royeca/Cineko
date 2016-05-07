@@ -13,30 +13,22 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="80" height="112"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="q8g-ky-vaN">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZGo-Ms-EBI">
                         <rect key="frame" x="0.0" y="0.0" width="80" height="112"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="xzJ-Z7-lKn">
-                        <rect key="frame" x="0.0" y="91" width="80" height="21"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="xzJ-Z7-lKn" secondAttribute="bottom" id="QPR-4S-ehf"/>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="aWC-dU-K4O"/>
-                <constraint firstAttribute="bottom" secondItem="q8g-ky-vaN" secondAttribute="bottom" id="dDc-pi-PgL"/>
-                <constraint firstItem="q8g-ky-vaN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fVT-gG-Faz"/>
-                <constraint firstItem="xzJ-Z7-lKn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="91" id="fYc-Tk-KZX"/>
-                <constraint firstItem="q8g-ky-vaN" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hfq-bJ-09a"/>
-                <constraint firstAttribute="trailing" secondItem="xzJ-Z7-lKn" secondAttribute="trailing" id="q84-PA-JCR"/>
-                <constraint firstAttribute="trailing" secondItem="q8g-ky-vaN" secondAttribute="trailing" id="qhB-QZ-Gcs"/>
+                <constraint firstAttribute="trailing" secondItem="ZGo-Ms-EBI" secondAttribute="trailing" id="HqX-Q6-H9e"/>
+                <constraint firstItem="ZGo-Ms-EBI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Tay-Ok-3u0"/>
+                <constraint firstItem="ZGo-Ms-EBI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Tu5-1q-0X8"/>
+                <constraint firstAttribute="bottom" secondItem="ZGo-Ms-EBI" secondAttribute="bottom" id="a82-1q-dtX"/>
             </constraints>
             <connections>
-                <outlet property="captionLabel" destination="xzJ-Z7-lKn" id="qnn-db-Fjz"/>
-                <outlet property="thumbnailImage" destination="q8g-ky-vaN" id="KsK-Hl-D2N"/>
+                <outlet property="thumbnailImage" destination="ZGo-Ms-EBI" id="zgb-AK-ayN"/>
             </connections>
         </collectionViewCell>
     </objects>

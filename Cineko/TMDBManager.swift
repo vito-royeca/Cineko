@@ -80,6 +80,7 @@ struct TMDBConstants {
             static let FavoriteTVShows    = "FavoriteTVShows"
             static let WatchlistMovies    = "WatchlistMovies"
             static let WatchlistTVShows   = "WatchlistTVShows"
+            static let Lists              = "Lists"
         }
     }
     
@@ -201,6 +202,27 @@ struct TMDBConstants {
     struct Search {
         struct Multi {
             static let Path = "/search/multi"
+        }
+    }
+    
+    struct Lists {
+        struct All {
+            static let Path = "/account/{id}/lists"
+        }
+        struct Details {
+            static let Path = "/list/{id}"
+        }
+        struct Create {
+            static let Path = "/list"
+        }
+        struct Delete {
+            static let Path = "/list/{id}"
+        }
+        struct AddMovie {
+            static let Path = "/list/{id}/add_item"
+        }
+        struct RemoveMovie {
+            static let Path = "/list/{id}/remove_item"
         }
     }
 }
@@ -354,6 +376,8 @@ class TMDBManager: NSObject {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsDynamic)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.FavoriteTVShows)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.WatchlistTVShows)
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
     }
     
     func logout() {
@@ -1322,6 +1346,51 @@ class TMDBManager: NSObject {
         
         let failure = { (error: NSError?) -> Void in
             completion(results: media, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    // MARK: Lists
+    func lists(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.All.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        var listIDs = [String]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for list in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateList(list)
+                        m.createdBy = self.account
+                        
+                        if let listID = m.listID {
+                            listIDs.append(listID)
+                        }
+                    }
+                }
+            }
+            CoreDataManager.sharedInstance().savePrivateContext()
+            completion(arrayIDs: listIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: listIDs, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

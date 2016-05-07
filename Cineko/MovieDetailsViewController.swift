@@ -19,6 +19,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var favoriteButton: UIBarButtonItem!
     @IBOutlet weak var watchlistButton: UIBarButtonItem!
+    @IBOutlet weak var addToListButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -81,6 +82,10 @@ class MovieDetailsViewController: UIViewController {
                 self.updateButtons()
             }
         }
+    }
+    
+    @IBAction func addToListAction(sender: UIBarButtonItem) {
+        
     }
     
     // MARK: Overrides
@@ -175,6 +180,7 @@ class MovieDetailsViewController: UIViewController {
         let hasSession = TMDBManager.sharedInstance().hasSessionID()
         favoriteButton.enabled = hasSession
         watchlistButton.enabled = hasSession
+        addToListButton.enabled = hasSession
     }
 
     func loadDetails() {
