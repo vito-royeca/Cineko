@@ -23,6 +23,7 @@ class TVShowDetailsViewController: UIViewController {
     // MARK: Variables
     var titleLabel:UILabel?
     var tvShowID:NSManagedObjectID?
+    var homepage:String?
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
@@ -88,6 +89,7 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
+        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "homepageTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
@@ -189,6 +191,11 @@ class TVShowDetailsViewController: UIViewController {
                 self.tvSeasonFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "seasonNumber", ascending: false)]
                 
+                if let homepage = tvShow.homepage {
+                    if !homepage.isEmpty {
+                        self.homepage = homepage
+                    }
+                }
                 performUIUpdatesOnMain {
                     self.tableView.reloadData()
                 }
@@ -259,6 +266,16 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
+        
+        // reset the accessory button
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+
         switch indexPath.row {
         case 0:
             cell.contentView.backgroundColor = UIColor.clearColor()
@@ -299,15 +316,28 @@ class TVShowDetailsViewController: UIViewController {
                 if let tvShowID = tvShowID {
                     let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
                     var text = String()
-                    var genreStrings = String()
+                    
+                    // genre
                     if let genres = tvShow.genres {
+                        var genreStrings = String()
                         let objects = genres.allObjects as! [Genre]
                         let names = objects.map { $0.name! } as [String]
                         genreStrings = names.sort().joinWithSeparator(", ")
+                        text += genreStrings
                     }
-                    text += genreStrings
+                    
+                    // overview
                     if let overview = tvShow.overview {
                         text += "\n\n\(overview)"
+                    }
+
+                    // production companies
+                    if let productionCompanies = tvShow.productionCompanies {
+                        var productionCompanyStrings = String()
+                        let objects = productionCompanies.allObjects as! [Company]
+                        let names = objects.map { $0.name! } as [String]
+                        productionCompanyStrings = names.sort().joinWithSeparator(", ")
+                        text += "\n\n\(productionCompanyStrings)\n"
                     }
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
@@ -315,7 +345,7 @@ class TVShowDetailsViewController: UIViewController {
                 }
                 c.changeColor(averageColor, fontColor: inverseColor)
             }
-        case 3:
+        case 3+homepageCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Photos"
@@ -327,7 +357,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 4:
+        case 4+homepageCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Cast"
@@ -341,7 +371,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 5:
+        case 5+homepageCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Crew"
@@ -355,7 +385,7 @@ class TVShowDetailsViewController: UIViewController {
                 c.delegate = self
                 c.loadData()
             }
-        case 6:
+        case 6+homepageCount:
             if let c = cell as? ThumbnailTableViewCell {
                 c.tag = indexPath.row
                 c.titleLabel.text = "Seasons"
@@ -370,7 +400,12 @@ class TVShowDetailsViewController: UIViewController {
                 c.loadData()
             }
         default:
-            return
+            if let c = cell as? DynamicHeightTableViewCell {
+                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                c.dynamicLabel.text = homepage
+                c.accessoryType = .DisclosureIndicator
+                c.changeColor(averageColor, fontColor: inverseColor)
+            }
         }
     }
     
@@ -407,11 +442,22 @@ class TVShowDetailsViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        var rows = 7
+        
+        if let _ = homepage {
+            rows += 1
+        }
+        
+        return rows
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
         
         switch indexPath.row {
         case 0:
@@ -420,16 +466,16 @@ extension TVShowDetailsViewController : UITableViewDataSource {
             cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
         case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 3+homepageCount:
             cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-        case 4:
+        case 4+homepageCount:
             cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
-        case 5:
+        case 5+homepageCount:
             cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
-        case 6:
+        case 6+homepageCount:
             cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
         default:
-            cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -440,6 +486,11 @@ extension TVShowDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension TVShowDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
         
         switch indexPath.row {
         case 0:
@@ -448,10 +499,36 @@ extension TVShowDetailsViewController : UITableViewDelegate {
             return UITableViewAutomaticDimension
         case 2:
             return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 3, 4, 5, 6:
+        case 3+homepageCount,
+             4+homepageCount,
+             5+homepageCount,
+             6+homepageCount:
             return tableView.frame.size.height / 3
         default:
             return UITableViewAutomaticDimension
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
+        
+        switch indexPath.row {
+        case 0,
+             1,
+             2,
+             3+homepageCount,
+             4+homepageCount,
+             5+homepageCount,
+             6+homepageCount:
+            return
+        default:
+            if homepageCount > 0 {
+                UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+            }
         }
     }
 }
@@ -461,6 +538,11 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
             let navigationController = navigationController {
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
+            }
             
             var title:String?
             var fetchRequest:NSFetchRequest?
@@ -469,19 +551,19 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
             var showCaption = false
             
             switch tag {
-            case 4:
+            case 4+homepageCount:
                 title = "Cast"
                 fetchRequest = castFetchRequest
                 displayType = .Profile
                 captionType = .NameAndRole
                 showCaption = true
-            case 5:
+            case 5+homepageCount:
                 title = "Crew"
                 fetchRequest = crewFetchRequest
                 displayType = .Profile
                 captionType = .NameAndJob
                 showCaption = true
-            case 6:
+            case 6+homepageCount:
                 title = "Seasons"
                 fetchRequest = tvSeasonFetchRequest
                 displayType = .Poster
@@ -503,10 +585,17 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
+        
         switch tag {
-        case 3:
+        case 3+homepageCount:
             showBackdropsBrowser(path)
-        case 4, 5:
+        case 4+homepageCount,
+             5+homepageCount:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
                 let navigationController = navigationController {
                 let credit = displayable as! Credit
