@@ -1,6 +1,6 @@
 # Cine Ko!
 
-Cine Ko! is an iOS app that connects to <a href="https://www.themoviedb.org">themoviedb.org</a>.
+Cine Ko! is an iOS app that connects to [themoviedb.org](https://www.themoviedb.org).
 
 This is the author's Udacity capstone project for the iOS Nanodegree course.
 
@@ -31,7 +31,7 @@ $ open Cineko.xcworkspace
 
 If you want to participate in TestFlighting Cine Ko!, email your Apple ID below and I will add you to TestFlight External Testers
 
-<a href="mailto:jovit.royeca@gmail.com">jovit.royeca@gmail.com</a>
+[jovit.royeca@gmail.com](mailto:jovit.royeca@gmail.com)
  
 ## Screenshots
 
@@ -45,7 +45,7 @@ If you want to participate in TestFlighting Cine Ko!, email your Apple ID below 
 
 ## License
 
-Cine Ko! is licensed via <a href="LICENSE">Apache License v2.0</a>.
+Cine Ko! is licensed via [Apache License v2.0](LICENSE).
 
 ## Author
 Jovito Royeca, http://jovitoroyeca.com
