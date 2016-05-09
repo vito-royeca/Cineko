@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoUITests/DACircularProgress.framework"
+  install_framework "Pods-CinekoUITests/Eureka.framework"
   install_framework "Pods-CinekoUITests/IDMPhotoBrowser.framework"
   install_framework "Pods-CinekoUITests/JJJUtils.framework"
   install_framework "Pods-CinekoUITests/KeychainAccess.framework"
@@ -94,6 +95,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoUITests/DACircularProgress.framework"
+  install_framework "Pods-CinekoUITests/Eureka.framework"
   install_framework "Pods-CinekoUITests/IDMPhotoBrowser.framework"
   install_framework "Pods-CinekoUITests/JJJUtils.framework"
   install_framework "Pods-CinekoUITests/KeychainAccess.framework"

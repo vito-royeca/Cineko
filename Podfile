@@ -6,6 +6,7 @@ use_frameworks!
 
 target "Cine Ko!" do
 pod 'Crashlytics'
+pod 'Eureka'
 pod 'Fabric'
 pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
@@ -17,6 +18,7 @@ end
 
 target "CinekoTests" do
 pod 'Crashlytics'
+pod 'Eureka'
 pod 'Fabric'
 pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
@@ -28,6 +30,7 @@ end
 
 target "CinekoUITests" do
 pod 'Crashlytics'
+pod 'Eureka'
 pod 'Fabric'
 pod 'IDMPhotoBrowser'
 pod 'JJJUtils'

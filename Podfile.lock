@@ -2,6 +2,7 @@ PODS:
   - Crashlytics (3.7.0):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.3.1)
+  - Eureka (1.5.0)
   - Fabric (1.6.7)
   - IDMPhotoBrowser (1.8.4):
     - DACircularProgress
@@ -18,6 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - Crashlytics
+  - Eureka
   - Fabric
   - IDMPhotoBrowser
   - JJJUtils
@@ -28,6 +30,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  Eureka: 2fb37bb50569c62ee3284689d5b7aca694b040e0
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
   JJJUtils: 3aa24c8612a0f8fce38bbddb49d33ef2179cc475

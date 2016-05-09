@@ -2,7 +2,7 @@
 
 Cine Ko! is an iOS app that connects to [themoviedb.org](https://www.themoviedb.org).
 
-This is the author's Udacity capstone project for the iOS Nanodegree course.
+This is the author's Udacity capstone project for the iOS Developer Nanodegree program.
 
 ## Features
 

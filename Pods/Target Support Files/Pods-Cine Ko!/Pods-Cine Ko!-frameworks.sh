@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Cine Ko!/DACircularProgress.framework"
+  install_framework "Pods-Cine Ko!/Eureka.framework"
   install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
@@ -94,6 +95,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Cine Ko!/DACircularProgress.framework"
+  install_framework "Pods-Cine Ko!/Eureka.framework"
   install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
