@@ -1,8 +1,8 @@
 # Cine Ko!
 
-Cine Ko! is an iOS app that connects to themoviedatabase.org.
+Cine Ko! is an iOS app that connects to <a href="https://www.themoviedb.org">themoviedb.org</a>.
 
-This is Udacity capstone project for the iOS Nanodegree course.
+This is the author's Udacity capstone project for the iOS Nanodegree course.
 
 ## Features
 
@@ -19,7 +19,7 @@ This is Udacity capstone project for the iOS Nanodegree course.
  
 ## Cloning
 
-Clone the GitHub repository and open the project workspace
+Clone the GitHub repository and open the project workspace.
 
 ```
 $ git clone https://github.com/jovito-royeca/Cineko.git
@@ -31,7 +31,7 @@ $ open Cineko.xcworkspace
 
 If you want to participate in TestFlighting Cine Ko!, email your Apple ID and I will add you to TestFlight External Testers
 
-mailto:jovit.royeca@gmail.com
+<a href="mailto:jovit.royeca@gmail.com">jovit.royeca@gmail.com</a>
  
 ## Screenshots
 
