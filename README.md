@@ -21,15 +21,15 @@ This is the author's Udacity capstone project for the iOS Nanodegree course.
 
 Clone the GitHub repository and open the project workspace.
 
-```
+`
 $ git clone https://github.com/jovito-royeca/Cineko.git
 $ cd Cineko
 $ open Cineko.xcworkspace
-```
+`
 
 ## TestFlight
 
-If you want to participate in TestFlighting Cine Ko!, email your Apple ID and I will add you to TestFlight External Testers
+If you want to participate in TestFlighting Cine Ko!, email your Apple ID below and I will add you to TestFlight External Testers
 
 <a href="mailto:jovit.royeca@gmail.com">jovit.royeca@gmail.com</a>
  
