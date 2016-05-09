@@ -209,24 +209,56 @@ class PersonDetailsViewController: UIViewController {
                     let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
                     var text = String()
                     
+                    if let alsoKnownAs = person.alsoKnownAs {
+                        var akaString = String()
+                        let array = NSKeyedUnarchiver.unarchiveObjectWithData(alsoKnownAs) as! [String]
+                        akaString = array.sort().joinWithSeparator(", ")
+                        text += "Also Known As: \(akaString)\n"
+                    }
+                    
+                    text += "Date of Birth: \(person.birthday != nil ? person.birthday! : "")"
+                    text += "\nPlace of Birth: \(person.placeOfBirth != nil ? person.placeOfBirth! : "")"
+                    
+                    let formatter = NSDateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    
+                    if let deathday = person.deathday {
+                        if !deathday.isEmpty {
+                            text += "\nDate of Death: \(deathday)"
+                            if let birthdate = person.birthday {
+                                let startDate = formatter.dateFromString(birthdate)
+                                let endDate = formatter.dateFromString(deathday)
+                                text += "\nAge at Time of Death: \(ageInYears(endDate!, startDate: startDate!))"
+                            }
+                        } else {
+                            if let birthdate = person.birthday {
+                                if !birthdate.isEmpty {
+                                    let startDate = formatter.dateFromString(birthdate)
+                                    let endDate = NSDate()
+                                    text += "\nAge: \(ageInYears(endDate, startDate: startDate!))"
+                                }
+                            }
+                        }
+                        
+                    } else {
+                        if let birthdate = person.birthday {
+                            if !birthdate.isEmpty {
+                                let startDate = formatter.dateFromString(birthdate)
+                                let endDate = NSDate()
+                                text += "\nAge: \(ageInYears(endDate, startDate: startDate!))"
+                            }
+                        }
+                    }
+                    
                     if let biography = person.biography {
-                        text += biography
-                    }
-                    
-                    if let birthday = person.birthday {
-                        text += "\n\nDate of Birth: \(birthday)"
-                    }
-                    
-                    if let placeOfBirth = person.placeOfBirth {
-                        text += "\nPlace of Birth: \(placeOfBirth)"
+                        text += "\n\n\(biography)"
                     }
                     
                     text += "\n"
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = text
-                    c.dynamicLabel.textColor = UIColor.blackColor()
-                    c.backgroundColor = UIColor.whiteColor()
+                    c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
                 }
             }
         case 2+homepageCount:
@@ -278,10 +310,15 @@ class PersonDetailsViewController: UIViewController {
                 c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                 c.dynamicLabel.text = homepage
                 c.accessoryType = .DisclosureIndicator
-                c.dynamicLabel.textColor = UIColor.blackColor()
-                c.backgroundColor = UIColor.whiteColor()
+                c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
             }
         }
+    }
+    
+    func ageInYears(endDate: NSDate, startDate: NSDate) -> Int {
+        let components = NSCalendar.currentCalendar().components(.Year, fromDate:startDate, toDate:endDate, options:.WrapComponents)
+        
+        return components.year
     }
     
     func dynamicHeightForCell(identifier: String, indexPath: NSIndexPath) -> CGFloat {

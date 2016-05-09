@@ -340,8 +340,10 @@ class MovieDetailsViewController: UIViewController {
                         let objects = productionCompanies.allObjects as! [Company]
                         let names = objects.map { $0.name! } as [String]
                         productionCompanyStrings = names.sort().joinWithSeparator(", ")
-                        text += "\n\n\(productionCompanyStrings)\n"
+                        text += "\n\n\(productionCompanyStrings)"
                     }
+                    
+                    text += "\n"
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = text
@@ -414,7 +416,7 @@ class MovieDetailsViewController: UIViewController {
                         if let c = cell as? DynamicHeightTableViewCell,
                             let movieReviews = movieReviews {
                             
-                            let movieReview = movieReviews.allObjects[indexPath.row-homepageCount-reviewCount] as! Review
+                            let movieReview = movieReviews.allObjects[indexPath.row-3-homepageCount] as! Review
                             c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                             c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
                             c.accessoryType = .DisclosureIndicator
@@ -427,7 +429,7 @@ class MovieDetailsViewController: UIViewController {
                     if let c = cell as? DynamicHeightTableViewCell,
                         let movieReviews = movieReviews {
                         
-                        let movieReview = movieReviews.allObjects[indexPath.row-homepageCount-reviewCount] as! Review
+                        let movieReview = movieReviews.allObjects[indexPath.row-3-homepageCount] as! Review
                         c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                         c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
                         c.accessoryType = .DisclosureIndicator
@@ -611,7 +613,7 @@ extension MovieDetailsViewController : UITableViewDelegate {
                     if reviewCount > 0 {
                         if let movieReviews = movieReviews,
                             let navigationController = navigationController {
-                            let moviewReview = movieReviews.allObjects[indexPath.row-homepageCount-reviewCount] as! Review
+                            let moviewReview = movieReviews.allObjects[indexPath.row-3-homepageCount] as! Review
                             let URL = NSURL(string: moviewReview.link!)
                             
                             let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
@@ -624,7 +626,7 @@ extension MovieDetailsViewController : UITableViewDelegate {
                 if reviewCount > 0 {
                     if let movieReviews = movieReviews,
                         let navigationController = navigationController {
-                        let moviewReview = movieReviews.allObjects[indexPath.row-homepageCount-reviewCount] as! Review
+                        let moviewReview = movieReviews.allObjects[indexPath.row-3-homepageCount] as! Review
                         let URL = NSURL(string: moviewReview.link!)
                         
                         let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)

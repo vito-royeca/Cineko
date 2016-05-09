@@ -38,7 +38,10 @@ class Person: NSManagedObject {
     
     func update(dictionary: [String : AnyObject]) {
         adult = dictionary[Keys.Adult] as? NSNumber
-//        alsoKnownAs = dictionary[Keys.AlsoKnownAs] as? NSData
+        if let data = dictionary[Keys.AlsoKnownAs] as? NSData {
+            let arrayData = NSKeyedArchiver.archivedDataWithRootObject(data)
+            alsoKnownAs = arrayData
+        }
         biography = dictionary[Keys.Biography] as? String
         birthday = dictionary[Keys.Birthday] as? String
         deathday = dictionary[Keys.Deathday] as? String

@@ -337,8 +337,10 @@ class TVShowDetailsViewController: UIViewController {
                         let objects = productionCompanies.allObjects as! [Company]
                         let names = objects.map { $0.name! } as [String]
                         productionCompanyStrings = names.sort().joinWithSeparator(", ")
-                        text += "\n\n\(productionCompanyStrings)\n"
+                        text += "\n\n\(productionCompanyStrings)"
                     }
+                    
+                    text += "\n"
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = text
