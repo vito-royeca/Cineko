@@ -584,6 +584,33 @@ extension MovieDetailsViewController : UITableViewDelegate {
         }
     }
     
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        var reviewCount = 0
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
+        
+        if let movieReviews = movieReviews {
+            reviewCount = movieReviews.allObjects.count
+        }
+        
+        switch indexPath.row {
+        case 0,
+             1,
+             2,
+             3+homepageCount+reviewCount,
+             4+homepageCount+reviewCount,
+             5+homepageCount+reviewCount,
+             6+homepageCount+reviewCount:
+            // return nil for the first row which is not selectable
+            return nil
+        default:
+            return indexPath
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var reviewCount = 0
         var homepageCount = 0

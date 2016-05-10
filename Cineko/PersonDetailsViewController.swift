@@ -417,6 +417,27 @@ extension PersonDetailsViewController : UITableViewDelegate {
         }
     }
     
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        var homepageCount = 0
+        
+        if let _ = homepage {
+            homepageCount = 1
+        }
+        
+        switch indexPath.row {
+        case 0,
+             1,
+             2+homepageCount,
+             3+homepageCount,
+             4+homepageCount,
+             5+homepageCount:
+            // return nil for the first row which is not selectable
+            return nil
+        default:
+            return indexPath
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var homepageCount = 0
         
