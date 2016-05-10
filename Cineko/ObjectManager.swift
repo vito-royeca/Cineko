@@ -450,6 +450,22 @@ class ObjectManager: NSObject {
         return objects!
     }
     
+    func deleteObject(entityName: String, objectKey: String, objectValue: NSObject) {
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", objectKey, objectValue)
+        
+        do {
+            if let m = try privateContext.executeFetchRequest(fetchRequest).first as? NSManagedObject {
+                privateContext.deleteObject(m)
+                CoreDataManager.sharedInstance().savePrivateContext()
+                
+            }
+            
+        } catch let error as NSError {
+            print("Error in fetch \(error), \(error.userInfo)")
+        }
+    }
+    
     func batchUpdate(entityName: String, propertiesToUpdate: [String: AnyObject], predicate: NSPredicate) {
         // code adapted from: http://code.tutsplus.com/tutorials/core-data-and-swift-batch-updates--cms-25120
         // Initialize Batch Update Request

@@ -129,7 +129,7 @@ class MovieDetailsViewController: UIViewController {
                 
                 let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                     if let image = image {
-                        self.averageColor = image.averageColor().colorWithAlphaComponent(0.95)
+                        self.averageColor = image.averageColor().colorWithAlphaComponent(0.97)
                         self.inverseColor = image.inverseColor(self.averageColor)
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.inverseColor

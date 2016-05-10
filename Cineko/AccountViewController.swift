@@ -32,6 +32,7 @@ class AccountViewController: UIViewController {
                     _listsFetchRequest.sortDescriptors = [
                         NSSortDescriptor(key: "name", ascending: true)]
                     let context = CoreDataManager.sharedInstance().mainObjectContext
+//                    let context = CoreDataManager.sharedInstance().privateContext
                     fetchedResultsController = NSFetchedResultsController(fetchRequest: _listsFetchRequest,
                                                                           managedObjectContext: context,
                                                                           sectionNameKeyPath: nil,
@@ -42,6 +43,7 @@ class AccountViewController: UIViewController {
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance().mainObjectContext
+//        let context = CoreDataManager.sharedInstance().privateContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.listsFetchRequest!,
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: nil,
@@ -99,10 +101,6 @@ class AccountViewController: UIViewController {
         }
     }
     
-    @IBAction func addAction(sender: UIBarButtonItem) {
-        
-    }
-    
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +122,16 @@ class AccountViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         loadLists()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "addListSegue" {
+            let vc = segue.destinationViewController as! UINavigationController
+            if let editor = vc.viewControllers.first as? ListEditorViewController {
+                editor.navigationItem.title = "New List"
+                editor.delegate = self
+            }
+        }
     }
     
      // MARK: Custom Methods
@@ -189,6 +197,26 @@ class AccountViewController: UIViewController {
         cell.detailTextLabel!.text = list.description_
         cell.accessoryType = .DisclosureIndicator
     }
+    
+    func deleteList(list: List) {
+        let completion = { (error: NSError?) in
+            
+            performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+            }
+        }
+        
+        do {
+            MBProgressHUD.showHUDAddedTo(view, animated: true)
+            try TMDBManager.sharedInstance().deleteList(list.listID!, completion: completion)
+        } catch {
+            MBProgressHUD.hideHUDForView(view, animated: true)
+        }
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -253,6 +281,30 @@ extension AccountViewController : UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return indexPath.section == 1
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let message = "Delete this List?"
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
+        alertController.addAction(cancelAction)
+        
+        let overwriteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+            if let list = self.fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
+                
+                self.deleteList(list)
+            }
+        }
+        alertController.addAction(overwriteAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: UITableViewDelegate
@@ -290,13 +342,13 @@ extension AccountViewController : NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex-1), withRowAnimation: .Automatic)
+            tableView.insertSections(NSIndexSet(index: sectionIndex+1), withRowAnimation: .Automatic)
             
         case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex-1), withRowAnimation: .Automatic)
+            tableView.deleteSections(NSIndexSet(index: sectionIndex+1), withRowAnimation: .Automatic)
             
         case .Update:
-            tableView.reloadSections(NSIndexSet(index: sectionIndex-1), withRowAnimation: .Automatic)
+            tableView.reloadSections(NSIndexSet(index: sectionIndex+1), withRowAnimation: .Automatic)
             
         default:
             return
@@ -307,14 +359,14 @@ extension AccountViewController : NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath!.row, inSection: newIndexPath!.section-1)], withRowAnimation: .Automatic)
+            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath!.row, inSection: newIndexPath!.section+1)], withRowAnimation: .Automatic)
             
         case .Delete:
-            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section-1)], withRowAnimation: .Automatic)
+            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section+1)], withRowAnimation: .Automatic)
             
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)) {
                     
                     if let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
                         self.configureCell(cell, list: list)
@@ -323,12 +375,23 @@ extension AccountViewController : NSFetchedResultsControllerDelegate {
             }
             
         case .Move:
-            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexPath!.row, inSection: indexPath!.section-1)], withRowAnimation: .Automatic)
-            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath!.row, inSection: newIndexPath!.section-1)], withRowAnimation: .Automatic)
+            return
         }
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.reloadData()
+    }
+}
+
+// MARK: ListEditorViewControllerDelegate
+extension AccountViewController : ListEditorViewControllerDelegate {
+    func success(editor: ListEditorViewController) {
+        editor.dismissViewControllerAnimated(true, completion: nil)
+        loadLists()
+    }
+    
+    func failure(editor: ListEditorViewController, error: NSError?) {
+        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey])")
     }
 }

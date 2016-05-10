@@ -170,8 +170,6 @@ class ThumbnailTableViewCell: UITableViewCell {
             }
             cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
             
-            
-            
         } else {
             var caption:String?
             if let captionType = self.captionType {
@@ -306,10 +304,7 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
             }
             
         case .Move:
-            blockOperation!.addExecutionBlock({
-                self.collectionView.deleteItemsAtIndexPaths([indexPath!])
-                self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
-            })
+            return
         }
     }
     

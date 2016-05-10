@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
@@ -370,15 +369,15 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h9z-SO-fXK">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem enabled="NO" systemItem="done" id="Lkw-ba-RJh">
-                                        <connections>
-                                            <action selector="doneAction:" destination="R7y-Gi-aqr" id="uut-zx-Aoo"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Z1o-gf-AmZ"/>
                                     <barButtonItem systemItem="cancel" id="8tS-W8-qih">
                                         <connections>
                                             <action selector="cancelAction:" destination="R7y-Gi-aqr" id="8Cu-eQ-gAt"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Z1o-gf-AmZ"/>
+                                    <barButtonItem enabled="NO" systemItem="done" id="Lkw-ba-RJh">
+                                        <connections>
+                                            <action selector="doneAction:" destination="R7y-Gi-aqr" id="uut-zx-Aoo"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -607,7 +606,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="gvW-4h-bOI">
                             <connections>
-                                <action selector="addAction:" destination="GDC-zP-ktd" id="Rig-DT-vvh"/>
+                                <segue destination="jZa-3O-StP" kind="presentation" identifier="addListSegue" modalPresentationStyle="fullScreen" id="XX8-hr-lRI"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -620,6 +619,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJd-b5-IBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1894" y="2193"/>
+        </scene>
+        <!--List Editor View Controller-->
+        <scene sceneID="gXt-dZ-2nY">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="hkG-Y2-gnI" customClass="ListEditorViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D2C-3t-pqo"/>
+                        <viewControllerLayoutGuide type="bottom" id="xe9-dO-1PX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="crb-7A-btq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ss0-3u-8Oc">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Opn-0E-sSc">
+                            <connections>
+                                <action selector="cancelAction:" destination="hkG-Y2-gnI" id="0Te-Uu-8M3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Wee-Au-6FA">
+                            <connections>
+                                <action selector="saveAction:" destination="hkG-Y2-gnI" id="KJ6-DP-XeQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5sw-0l-nqu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3456" y="2193"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -1039,6 +1068,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upO-LN-CSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1082" y="2193"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8s4-Ae-U03">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jZa-3O-StP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zHE-AK-Lgi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hkG-Y2-gnI" kind="relationship" relationship="rootViewController" id="S6M-wf-qPk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gdp-7k-RgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2644" y="2193"/>
         </scene>
     </scenes>
     <resources>

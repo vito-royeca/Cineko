@@ -421,6 +421,7 @@ class TMDBManager: NSObject {
                 if let dict = results as? [String: AnyObject] {
                     if let sessionID = dict[TMDBConstants.Authentication.SessionNew.Keys.SessionID] as? String {
                         do {
+                            NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
                             try self.saveSessionID(sessionID)
                             try self.downloadInitialData(completion)
                         } catch {}
@@ -1396,6 +1397,98 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    func createList(name: String, description: String, completion: (error: NSError?) -> Void) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
+        let httpMethod:HTTPMethod = .Post
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Create.Path)"
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        
+        let bodyDict = ["name": name,
+                        "description": description]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let _ = dict["list_id"] {
+                    
+                    // force refresh of Lists
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
+                    completion(error: nil)
+                } else {
+                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error creating list: \(name)."])
+                    completion(error: e)
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func deleteList(listID: String, completion: (error: NSError?) -> Void) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
+        let httpMethod:HTTPMethod = .Delete
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Delete.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let statusCode = dict["status_code"] as? Int {
+                    if statusCode == 13 { // 13 	200 	The item/record was deleted successfully.
+                        // force refresh of Lists
+                        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
+                        
+                        ObjectManager.sharedInstance().deleteObject("List", objectKey: "listID", objectValue: listID)
+                        
+                        completion(error: nil)
+                    } else {
+                        let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listID)."])
+                        completion(error: e)
+                    }
+                } else {
+                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listID)."])
+                    completion(error: e)
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+
     // MARK: Shared Instance
     class func sharedInstance() -> TMDBManager {
         

@@ -54,7 +54,7 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
             let font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
 
             // Compute rect to draw the text inside
-            let imageSize = image.size
+            let imageSize = thumbnailImage.frame.size //image.size
             let attr = [NSForegroundColorAttributeName: textColor, NSFontAttributeName: font]
             let textSize = text.sizeWithAttributes(attr)
             let width = imageSize.width
@@ -69,7 +69,7 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
             
             // Background
             let context = UIGraphicsGetCurrentContext()
-            UIColor.whiteColor().colorWithAlphaComponent(0.95).set()
+            UIColor.whiteColor().colorWithAlphaComponent(0.60).set()
             CGContextFillRect(context, textRect)
             
             // Text
