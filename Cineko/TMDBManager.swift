@@ -1397,6 +1397,38 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    func listDetails(listID: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Details.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
+        let parameters = [TMDBConstants.APIKey: apiKey!]
+        var movieIDs = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["items"] as? [[String: AnyObject]] {
+                    for movie in json {
+                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        if let movieID = m.movieID {
+                            movieIDs.append(movieID)
+                        }
+                    }
+                }
+            }
+            completion(arrayIDs: movieIDs, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: movieIDs, error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     func createList(name: String, description: String, completion: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey

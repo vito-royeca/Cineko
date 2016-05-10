@@ -102,6 +102,7 @@
 		8CAB34361CC4E6B200441861 /* DynamicHeightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */; };
 		8CBDFD481CD9BE8C006E6D30 /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBDFD461CD9BE8C006E6D30 /* Review+CoreDataProperties.swift */; };
 		8CBDFD491CD9BE8C006E6D30 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBDFD471CD9BE8C006E6D30 /* Review.swift */; };
+		8CCE40BC1CE23C340079D80C /* ListDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCE40BB1CE23C340079D80C /* ListDetailsViewController.swift */; };
 		8CD53BBB1CC62B400035AD45 /* Network+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FDB991CB6132200E2997F /* Network+CoreDataProperties.swift */; };
 		8CD53BBC1CC62B400035AD45 /* TVShow+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C67892C1CB5209200E4E14B /* TVShow+CoreDataProperties.swift */; };
 		8CD53BBD1CC62B400035AD45 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378B01CAE80D000FB6830 /* NetworkManager.swift */; };
@@ -244,6 +245,7 @@
 		8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Cineko 05042016.xcdatamodel"; sourceTree = "<group>"; };
 		8CBDFD461CD9BE8C006E6D30 /* Review+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Review+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CBDFD471CD9BE8C006E6D30 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		8CCE40BB1CE23C340079D80C /* ListDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailsViewController.swift; sourceTree = "<group>"; };
 		8CD408BD1CB17AC200F9132F /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		8CD408C11CB1822E00F9132F /* TMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBManager.swift; sourceTree = "<group>"; };
 		8CD53C011CC62B400035AD45 /* Cine Ko!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cine Ko!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -427,6 +429,7 @@
 			children = (
 				8CB7494F1CAEC21900EABB91 /* AccountViewController.swift */,
 				8CB7493F1CAEC1B600EABB91 /* FeaturedViewController.swift */,
+				8CCE40BB1CE23C340079D80C /* ListDetailsViewController.swift */,
 				8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */,
 				8C3C82331CB22032008CCF4C /* LoginViewController.swift */,
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
@@ -914,6 +917,7 @@
 				8CD53BDB1CC62B400035AD45 /* ObjectManager.swift in Sources */,
 				8CF5ECDB1CCF71E700260045 /* SearchViewController.swift in Sources */,
 				8CD53BDC1CC62B400035AD45 /* Account.swift in Sources */,
+				8CCE40BC1CE23C340079D80C /* ListDetailsViewController.swift in Sources */,
 				8CD53BDD1CC62B400035AD45 /* TVShow.swift in Sources */,
 				8CD53BDE1CC62B400035AD45 /* PersonDetailsViewController.swift in Sources */,
 				8CD53BDF1CC62B400035AD45 /* Job+CoreDataProperties.swift in Sources */,

@@ -196,6 +196,7 @@ class AccountViewController: UIViewController {
         cell.textLabel!.text = list.name
         cell.detailTextLabel!.text = list.description_
         cell.accessoryType = .DisclosureIndicator
+        cell.selectionStyle = .Default
     }
     
     func deleteList(list: List) {
@@ -255,6 +256,7 @@ extension AccountViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.accessoryType = .None
+        cell.selectionStyle = .None
         
         switch indexPath.section {
         case 0:
@@ -315,6 +317,30 @@ extension AccountViewController : UITableViewDelegate {
             return 90
         default:
             return UITableViewAutomaticDimension
+        }
+    }
+    
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        switch indexPath.section {
+        case 0:
+            // return nil for the first row which is not selectable
+            return nil
+        default:
+            return indexPath
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section {
+        case 1:
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("ListDetailsViewController") as? ListDetailsViewController,
+                let navigationController = navigationController,
+                let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
+                controller.listID = list.objectID
+                navigationController.pushViewController(controller, animated: true)
+            }
+        default:
+            return
         }
     }
 }

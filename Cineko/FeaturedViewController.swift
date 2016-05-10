@@ -51,9 +51,9 @@ class FeaturedViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadFeaturedMovies() {
-        self.nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
-        self.nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-        self.nowShowingFetchRequest!.sortDescriptors = [
+        nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
+        nowShowingFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        nowShowingFetchRequest!.sortDescriptors = [
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
@@ -89,9 +89,9 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedTVShows() {
-        self.airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
-        self.airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-        self.airingTodayFetchRequest!.sortDescriptors = [
+        airingTodayFetchRequest = NSFetchRequest(entityName: "TVShow")
+        airingTodayFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        airingTodayFetchRequest!.sortDescriptors = [
             NSSortDescriptor(key: "name", ascending: true)]
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.TVShowsAiringToday) {
@@ -125,9 +125,9 @@ class FeaturedViewController: UIViewController {
     }
     
     func loadFeaturedPeople() {
-        self.popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
-        self.popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-        self.popularPeopleFetchRequest!.sortDescriptors = [
+        popularPeopleFetchRequest = NSFetchRequest(entityName: "Person")
+        popularPeopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+        popularPeopleFetchRequest!.sortDescriptors = [
             NSSortDescriptor(key: "popularity", ascending: false),
             NSSortDescriptor(key: "name", ascending: true)]
         
