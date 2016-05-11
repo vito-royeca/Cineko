@@ -1,6 +1,6 @@
 # Cine Ko!
 
-Cine Ko! is an iOS app that connects to [themoviedb.org](https://www.themoviedb.org).
+Cine Ko! is an iOS app that connects to [themoviedb.org](https://www.themoviedb.org) for Movies, TV Shows, and People data. It also connects to New York Times Movie Reviews API for movie reviews data.
 
 This is the author's Udacity capstone project for the iOS Developer Nanodegree program.
 
