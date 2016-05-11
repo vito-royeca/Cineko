@@ -104,6 +104,10 @@ class TVShowDetailsViewController: UIViewController {
         titleLabel!.lineBreakMode = .ByWordWrapping
         titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
         tableView.addSubview(titleLabel!)
+        
+        loadDetails()
+        loadPhotos()
+        loadCastAndCrew()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -137,10 +141,6 @@ class TVShowDetailsViewController: UIViewController {
             // resize the frame to cover the whole width
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-
-        loadDetails()
-        loadPhotos()
-        loadCastAndCrew()
     }
 
     func scrollViewDidScroll(scrollView: UIScrollView) {

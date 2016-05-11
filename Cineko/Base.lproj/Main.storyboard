@@ -244,7 +244,7 @@
                         <rightBarButtonItems>
                             <barButtonItem image="list" id="uPv-Lp-20Y">
                                 <connections>
-                                    <action selector="addToListAction:" destination="6At-tm-DiG" id="t7E-kO-G61"/>
+                                    <action selector="listAction:" destination="6At-tm-DiG" id="rsd-3F-ZkN"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="eye" id="sLV-iu-MVH">
@@ -260,8 +260,8 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="addToListButton" destination="uPv-Lp-20Y" id="pkG-jH-unn"/>
                         <outlet property="favoriteButton" destination="cuV-FF-voo" id="e9C-gj-hhl"/>
+                        <outlet property="listButton" destination="uPv-Lp-20Y" id="8py-54-iqj"/>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
                         <outlet property="watchlistButton" destination="sLV-iu-MVH" id="qLN-uV-lCy"/>
                     </connections>

@@ -19,7 +19,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var favoriteButton: UIBarButtonItem!
     @IBOutlet weak var watchlistButton: UIBarButtonItem!
-    @IBOutlet weak var addToListButton: UIBarButtonItem!
+    @IBOutlet weak var listButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -85,8 +85,25 @@ class MovieDetailsViewController: UIViewController {
         }
     }
     
-    @IBAction func addToListAction(sender: UIBarButtonItem) {
+    @IBAction func listAction(sender: UIBarButtonItem) {
+        let message = "List Options"
         
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
+        alertController.addAction(cancelAction)
+        
+        let addAction = UIAlertAction(title: "Add To List", style: .Default) { (action) in
+            self.showAddToListDialog()
+        }
+        alertController.addAction(addAction)
+        
+        let removeAction = UIAlertAction(title: "Remove from List", style: .Destructive) { (action) in
+            self.showRemoveFromListDialog()
+        }
+        alertController.addAction(removeAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     // MARK: Overrides
@@ -111,6 +128,10 @@ class MovieDetailsViewController: UIViewController {
         titleLabel!.lineBreakMode = .ByWordWrapping
         titleLabel!.preferredMaxLayoutWidth = view.frame.size.width
         tableView.addSubview(titleLabel!)
+        
+        loadDetails()
+        loadPhotos()
+        loadCastAndCrew()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -145,10 +166,6 @@ class MovieDetailsViewController: UIViewController {
             // resize the frame to cover the whole width
             titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-
-        loadDetails()
-        loadPhotos()
-        loadCastAndCrew()
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -182,7 +199,7 @@ class MovieDetailsViewController: UIViewController {
         let hasSession = TMDBManager.sharedInstance().hasSessionID()
         favoriteButton.enabled = hasSession
         watchlistButton.enabled = hasSession
-        addToListButton.enabled = hasSession
+        listButton.enabled = hasSession
     }
 
     func loadDetails() {
@@ -484,6 +501,147 @@ class MovieDetailsViewController: UIViewController {
             let browser = IDMPhotoBrowser(photos: photos)
             browser.setInitialPageIndex(UInt(path.row))
             presentViewController(browser, animated:true, completion:nil)
+        }
+    }
+    
+    func showAddToListDialog() {
+        let callback = { (lists: [AnyObject]) in
+            performUIUpdatesOnMain {
+                if lists.count > 0 {
+                    let alert = UIAlertController(title: "Add Movie To List", message: nil, preferredStyle: .ActionSheet)
+                    
+                    for list in lists {
+                        let handler = {(alert: UIAlertAction!) in
+                            self.addMovieToList(list as! List)
+                        }
+                        alert.addAction(UIAlertAction(title: list.name, style: UIAlertActionStyle.Default, handler: handler))
+                    }
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
+                    
+                    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                        if let popover = alert.popoverPresentationController {
+                            popover.barButtonItem = self.listButton
+                            popover.permittedArrowDirections = .Any
+                            self.showDetailViewController(alert, sender:self.listButton)
+                        }
+                    } else {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                    
+                } else {
+                    JJJUtil.alertWithTitle("Error", andMessage:"You have not created an List yet.")
+                }
+            }
+        }
+        
+        findLists(callback)
+    }
+    
+    func showRemoveFromListDialog() {
+        let callback = { (lists: [AnyObject]) in
+            performUIUpdatesOnMain {
+                if lists.count > 0 {
+                    let alert = UIAlertController(title: "Remove Movie From List", message: nil, preferredStyle: .ActionSheet)
+                    
+                    for list in lists {
+                        let handler = {(alert: UIAlertAction!) in
+                            self.removeMovieFromList(list as! List)
+                        }
+                        alert.addAction(UIAlertAction(title: list.name, style: UIAlertActionStyle.Default, handler: handler))
+                    }
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
+                    
+                    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                        if let popover = alert.popoverPresentationController {
+                            popover.barButtonItem = self.listButton
+                            popover.permittedArrowDirections = .Any
+                            self.showDetailViewController(alert, sender:self.listButton)
+                        }
+                    } else {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                    
+                } else {
+                    JJJUtil.alertWithTitle("Error", andMessage:"You have not created an List yet.")
+                }
+            }
+        }
+        
+        findLists(callback)
+    }
+    
+    func addMovieToList(list: List) {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                        JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
+                    }
+                }
+            }
+            
+            do {
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
+                try TMDBManager.sharedInstance().addMovie(movie.movieID!, toList: list.listID!, completion: completion)
+            } catch {
+                JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
+            }
+        }
+    }
+    
+    func removeMovieFromList(list: List) {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    
+                    if let error = error {
+                        print("Error in: \(#function)... \(error)")
+                        JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
+                    }
+                }
+            }
+            
+            do {
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
+                try TMDBManager.sharedInstance().removeMovie(movie.movieID!, fromList: list.listID!, completion: completion)
+            } catch {
+                JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
+            }
+        }
+    }
+    
+    func findLists(callback: (lists: [AnyObject]) -> Void) {
+        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.Lists) {
+            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+                if let error = error {
+                    print("Error in: \(#function)... \(error)")
+                }
+                
+                let predicate = NSPredicate(format: "listID IN %@", arrayIDs)
+                let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+                callback(lists: lists)
+            }
+            
+            do {
+                try TMDBManager.sharedInstance().lists(completion)
+            } catch {
+                let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance().account!)
+                let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+                callback(lists: lists)
+            }
+            
+        } else {
+            let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance().account!)
+            let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+            callback(lists: lists)
         }
     }
 }

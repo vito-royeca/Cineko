@@ -42,10 +42,7 @@ class PersonDetailsViewController: UIViewController {
             let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
             navigationItem.title = person.name
         }
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        
         loadPhotos()
         loadDetails()
         loadCombinedCredits()

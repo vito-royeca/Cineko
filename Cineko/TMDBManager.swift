@@ -218,6 +218,9 @@ struct TMDBConstants {
         struct Delete {
             static let Path = "/list/{id}"
         }
+        struct MovieStatus {
+            static let Path = "/list/{id}/item_status"
+        }
         struct AddMovie {
             static let Path = "/list/{id}/add_item"
         }
@@ -1448,7 +1451,6 @@ class TMDBManager: NSObject {
                        "Content-Type": "application/json"]
         let parameters = [TMDBConstants.APIKey: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
-        
         let bodyDict = ["name": name,
                         "description": description]
         let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
@@ -1521,6 +1523,110 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
+    func addMovie(movieID: NSNumber, toList listID: String, completion: (error: NSError?) -> Void) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
+        let httpMethod:HTTPMethod = .Post
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.AddMovie.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        let bodyDict = ["media_id": movieID]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let statusCode = dict["status_code"] as? Int {
+                    if statusCode == 12 { // 12 	201 	The item/record was updated successfully.
+                        let list = ObjectManager.sharedInstance().findOrCreateList([List.Keys.ListID: listID])
+                        let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+                        let movies = list.mutableSetValueForKey("movies")
+                        movies.addObject(movie)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        completion(error: nil)
+                    } else {
+                        let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error adding movie to list"])
+                        completion(error: e)
+                    }
+                } else {
+                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error adding movie to list"])
+                    completion(error: e)
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func removeMovie(movieID: NSNumber, fromList listID: String, completion: (error: NSError?) -> Void) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        guard hasSessionID() else {
+            throw TMDBError.NoSessionID
+        }
+        
+        guard account != nil else {
+            throw TMDBError.NoAccount
+        }
+        
+        let httpMethod:HTTPMethod = .Post
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.RemoveMovie.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        let bodyDict = ["media_id": movieID]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
+
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let statusCode = dict["status_code"] as? Int {
+                    if statusCode == 13 { // 13 	200 	The item/record was deleted successfully.
+                        let list = ObjectManager.sharedInstance().findOrCreateList([List.Keys.ListID: listID])
+                        let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+                        let movies = list.mutableSetValueForKey("movies")
+                        movies.removeObject(movie)
+                        CoreDataManager.sharedInstance().savePrivateContext()
+                        
+                        completion(error: nil)
+                    } else {
+                        let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error removing movie to list"])
+                        completion(error: e)
+                    }
+                } else {
+                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error adding movie to list"])
+                    completion(error: e)
+                }
+            }
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     // MARK: Shared Instance
     class func sharedInstance() -> TMDBManager {
         
