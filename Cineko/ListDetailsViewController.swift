@@ -208,7 +208,7 @@ extension ListDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return dynamicHeightForCell("nameTableViewCell", indexPath: indexPath)
+            return UITableViewAutomaticDimension
         case 1:
             return dynamicHeightForCell("descriptionTableViewCell", indexPath: indexPath)
         default:
