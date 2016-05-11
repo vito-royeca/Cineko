@@ -7,6 +7,7 @@ This is the author's Udacity capstone project for the iOS Developer Nanodegree p
 ## Features
 
  * Movies (Now Showing, Popular, Top Rated, Coming Soon, Genres)
+ * New York Times Movie Reviews
  * TV Shows (Airing Today, Popular, Top Rated, On the Air)
  * People (Popular)
  * Search Movies, TV Shows, and People
