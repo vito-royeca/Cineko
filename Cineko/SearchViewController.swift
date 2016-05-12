@@ -21,7 +21,7 @@ class SearchViewController: UIViewController {
     var moviesFetchRequest:NSFetchRequest?
     var tvShowsFetchRequest:NSFetchRequest?
     var peopleFetchRequest:NSFetchRequest?
-    
+
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,58 +38,126 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: Custom Methods
-    func loadSearchResults() {
-        let completion = { (results: [MediaType: [AnyObject]], error: NSError?) in
+    func searchMovies(query: String) {
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
             if let error = error {
                 print("Error in: \(#function)... \(error)")
-            }
-            
-            if let movieIDs = results[MediaType.Movie] as? [NSNumber] {
+                self.moviesFetchRequest = nil
+                
+            } else {
                 self.moviesFetchRequest = NSFetchRequest(entityName: "Movie")
                 self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", movieIDs)
+                self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
                 self.moviesFetchRequest!.sortDescriptors = [
                     NSSortDescriptor(key: "popularity", ascending: false),
                     NSSortDescriptor(key: "title", ascending: true)]
-            } else {
-                self.moviesFetchRequest = nil
-            }
-            
-            if let tvShowIDs = results[MediaType.TVShow] as? [NSNumber] {
-                self.tvShowsFetchRequest = NSFetchRequest(entityName: "TVShow")
-                self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", tvShowIDs)
-                self.tvShowsFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "name", ascending: true)]
-            } else {
-                self.tvShowsFetchRequest = nil
-            }
-            
-            if let personIDs = results[MediaType.Person] as? [NSNumber] {
-                self.peopleFetchRequest = NSFetchRequest(entityName: "Person")
-                self.peopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.peopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", personIDs)
-                self.peopleFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "name", ascending: true)]
-            } else {
-                self.peopleFetchRequest = nil
             }
             
             performUIUpdatesOnMain {
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
                 self.tableView.reloadData()
             }
         }
         
-        if let text = searchBar.text {
-            if !text.isEmpty {
-                do {
-                    MBProgressHUD.showHUDAddedTo(view, animated: true)
-                    try TMDBManager.sharedInstance().searchMulti(text, completion: completion)
-                } catch {}
+        do {
+            let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.MovieYearReleased)
+            let includeMovieYearReleased = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeYearReleased)
+            let includeAdult = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeAdult)
+            
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
+            try TMDBManager.sharedInstance().searchMovie(query, releaseYear: includeMovieYearReleased ? year : 0, includeAdult: includeAdult, completion: completion)
+            
+        } catch {
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
+            }
+            self.moviesFetchRequest = nil
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchTVShows(query: String) {
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+            if let error = error {
+                print("Error in: \(#function)... \(error)")
+                self.tvShowsFetchRequest = nil
+                
+            } else {
+                self.tvShowsFetchRequest = NSFetchRequest(entityName: "TVShow")
+                self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                self.tvShowsFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "popularity", ascending: false),
+                    NSSortDescriptor(key: "name", ascending: true)]
+            }
+            
+            performUIUpdatesOnMain {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
+                self.tableView.reloadData()
+            }
+        }
+        
+        do {
+            let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.TVShowFirstAirDate)
+            let includeTVShowFirstAirDate = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.TVShowIncludeFirstAirDate)
+            
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+            }
+            try TMDBManager.sharedInstance().searchTVShow(query, firstAirDate: includeTVShowFirstAirDate ? year : 0, completion: completion)
+            
+        } catch {
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
+            }
+            self.tvShowsFetchRequest = nil
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchPeople(query: String) {
+        let completion = { (arrayIDs: [AnyObject], error: NSError?) in
+            if let error = error {
+                print("Error in: \(#function)... \(error)")
+                self.peopleFetchRequest = nil
+                
+            } else {
+                self.peopleFetchRequest = NSFetchRequest(entityName: "Person")
+                self.peopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                self.peopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
+                self.peopleFetchRequest!.sortDescriptors = [
+                    NSSortDescriptor(key: "popularity", ascending: false),
+                    NSSortDescriptor(key: "name", ascending: true)]
+            }
+            
+            performUIUpdatesOnMain {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
+                self.tableView.reloadData()
+            }
+        }
+        
+        do {
+            let includeAdult = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.PeopleIncludeAdult)
+            
+            if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                MBProgressHUD.showHUDAddedTo(cell, animated: true)
+            }
+            try TMDBManager.sharedInstance().searchPeople(query, includeAdult: includeAdult, completion: completion)
+            
+        } catch {
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
+            }
+            self.peopleFetchRequest = nil
+            self.tableView.reloadData()
         }
     }
     
@@ -236,6 +304,13 @@ extension SearchViewController : ThumbnailDelegate {
 extension SearchViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        loadSearchResults()
+        
+        if let text = searchBar.text {
+            if !text.isEmpty {
+                searchMovies(text)
+                searchTVShows(text)
+                searchPeople(text)
+            }
+        }
     }
 }

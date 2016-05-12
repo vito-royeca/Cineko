@@ -203,6 +203,15 @@ struct TMDBConstants {
         struct Multi {
             static let Path = "/search/multi"
         }
+        struct Movie {
+            static let Path = "/search/movie"
+        }
+        struct TVShow {
+            static let Path = "/search/tv"
+        }
+        struct Person {
+            static let Path = "/search/person"
+        }
     }
     
     struct Lists {
@@ -1355,6 +1364,119 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    func searchMovie(query: String, releaseYear year: Int, includeAdult: Bool, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Movie.Path)"
+        var parameters = [TMDBConstants.APIKey: apiKey!,
+                          "query": query,
+                          "include_adult": "\(includeAdult)"]
+        if year > 0 {
+            parameters["year"] = "\(year)"
+        }
+        
+        var array = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for dict in json {
+                        
+                        let m = ObjectManager.sharedInstance().findOrCreateMovie(dict)
+                        if let movieID = m.movieID {
+                            array.append(movieID)
+                        }
+                    }
+                }
+            }
+            
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func searchTVShow(query: String, firstAirDate year: Int, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.TVShow.Path)"
+        var parameters = [TMDBConstants.APIKey: apiKey!,
+                          "query": query]
+        if year > 0 {
+            parameters["first_air_date_year"] = "\(year)"
+        }
+        
+        var array = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for dict in json {
+                        
+                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(dict)
+                        if let tvShowID = m.tvShowID {
+                            array.append(tvShowID)
+                        }
+                    }
+                }
+            }
+            
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func searchPeople(query: String, includeAdult: Bool, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Person.Path)"
+        let parameters = [TMDBConstants.APIKey: apiKey!,
+                          "query": query,
+                          "include_adult": "\(includeAdult)"]
+        
+        var array = [NSNumber]()
+        
+        let success = { (results: AnyObject!) in
+            if let dict = results as? [String: AnyObject] {
+                if let json = dict["results"] as? [[String: AnyObject]] {
+                    for dict in json {
+                        
+                        let m = ObjectManager.sharedInstance().findOrCreatePerson(dict)
+                        if let personID = m.personID {
+                            array.append(personID)
+                        }
+                    }
+                }
+            }
+            
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(arrayIDs: array, error: nil)
+        }
+        
+        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+
     // MARK: Lists
     func lists(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {

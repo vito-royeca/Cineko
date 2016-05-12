@@ -67,7 +67,7 @@ class FeaturedViewController: UIViewController {
                 self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -75,12 +75,19 @@ class FeaturedViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 
                 try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
-            } catch {}
+                
+            } catch {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] as! [NSNumber])
+                tableView.reloadData()
+            }
         
         } else {
             nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] as! [NSNumber])
@@ -104,7 +111,7 @@ class FeaturedViewController: UIViewController {
                 self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -112,11 +119,18 @@ class FeaturedViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
-            } catch {}
+            } catch {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                
+                airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] as! [NSNumber])
+                tableView.reloadData()
+            }
         
         } else {
             airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] as! [NSNumber])
@@ -141,7 +155,7 @@ class FeaturedViewController: UIViewController {
                 self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -149,11 +163,17 @@ class FeaturedViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().peoplePopular(completion)
-            } catch {}
+            } catch {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", dataDict[TMDBConstants.Device.Keys.PeoplePopular] as! [NSNumber])
+                tableView.reloadData()
+            }
             
         } else {
             popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", dataDict[TMDBConstants.Device.Keys.PeoplePopular] as! [NSNumber])
