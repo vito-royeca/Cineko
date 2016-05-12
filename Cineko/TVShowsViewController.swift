@@ -121,7 +121,7 @@ class TVShowsViewController: UIViewController {
                 self.dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -129,11 +129,11 @@ class TVShowsViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                
                 try TMDBManager.sharedInstance().tvShows(path!, completion: completion)
+                
             } catch {}
             
         } else {
@@ -157,20 +157,34 @@ class TVShowsViewController: UIViewController {
                     }
                     
                     self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
                 
                 do {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                        MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                    }
                     try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
+                    
                 } catch {
                     favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
                     self.tableView.reloadData()
                 }
 
             } else {
                 favoritesFetchRequest = nil
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
                 self.tableView.reloadData()
             }
             
@@ -179,6 +193,9 @@ class TVShowsViewController: UIViewController {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
                 favoritesFetchRequest = nil
+            }
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
         }
@@ -199,19 +216,34 @@ class TVShowsViewController: UIViewController {
                     }
                     
                     self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
                 
                 do {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                    }
                     try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
+                    
                 } catch {
                     watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
                     self.tableView.reloadData()
                 }
+                
             } else {
                 watchlistFetchRequest = nil
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
                 self.tableView.reloadData()
             }
 
@@ -220,6 +252,9 @@ class TVShowsViewController: UIViewController {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
                 watchlistFetchRequest = nil
+            }
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
         }

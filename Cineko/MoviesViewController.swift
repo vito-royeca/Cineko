@@ -166,7 +166,7 @@ class MoviesViewController: UIViewController {
                 self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -174,12 +174,18 @@ class MoviesViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                
                 try TMDBManager.sharedInstance().movies(path!, completion: completion)
-            } catch {}
+                
+            } catch {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
+                dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[refreshData!] as! [NSNumber])
+                tableView.reloadData()
+            }
             
         } else {
             dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[refreshData!] as! [NSNumber])
@@ -215,7 +221,7 @@ class MoviesViewController: UIViewController {
                 self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
                 
                 performUIUpdatesOnMain {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     self.tableView.reloadData()
@@ -223,12 +229,18 @@ class MoviesViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as? ThumbnailTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                
                 try TMDBManager.sharedInstance().moviesByGenre(genreID!, completion: completion)
-            } catch {}
+                
+            } catch {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
+                dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[genreName!] as! [NSNumber])
+                tableView.reloadData()
+            }
         
         } else {
             dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[genreName!] as! [NSNumber])
@@ -251,19 +263,33 @@ class MoviesViewController: UIViewController {
                     }
                     
                     self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
                 
                 do {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                        MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                    }
                     try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
+                    
                 } catch {
                     favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
                     self.tableView.reloadData()
                 }
             } else {
                 favoritesFetchRequest = nil
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
                 self.tableView.reloadData()
             }
 
@@ -272,6 +298,9 @@ class MoviesViewController: UIViewController {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
                 favoritesFetchRequest = nil
+            }
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
         }
@@ -292,19 +321,33 @@ class MoviesViewController: UIViewController {
                     }
                     
                     self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    
                     performUIUpdatesOnMain {
+                        if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                            MBProgressHUD.hideHUDForView(cell, animated: true)
+                        }
                         self.tableView.reloadData()
                     }
                 }
                 
                 do {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                    }
                     try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
+                    
                 } catch {
                     watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
                     self.tableView.reloadData()
                 }
             } else {
                 watchlistFetchRequest = nil
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                }
                 self.tableView.reloadData()
             }
             
@@ -313,6 +356,9 @@ class MoviesViewController: UIViewController {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
                 watchlistFetchRequest = nil
+            }
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
         }

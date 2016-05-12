@@ -78,7 +78,6 @@ class FeaturedViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                
                 try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
                 
             } catch {
@@ -123,6 +122,7 @@ class FeaturedViewController: UIViewController {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
+                
             } catch {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
@@ -167,6 +167,7 @@ class FeaturedViewController: UIViewController {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TMDBManager.sharedInstance().peoplePopular(completion)
+                
             } catch {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
