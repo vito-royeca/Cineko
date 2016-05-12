@@ -12,6 +12,20 @@ PODS:
     - JJJUtils/OSX (= 0.3.1)
   - KeychainAccess (2.3.5)
   - MBProgressHUD (0.9.2)
+  - MMDrawerController (0.6.0):
+    - MMDrawerController/Core (= 0.6.0)
+    - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
+    - MMDrawerController/MMDrawerVisualStates (= 0.6.0)
+    - MMDrawerController/Subclass (= 0.6.0)
+  - MMDrawerController+Storyboard (0.0.2):
+    - MMDrawerController
+  - MMDrawerController/Core (0.6.0)
+  - MMDrawerController/MMDrawerBarButtonItem (0.6.0):
+    - MMDrawerController/Core
+  - MMDrawerController/MMDrawerVisualStates (0.6.0):
+    - MMDrawerController/Core
+  - MMDrawerController/Subclass (0.6.0):
+    - MMDrawerController/Core
   - pop (1.0.9)
   - SDWebImage (3.7.6):
     - SDWebImage/Core (= 3.7.6)
@@ -25,6 +39,8 @@ DEPENDENCIES:
   - JJJUtils
   - KeychainAccess
   - MBProgressHUD
+  - MMDrawerController
+  - MMDrawerController+Storyboard
   - SDWebImage
 
 SPEC CHECKSUMS:
@@ -36,6 +52,8 @@ SPEC CHECKSUMS:
   JJJUtils: 3aa24c8612a0f8fce38bbddb49d33ef2179cc475
   KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
+  MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
 

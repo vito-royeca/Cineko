@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docs = \(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!)")
         
         // if we have TMDB session id show the main interface, else show the start page
-        let viewControllerID = TMDBManager.sharedInstance().hasSessionID() ? "MainTabBarController" : "StartViewController"
+        let viewControllerID = TMDBManager.sharedInstance().hasSessionID() ? "DrawerController" : "StartViewController"
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         

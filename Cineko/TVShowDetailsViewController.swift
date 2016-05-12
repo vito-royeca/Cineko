@@ -110,8 +110,8 @@ class TVShowDetailsViewController: UIViewController {
         loadCastAndCrew()
     }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         updateButtons()
         
@@ -124,6 +124,10 @@ class TVShowDetailsViewController: UIViewController {
                 tableView.backgroundView = backgroundView
                 
                 let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    
                     if let image = image {
                         self.averageColor = image.averageColor().colorWithAlphaComponent(0.97)
                         self.inverseColor = image.inverseColor(self.averageColor)
@@ -132,6 +136,10 @@ class TVShowDetailsViewController: UIViewController {
                         backgroundView.backgroundColor = self.averageColor
                         self.tableView.reloadData()
                     }
+                }
+                
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 backgroundView.sd_setImageWithURL(url, completed: comppleted)
             }

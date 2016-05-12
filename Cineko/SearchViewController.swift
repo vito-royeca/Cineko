@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MBProgressHUD
+import MMDrawerController
 
 class SearchViewController: UIViewController {
     
@@ -25,6 +26,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initDrawerButton()
         navigationItem.titleView = searchBar
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
     }
@@ -89,6 +91,27 @@ class SearchViewController: UIViewController {
                 } catch {}
             }
         }
+    }
+    
+    // MARK: MMDrawer methods
+    func initDrawerButton() {
+        setupRightMenuButton()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
+    }
+    
+    func setupRightMenuButton() {
+        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
+        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
+    }
+    
+    func closeDrawers() {
+        mm_drawerController.closeDrawerAnimated(false, completion:nil)
+    }
+    
+    func rightDrawerButtonPress(sender: AnyObject) {
+        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
     }
 }
 

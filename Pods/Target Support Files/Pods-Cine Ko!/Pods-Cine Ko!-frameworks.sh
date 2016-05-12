@@ -90,6 +90,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
+  install_framework "Pods-Cine Ko!/MMDrawerController.framework"
+  install_framework "Pods-Cine Ko!/MMDrawerController_Storyboard.framework"
   install_framework "Pods-Cine Ko!/SDWebImage.framework"
   install_framework "Pods-Cine Ko!/pop.framework"
 fi
@@ -100,6 +102,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Cine Ko!/JJJUtils.framework"
   install_framework "Pods-Cine Ko!/KeychainAccess.framework"
   install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
+  install_framework "Pods-Cine Ko!/MMDrawerController.framework"
+  install_framework "Pods-Cine Ko!/MMDrawerController_Storyboard.framework"
   install_framework "Pods-Cine Ko!/SDWebImage.framework"
   install_framework "Pods-Cine Ko!/pop.framework"
 fi

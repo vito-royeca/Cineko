@@ -12,8 +12,9 @@ pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
+pod 'MMDrawerController'
+pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
-#pod 'TLYShyNavBar'
 end
 
 target "CinekoTests" do
@@ -24,8 +25,9 @@ pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
+pod 'MMDrawerController'
+pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
-#pod 'TLYShyNavBar'
 end
 
 target "CinekoUITests" do
@@ -36,6 +38,7 @@ pod 'IDMPhotoBrowser'
 pod 'JJJUtils'
 pod 'KeychainAccess'
 pod 'MBProgressHUD'
+pod 'MMDrawerController'
+pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
-#pod 'TLYShyNavBar'
 end

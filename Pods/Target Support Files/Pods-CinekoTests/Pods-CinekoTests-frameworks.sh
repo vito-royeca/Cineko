@@ -90,6 +90,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoTests/JJJUtils.framework"
   install_framework "Pods-CinekoTests/KeychainAccess.framework"
   install_framework "Pods-CinekoTests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoTests/MMDrawerController.framework"
+  install_framework "Pods-CinekoTests/MMDrawerController_Storyboard.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
   install_framework "Pods-CinekoTests/pop.framework"
 fi
@@ -100,6 +102,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-CinekoTests/JJJUtils.framework"
   install_framework "Pods-CinekoTests/KeychainAccess.framework"
   install_framework "Pods-CinekoTests/MBProgressHUD.framework"
+  install_framework "Pods-CinekoTests/MMDrawerController.framework"
+  install_framework "Pods-CinekoTests/MMDrawerController_Storyboard.framework"
   install_framework "Pods-CinekoTests/SDWebImage.framework"
   install_framework "Pods-CinekoTests/pop.framework"
 fi

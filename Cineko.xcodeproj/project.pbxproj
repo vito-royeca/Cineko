@@ -30,6 +30,7 @@
 		8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8C6AF0491CE0E05F00E4C5A5 /* ListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */; };
+		8C8B37F21CE3BB41002A5A29 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */; };
 		8C9018DE1CC764CB001EB1A6 /* SeeAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */; };
 		8CAB33F21CC4E38900441861 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378AE1CAE80D000FB6830 /* CoreDataManager.swift */; };
 		8CAB33F31CC4E4BC00441861 /* ObjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAB33E21CC4891C00441861 /* ObjectManager.swift */; };
@@ -231,6 +232,7 @@
 		8C67893F1CB5209200E4E14B /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListEditorViewController.swift; sourceTree = "<group>"; };
 		8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
 		8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeAllViewController.swift; sourceTree = "<group>"; };
 		8CAB33E21CC4891C00441861 /* ObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
 		8CAB33EA1CC4C70600441861 /* Job+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Job+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8C17D5A01CC54B9800D81F66 /* PersonDetailsViewController.swift */,
+				8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */,
 				8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */,
 				8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
@@ -918,6 +921,7 @@
 				8CF5ECDB1CCF71E700260045 /* SearchViewController.swift in Sources */,
 				8CD53BDC1CC62B400035AD45 /* Account.swift in Sources */,
 				8CCE40BC1CE23C340079D80C /* ListDetailsViewController.swift in Sources */,
+				8C8B37F21CE3BB41002A5A29 /* SearchSettingsViewController.swift in Sources */,
 				8CD53BDD1CC62B400035AD45 /* TVShow.swift in Sources */,
 				8CD53BDE1CC62B400035AD45 /* PersonDetailsViewController.swift in Sources */,
 				8CD53BDF1CC62B400035AD45 /* Job+CoreDataProperties.swift in Sources */,

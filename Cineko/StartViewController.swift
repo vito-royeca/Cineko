@@ -10,6 +10,7 @@ import UIKit
 
 import JJJUtils
 import MBProgressHUD
+import MMDrawerController
 
 class StartViewController: UIViewController {
     
@@ -57,7 +58,7 @@ class StartViewController: UIViewController {
     }
     
     @IBAction func skipLoginAction(sender: UIButton) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
+        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }
@@ -76,7 +77,7 @@ class StartViewController: UIViewController {
 extension StartViewController : LoginViewControllerDelegate {
     func loginSuccess(viewController: UIViewController) {
         if TMDBManager.sharedInstance().hasSessionID() {
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as? UITabBarController {
+            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
                 viewController.presentViewController(controller, animated: true, completion: nil)
             }
             
