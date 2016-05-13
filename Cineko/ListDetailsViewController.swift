@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import JJJUtils
 import MBProgressHUD
 
 class ListDetailsViewController: UIViewController {
@@ -46,7 +47,11 @@ class ListDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "nameTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "descriptionTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
         loadMovies()
     }
     
@@ -62,13 +67,13 @@ class ListDetailsViewController: UIViewController {
                 NSSortDescriptor(key: "title", ascending: true)]
             
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) as? ThumbnailTableViewCell {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -93,7 +98,7 @@ class ListDetailsViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
                 if let error = error {
-                    print("Error in: \(#function)... \(error)")
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                 }
                 
                 if let navigationController = self.navigationController {

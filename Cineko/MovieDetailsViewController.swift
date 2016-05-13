@@ -42,11 +42,11 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
@@ -66,11 +66,11 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
@@ -177,6 +177,7 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        // push the titleLabel when scrolling up
         var rect = titleLabel!.frame
         rect.origin.y = min(0, tableView.contentOffset.y)
         titleLabel!.frame = rect
@@ -215,17 +216,18 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-            
-                self.movieReviews = movie.reviews
-                if let homepage = movie.homepage {
-                    if !homepage.isEmpty {
-                        self.homepage = homepage
-                    }
-                }
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                
+                    self.movieReviews = movie.reviews
+                    if let homepage = movie.homepage {
+                        if !homepage.isEmpty {
+                            self.homepage = homepage
+                        }
+                    }
+                
                     self.tableView.reloadData()
                 }
             }
@@ -241,22 +243,22 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
-                self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop.movieID = %@", movie.movieID!)
-                self.backdropFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "voteAverage", ascending: false)]
-                
-                self.posterFetchRequest = NSFetchRequest(entityName: "Image")
-                self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
-                self.posterFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "voteAverage", ascending: false)]
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.backdropFetchRequest!.predicate = NSPredicate(format: "movieBackdrop.movieID = %@", movie.movieID!)
+                    self.backdropFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                    
+                    self.posterFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.posterFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.posterFetchRequest!.predicate = NSPredicate(format: "moviePoster.movieID = %@", movie.movieID!)
+                    self.posterFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
                     self.tableView.reloadData()
                 }
             }
@@ -272,24 +274,24 @@ class MovieDetailsViewController: UIViewController {
             let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-
-                self.castFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
-                self.castFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "order", ascending: true)]
-                
-                self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
-                self.crewFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "job.department", ascending: true),
-                    NSSortDescriptor(key: "job.name", ascending: true)]
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+
+                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.castFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "cast")
+                    self.castFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "order", ascending: true)]
+                    
+                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.crewFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@ AND creditType = %@", movie.movieID!, "crew")
+                    self.crewFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "job.department", ascending: true),
+                        NSSortDescriptor(key: "job.name", ascending: true)]
+                
                     self.tableView.reloadData()
                 }
             }
@@ -587,8 +589,7 @@ class MovieDetailsViewController: UIViewController {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                        JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                 }
             }
@@ -611,8 +612,7 @@ class MovieDetailsViewController: UIViewController {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                        JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                 }
             }
@@ -630,7 +630,10 @@ class MovieDetailsViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.Lists) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 if let error = error {
-                    print("Error in: \(#function)... \(error)")
+                    TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.Lists)
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
                 }
                 
                 let predicate = NSPredicate(format: "listID IN %@", arrayIDs)

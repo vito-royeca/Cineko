@@ -39,7 +39,8 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var thumbnailImage: UIImageView!
     
     // MARK: Variables
-    
+    var HUDAdded = false
+
     // MARK: Overrides
     override func awakeFromNib() {
         super.awakeFromNib()

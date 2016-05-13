@@ -370,7 +370,11 @@ class TMDBManager: NSObject {
         return needsRefresh
     }
     
-    func deleteRefreshData() {
+    func deleteRefreshData(data: String) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(data)
+    }
+    
+    func deleteAllRefreshData() {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.MoviesNowShowing)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.TVShowsAiringToday)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.PeoplePopular)
@@ -1397,7 +1401,7 @@ class TMDBManager: NSObject {
         }
         
         let failure = { (error: NSError?) -> Void in
-            completion(arrayIDs: array, error: nil)
+            completion(arrayIDs: array, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
@@ -1435,7 +1439,7 @@ class TMDBManager: NSObject {
         }
         
         let failure = { (error: NSError?) -> Void in
-            completion(arrayIDs: array, error: nil)
+            completion(arrayIDs: array, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
@@ -1471,7 +1475,7 @@ class TMDBManager: NSObject {
         }
         
         let failure = { (error: NSError?) -> Void in
-            completion(arrayIDs: array, error: nil)
+            completion(arrayIDs: array, error: error)
         }
         
         NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

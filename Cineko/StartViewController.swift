@@ -19,12 +19,10 @@ class StartViewController: UIViewController {
         
         do {
             if let requestToken = try TMDBManager.sharedInstance().getAvailableRequestToken() {
-                    let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
-                    self.presentLoginViewController(urlString)
+                let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
+                self.presentLoginViewController(urlString)
             
             } else {
-                MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                
                 let success = { (results: AnyObject!) in
                     if let dict = results as? [String: AnyObject] {
                         if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
@@ -46,11 +44,11 @@ class StartViewController: UIViewController {
                     performUIUpdatesOnMain {
                         MBProgressHUD.hideHUDForView(self.view, animated: true)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                        
                     }
                 }
                 
                 do {
+                    MBProgressHUD.showHUDAddedTo(view, animated: true)
                     try TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
                 } catch {}
             }

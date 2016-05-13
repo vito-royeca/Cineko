@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // TMDB
         TMDBManager.sharedInstance().setup(Constants.TMDBAPIKeyValue)
-        TMDBManager.sharedInstance().deleteRefreshData()
+        TMDBManager.sharedInstance().deleteAllRefreshData()
         
         // NYTimes Movie Reviews
         NYTimesReviewManager.sharedInstance().setup(Constants.NYTimesReviewAPIKeyValue)

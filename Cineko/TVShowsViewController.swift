@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import JJJUtils
 import MBProgressHUD
 
 class TVShowsViewController: UIViewController {
@@ -63,8 +64,8 @@ class TVShowsViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         loadTVShowGroup()
         loadFavorites()
@@ -113,14 +114,15 @@ class TVShowsViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-        
-                self.dataDict[refreshData!] = arrayIDs
-                self.dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(refreshData!)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+            
+                    self.dataDict[refreshData!] = arrayIDs
+                    self.dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -137,7 +139,9 @@ class TVShowsViewController: UIViewController {
             } catch {}
             
         } else {
-            dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[refreshData!] as! [NSNumber])
+            if let tvShowIDs = dataDict[refreshData!] as? [NSNumber] {
+                dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", tvShowIDs)
+            }
             tableView.reloadData()
         }
     }
@@ -152,13 +156,14 @@ class TVShowsViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteTVShows) {
             if TMDBManager.sharedInstance().hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                    if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                    }
-                    
-                    self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                    
                     performUIUpdatesOnMain {
+                        if let error = error {
+                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.FavoriteTVShows)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                        }
+                        
+                        self.favoritesFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }
@@ -211,13 +216,14 @@ class TVShowsViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistTVShows) {
             if TMDBManager.sharedInstance().hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                    if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                    }
-                    
-                    self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                    
                     performUIUpdatesOnMain {
+                        if let error = error {
+                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.WatchlistTVShows)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                        }
+                        
+                        self.watchlistFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }

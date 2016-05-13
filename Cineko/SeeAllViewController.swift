@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MBProgressHUD
 import SDWebImage
 
 class SeeAllViewController: UIViewController {
@@ -82,6 +83,8 @@ class SeeAllViewController: UIViewController {
             
             let url = NSURL(string: urlString!)
             let completedBlock = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                MBProgressHUD.hideHUDForView(cell, animated: true)
+                cell.HUDAdded = false
                 cell.contentMode = .ScaleToFill
                 
                 if let image = image {
@@ -109,7 +112,14 @@ class SeeAllViewController: UIViewController {
                     cell.addCaptionImage(displayable.caption(self.captionType!)!)
                 }
             }
-            cell.thumbnailImage.sd_setImageWithURL(url, completed: completedBlock)
+            
+            if !cell.HUDAdded {
+                let hud = MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                hud.opacity = 0.0
+                hud.activityIndicatorColor = UIColor.blueColor()
+                cell.HUDAdded = true
+            }
+            cell.thumbnailImage.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"), completed: completedBlock)
             
         } else {
             var caption:String?

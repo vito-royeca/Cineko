@@ -29,8 +29,6 @@ class ListEditorViewController : FormViewController {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                        
                         if let delegate = self.delegate {
                             delegate.failure(self, error: error)
                         }

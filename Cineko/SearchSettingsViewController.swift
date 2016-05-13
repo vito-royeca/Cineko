@@ -55,7 +55,7 @@ class SearchSettingsViewController: FormViewController {
         
         form =
             Section("")
-            
+        
             // Movies
             +++ Section("Movies")
             <<< SwitchRow() {

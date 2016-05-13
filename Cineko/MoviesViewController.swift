@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import JJJUtils
 import MBProgressHUD
 
 class MoviesViewController: UIViewController {
@@ -41,8 +42,8 @@ class MoviesViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         if let dynamicTitle = dynamicTitle {
             if dynamicTitle == movieGroups[0] ||
@@ -158,14 +159,15 @@ class MoviesViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.dataDict[refreshData!] = arrayIDs
-                self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(refreshData!)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.dataDict[refreshData!] = arrayIDs
+                    self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -213,14 +215,15 @@ class MoviesViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(genreName!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.dataDict[genreName!] = arrayIDs
-                self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(genreName!)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.dataDict[genreName!] = arrayIDs
+                    self.dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -243,7 +246,9 @@ class MoviesViewController: UIViewController {
             }
         
         } else {
-            dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[genreName!] as! [NSNumber])
+            if let genreIDs = dataDict[genreName!] as? [NSNumber] {
+                dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", genreIDs)
+            }
             tableView.reloadData()
         }
     }
@@ -258,13 +263,14 @@ class MoviesViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteMovies) {
             if TMDBManager.sharedInstance().hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                    if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                    }
-                    
-                    self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                    
                     performUIUpdatesOnMain {
+                        if let error = error {
+                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.FavoriteMovies)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                        }
+                        
+                        self.favoritesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }
@@ -316,13 +322,14 @@ class MoviesViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistMovies) {
             if TMDBManager.sharedInstance().hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                    if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                    }
-                    
-                    self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                    
                     performUIUpdatesOnMain {
+                        if let error = error {
+                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.WatchlistMovies)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                        }
+                        
+                        self.watchlistFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    
                         if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                             MBProgressHUD.hideHUDForView(cell, animated: true)
                         }

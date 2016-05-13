@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import JJJUtils
 import MBProgressHUD
 import MMDrawerController
 
@@ -40,20 +41,20 @@ class SearchViewController: UIViewController {
     // MARK: Custom Methods
     func searchMovies(query: String) {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-                self.moviesFetchRequest = nil
-                
-            } else {
-                self.moviesFetchRequest = NSFetchRequest(entityName: "Movie")
-                self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                self.moviesFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "title", ascending: true)]
-            }
-            
             performUIUpdatesOnMain {
+                if let error = error {
+                    self.moviesFetchRequest = nil
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    
+                } else {
+                    self.moviesFetchRequest = NSFetchRequest(entityName: "Movie")
+                    self.moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.moviesFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                    self.moviesFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "popularity", ascending: false),
+                        NSSortDescriptor(key: "title", ascending: true)]
+                }
+            
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.hideHUDForView(cell, animated: true)
                 }
@@ -82,20 +83,21 @@ class SearchViewController: UIViewController {
     
     func searchTVShows(query: String) {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-                self.tvShowsFetchRequest = nil
-                
-            } else {
-                self.tvShowsFetchRequest = NSFetchRequest(entityName: "TVShow")
-                self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                self.tvShowsFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "name", ascending: true)]
-            }
-            
             performUIUpdatesOnMain {
+                if let error = error {
+                    self.tvShowsFetchRequest = nil
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    
+                } else {
+                    self.tvShowsFetchRequest = NSFetchRequest(entityName: "TVShow")
+                    self.tvShowsFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.tvShowsFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                    self.tvShowsFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "popularity", ascending: false),
+                        NSSortDescriptor(key: "name", ascending: true)]
+                }
+            
+            
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                     MBProgressHUD.hideHUDForView(cell, animated: true)
                 }
@@ -123,20 +125,20 @@ class SearchViewController: UIViewController {
     
     func searchPeople(query: String) {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-            if let error = error {
-                print("Error in: \(#function)... \(error)")
-                self.peopleFetchRequest = nil
-                
-            } else {
-                self.peopleFetchRequest = NSFetchRequest(entityName: "Person")
-                self.peopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.peopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
-                self.peopleFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "popularity", ascending: false),
-                    NSSortDescriptor(key: "name", ascending: true)]
-            }
-            
             performUIUpdatesOnMain {
+                if let error = error {
+                    self.peopleFetchRequest = nil
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    
+                } else {
+                    self.peopleFetchRequest = NSFetchRequest(entityName: "Person")
+                    self.peopleFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.peopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
+                    self.peopleFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "popularity", ascending: false),
+                        NSSortDescriptor(key: "name", ascending: true)]
+                }
+            
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.hideHUDForView(cell, animated: true)
                 }

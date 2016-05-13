@@ -58,17 +58,17 @@ class PersonDetailsViewController: UIViewController {
             let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-
-                self.photosFetchRequest = NSFetchRequest(entityName: "Image")
-                self.photosFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.photosFetchRequest!.predicate = NSPredicate(format: "personProfile.personID = %@", person.personID!)
-                self.photosFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "voteAverage", ascending: false)]
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+
+                    self.photosFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.photosFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.photosFetchRequest!.predicate = NSPredicate(format: "personProfile.personID = %@", person.personID!)
+                    self.photosFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.tableView.reloadData()
                 }
@@ -89,16 +89,17 @@ class PersonDetailsViewController: UIViewController {
             let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                if let homepage = person.homepage {
-                    if !homepage.isEmpty {
-                        self.homepage = homepage
-                    }
-                }
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    if let homepage = person.homepage {
+                        if !homepage.isEmpty {
+                            self.homepage = homepage
+                        }
+                    }
+                
                     self.tableView.reloadData()
                 }
             }
@@ -115,8 +116,11 @@ class PersonDetailsViewController: UIViewController {
             
             let completion = { (error: NSError?) in
                 if let error = error {
-                    print("Error in: \(#function)... \(error)")
+                    performUIUpdatesOnMain {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
                 }
+                
                 var movieIDs = [NSNumber]()
                 var tvShowIDs = [NSNumber]()
                 var movieCreditIDs = [NSNumber]()

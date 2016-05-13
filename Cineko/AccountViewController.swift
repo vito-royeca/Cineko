@@ -149,16 +149,24 @@ class AccountViewController: UIViewController {
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.Lists) {
             if TMDBManager.sharedInstance().hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                    if let error = error {
-                        print("Error in: \(#function)... \(error)")
-                    }
                     
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.Lists)
+                        performUIUpdatesOnMain {
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                        }
+                    }
+                
                     self.listsFetchRequest!.predicate = NSPredicate(format: "listID IN %@", arrayIDs)
                     self.doFetch()
                 }
                 
                 do {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) {
+                        MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                    }
                     try TMDBManager.sharedInstance().lists(completion)
+                    
                 } catch {
                     listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
                     doFetch()
@@ -185,6 +193,9 @@ class AccountViewController: UIViewController {
         self.fetchedResultsController.delegate = self
         
         performUIUpdatesOnMain {
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+            }
             self.tableView.reloadData()
         }
     }
@@ -206,7 +217,7 @@ class AccountViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
                 if let error = error {
-                    print("Error in: \(#function)... \(error)")
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                 }
             }
         }
@@ -350,6 +361,10 @@ extension AccountViewController : LoginViewControllerDelegate {
     func loginSuccess(viewController: UIViewController) {
         let completion = { (error: NSError?) in
             performUIUpdatesOnMain {
+                if let error = error {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+
                 viewController.dismissViewControllerAnimated(true, completion: nil)
                 self.loginButton.title = "Logout"
                 self.loadLists()

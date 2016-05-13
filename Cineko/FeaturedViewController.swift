@@ -29,7 +29,11 @@ class FeaturedViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
         let completion = { (error: NSError?) in
-            // nothing to do here...
+            if let error = error {
+                performUIUpdatesOnMain {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+            }
         }
         
         do {
@@ -59,14 +63,15 @@ class FeaturedViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.MoviesNowShowing) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] = arrayIDs
-                self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.MoviesNowShowing)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] = arrayIDs
+                    self.nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -102,14 +107,15 @@ class FeaturedViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.TVShowsAiringToday) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] = arrayIDs
-                self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.TVShowsAiringToday)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] = arrayIDs
+                    self.airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", arrayIDs)
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
@@ -147,14 +153,16 @@ class FeaturedViewController: UIViewController {
         
         if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.PeoplePopular) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.dataDict[TMDBConstants.Device.Keys.PeoplePopular] = arrayIDs
-                self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.PeoplePopular)
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.dataDict[TMDBConstants.Device.Keys.PeoplePopular] = arrayIDs
+                    self.popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", arrayIDs)
+                
+                
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }

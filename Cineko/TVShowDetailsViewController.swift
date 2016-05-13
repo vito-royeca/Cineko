@@ -39,11 +39,11 @@ class TVShowDetailsViewController: UIViewController {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
@@ -63,11 +63,11 @@ class TVShowDetailsViewController: UIViewController {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.updateButtons()
                 }
@@ -152,6 +152,7 @@ class TVShowDetailsViewController: UIViewController {
     }
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        // push the titleLabel when scrolling up
         var rect = titleLabel!.frame
         rect.origin.y = min(0, tableView.contentOffset.y)
         titleLabel!.frame = rect
@@ -189,22 +190,23 @@ class TVShowDetailsViewController: UIViewController {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
-                self.tvSeasonFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@", tvShow.tvShowID!)
-                self.tvSeasonFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "seasonNumber", ascending: false)]
-                
-                if let homepage = tvShow.homepage {
-                    if !homepage.isEmpty {
-                        self.homepage = homepage
-                    }
-                }
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.tvSeasonFetchRequest = NSFetchRequest(entityName: "TVSeason")
+                    self.tvSeasonFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.tvSeasonFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@", tvShow.tvShowID!)
+                    self.tvSeasonFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "seasonNumber", ascending: false)]
+                    
+                    if let homepage = tvShow.homepage {
+                        if !homepage.isEmpty {
+                            self.homepage = homepage
+                        }
+                    }
+                
                     self.tableView.reloadData()
                 }
             }
@@ -220,16 +222,16 @@ class TVShowDetailsViewController: UIViewController {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
-                self.backdropFetchRequest!.predicate = NSPredicate(format: "tvShowBackdrop.tvShowID = %@", tvShow.tvShowID!)
-                self.backdropFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "voteAverage", ascending: false)]
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.backdropFetchRequest = NSFetchRequest(entityName: "Image")
+                    self.backdropFetchRequest!.predicate = NSPredicate(format: "tvShowBackdrop.tvShowID = %@", tvShow.tvShowID!)
+                    self.backdropFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "voteAverage", ascending: false)]
+                
                     self.tableView.reloadData()
                 }
             }
@@ -245,24 +247,24 @@ class TVShowDetailsViewController: UIViewController {
             let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
-                if let error = error {
-                    print("Error in: \(#function)... \(error)")
-                }
-                
-                self.castFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.castFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "cast")
-                self.castFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "order", ascending: true)]
-                
-                self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
-                self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
-                self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "crew")
-                self.crewFetchRequest!.sortDescriptors = [
-                    NSSortDescriptor(key: "job.department", ascending: true),
-                    NSSortDescriptor(key: "job.name", ascending: true)]
-                
                 performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.castFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.castFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.castFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "cast")
+                    self.castFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "order", ascending: true)]
+                    
+                    self.crewFetchRequest = NSFetchRequest(entityName: "Credit")
+                    self.crewFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
+                    self.crewFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@ AND creditType = %@", tvShow.tvShowID!, "crew")
+                    self.crewFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "job.department", ascending: true),
+                        NSSortDescriptor(key: "job.name", ascending: true)]
+                
                     self.tableView.reloadData()
                 }
             }

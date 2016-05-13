@@ -605,7 +605,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uS0-8J-ETv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchBar contentMode="redraw" placeholder="Search for a movie, tv show, people..." id="OhY-vt-4Ga">
+                <searchBar contentMode="redraw" placeholder="Search" id="OhY-vt-4Ga">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits" keyboardType="webSearch" returnKeyType="search"/>
