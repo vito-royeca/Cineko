@@ -20,7 +20,7 @@ This is the author's Udacity capstone project for the iOS Developer Nanodegree p
  
 ## Cloning
 
-Clone the GitHub repository and open the project workspace Cineko.xcworkspace. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.
+Clone the GitHub repository and open the project workspace `Cineko.xcworkspace`. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.
 
 ```
 $ git clone https://github.com/jovito-royeca/Cineko.git
