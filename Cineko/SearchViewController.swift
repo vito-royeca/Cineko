@@ -70,7 +70,7 @@ class SearchViewController: UIViewController {
             if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
-            try TMDBManager.sharedInstance().searchMovie(query, releaseYear: includeMovieYearReleased ? year : 0, includeAdult: includeAdult, completion: completion)
+            try TMDBManager.sharedInstance.searchMovie(query, releaseYear: includeMovieYearReleased ? year : 0, includeAdult: includeAdult, completion: completion)
             
         } catch {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
@@ -112,7 +112,7 @@ class SearchViewController: UIViewController {
             if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
-            try TMDBManager.sharedInstance().searchTVShow(query, firstAirDate: includeTVShowFirstAirDate ? year : 0, completion: completion)
+            try TMDBManager.sharedInstance.searchTVShow(query, firstAirDate: includeTVShowFirstAirDate ? year : 0, completion: completion)
             
         } catch {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
@@ -152,7 +152,7 @@ class SearchViewController: UIViewController {
             if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                 MBProgressHUD.showHUDAddedTo(cell, animated: true)
             }
-            try TMDBManager.sharedInstance().searchPeople(query, includeAdult: includeAdult, completion: completion)
+            try TMDBManager.sharedInstance.searchPeople(query, includeAdult: includeAdult, completion: completion)
             
         } catch {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {

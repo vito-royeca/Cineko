@@ -33,7 +33,7 @@ class MoviesViewController: UIViewController {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         
-        movieGenres = ObjectManager.sharedInstance().findObjects("Genre", predicate: NSPredicate(format: "movieGenre = %@", NSNumber(bool: true)), sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [Genre]
+        movieGenres = ObjectManager.sharedInstance.findObjects("Genre", predicate: NSPredicate(format: "movieGenre = %@", NSNumber(bool: true)), sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [Genre]
         
         if let dynamicTitle = NSUserDefaults.standardUserDefaults().valueForKey(TMDBConstants.Device.Keys.MoviesDynamic) as? String {
             self.dynamicTitle = dynamicTitle
@@ -157,11 +157,11 @@ class MoviesViewController: UIViewController {
         dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
         dynamicFetchRequest!.sortDescriptors = descriptors
         
-        if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
+        if TMDBManager.sharedInstance.needsRefresh(refreshData!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(refreshData!)
+                        TMDBManager.sharedInstance.deleteRefreshData(refreshData!)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
@@ -179,7 +179,7 @@ class MoviesViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().movies(path!, completion: completion)
+                try TMDBManager.sharedInstance.movies(path!, completion: completion)
                 
             } catch {
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
@@ -213,11 +213,11 @@ class MoviesViewController: UIViewController {
         dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
         dynamicFetchRequest!.sortDescriptors = descriptors
         
-        if TMDBManager.sharedInstance().needsRefresh(genreName!) {
+        if TMDBManager.sharedInstance.needsRefresh(genreName!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(genreName!)
+                        TMDBManager.sharedInstance.deleteRefreshData(genreName!)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
@@ -235,7 +235,7 @@ class MoviesViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().moviesByGenre(genreID!, completion: completion)
+                try TMDBManager.sharedInstance.moviesByGenre(genreID!, completion: completion)
                 
             } catch {
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
@@ -260,12 +260,12 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteMovies) {
-            if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.FavoriteMovies) {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                     performUIUpdatesOnMain {
                         if let error = error {
-                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.FavoriteMovies)
+                            TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.FavoriteMovies)
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                         }
                         
@@ -282,7 +282,7 @@ class MoviesViewController: UIViewController {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                         MBProgressHUD.showHUDAddedTo(cell, animated: true)
                     }
-                    try TMDBManager.sharedInstance().accountFavoriteMovies(completion)
+                    try TMDBManager.sharedInstance.accountFavoriteMovies(completion)
                     
                 } catch {
                     favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
@@ -300,7 +300,7 @@ class MoviesViewController: UIViewController {
             }
 
         } else {
-            if TMDBManager.sharedInstance().hasSessionID() {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
                 favoritesFetchRequest = nil
@@ -319,12 +319,12 @@ class MoviesViewController: UIViewController {
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistMovies) {
-            if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.WatchlistMovies) {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                     performUIUpdatesOnMain {
                         if let error = error {
-                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.WatchlistMovies)
+                            TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.WatchlistMovies)
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                         }
                         
@@ -341,7 +341,7 @@ class MoviesViewController: UIViewController {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.showHUDAddedTo(cell, animated: true)
                     }
-                    try TMDBManager.sharedInstance().accountWatchlistMovies(completion)
+                    try TMDBManager.sharedInstance.accountWatchlistMovies(completion)
                     
                 } catch {
                     watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
@@ -359,7 +359,7 @@ class MoviesViewController: UIViewController {
             }
             
         } else {
-            if TMDBManager.sharedInstance().hasSessionID() {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
                 watchlistFetchRequest = nil

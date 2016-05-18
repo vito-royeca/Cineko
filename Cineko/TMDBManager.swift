@@ -419,7 +419,7 @@ class TMDBManager: NSObject {
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Authentication.TokenNew.Path)"
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func authenticationSessionNew(completion: (error: NSError?) -> Void?) throws {
@@ -449,7 +449,7 @@ class TMDBManager: NSObject {
                 completion(error: error)
             }
             
-            NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+            NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
         
         } else {
             completion(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))
@@ -528,7 +528,7 @@ class TMDBManager: NSObject {
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                self.account = ObjectManager.sharedInstance().findOrCreateAccount(dict)
+                self.account = ObjectManager.sharedInstance.findOrCreateAccount(dict)
             }
             completion(error: nil)
         }
@@ -537,7 +537,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountFavorite(mediaID: NSNumber, mediaType: MediaType, favorite: Bool, completion: (error: NSError?) -> Void?) throws {
@@ -569,15 +569,15 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) -> Void in
             switch mediaType {
             case .Movie:
-                let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: mediaID])
+                let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: mediaID])
                 movie.favorite = NSNumber(bool: favorite)
             case .TVShow:
-                let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
+                let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.favorite = NSNumber(bool: favorite)
             default:
                 break
             }
-            CoreDataManager.sharedInstance().savePrivateContext()
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(error: nil)
         }
         
@@ -585,7 +585,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountWatchlist(mediaID: NSNumber, mediaType: MediaType, watchlist: Bool, completion: (error: NSError?) -> Void?) throws {
@@ -617,15 +617,15 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) -> Void in
             switch mediaType {
             case .Movie:
-                let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: mediaID])
+                let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: mediaID])
                 movie.watchlist = NSNumber(bool: watchlist)
             case .TVShow:
-                let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
+                let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.watchlist = NSNumber(bool: watchlist)
             default:
                 break
             }
-            CoreDataManager.sharedInstance().savePrivateContext()
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(error: nil)
         }
         
@@ -633,7 +633,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountFavoriteMovies(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -661,9 +661,9 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     
                     for movie in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
                         m.favorite = NSNumber(bool: true)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
@@ -678,7 +678,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: movieIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountFavoriteTVShows(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -706,9 +706,9 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     
                     for tvShow in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
+                        let m = ObjectManager.sharedInstance.findOrCreateTVShow(tvShow)
                         m.favorite = NSNumber(bool: true)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         if let tvShowID = m.tvShowID {
                             tvShowIDs.append(tvShowID)
@@ -723,7 +723,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: tvShowIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountWatchlistMovies(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -751,9 +751,9 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     
                     for movie in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
                         m.watchlist = NSNumber(bool: true)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
@@ -768,7 +768,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: movieIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func accountWatchlistTVShows(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -796,9 +796,9 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     
                     for tvShow in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
+                        let m = ObjectManager.sharedInstance.findOrCreateTVShow(tvShow)
                         m.watchlist = NSNumber(bool: true)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         if let tvShowID = m.tvShowID {
                             tvShowIDs.append(tvShowID)
@@ -813,7 +813,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: tvShowIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: Movies
@@ -831,7 +831,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for movie in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
                         }
@@ -845,7 +845,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: movieIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func moviesByGenre(genreID: Int, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -863,7 +863,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for movie in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
                         }
@@ -877,7 +877,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: movieIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func movieDetails(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -895,12 +895,12 @@ class TMDBManager: NSObject {
                 if let title = dict[Movie.Keys.Title] as? String {
               
                     let comp2 = { (objectIDs: [AnyObject], error: NSError?) in
-                        ObjectManager.sharedInstance().updateMovie(dict, reviewIDs: objectIDs)
+                        ObjectManager.sharedInstance.updateMovie(dict, reviewIDs: objectIDs)
                         completion(error: nil)
                     }
                     
                     do {
-                        try NYTimesReviewManager.sharedInstance().movieReviews(title, completion: comp2)
+                        try NYTimesReviewManager.sharedInstance.movieReviews(title, completion: comp2)
                     } catch {
                         completion(error: nil)
                     }
@@ -912,7 +912,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func movieImages(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -926,18 +926,18 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+            let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
             
             if let dict = results as? [String: AnyObject] {
                 if let backdrops = dict["backdrops"] as? [[String: AnyObject]] {
                     for backdrop in backdrops {
-                        ObjectManager.sharedInstance().findOrCreateImage(backdrop, imageType: .MovieBackdrop, forObject: movie)
+                        ObjectManager.sharedInstance.findOrCreateImage(backdrop, imageType: .MovieBackdrop, forObject: movie)
                     }
                 }
                 
                 if let posters = dict["posters"] as? [[String: AnyObject]] {
                     for poster in posters {
-                        ObjectManager.sharedInstance().findOrCreateImage(poster, imageType: .MoviePoster, forObject: movie)
+                        ObjectManager.sharedInstance.findOrCreateImage(poster, imageType: .MoviePoster, forObject: movie)
                     }
                 }
             }
@@ -948,7 +948,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func movieCredits(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -962,18 +962,18 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+            let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
             
             if let dict = results as? [String: AnyObject] {
                 if let cast = dict["cast"] as? [[String: AnyObject]] {
                     for c in cast {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .Movie, forObject: movie)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Cast, creditParent: .Movie, forObject: movie)
                     }
                 }
                 
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .Movie, forObject: movie)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Crew, creditParent: .Movie, forObject: movie)
                     }
                 }
             }
@@ -984,7 +984,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: TV Shows
@@ -1002,7 +1002,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for tvShow in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(tvShow)
+                        let m = ObjectManager.sharedInstance.findOrCreateTVShow(tvShow)
                         if let tvShowID = m.tvShowID {
                             tvShowIDs.append(tvShowID)
                         }
@@ -1016,7 +1016,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: tvShowIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func tvShowDetails(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1031,7 +1031,7 @@ class TMDBManager: NSObject {
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                ObjectManager.sharedInstance().updateTVShow(dict)
+                ObjectManager.sharedInstance.updateTVShow(dict)
             }
             completion(error: nil)
         }
@@ -1040,7 +1040,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func tvShowImages(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1054,12 +1054,12 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
+            let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
             
             if let dict = results as? [String: AnyObject] {
                 if let backdrops = dict["backdrops"] as? [[String: AnyObject]] {
                     for backdrop in backdrops {
-                        ObjectManager.sharedInstance().findOrCreateImage(backdrop, imageType: .TVShowBackdrop, forObject: tvShow)
+                        ObjectManager.sharedInstance.findOrCreateImage(backdrop, imageType: .TVShowBackdrop, forObject: tvShow)
                     }
                 }
             }
@@ -1070,7 +1070,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func tvShowCredits(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1084,18 +1084,18 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let tvShow = ObjectManager.sharedInstance().findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
+            let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
             
             if let dict = results as? [String: AnyObject] {
                 if let cast = dict["cast"] as? [[String: AnyObject]] {
                     for c in cast {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .TVShow, forObject: tvShow)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Cast, creditParent: .TVShow, forObject: tvShow)
                     }
                 }
                 
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
                     }
                 }
             }
@@ -1106,7 +1106,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: People
@@ -1124,7 +1124,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for person in json {
-                        let m = ObjectManager.sharedInstance().findOrCreatePerson(person)
+                        let m = ObjectManager.sharedInstance.findOrCreatePerson(person)
                         if let personID = m.personID {
                             personIDs.append(personID)
                         }
@@ -1138,7 +1138,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: personIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func personDetails(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1153,7 +1153,7 @@ class TMDBManager: NSObject {
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
-                ObjectManager.sharedInstance().updatePerson(dict)
+                ObjectManager.sharedInstance.updatePerson(dict)
             }
             completion(error: nil)
         }
@@ -1162,7 +1162,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func personImages(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1176,12 +1176,12 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let person = ObjectManager.sharedInstance().findOrCreatePerson([Person.Keys.PersonID: personID])
+            let person = ObjectManager.sharedInstance.findOrCreatePerson([Person.Keys.PersonID: personID])
             
             if let dict = results as? [String: AnyObject] {
                 if let profiles = dict["profiles"] as? [[String: AnyObject]] {
                     for profile in profiles {
-                        ObjectManager.sharedInstance().findOrCreateImage(profile, imageType: .PersonProfile, forObject: person)
+                        ObjectManager.sharedInstance.findOrCreateImage(profile, imageType: .PersonProfile, forObject: person)
                     }
                 }
             }
@@ -1192,7 +1192,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func personCredits(personID: NSNumber, completion: (error: NSError?) -> Void?) throws {
@@ -1206,18 +1206,18 @@ class TMDBManager: NSObject {
         let parameters = [TMDBConstants.APIKey: apiKey!]
         
         let success = { (results: AnyObject!) in
-            let person = ObjectManager.sharedInstance().findOrCreatePerson([Person.Keys.PersonID: personID])
+            let person = ObjectManager.sharedInstance.findOrCreatePerson([Person.Keys.PersonID: personID])
             
             if let dict = results as? [String: AnyObject] {
                 if let cast = dict["cast"] as? [[String: AnyObject]] {
                     for c in cast {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Cast, creditParent: .Person, forObject: person)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Cast, creditParent: .Person, forObject: person)
                     }
                 }
                 
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
-                        ObjectManager.sharedInstance().findOrCreateCredit(c, creditType: .Crew, creditParent: .Person, forObject: person)
+                        ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Crew, creditParent: .Person, forObject: person)
                     }
                 }
             }
@@ -1228,7 +1228,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: Genre
@@ -1246,7 +1246,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["genres"] as? [[String: AnyObject]] {
                     for genre in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateGenre(genre)
+                        let m = ObjectManager.sharedInstance.findOrCreateGenre(genre)
                         if let genreID = m.genreID {
                             genreIDs.append(genreID)
                         }
@@ -1254,7 +1254,7 @@ class TMDBManager: NSObject {
                     }
                 }
             }
-            CoreDataManager.sharedInstance().savePrivateContext()
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(arrayIDs: genreIDs, error: nil)
         }
         
@@ -1262,7 +1262,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: genreIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func genresTVShow(completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -1279,7 +1279,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["genres"] as? [[String: AnyObject]] {
                     for genre in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateGenre(genre)
+                        let m = ObjectManager.sharedInstance.findOrCreateGenre(genre)
                         if let genreID = m.genreID {
                             genreIDs.append(genreID)
                         }
@@ -1287,7 +1287,7 @@ class TMDBManager: NSObject {
                     }
                 }
             }
-            CoreDataManager.sharedInstance().savePrivateContext()
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(arrayIDs: genreIDs, error: nil)
         }
         
@@ -1295,7 +1295,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: genreIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: Search
@@ -1320,7 +1320,7 @@ class TMDBManager: NSObject {
                             var ids:[NSNumber]?
                             
                             if mediaType == "movie" {
-                                let m = ObjectManager.sharedInstance().findOrCreateMovie(dict)
+                                let m = ObjectManager.sharedInstance.findOrCreateMovie(dict)
                                 if let movieID = m.movieID {
                                     if let x = media[MediaType.Movie] as? [NSNumber] {
                                         ids = x
@@ -1331,7 +1331,7 @@ class TMDBManager: NSObject {
                                     media[MediaType.Movie] = ids
                                 }
                             } else if mediaType == "tv" {
-                                let m = ObjectManager.sharedInstance().findOrCreateTVShow(dict)
+                                let m = ObjectManager.sharedInstance.findOrCreateTVShow(dict)
                                 if let tvShowID = m.tvShowID {
                                     if let x = media[MediaType.TVShow] as? [NSNumber] {
                                         ids = x
@@ -1342,7 +1342,7 @@ class TMDBManager: NSObject {
                                     media[MediaType.TVShow] = ids
                                 }
                             } else if mediaType == "person" {
-                                let m = ObjectManager.sharedInstance().findOrCreatePerson(dict)
+                                let m = ObjectManager.sharedInstance.findOrCreatePerson(dict)
                                 if let personID = m.personID {
                                     if let x = media[MediaType.Person] as? [NSNumber] {
                                         ids = x
@@ -1365,7 +1365,7 @@ class TMDBManager: NSObject {
             completion(results: media, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func searchMovie(query: String, releaseYear year: Int, includeAdult: Bool, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -1389,7 +1389,7 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for dict in json {
                         
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(dict)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(dict)
                         if let movieID = m.movieID {
                             array.append(movieID)
                         }
@@ -1404,7 +1404,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: array, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func searchTVShow(query: String, firstAirDate year: Int, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -1427,7 +1427,7 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for dict in json {
                         
-                        let m = ObjectManager.sharedInstance().findOrCreateTVShow(dict)
+                        let m = ObjectManager.sharedInstance.findOrCreateTVShow(dict)
                         if let tvShowID = m.tvShowID {
                             array.append(tvShowID)
                         }
@@ -1442,7 +1442,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: array, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func searchPeople(query: String, includeAdult: Bool, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -1463,7 +1463,7 @@ class TMDBManager: NSObject {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for dict in json {
                         
-                        let m = ObjectManager.sharedInstance().findOrCreatePerson(dict)
+                        let m = ObjectManager.sharedInstance.findOrCreatePerson(dict)
                         if let personID = m.personID {
                             array.append(personID)
                         }
@@ -1478,7 +1478,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: array, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     // MARK: Lists
@@ -1506,7 +1506,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for list in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateList(list)
+                        let m = ObjectManager.sharedInstance.findOrCreateList(list)
                         m.createdBy = self.account
                         
                         if let listID = m.listID {
@@ -1515,7 +1515,7 @@ class TMDBManager: NSObject {
                     }
                 }
             }
-            CoreDataManager.sharedInstance().savePrivateContext()
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(arrayIDs: listIDs, error: nil)
         }
         
@@ -1523,7 +1523,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: listIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func listDetails(listID: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
@@ -1541,7 +1541,7 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["items"] as? [[String: AnyObject]] {
                     for movie in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateMovie(movie)
+                        let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
                         }
@@ -1555,7 +1555,7 @@ class TMDBManager: NSObject {
             completion(arrayIDs: movieIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func createList(name: String, description: String, completion: (error: NSError?) -> Void) throws {
@@ -1599,7 +1599,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func deleteList(listID: String, completion: (error: NSError?) -> Void) throws {
@@ -1628,7 +1628,7 @@ class TMDBManager: NSObject {
                         // force refresh of Lists
                         NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
                         
-                        ObjectManager.sharedInstance().deleteObject("List", objectKey: "listID", objectValue: listID)
+                        ObjectManager.sharedInstance.deleteObject("List", objectKey: "listID", objectValue: listID)
                         
                         completion(error: nil)
                     } else {
@@ -1646,7 +1646,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func addMovie(movieID: NSNumber, toList listID: String, completion: (error: NSError?) -> Void) throws {
@@ -1676,11 +1676,11 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let statusCode = dict["status_code"] as? Int {
                     if statusCode == 12 { // 12 	201 	The item/record was updated successfully.
-                        let list = ObjectManager.sharedInstance().findOrCreateList([List.Keys.ListID: listID])
-                        let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+                        let list = ObjectManager.sharedInstance.findOrCreateList([List.Keys.ListID: listID])
+                        let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
                         let movies = list.mutableSetValueForKey("movies")
                         movies.addObject(movie)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         completion(error: nil)
                     } else {
@@ -1698,7 +1698,7 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func removeMovie(movieID: NSNumber, fromList listID: String, completion: (error: NSError?) -> Void) throws {
@@ -1728,11 +1728,11 @@ class TMDBManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let statusCode = dict["status_code"] as? Int {
                     if statusCode == 13 { // 13 	200 	The item/record was deleted successfully.
-                        let list = ObjectManager.sharedInstance().findOrCreateList([List.Keys.ListID: listID])
-                        let movie = ObjectManager.sharedInstance().findOrCreateMovie([Movie.Keys.MovieID: movieID])
+                        let list = ObjectManager.sharedInstance.findOrCreateList([List.Keys.ListID: listID])
+                        let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
                         let movies = list.mutableSetValueForKey("movies")
                         movies.removeObject(movie)
-                        CoreDataManager.sharedInstance().savePrivateContext()
+                        CoreDataManager.sharedInstance.savePrivateContext()
                         
                         completion(error: nil)
                     } else {
@@ -1750,16 +1750,9 @@ class TMDBManager: NSObject {
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     // MARK: Shared Instance
-    class func sharedInstance() -> TMDBManager {
-        
-        struct Singleton {
-            static var sharedInstance = TMDBManager()
-        }
-        
-        return Singleton.sharedInstance
-    }
+    static let sharedInstance = TMDBManager()
 }

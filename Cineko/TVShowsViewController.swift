@@ -112,11 +112,11 @@ class TVShowsViewController: UIViewController {
         dynamicFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
         dynamicFetchRequest!.sortDescriptors = descriptors
         
-        if TMDBManager.sharedInstance().needsRefresh(refreshData!) {
+        if TMDBManager.sharedInstance.needsRefresh(refreshData!) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(refreshData!)
+                        TMDBManager.sharedInstance.deleteRefreshData(refreshData!)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
             
@@ -134,7 +134,7 @@ class TVShowsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().tvShows(path!, completion: completion)
+                try TMDBManager.sharedInstance.tvShows(path!, completion: completion)
                 
             } catch {}
             
@@ -153,12 +153,12 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "firstAirDate", ascending: true),
             NSSortDescriptor(key: "name", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.FavoriteTVShows) {
-            if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.FavoriteTVShows) {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                     performUIUpdatesOnMain {
                         if let error = error {
-                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.FavoriteTVShows)
+                            TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.FavoriteTVShows)
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                         }
                         
@@ -175,7 +175,7 @@ class TVShowsViewController: UIViewController {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                         MBProgressHUD.showHUDAddedTo(cell, animated: true)
                     }
-                    try TMDBManager.sharedInstance().accountFavoriteTVShows(completion)
+                    try TMDBManager.sharedInstance.accountFavoriteTVShows(completion)
                     
                 } catch {
                     favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
@@ -194,7 +194,7 @@ class TVShowsViewController: UIViewController {
             }
             
         } else {
-            if TMDBManager.sharedInstance().hasSessionID() {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
                 favoritesFetchRequest = nil
@@ -213,12 +213,12 @@ class TVShowsViewController: UIViewController {
             NSSortDescriptor(key: "firstAirDate", ascending: true),
             NSSortDescriptor(key: "name", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.WatchlistTVShows) {
-            if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.WatchlistTVShows) {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                     performUIUpdatesOnMain {
                         if let error = error {
-                            TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.WatchlistTVShows)
+                            TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.WatchlistTVShows)
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                         }
                         
@@ -235,7 +235,7 @@ class TVShowsViewController: UIViewController {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.showHUDAddedTo(cell, animated: true)
                     }
-                    try TMDBManager.sharedInstance().accountWatchlistTVShows(completion)
+                    try TMDBManager.sharedInstance.accountWatchlistTVShows(completion)
                     
                 } catch {
                     watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
@@ -254,7 +254,7 @@ class TVShowsViewController: UIViewController {
             }
 
         } else {
-            if TMDBManager.sharedInstance().hasSessionID() {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
                 watchlistFetchRequest = nil

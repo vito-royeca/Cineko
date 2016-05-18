@@ -28,7 +28,7 @@ class SeeAllViewController: UIViewController {
     var showCaption = false
     var fetchRequest:NSFetchRequest?
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        let context = CoreDataManager.sharedInstance().mainObjectContext
+        let context = CoreDataManager.sharedInstance.mainObjectContext
         self.fetchRequest!.fetchLimit = -1
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
                                                                   managedObjectContext: context,

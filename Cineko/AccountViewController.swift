@@ -31,7 +31,7 @@ class AccountViewController: UIViewController {
                 if let _listsFetchRequest = _listsFetchRequest {
                     _listsFetchRequest.sortDescriptors = [
                         NSSortDescriptor(key: "name", ascending: true)]
-                    let context = CoreDataManager.sharedInstance().mainObjectContext
+                    let context = CoreDataManager.sharedInstance.mainObjectContext
 //                    let context = CoreDataManager.sharedInstance().privateContext
                     fetchedResultsController = NSFetchedResultsController(fetchRequest: _listsFetchRequest,
                                                                           managedObjectContext: context,
@@ -42,7 +42,7 @@ class AccountViewController: UIViewController {
         }
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        let context = CoreDataManager.sharedInstance().mainObjectContext
+        let context = CoreDataManager.sharedInstance.mainObjectContext
 //        let context = CoreDataManager.sharedInstance().privateContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.listsFetchRequest!,
                                                                   managedObjectContext: context,
@@ -54,14 +54,14 @@ class AccountViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func loginAction(sender: UIBarButtonItem) {
-        if let _ = TMDBManager.sharedInstance().account {
-            TMDBManager.sharedInstance().logout()
+        if let _ = TMDBManager.sharedInstance.account {
+            TMDBManager.sharedInstance.logout()
             loginButton.title = "Login"
             loadLists()
             
         } else {
             do {
-                if let requestToken = try TMDBManager.sharedInstance().getAvailableRequestToken() {
+                if let requestToken = try TMDBManager.sharedInstance.getAvailableRequestToken() {
                     let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
                     self.presentLoginViewController(urlString)
                     
@@ -73,7 +73,7 @@ class AccountViewController: UIViewController {
                             if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
                                 
                                 do {
-                                    try TMDBManager.sharedInstance().saveRequestToken(requestToken)
+                                    try TMDBManager.sharedInstance.saveRequestToken(requestToken)
                                 } catch {}
                                 
                                 performUIUpdatesOnMain {
@@ -94,7 +94,7 @@ class AccountViewController: UIViewController {
                     }
                     
                     do {
-                        try TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
+                        try TMDBManager.sharedInstance.authenticationTokenNew(success, failure: failure)
                     } catch {}
                 }
             } catch {}
@@ -110,7 +110,7 @@ class AccountViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let _ = TMDBManager.sharedInstance().account {
+        if let _ = TMDBManager.sharedInstance.account {
             loginButton.title = "Logout"
             addButton.enabled = true
         } else {
@@ -146,12 +146,12 @@ class AccountViewController: UIViewController {
     func loadLists() {
         listsFetchRequest = NSFetchRequest(entityName: "List")
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.Lists) {
-            if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.Lists) {
+            if TMDBManager.sharedInstance.hasSessionID() {
                 let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                     
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.Lists)
+                        TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.Lists)
                         performUIUpdatesOnMain {
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                         }
@@ -165,7 +165,7 @@ class AccountViewController: UIViewController {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) {
                         MBProgressHUD.showHUDAddedTo(cell, animated: true)
                     }
-                    try TMDBManager.sharedInstance().lists(completion)
+                    try TMDBManager.sharedInstance.lists(completion)
                     
                 } catch {
                     listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
@@ -177,8 +177,8 @@ class AccountViewController: UIViewController {
             }
             
         } else {
-            if TMDBManager.sharedInstance().hasSessionID() {
-                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance().account!)
+            if TMDBManager.sharedInstance.hasSessionID() {
+                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
             } else {
                 listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
             }
@@ -224,7 +224,7 @@ class AccountViewController: UIViewController {
         
         do {
             MBProgressHUD.showHUDAddedTo(view, animated: true)
-            try TMDBManager.sharedInstance().deleteList(list.listID!, completion: completion)
+            try TMDBManager.sharedInstance.deleteList(list.listID!, completion: completion)
         } catch {
             MBProgressHUD.hideHUDForView(view, animated: true)
         }
@@ -271,7 +271,7 @@ extension AccountViewController : UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
-            if let account = TMDBManager.sharedInstance().account {
+            if let account = TMDBManager.sharedInstance.account {
                 cell.textLabel!.text = account.name
                 cell.detailTextLabel!.text = account.username
                 
@@ -372,7 +372,7 @@ extension AccountViewController : LoginViewControllerDelegate {
         }
         
         do {
-            try TMDBManager.sharedInstance().downloadInitialData(completion)
+            try TMDBManager.sharedInstance.downloadInitialData(completion)
         } catch {}
     }
 }

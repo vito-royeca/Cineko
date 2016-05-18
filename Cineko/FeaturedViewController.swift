@@ -37,7 +37,7 @@ class FeaturedViewController: UIViewController {
         }
         
         do {
-            try TMDBManager.sharedInstance().downloadInitialData(completion)
+            try TMDBManager.sharedInstance.downloadInitialData(completion)
         } catch {}
     }
     
@@ -61,11 +61,11 @@ class FeaturedViewController: UIViewController {
             NSSortDescriptor(key: "releaseDate", ascending: true),
             NSSortDescriptor(key: "title", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.MoviesNowShowing) {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.MoviesNowShowing) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.MoviesNowShowing)
+                        TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.MoviesNowShowing)
                             JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
@@ -83,7 +83,7 @@ class FeaturedViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
+                try TMDBManager.sharedInstance.movies(TMDBConstants.Movies.NowPlaying.Path, completion: completion)
                 
             } catch {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
@@ -105,11 +105,11 @@ class FeaturedViewController: UIViewController {
         airingTodayFetchRequest!.sortDescriptors = [
             NSSortDescriptor(key: "name", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.TVShowsAiringToday) {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.TVShowsAiringToday) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.TVShowsAiringToday)
+                        TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.TVShowsAiringToday)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
@@ -127,7 +127,7 @@ class FeaturedViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
+                try TMDBManager.sharedInstance.tvShows(TMDBConstants.TVShows.AiringToday.Path, completion: completion)
                 
             } catch {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
@@ -151,11 +151,11 @@ class FeaturedViewController: UIViewController {
             NSSortDescriptor(key: "popularity", ascending: false),
             NSSortDescriptor(key: "name", ascending: true)]
         
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.PeoplePopular) {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.PeoplePopular) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
                     if let error = error {
-                        TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.PeoplePopular)
+                        TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.PeoplePopular)
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
@@ -174,7 +174,7 @@ class FeaturedViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TMDBManager.sharedInstance().peoplePopular(completion)
+                try TMDBManager.sharedInstance.peoplePopular(completion)
                 
             } catch {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {

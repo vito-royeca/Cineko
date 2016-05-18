@@ -39,7 +39,7 @@ class PersonDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowCreditsTableViewCell")
         
         if let personID = personID {
-            let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
             navigationItem.title = person.name
         }
         
@@ -55,7 +55,7 @@ class PersonDetailsViewController: UIViewController {
     // MARK: Custom Methods
     func loadPhotos() {
         if let personID = personID {
-            let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -76,7 +76,7 @@ class PersonDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().personImages(person.personID!, completion: completion)
+                try TMDBManager.sharedInstance.personImages(person.personID!, completion: completion)
             } catch {
                 MBProgressHUD.hideHUDForView(view, animated: true)
                 self.tableView.reloadData()
@@ -86,7 +86,7 @@ class PersonDetailsViewController: UIViewController {
     
     func loadDetails() {
         if let personID = personID {
-            let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -105,14 +105,14 @@ class PersonDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().personDetails(person.personID!, completion: completion)
+                try TMDBManager.sharedInstance.personDetails(person.personID!, completion: completion)
             } catch {}
         }
     }
 
     func loadCombinedCredits() {
         if let personID = personID {
-            let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -178,7 +178,7 @@ class PersonDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().personCredits(person.personID!, completion: completion)
+                try TMDBManager.sharedInstance.personCredits(person.personID!, completion: completion)
             } catch {}
         }
     }
@@ -207,7 +207,7 @@ class PersonDetailsViewController: UIViewController {
         case 1:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let personID = personID {
-                    let person = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(personID) as! Person
+                    let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
                     var text = String()
                     
                     if let alsoKnownAs = person.alsoKnownAs {
@@ -337,7 +337,7 @@ class PersonDetailsViewController: UIViewController {
         if let photosFetchRequest = photosFetchRequest {
             var photos = [IDMPhoto]()
             
-            for image in ObjectManager.sharedInstance().fetchObjects(photosFetchRequest) as! [Image] {
+            for image in ObjectManager.sharedInstance.fetchObjects(photosFetchRequest) as! [Image] {
                 if let filePath = image.filePath {
                     let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.ProfileSizes[4])\(filePath)")
                     let photo = IDMPhoto(URL: url)

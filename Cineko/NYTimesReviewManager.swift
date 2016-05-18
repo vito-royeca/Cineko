@@ -48,7 +48,7 @@ class NYTimesReviewManager: NSObject {
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for review in json {
-                        let m = ObjectManager.sharedInstance().findOrCreateReview(review)
+                        let m = ObjectManager.sharedInstance.findOrCreateReview(review)
                         reviewIDs.append(m.objectID)
                     }
                 }
@@ -60,16 +60,9 @@ class NYTimesReviewManager: NSObject {
             completion(objectIDs: reviewIDs, error: error)
         }
         
-        NetworkManager.sharedInstance().exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     // MARK: Shared Instance
-    class func sharedInstance() -> NYTimesReviewManager {
-        
-        struct Singleton {
-            static var sharedInstance = NYTimesReviewManager()
-        }
-        
-        return Singleton.sharedInstance
-    }
+    static let sharedInstance = NYTimesReviewManager()
 }

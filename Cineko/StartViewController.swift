@@ -18,7 +18,7 @@ class StartViewController: UIViewController {
     @IBAction func loginAction(sender: UIButton) {
         
         do {
-            if let requestToken = try TMDBManager.sharedInstance().getAvailableRequestToken() {
+            if let requestToken = try TMDBManager.sharedInstance.getAvailableRequestToken() {
                 let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
                 self.presentLoginViewController(urlString)
             
@@ -28,7 +28,7 @@ class StartViewController: UIViewController {
                         if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
                             
                             do {
-                             try TMDBManager.sharedInstance().saveRequestToken(requestToken)
+                             try TMDBManager.sharedInstance.saveRequestToken(requestToken)
                             } catch {}
                             
                             performUIUpdatesOnMain {
@@ -49,7 +49,7 @@ class StartViewController: UIViewController {
                 
                 do {
                     MBProgressHUD.showHUDAddedTo(view, animated: true)
-                    try TMDBManager.sharedInstance().authenticationTokenNew(success, failure: failure)
+                    try TMDBManager.sharedInstance.authenticationTokenNew(success, failure: failure)
                 } catch {}
             }
         } catch {}
@@ -74,7 +74,7 @@ class StartViewController: UIViewController {
 // MARK: LoginViewControllerDelegate
 extension StartViewController : LoginViewControllerDelegate {
     func loginSuccess(viewController: UIViewController) {
-        if TMDBManager.sharedInstance().hasSessionID() {
+        if TMDBManager.sharedInstance.hasSessionID() {
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
                 viewController.presentViewController(controller, animated: true, completion: nil)
             }

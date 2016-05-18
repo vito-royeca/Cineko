@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>140C</string>
+	<string>1410</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -31,6 +31,17 @@
 				<dict/>
 				<key>KitName</key>
 				<string>Crashlytics</string>
+			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>consumerKey</key>
+					<string>bo2nQW60JrFsO0myhFx85PVKY</string>
+					<key>consumerSecret</key>
+					<string>9XHzEgqIC1AuZCxZJjjZoF0zXhuG4Qe1Fr4L3zosulYjtYZ6n4</string>
+				</dict>
+				<key>KitName</key>
+				<string>Twitter</string>
 			</dict>
 		</array>
 	</dict>

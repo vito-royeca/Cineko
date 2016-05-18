@@ -16,10 +16,10 @@ class ObjectManager: NSObject {
     
     // MARK: Variables
     private var privateContext: NSManagedObjectContext {
-        return CoreDataManager.sharedInstance().privateContext
+        return CoreDataManager.sharedInstance.privateContext
     }
     private var mainObjectContext: NSManagedObjectContext {
-        return CoreDataManager.sharedInstance().mainObjectContext
+        return CoreDataManager.sharedInstance.mainObjectContext
     }
     
     func findOrCreateMovie(dict: [String: AnyObject]) -> Movie {
@@ -80,7 +80,7 @@ class ObjectManager: NSObject {
                     }
                     
                     m.update(dict)
-                    CoreDataManager.sharedInstance().savePrivateContext()
+                    CoreDataManager.sharedInstance.savePrivateContext()
                 }
             } catch let error as NSError {
                 print("Error in fetch \(error), \(error.userInfo)")
@@ -139,7 +139,7 @@ class ObjectManager: NSObject {
                     }
                     
                     m.update(dict)
-                    CoreDataManager.sharedInstance().savePrivateContext()
+                    CoreDataManager.sharedInstance.savePrivateContext()
                 }
             } catch let error as NSError {
                 print("Error in fetch \(error), \(error.userInfo)")
@@ -171,7 +171,7 @@ class ObjectManager: NSObject {
             do {
                 if let m = try privateContext.executeFetchRequest(fetchRequest).first as? Person {
                     m.update(dict)
-                    CoreDataManager.sharedInstance().savePrivateContext()
+                    CoreDataManager.sharedInstance.savePrivateContext()
                 }
             } catch let error as NSError {
                 print("Error in fetch \(error), \(error.userInfo)")
@@ -248,7 +248,7 @@ class ObjectManager: NSObject {
         case .PersonProfile:
             image.personProfile = object as? Person
         }
-        CoreDataManager.sharedInstance().savePrivateContext()
+        CoreDataManager.sharedInstance.savePrivateContext()
 
         
         return image
@@ -369,7 +369,7 @@ class ObjectManager: NSObject {
         
         credit.creditType = creditType.rawValue
         
-        CoreDataManager.sharedInstance().savePrivateContext()
+        CoreDataManager.sharedInstance.savePrivateContext()
         
         return credit
     }
@@ -410,7 +410,7 @@ class ObjectManager: NSObject {
                 
             } else {
                 object = initializer(dict: dict, context: privateContext)
-                CoreDataManager.sharedInstance().savePrivateContext()
+                CoreDataManager.sharedInstance.savePrivateContext()
             }
             
         } catch let error as NSError {
@@ -457,7 +457,7 @@ class ObjectManager: NSObject {
         do {
             if let m = try privateContext.executeFetchRequest(fetchRequest).first as? NSManagedObject {
                 privateContext.deleteObject(m)
-                CoreDataManager.sharedInstance().savePrivateContext()
+                CoreDataManager.sharedInstance.savePrivateContext()
                 
             }
             
@@ -493,11 +493,5 @@ class ObjectManager: NSObject {
     }
     
     // MARK: - Shared Instance
-    class func sharedInstance() -> ObjectManager {
-        struct Static {
-            static let instance = ObjectManager()
-        }
-        
-        return Static.instance
-    }
+    static let sharedInstance = ObjectManager()
 }

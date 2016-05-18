@@ -31,7 +31,7 @@ class ListDetailsViewController: UIViewController {
         
         let overwriteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
             if let listID = self.listID {
-                let list = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(listID) as! List
+                let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
                 self.deleteList(list)
             }
         }
@@ -58,7 +58,7 @@ class ListDetailsViewController: UIViewController {
     // MARK: Custom Methods
     func loadMovies() {
         if let listID = listID {
-            let list = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(listID) as! List
+            let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
             
             moviesFetchRequest = NSFetchRequest(entityName: "Movie")
             moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
@@ -86,7 +86,7 @@ class ListDetailsViewController: UIViewController {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 
-                try TMDBManager.sharedInstance().listDetails(list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.listDetails(list.listID!, completion: completion)
             } catch {}
         }
     }
@@ -109,7 +109,7 @@ class ListDetailsViewController: UIViewController {
         
         do {
             MBProgressHUD.showHUDAddedTo(view, animated: true)
-            try TMDBManager.sharedInstance().deleteList(list.listID!, completion: completion)
+            try TMDBManager.sharedInstance.deleteList(list.listID!, completion: completion)
         } catch {
             MBProgressHUD.hideHUDForView(view, animated: true)
         }
@@ -124,7 +124,7 @@ class ListDetailsViewController: UIViewController {
         case 0:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let listID = listID {
-                    let list = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(listID) as! List
+                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                     c.dynamicLabel.text = list.name
@@ -134,7 +134,7 @@ class ListDetailsViewController: UIViewController {
         case 1:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let listID = listID {
-                    let list = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(listID) as! List
+                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                     c.dynamicLabel.text = list.description_

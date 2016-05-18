@@ -29,12 +29,5 @@ class RTManager: NSObject {
     }
     
     // MARK: - Shared Instance
-    class func sharedInstance() -> RTManager {
-        
-        struct Singleton {
-            static var sharedInstance = RTManager()
-        }
-        
-        return Singleton.sharedInstance
-    }
+    static let sharedInstance = RTManager()
 }

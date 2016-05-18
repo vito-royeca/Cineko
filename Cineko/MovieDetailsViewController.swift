@@ -39,7 +39,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Actions
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -54,7 +54,7 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
+                try TMDBManager.sharedInstance.accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
             } catch {
                 self.updateButtons()
             }
@@ -63,7 +63,7 @@ class MovieDetailsViewController: UIViewController {
     
     @IBAction func watchlistAction(sender: UIBarButtonItem) {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -78,7 +78,7 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
+                try TMDBManager.sharedInstance.accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
             } catch {
                 self.updateButtons()
             }
@@ -140,7 +140,7 @@ class MovieDetailsViewController: UIViewController {
         updateButtons()
         
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             if let posterPath = movie.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
@@ -192,7 +192,7 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Custom Methods
     func updateButtons() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             if let favorite = movie.favorite {
                 isFavorite = favorite.boolValue
@@ -205,7 +205,7 @@ class MovieDetailsViewController: UIViewController {
             watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
         }
         
-        let hasSession = TMDBManager.sharedInstance().hasSessionID()
+        let hasSession = TMDBManager.sharedInstance.hasSessionID()
         favoriteButton.enabled = hasSession
         watchlistButton.enabled = hasSession
         listButton.enabled = hasSession
@@ -213,7 +213,7 @@ class MovieDetailsViewController: UIViewController {
 
     func loadDetails() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -233,14 +233,14 @@ class MovieDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().movieDetails(movie.movieID!, completion: completion)
+                try TMDBManager.sharedInstance.movieDetails(movie.movieID!, completion: completion)
             } catch {}
         }
     }
     
     func loadPhotos() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -264,14 +264,14 @@ class MovieDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().movieImages(movie.movieID!, completion: completion)
+                try TMDBManager.sharedInstance.movieImages(movie.movieID!, completion: completion)
             } catch {}
         }
     }
 
     func loadCastAndCrew() {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -297,7 +297,7 @@ class MovieDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().movieCredits(movie.movieID!, completion: completion)
+                try TMDBManager.sharedInstance.movieCredits(movie.movieID!, completion: completion)
             } catch {}
         }
     }
@@ -328,7 +328,7 @@ class MovieDetailsViewController: UIViewController {
         case 1:
             if let c = cell as? MediaInfoTableViewCell {
                 if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
                     
                     if let releaseDate = movie.releaseDate {
                         c.dateLabel.text = releaseDate
@@ -343,7 +343,7 @@ class MovieDetailsViewController: UIViewController {
         case 2:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let movieID = movieID {
-                    let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+                    let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
                     var text = String()
                     
                     // genre
@@ -482,7 +482,7 @@ class MovieDetailsViewController: UIViewController {
         if let backdropFetchRequest = backdropFetchRequest {
             var photos = [IDMPhoto]()
             
-            for image in ObjectManager.sharedInstance().fetchObjects(backdropFetchRequest) as! [Image] {
+            for image in ObjectManager.sharedInstance.fetchObjects(backdropFetchRequest) as! [Image] {
                 if let filePath = image.filePath {
                     let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[3])\(filePath)")
                     let photo = IDMPhoto(URL: url)
@@ -500,7 +500,7 @@ class MovieDetailsViewController: UIViewController {
         if let posterFetchRequest = posterFetchRequest {
             var photos = [IDMPhoto]()
             
-            for image in ObjectManager.sharedInstance().fetchObjects(posterFetchRequest) as! [Image] {
+            for image in ObjectManager.sharedInstance.fetchObjects(posterFetchRequest) as! [Image] {
                 if let filePath = image.filePath {
                     let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[6])\(filePath)")
                     let photo = IDMPhoto(URL: url)
@@ -582,7 +582,7 @@ class MovieDetailsViewController: UIViewController {
     
     func addMovieToList(list: List) {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -596,7 +596,7 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().addMovie(movie.movieID!, toList: list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.addMovie(movie.movieID!, toList: list.listID!, completion: completion)
             } catch {
                 JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
             }
@@ -605,7 +605,7 @@ class MovieDetailsViewController: UIViewController {
     
     func removeMovieFromList(list: List) {
         if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -619,7 +619,7 @@ class MovieDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().removeMovie(movie.movieID!, fromList: list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.removeMovie(movie.movieID!, fromList: list.listID!, completion: completion)
             } catch {
                 JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
             }
@@ -627,31 +627,31 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func findLists(callback: (lists: [AnyObject]) -> Void) {
-        if TMDBManager.sharedInstance().needsRefresh(TMDBConstants.Device.Keys.Lists) {
+        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.Lists) {
             let completion = { (arrayIDs: [AnyObject], error: NSError?) in
                 if let error = error {
-                    TMDBManager.sharedInstance().deleteRefreshData(TMDBConstants.Device.Keys.Lists)
+                    TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.Lists)
                     performUIUpdatesOnMain {
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                 }
                 
                 let predicate = NSPredicate(format: "listID IN %@", arrayIDs)
-                let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+                let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
                 callback(lists: lists)
             }
             
             do {
-                try TMDBManager.sharedInstance().lists(completion)
+                try TMDBManager.sharedInstance.lists(completion)
             } catch {
-                let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance().account!)
-                let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+                let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
+                let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
                 callback(lists: lists)
             }
             
         } else {
-            let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance().account!)
-            let lists = ObjectManager.sharedInstance().findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
+            let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
+            let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
             callback(lists: lists)
         }
     }

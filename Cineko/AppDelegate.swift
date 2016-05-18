@@ -10,6 +10,7 @@ import UIKit
 
 import Fabric
 import Crashlytics
+import TwitterKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,23 +20,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Crashlytics
-        Fabric.with([Crashlytics.self])
+        Fabric.with([Crashlytics.self, Twitter.self])
         
         // Core Data
-        CoreDataManager.sharedInstance().setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
+        CoreDataManager.sharedInstance.setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)
         
         // TMDB
-        TMDBManager.sharedInstance().setup(Constants.TMDBAPIKeyValue)
-        TMDBManager.sharedInstance().deleteAllRefreshData()
+        TMDBManager.sharedInstance.setup(Constants.TMDBAPIKeyValue)
+        TMDBManager.sharedInstance.deleteAllRefreshData()
         
         // NYTimes Movie Reviews
-        NYTimesReviewManager.sharedInstance().setup(Constants.NYTimesReviewAPIKeyValue)
+        NYTimesReviewManager.sharedInstance.setup(Constants.NYTimesReviewAPIKeyValue)
         
         // Docs Directory
         print("docs = \(NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!)")
         
         // if we have TMDB session id show the main interface, else show the start page
-        let viewControllerID = TMDBManager.sharedInstance().hasSessionID() ? "DrawerController" : "StartViewController"
+        let viewControllerID = TMDBManager.sharedInstance.hasSessionID() ? "DrawerController" : "StartViewController"
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
@@ -66,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        CoreDataManager.sharedInstance().saveMainContext()
+        CoreDataManager.sharedInstance.saveMainContext()
     }
 }
 

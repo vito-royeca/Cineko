@@ -43,7 +43,7 @@ class CoreDataManager: NSObject {
     // MARK: - The Core Data stack. The code has been moved, unaltered, from the AppDelegate.
     
     lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.jovitoroyeca.Virtual_Tourist" in the application's documents Application Support directory.
+        // The directory the application uses to store the Core Data store file.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[urls.count-1]
     }()
@@ -135,11 +135,5 @@ class CoreDataManager: NSObject {
     }
     
     // MARK: - Shared Instance
-    class func sharedInstance() -> CoreDataManager {
-        struct Static {
-            static let instance = CoreDataManager()
-        }
-        
-        return Static.instance
-    }
+    static let sharedInstance = CoreDataManager()
 }

@@ -150,12 +150,5 @@ class NetworkManager: NSObject {
     }
     
     // MARK: - Shared Instance
-    class func sharedInstance() -> NetworkManager {
-        
-        struct Singleton {
-            static var sharedInstance = NetworkManager()
-        }
-        
-        return Singleton.sharedInstance
-    }
+    static let sharedInstance = NetworkManager()
 }

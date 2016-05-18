@@ -37,7 +37,7 @@ class ThumbnailTableViewCell: UITableViewCell {
                 
                 // force reset the fetchedResultsController
                 if let _fetchRequest = _fetchRequest {
-                    let context = CoreDataManager.sharedInstance().mainObjectContext
+                    let context = CoreDataManager.sharedInstance.mainObjectContext
                     fetchedResultsController = NSFetchedResultsController(fetchRequest: _fetchRequest,
                                                                   managedObjectContext: context,
                                                                     sectionNameKeyPath: nil,
@@ -47,7 +47,7 @@ class ThumbnailTableViewCell: UITableViewCell {
         }
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        let context = CoreDataManager.sharedInstance().mainObjectContext
+        let context = CoreDataManager.sharedInstance.mainObjectContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!,
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: nil,

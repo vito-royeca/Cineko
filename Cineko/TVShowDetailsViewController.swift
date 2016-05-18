@@ -36,7 +36,7 @@ class TVShowDetailsViewController: UIViewController {
     // MARK: Actions
     @IBAction func favoriteAction(sender: UIBarButtonItem) {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -51,7 +51,7 @@ class TVShowDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().accountFavorite(tvShow.tvShowID!, mediaType: .TVShow, favorite: !isFavorite, completion: completion)
+                try TMDBManager.sharedInstance.accountFavorite(tvShow.tvShowID!, mediaType: .TVShow, favorite: !isFavorite, completion: completion)
             } catch {
                 self.updateButtons()
             }
@@ -60,7 +60,7 @@ class TVShowDetailsViewController: UIViewController {
     
     @IBAction func watchlistAction(sender: UIBarButtonItem) {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -75,7 +75,7 @@ class TVShowDetailsViewController: UIViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().accountWatchlist(tvShow.tvShowID!, mediaType: .TVShow, watchlist: !isWatchlist, completion: completion)
+                try TMDBManager.sharedInstance.accountWatchlist(tvShow.tvShowID!, mediaType: .TVShow, watchlist: !isWatchlist, completion: completion)
             } catch {
                 self.updateButtons()
             }
@@ -116,7 +116,7 @@ class TVShowDetailsViewController: UIViewController {
         updateButtons()
         
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             if let posterPath = tvShow.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
                 let backgroundView = UIImageView()
@@ -167,7 +167,7 @@ class TVShowDetailsViewController: UIViewController {
     // MARK: Custom Methods
     func updateButtons() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             if let favorite = tvShow.favorite {
                 isFavorite = favorite.boolValue
@@ -180,14 +180,14 @@ class TVShowDetailsViewController: UIViewController {
             watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
         }
         
-        let hasSession = TMDBManager.sharedInstance().hasSessionID()
+        let hasSession = TMDBManager.sharedInstance.hasSessionID()
         favoriteButton.enabled = hasSession
         watchlistButton.enabled = hasSession
     }
     
     func loadDetails() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -212,14 +212,14 @@ class TVShowDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().tvShowDetails(tvShow.tvShowID!, completion: completion)
+                try TMDBManager.sharedInstance.tvShowDetails(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
     }
     
     func loadPhotos() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -237,14 +237,14 @@ class TVShowDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().tvShowImages(tvShow.tvShowID!, completion: completion)
+                try TMDBManager.sharedInstance.tvShowImages(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
     }
     
     func loadCastAndCrew() {
         if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -270,7 +270,7 @@ class TVShowDetailsViewController: UIViewController {
             }
             
             do {
-                try TMDBManager.sharedInstance().tvShowCredits(tvShow.tvShowID!, completion: completion)
+                try TMDBManager.sharedInstance.tvShowCredits(tvShow.tvShowID!, completion: completion)
             } catch {}
         }
     }
@@ -296,7 +296,7 @@ class TVShowDetailsViewController: UIViewController {
         case 1:
             if let c = cell as? MediaInfoTableViewCell {
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
                     var dateText = String()
                     
                     if let firstAirDate = tvShow.firstAirDate {
@@ -324,7 +324,7 @@ class TVShowDetailsViewController: UIViewController {
         case 2:
             if let c = cell as? DynamicHeightTableViewCell {
                 if let tvShowID = tvShowID {
-                    let tvShow = CoreDataManager.sharedInstance().mainObjectContext.objectWithID(tvShowID) as! TVShow
+                    let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
                     var text = String()
                     
                     // genre
@@ -436,7 +436,7 @@ class TVShowDetailsViewController: UIViewController {
         if let backdropFetchRequest = backdropFetchRequest {
             var photos = [IDMPhoto]()
             
-            for image in ObjectManager.sharedInstance().fetchObjects(backdropFetchRequest) as! [Image] {
+            for image in ObjectManager.sharedInstance.fetchObjects(backdropFetchRequest) as! [Image] {
                 if let filePath = image.filePath {
                     let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[3])\(filePath)")
                     let photo = IDMPhoto(URL: url)

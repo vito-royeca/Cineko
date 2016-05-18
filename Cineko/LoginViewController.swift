@@ -74,7 +74,7 @@ class LoginViewController: UIViewController {
         }
         
         do {
-            try TMDBManager.sharedInstance().authenticationSessionNew(completion)
+            try TMDBManager.sharedInstance.authenticationSessionNew(completion)
         } catch {}
     }
 }
@@ -100,12 +100,12 @@ extension LoginViewController: UIWebViewDelegate {
                 } else {
                     if let lastPath = url.lastPathComponent {
                         do {
-                            if try lastPath == TMDBManager.sharedInstance().getAvailableRequestToken() {
+                            if try lastPath == TMDBManager.sharedInstance.getAvailableRequestToken() {
                                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                                 hasHUD = false
                                 
                             } else if lastPath == "deny" {
-                                try TMDBManager.sharedInstance().removeRequestToken()
+                                try TMDBManager.sharedInstance.removeRequestToken()
                                 doneButton.enabled = true
                                 cancelButton.enabled = false
                                 

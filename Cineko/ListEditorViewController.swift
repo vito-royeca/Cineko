@@ -43,7 +43,7 @@ class ListEditorViewController : FormViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance().createList(name, description: description, completion: completion)
+                try TMDBManager.sharedInstance.createList(name, description: description, completion: completion)
             } catch {
                 MBProgressHUD.hideHUDForView(view, animated: true)
                 if let delegate = self.delegate {
