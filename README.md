@@ -18,6 +18,10 @@ This is the author's Udacity capstone project for the iOS Developer Nanodegree p
  * iPhone and iPad
  * Minimum iOS version: 9.0
  
+## App Store
+
+Cine Ko! is now available on the [App Store](https://itunes.apple.com/us/app/cine-ko!/id1105292175?ls=1&mt=8).
+
 ## Cloning
 
 Clone the GitHub repository and open the project workspace `Cineko.xcworkspace`. You may not need to install the Cocoapod dependencies as they are already inluded in the project repository.
@@ -28,12 +32,6 @@ $ cd Cineko
 $ open Cineko.xcworkspace
 ```
 
-## TestFlight
-
-If you want to participate in TestFlighting Cine Ko!, email your Apple ID below and I will add you to TestFlight External Testers
-
-[jovit.royeca@gmail.com](mailto:jovit.royeca@gmail.com)
- 
 ## Screenshots
 
 <img src="screenshots/IMG_01.png" width="30%" height="auto"/>
