@@ -11,6 +11,7 @@ import CoreData
 import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
+import TwitterKit
 
 class PersonDetailsViewController: UIViewController {
 
@@ -20,23 +21,27 @@ class PersonDetailsViewController: UIViewController {
     // MARK: Variables
     var personID:NSManagedObjectID?
     var homepage:String?
+    var detailsAndTweetsSelection:DetailsAndTweetsSelection = .Details
     var photosFetchRequest:NSFetchRequest?
     var moviesFetchRequest:NSFetchRequest?
     var tvShowsFetchRequest:NSFetchRequest?
     var movieCreditsFetchRequest:NSFetchRequest?
     var tvShowCreditsFetchRequest:NSFetchRequest?
+    var tweets:[AnyObject]?
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
+        tableView.registerNib(UINib(nibName: "DetailsAndTweetsTableViewCell", bundle: nil), forCellReuseIdentifier: "detailsAndTweetsTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "homepageTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowsTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "movieCreditsTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowCreditsTableViewCell")
+        tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
         
         if let personID = personID {
             let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
@@ -183,54 +188,98 @@ class PersonDetailsViewController: UIViewController {
         }
     }
     
-    func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        var homepageCount = 0
-        
-        if let _ = homepage {
-            homepageCount = 1
-        }
-        
-        // reset the accessory button
-        cell.accessoryType = .None
-        cell.selectionStyle = .None
-        
-        switch indexPath.row {
-        case 0:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = indexPath.row
-                c.titleLabel.text = "Photos"
-                c.fetchRequest = photosFetchRequest
-                c.displayType = .Profile
-                c.delegate = self
-                c.loadData()
-            }
-        case 1:
-            if let c = cell as? DynamicHeightTableViewCell {
-                if let personID = personID {
-                    let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
-                    var text = String()
-                    
-                    if let alsoKnownAs = person.alsoKnownAs {
-                        var akaString = String()
-                        let array = NSKeyedUnarchiver.unarchiveObjectWithData(alsoKnownAs) as! [String]
-                        akaString = array.sort().joinWithSeparator(", ")
-                        text += "Also Known As: \(akaString)\n"
+    func loadTweets() {
+        if let personID = personID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+            
+            let completion = { (result: AnyObject?, error: NSError?) in
+                if let result = result {
+                    if let json = result as? [String: AnyObject] {
+                        self.tweets = TWTRTweet.tweetsWithJSONArray(json["statuses"] as? Array)
                     }
-                    
-                    text += "Date of Birth: \(person.birthday != nil ? person.birthday! : "")"
-                    text += "\nPlace of Birth: \(person.placeOfBirth != nil ? person.placeOfBirth! : "")"
-                    
-                    let formatter = NSDateFormatter()
-                    formatter.dateFormat = "yyyy-MM-dd"
-                    
-                    if let deathday = person.deathday {
-                        if !deathday.isEmpty {
-                            text += "\nDate of Death: \(deathday)"
-                            if let birthdate = person.birthday {
-                                let startDate = formatter.dateFromString(birthdate)
-                                let endDate = formatter.dateFromString(deathday)
-                                text += "\nAge at Time of Death: \(ageInYears(endDate!, startDate: startDate!))"
+                } else {
+                    self.tweets = [AnyObject]()
+                }
+                
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                    self.tableView.reloadData()
+                }
+            }
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TwitterManager.sharedInstance.movieTweets(person.name!, completion: completion)
+            } catch {}
+        }
+    }
+    
+    func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        switch detailsAndTweetsSelection {
+        case .Details:
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
+            }
+            
+            // reset the accessory button
+            cell.accessoryType = .None
+            cell.selectionStyle = .None
+            
+            switch indexPath.row {
+            case 0:
+                if let c = cell as? ThumbnailTableViewCell {
+                    c.tag = indexPath.row
+                    c.titleLabel.text = "Photos"
+                    c.fetchRequest = photosFetchRequest
+                    c.displayType = .Profile
+                    c.delegate = self
+                    c.loadData()
+                }
+            case 1:
+                if let c = cell as? DetailsAndTweetsTableViewCell {
+                    c.delegate = self
+                }
+            case 2:
+                if let c = cell as? DynamicHeightTableViewCell {
+                    if let personID = personID {
+                        let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+                        var text = String()
+                        
+                        if let alsoKnownAs = person.alsoKnownAs {
+                            var akaString = String()
+                            let array = NSKeyedUnarchiver.unarchiveObjectWithData(alsoKnownAs) as! [String]
+                            akaString = array.sort().joinWithSeparator(", ")
+                            text += "Also Known As: \(akaString)\n"
+                        }
+                        
+                        text += "Date of Birth: \(person.birthday != nil ? person.birthday! : "")"
+                        text += "\nPlace of Birth: \(person.placeOfBirth != nil ? person.placeOfBirth! : "")"
+                        
+                        let formatter = NSDateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd"
+                        
+                        if let deathday = person.deathday {
+                            if !deathday.isEmpty {
+                                text += "\nDate of Death: \(deathday)"
+                                if let birthdate = person.birthday {
+                                    let startDate = formatter.dateFromString(birthdate)
+                                    let endDate = formatter.dateFromString(deathday)
+                                    text += "\nAge at Time of Death: \(ageInYears(endDate!, startDate: startDate!))"
+                                }
+                            } else {
+                                if let birthdate = person.birthday {
+                                    if !birthdate.isEmpty {
+                                        let startDate = formatter.dateFromString(birthdate)
+                                        let endDate = NSDate()
+                                        text += "\nAge: \(ageInYears(endDate, startDate: startDate!))"
+                                    }
+                                }
                             }
+                            
                         } else {
                             if let birthdate = person.birthday {
                                 if !birthdate.isEmpty {
@@ -241,77 +290,86 @@ class PersonDetailsViewController: UIViewController {
                             }
                         }
                         
-                    } else {
-                        if let birthdate = person.birthday {
-                            if !birthdate.isEmpty {
-                                let startDate = formatter.dateFromString(birthdate)
-                                let endDate = NSDate()
-                                text += "\nAge: \(ageInYears(endDate, startDate: startDate!))"
-                            }
+                        if let biography = person.biography {
+                            text += "\n\n\(biography)"
                         }
+                        
+                        text += "\n"
+                        
+                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                        c.dynamicLabel.text = text
+                        c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
                     }
-                    
-                    if let biography = person.biography {
-                        text += "\n\n\(biography)"
-                    }
-                    
-                    text += "\n"
-                    
+                }
+            case 3+homepageCount:
+                if let c = cell as? ThumbnailTableViewCell {
+                    c.tag = indexPath.row
+                    c.titleLabel.text = "Movie Appearances"
+                    c.fetchRequest = moviesFetchRequest
+                    c.displayType = .Poster
+                    c.captionType = .Role
+                    c.showCaption = true
+                    c.delegate = self
+                    c.loadData()
+                }
+            case 4+homepageCount:
+                if let c = cell as? ThumbnailTableViewCell {
+                    c.tag = indexPath.row
+                    c.titleLabel.text = "TV Show Appearances"
+                    c.fetchRequest = tvShowsFetchRequest
+                    c.displayType = .Poster
+                    c.captionType = .Role
+                    c.showCaption = true
+                    c.delegate = self
+                    c.loadData()
+                }
+            case 5+homepageCount:
+                if let c = cell as? ThumbnailTableViewCell {
+                    c.tag = indexPath.row
+                    c.titleLabel.text = "Movie Credits"
+                    c.fetchRequest = movieCreditsFetchRequest
+                    c.displayType = .Poster
+                    c.captionType = .Job
+                    c.showCaption = true
+                    c.delegate = self
+                    c.loadData()
+                }
+            case 6+homepageCount:
+                if let c = cell as? ThumbnailTableViewCell {
+                    c.tag = indexPath.row
+                    c.titleLabel.text = "TV Show Credits"
+                    c.fetchRequest = tvShowCreditsFetchRequest
+                    c.displayType = .Poster
+                    c.captionType = .Job
+                    c.showCaption = true
+                    c.delegate = self
+                    c.loadData()
+                }
+            default:
+                if let c = cell as? DynamicHeightTableViewCell {
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = text
+                    c.dynamicLabel.text = homepage
+                    c.accessoryType = .DisclosureIndicator
                     c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
                 }
             }
-        case 2+homepageCount:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = indexPath.row
-                c.titleLabel.text = "Movie Appearances"
-                c.fetchRequest = moviesFetchRequest
-                c.displayType = .Poster
-                c.captionType = .Role
-                c.showCaption = true
-                c.delegate = self
-                c.loadData()
-            }
-        case 3+homepageCount:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = indexPath.row
-                c.titleLabel.text = "TV Show Appearances"
-                c.fetchRequest = tvShowsFetchRequest
-                c.displayType = .Poster
-                c.captionType = .Role
-                c.showCaption = true
-                c.delegate = self
-                c.loadData()
-            }
-        case 4+homepageCount:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = indexPath.row
-                c.titleLabel.text = "Movie Credits"
-                c.fetchRequest = movieCreditsFetchRequest
-                c.displayType = .Poster
-                c.captionType = .Job
-                c.showCaption = true
-                c.delegate = self
-                c.loadData()
-            }
-        case 5+homepageCount:
-            if let c = cell as? ThumbnailTableViewCell {
-                c.tag = indexPath.row
-                c.titleLabel.text = "TV Show Credits"
-                c.fetchRequest = tvShowCreditsFetchRequest
-                c.displayType = .Poster
-                c.captionType = .Job
-                c.showCaption = true
-                c.delegate = self
-                c.loadData()
-            }
-        default:
-            if let c = cell as? DynamicHeightTableViewCell {
-                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                c.dynamicLabel.text = homepage
-                c.accessoryType = .DisclosureIndicator
-                c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
+            
+        case .Tweets:
+            switch indexPath.row {
+            case 0,
+                 1:
+                return
+            default:
+                if let c = cell as? TWTRTweetTableViewCell,
+                    tweets = tweets {
+                    if tweets.count > 0 {
+                        if let tweet = tweets[indexPath.row-1] as? TWTRTweet {
+                            
+                            c.configureWithTweet(tweet)
+                            c.tweetView.showActionButtons = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -355,38 +413,62 @@ class PersonDetailsViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension PersonDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var rows = 6
+        var rows = 0
         
-        if let _ = homepage {
-            rows += 1
+        switch detailsAndTweetsSelection {
+        case .Details:
+            rows = 7
+            
+            if let _ = homepage {
+                rows += 1
+            }
+        case .Tweets:
+            if let tweets = tweets {
+                rows = tweets.count+1
+            }
         }
-        
         return rows
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
-        var homepageCount = 0
         
-        if let _ = homepage {
-            homepageCount = 1
-        }
+        switch detailsAndTweetsSelection {
+        case .Details:
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
+            }
+            
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+            case 2:
+                cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
+            case 3+homepageCount:
+                cell = tableView.dequeueReusableCellWithIdentifier("moviesTableViewCell", forIndexPath: indexPath)
+            case 4+homepageCount:
+                cell = tableView.dequeueReusableCellWithIdentifier("tvShowsTableViewCell", forIndexPath: indexPath)
+            case 5+homepageCount:
+                cell = tableView.dequeueReusableCellWithIdentifier("movieCreditsTableViewCell", forIndexPath: indexPath)
+            case 6+homepageCount:
+                cell = tableView.dequeueReusableCellWithIdentifier("tvShowCreditsTableViewCell", forIndexPath: indexPath)
+            default:
+                cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+            }
         
-        switch indexPath.row {
-        case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-        case 1:
-            cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-        case 2+homepageCount:
-            cell = tableView.dequeueReusableCellWithIdentifier("moviesTableViewCell", forIndexPath: indexPath)
-        case 3+homepageCount:
-            cell = tableView.dequeueReusableCellWithIdentifier("tvShowsTableViewCell", forIndexPath: indexPath)
-        case 4+homepageCount:
-            cell = tableView.dequeueReusableCellWithIdentifier("movieCreditsTableViewCell", forIndexPath: indexPath)
-        case 5+homepageCount:
-            cell = tableView.dequeueReusableCellWithIdentifier("tvShowCreditsTableViewCell", forIndexPath: indexPath)
-        default:
-            cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+        case .Tweets:
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+            default:
+                cell = tableView.dequeueReusableCellWithIdentifier("tweetsTableViewCell", forIndexPath: indexPath)
+            }
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -397,67 +479,105 @@ extension PersonDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension PersonDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var homepageCount = 0
-        
-        if let _ = homepage {
-            homepageCount = 1
+        switch detailsAndTweetsSelection {
+        case .Details:
+            
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
+            }
+            
+            switch indexPath.row {
+            case 0:
+                return tableView.frame.size.height / 3
+            case 1:
+                return UITableViewAutomaticDimension
+            case 2:
+                return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
+            case 3+homepageCount,
+                 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount:
+                return tableView.frame.size.height / 3
+            default:
+                return UITableViewAutomaticDimension
+            }
+        case .Tweets:
+            switch indexPath.row {
+            case 0:
+                return tableView.frame.size.height / 3
+            case 1:
+                return UITableViewAutomaticDimension
+            default:
+                if let tweets = tweets {
+                    if tweets.count > 0 {
+                        if let tweet = tweets[indexPath.row-1] as? TWTRTweet {
+                            return TWTRTweetTableViewCell.heightForTweet(tweet, style: .Compact, width: tableView.frame.size.width, showingActions: true)
+                        }
+                    }
+                }
+            }
         }
         
-        switch indexPath.row {
-        case 0:
-            return tableView.frame.size.height / 3
-        case 1:
-            return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-        case 2+homepageCount,
-             3+homepageCount,
-             4+homepageCount,
-             5+homepageCount:
-            return tableView.frame.size.height / 3
-        default:
-            return UITableViewAutomaticDimension
-        }
+        return UITableViewAutomaticDimension
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        var homepageCount = 0
+        switch detailsAndTweetsSelection {
+        case .Details:
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
+            }
+            
+            switch indexPath.row {
+            case 0,
+                 1,
+                 2+homepageCount,
+                 3+homepageCount,
+                 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount:
+                // return nil for the first row which is not selectable
+                return nil
+            default:
+                return indexPath
+            }
         
-        if let _ = homepage {
-            homepageCount = 1
-        }
-        
-        switch indexPath.row {
-        case 0,
-             1,
-             2+homepageCount,
-             3+homepageCount,
-             4+homepageCount,
-             5+homepageCount:
-            // return nil for the first row which is not selectable
+        case .Tweets:
             return nil
-        default:
-            return indexPath
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var homepageCount = 0
-        
-        if let _ = homepage {
-            homepageCount = 1
-        }
-        
-        switch indexPath.row {
-        case 0,
-             1,
-             2+homepageCount,
-             3+homepageCount,
-             4+homepageCount,
-             5+homepageCount:
-            return
-        default:
-            if homepageCount > 0 {
-                UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+        switch detailsAndTweetsSelection {
+        case .Details:
+            
+            var homepageCount = 0
+            
+            if let _ = homepage {
+                homepageCount = 1
             }
+            
+            switch indexPath.row {
+            case 0,
+                 1,
+                 2,
+                 3+homepageCount,
+                 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount:
+                return
+            default:
+                if homepageCount > 0 {
+                    UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+                }
+            }
+            
+        case .Tweets:
+            return
         }
     }
 }
@@ -484,25 +604,25 @@ extension PersonDetailsViewController : ThumbnailDelegate {
                 title = "Photos"
                 fetchRequest = photosFetchRequest
                 displayType = .Profile
-            case 2+homepageCount:
+            case 3+homepageCount:
                 title = "Movie Appearances"
                 fetchRequest = moviesFetchRequest
                 displayType = .Poster
                 captionType = .Role
                 showCaption = true
-            case 3+homepageCount:
+            case 4+homepageCount:
                 title = "TV Show Appearances"
                 fetchRequest = tvShowsFetchRequest
                 displayType = .Poster
                 captionType = .Role
                 showCaption = true
-            case 4+homepageCount:
+            case 5+homepageCount:
                 title = "Movie Credits"
                 fetchRequest = movieCreditsFetchRequest
                 displayType = .Poster
                 captionType = .Job
                 showCaption = true
-            case 5+homepageCount:
+            case 6+homepageCount:
                 title = "TV Show Credits"
                 fetchRequest = tvShowCreditsFetchRequest
                 displayType = .Poster
@@ -533,16 +653,16 @@ extension PersonDetailsViewController : ThumbnailDelegate {
         switch tag {
         case 0:
             showProfilesBrowser(path)
-        case 2+homepageCount,
-             4+homepageCount:
+        case 3+homepageCount,
+             5+homepageCount:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
                 let navigationController = navigationController {
                 let credit = displayable as! Credit
                 controller.movieID = credit.movie!.objectID
                 navigationController.pushViewController(controller, animated: true)
             }
-        case 3+homepageCount,
-             5+homepageCount:
+        case 4+homepageCount,
+             6+homepageCount:
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
                 let navigationController = navigationController {
                 let credit = displayable as! Credit
@@ -551,6 +671,22 @@ extension PersonDetailsViewController : ThumbnailDelegate {
             }
         default:
             return
+        }
+    }
+}
+
+// MARK: DetailsAndTweets
+extension PersonDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
+    func selectionChanged(selection: DetailsAndTweetsSelection) {
+        detailsAndTweetsSelection = selection
+        
+        switch selection {
+        case .Details:
+            loadPhotos()
+            loadDetails()
+            loadCombinedCredits()
+        case .Tweets:
+            loadTweets()
         }
     }
 }

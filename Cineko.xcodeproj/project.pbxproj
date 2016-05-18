@@ -30,6 +30,9 @@
 		8C6789281CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8C6789291CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C6789231CB4C24A00E4E14B /* ThumbnailCollectionViewCell.xib */; };
 		8C6AF0491CE0E05F00E4C5A5 /* ListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */; };
+		8C8934E81CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8934E61CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.swift */; };
+		8C8934E91CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C8934E71CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.xib */; };
+		8C8934EB1CEC3A90000BCCB8 /* TwitterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8934EA1CEC3A90000BCCB8 /* TwitterManager.swift */; };
 		8C8B37F21CE3BB41002A5A29 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */; };
 		8C9018DE1CC764CB001EB1A6 /* SeeAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */; };
 		8CAB33F21CC4E38900441861 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1378AE1CAE80D000FB6830 /* CoreDataManager.swift */; };
@@ -232,6 +235,9 @@
 		8C67893F1CB5209200E4E14B /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListEditorViewController.swift; sourceTree = "<group>"; };
 		8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		8C8934E61CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsAndTweetsTableViewCell.swift; sourceTree = "<group>"; };
+		8C8934E71CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailsAndTweetsTableViewCell.xib; sourceTree = "<group>"; };
+		8C8934EA1CEC3A90000BCCB8 /* TwitterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterManager.swift; sourceTree = "<group>"; };
 		8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
 		8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeAllViewController.swift; sourceTree = "<group>"; };
 		8CAB33E21CC4891C00441861 /* ObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
@@ -412,6 +418,8 @@
 		8C1378A41CAE7BA200FB6830 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8C8934E61CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.swift */,
+				8C8934E71CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.xib */,
 				8C1F10671CBC81FA00001CA4 /* DynamicHeightTableViewCell.swift */,
 				8C1F10681CBC81FA00001CA4 /* DynamicHeightTableViewCell.xib */,
 				8C13787C1CAE16B700FB6830 /* LaunchScreen.storyboard */,
@@ -457,6 +465,7 @@
 				8CAB33E21CC4891C00441861 /* ObjectManager.swift */,
 				8C1CC9811CBF457E001D5239 /* RTManager.swift */,
 				8CD408C11CB1822E00F9132F /* TMDBManager.swift */,
+				8C8934EA1CEC3A90000BCCB8 /* TwitterManager.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -621,6 +630,7 @@
 			files = (
 				8CD53C081CC62B570035AD45 /* DynamicHeightTableViewCell.xib in Resources */,
 				8CD53C0A1CC62B570035AD45 /* ThumbnailCollectionViewCell.xib in Resources */,
+				8C8934E91CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.xib in Resources */,
 				8CD53BF41CC62B400035AD45 /* LaunchScreen.storyboard in Resources */,
 				8CD53BF61CC62B400035AD45 /* Assets.xcassets in Resources */,
 				8CD53C091CC62B570035AD45 /* ThumbnailTableViewCell.xib in Resources */,
@@ -910,6 +920,7 @@
 				8CD53BD31CC62B400035AD45 /* MediaInfoTableViewCell.swift in Sources */,
 				8CD53BD41CC62B400035AD45 /* FeaturedViewController.swift in Sources */,
 				8CD53BD51CC62B400035AD45 /* Image+CoreDataProperties.swift in Sources */,
+				8C8934E81CEC0C17000BCCB8 /* DetailsAndTweetsTableViewCell.swift in Sources */,
 				8CD53BD61CC62B400035AD45 /* Cineko.xcdatamodeld in Sources */,
 				8CD53BD71CC62B400035AD45 /* Network.swift in Sources */,
 				8CD53BD81CC62B400035AD45 /* GCDBlackBox.swift in Sources */,
@@ -934,6 +945,7 @@
 				8CD53BE71CC62B400035AD45 /* MoviesViewController.swift in Sources */,
 				8CD53BE81CC62B400035AD45 /* TMDBManager.swift in Sources */,
 				8C0B19B71CDCB4B0000D3286 /* List+CoreDataProperties.swift in Sources */,
+				8C8934EB1CEC3A90000BCCB8 /* TwitterManager.swift in Sources */,
 				8C2D0DC61CD64C0300DE888C /* NYTimesReviewManager.swift in Sources */,
 				8CD53BE91CC62B400035AD45 /* Movie+CoreDataProperties.swift in Sources */,
 				8CBDFD481CD9BE8C006E6D30 /* Review+CoreDataProperties.swift in Sources */,
