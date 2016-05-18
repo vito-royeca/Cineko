@@ -30,6 +30,10 @@ PODS:
   - SDWebImage (3.7.6):
     - SDWebImage/Core (= 3.7.6)
   - SDWebImage/Core (3.7.6)
+  - TwitterCore (2.1.1):
+    - Fabric
+  - TwitterKit (2.1.1):
+    - TwitterCore (= 2.1.1)
 
 DEPENDENCIES:
   - Crashlytics
@@ -42,6 +46,8 @@ DEPENDENCIES:
   - MMDrawerController
   - MMDrawerController+Storyboard
   - SDWebImage
+  - TwitterCore
+  - TwitterKit
 
 SPEC CHECKSUMS:
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
@@ -56,5 +62,7 @@ SPEC CHECKSUMS:
   MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
+  TwitterCore: abc46da2bc4b76e2c68a74cd8671a071a8e3abbf
+  TwitterKit: 38232c31f622db1f26a5952436eaa88d10763fd0
 
 COCOAPODS: 0.39.0

@@ -15,6 +15,8 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'TwitterKit'
+pod 'TwitterCore'
 end
 
 target "CinekoTests" do
@@ -28,6 +30,8 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'TwitterKit'
+pod 'TwitterCore'
 end
 
 target "CinekoUITests" do
@@ -41,4 +45,6 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'TwitterKit'
+pod 'TwitterCore'
 end
