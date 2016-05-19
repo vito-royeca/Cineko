@@ -84,6 +84,7 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-CinekoTests/Colours.framework"
   install_framework "Pods-CinekoTests/DACircularProgress.framework"
   install_framework "Pods-CinekoTests/Eureka.framework"
   install_framework "Pods-CinekoTests/IDMPhotoBrowser.framework"
@@ -96,6 +97,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-CinekoTests/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-CinekoTests/Colours.framework"
   install_framework "Pods-CinekoTests/DACircularProgress.framework"
   install_framework "Pods-CinekoTests/Eureka.framework"
   install_framework "Pods-CinekoTests/IDMPhotoBrowser.framework"

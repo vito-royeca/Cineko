@@ -5,6 +5,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target "Cine Ko!" do
+pod 'Colours'
 pod 'Crashlytics'
 pod 'Eureka'
 pod 'Fabric'
@@ -20,6 +21,7 @@ pod 'TwitterCore'
 end
 
 target "CinekoTests" do
+pod 'Colours'
 pod 'Crashlytics'
 pod 'Eureka'
 pod 'Fabric'
@@ -35,6 +37,7 @@ pod 'TwitterCore'
 end
 
 target "CinekoUITests" do
+pod 'Colours'    
 pod 'Crashlytics'
 pod 'Eureka'
 pod 'Fabric'

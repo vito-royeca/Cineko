@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Colours
 import CoreData
 import IDMPhotoBrowser
 import JJJUtils
@@ -33,7 +34,7 @@ class TVShowDetailsViewController: UIViewController {
     var isFavorite = false
     var isWatchlist = false
     private var averageColor:UIColor?
-    private var inverseColor:UIColor?
+    private var contrastColor:UIColor?
     var tweets:[AnyObject]?
     
     // MARK: Actions
@@ -133,12 +134,13 @@ class TVShowDetailsViewController: UIViewController {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                     }
                     
-                    if let image = image {
-                        self.averageColor = image.averageColor().colorWithAlphaComponent(0.97)
-                        self.inverseColor = image.inverseColor(self.averageColor)
+                    if let _ = image {
+                        let color = image.averageColor()
+                        self.averageColor = color.colorWithAlphaComponent(0.97)
+                        self.contrastColor = color.blackOrWhiteContrastingColor()
                         self.titleLabel!.backgroundColor = self.averageColor
-                        self.titleLabel!.textColor = self.inverseColor
-                        if let inverseColor = self.inverseColor {
+                        self.titleLabel!.textColor = self.contrastColor
+                        if let inverseColor = self.contrastColor {
                             self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
                         }
                         if let averageColor = self.averageColor {
@@ -347,7 +349,7 @@ class TVShowDetailsViewController: UIViewController {
                 cell.backgroundColor = UIColor.clearColor()
             case 1:
                 if let c = cell as? DetailsAndTweetsTableViewCell {
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                     c.delegate = self
                 }
             case 2:
@@ -376,7 +378,7 @@ class TVShowDetailsViewController: UIViewController {
                             c.ratingLabel.text = NSString(format: "%.1f", voteAverage.doubleValue) as String
                         }
                     }
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                 }
             case 3:
                 if let c = cell as? DynamicHeightTableViewCell {
@@ -412,7 +414,7 @@ class TVShowDetailsViewController: UIViewController {
                         c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                         c.dynamicLabel.text = text
                     }
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                 }
             case 4+homepageCount:
                 if let c = cell as? ThumbnailTableViewCell {
@@ -422,7 +424,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.showSeeAllButton = false
                     c.fetchRequest = backdropFetchRequest
                     c.displayType = .Backdrop
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                     c.delegate = self
                     c.loadData()
                 }
@@ -436,7 +438,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.displayType = .Profile
                     c.captionType = .NameAndRole
                     c.showCaption = true
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                     c.delegate = self
                     c.loadData()
                 }
@@ -450,7 +452,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.displayType = .Profile
                     c.captionType = .NameAndJob
                     c.showCaption = true
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                     c.delegate = self
                     c.loadData()
                 }
@@ -464,7 +466,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.displayType = .Poster
                     c.captionType = .Title
                     c.showCaption = true
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                     c.delegate = self
                     c.loadData()
                 }
@@ -473,7 +475,7 @@ class TVShowDetailsViewController: UIViewController {
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                     c.dynamicLabel.text = homepage
                     c.accessoryType = .DisclosureIndicator
-                    c.changeColor(averageColor, fontColor: inverseColor)
+                    c.changeColor(averageColor, fontColor: contrastColor)
                 }
             }
         case .Tweets:
@@ -490,7 +492,7 @@ class TVShowDetailsViewController: UIViewController {
                             c.configureWithTweet(tweet)
                             c.backgroundColor = UIColor.clearColor()
                             c.tweetView.backgroundColor = averageColor!
-                            c.tweetView.primaryTextColor = inverseColor!
+                            c.tweetView.primaryTextColor = contrastColor!
                             c.tweetView.showActionButtons = true
                         }
                     }

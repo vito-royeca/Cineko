@@ -54,4 +54,21 @@
     return [UIColor colorWithRed:1.-r green:1.-g blue:1.-b alpha:a];
 }
 
+- (UIColor*) contrastColor:(UIColor*) color
+{
+    int d = 0;
+    CGFloat r,g,b,a;
+    [color getRed:&r green:&g blue:&b alpha:&a];
+    
+    // Counting the perceptive luminance - human eye favors green color... 
+    double luminance = 1 - ( 0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    if (luminance < 0.5)
+       d = 0; // bright colors - black font
+    else
+       d = 255; // dark colors - white font
+
+    return [UIColor colorWithRed:d green:d blue:d alpha:a];
+}
+
 @end

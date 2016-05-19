@@ -16,4 +16,5 @@
 
 -(UIColor*) inverseColor:(UIColor*) color;
 
+- (UIColor*) contrastColor:(UIColor*) color;
 @end

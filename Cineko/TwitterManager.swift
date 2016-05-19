@@ -13,7 +13,7 @@ class TwitterManager: NSObject {
     func movieTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\"\(query)\"",
+        let params = ["q": "\"\(query)\" movie",
                       "result_type": "mixed"]
         var clientError : NSError?
         
@@ -46,7 +46,7 @@ class TwitterManager: NSObject {
     func tvShowTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\"\(query)\"",
+        let params = ["q": "\"\(query)\" tv",
                       "result_type": "mixed"]
         var clientError : NSError?
         
@@ -79,7 +79,7 @@ class TwitterManager: NSObject {
     func personTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/users/search.json"
-        let params = ["q": "\(query)",
+        let params = ["q": "\"\(query)\"",
                       "result_type": "mixed"]
         var clientError : NSError?
         

@@ -1,4 +1,7 @@
 PODS:
+  - Colours (5.13.0):
+    - Colours/ObjC (= 5.13.0)
+  - Colours/ObjC (5.13.0)
   - Crashlytics (3.7.0):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.3.1)
@@ -8,8 +11,8 @@ PODS:
     - DACircularProgress
     - pop
     - SDWebImage
-  - JJJUtils (0.3.1):
-    - JJJUtils/OSX (= 0.3.1)
+  - JJJUtils (0.3.2):
+    - JJJUtils/OSX (= 0.3.2)
   - KeychainAccess (2.3.5)
   - MBProgressHUD (0.9.2)
   - MMDrawerController (0.6.0):
@@ -36,6 +39,7 @@ PODS:
     - TwitterCore (= 2.1.1)
 
 DEPENDENCIES:
+  - Colours
   - Crashlytics
   - Eureka
   - Fabric
@@ -50,12 +54,13 @@ DEPENDENCIES:
   - TwitterKit
 
 SPEC CHECKSUMS:
+  Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   Eureka: 2fb37bb50569c62ee3284689d5b7aca694b040e0
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
-  JJJUtils: 3aa24c8612a0f8fce38bbddb49d33ef2179cc475
+  JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
   KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
