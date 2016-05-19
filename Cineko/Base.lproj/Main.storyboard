@@ -150,7 +150,7 @@
         <!--Movie-->
         <scene sceneID="NhU-hz-64w">
             <objects>
-                <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qLp-Rv-VUg"/>
                         <viewControllerLayoutGuide type="bottom" id="Q23-FN-YyM"/>
@@ -765,7 +765,7 @@
         <!--TV Show-->
         <scene sceneID="nVb-95-rf2">
             <objects>
-                <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wnb-Z9-7bp"/>
                         <viewControllerLayoutGuide type="bottom" id="g90-Te-gkM"/>
@@ -892,7 +892,7 @@
         <!--Person Details View Controller-->
         <scene sceneID="BSS-QG-tQ8">
             <objects>
-                <viewController storyboardIdentifier="PersonDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="SIe-LV-vPe" customClass="PersonDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="SIe-LV-vPe" customClass="PersonDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sKz-Qw-PMb"/>
                         <viewControllerLayoutGuide type="bottom" id="VdI-eJ-WiF"/>

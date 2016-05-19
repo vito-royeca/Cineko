@@ -172,11 +172,30 @@ class MovieDetailsViewController: UIViewController {
                         self.titleLabel!.textColor = self.contrastColor
                         if let inverseColor = self.contrastColor {
                             self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
+                            self.navigationController!.navigationBar.tintColor = inverseColor
                         }
                         if let averageColor = self.averageColor {
                             self.navigationController!.navigationBar.barTintColor = averageColor
                             self.navigationController!.navigationBar.translucent = false
                         }
+                        
+                        // change also the button items
+                        if let image = self.favoriteButton.image {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            self.favoriteButton.image = tintedImage
+                            self.favoriteButton.tintColor = self.contrastColor
+                        }
+                        if let image = self.watchlistButton.image {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            self.watchlistButton.image = tintedImage
+                            self.watchlistButton.tintColor = self.contrastColor
+                        }
+                        if let image = self.listButton.image {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            self.listButton.image = tintedImage
+                            self.listButton.tintColor = self.contrastColor
+                        }
+                        
                         backgroundView.backgroundColor = self.averageColor
                         self.tableView.reloadData()
                     }
@@ -199,9 +218,10 @@ class MovieDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         // reset the navigation bar's colors look and feel
-        self.navigationController!.navigationBar.titleTextAttributes = nil
-        self.navigationController!.navigationBar.barTintColor = nil
-        self.navigationController!.navigationBar.translucent = true
+        navigationController!.navigationBar.titleTextAttributes = nil
+        navigationController!.navigationBar.tintColor = nil
+        navigationController!.navigationBar.barTintColor = nil
+        navigationController!.navigationBar.translucent = true
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -354,7 +374,7 @@ class MovieDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.movieTweets(movie.title!, completion: completion)
+                try TwitterManager.sharedInstance.userSearch(movie.title!, completion: completion)
             } catch {}
         }
     }

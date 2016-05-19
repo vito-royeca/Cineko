@@ -212,7 +212,7 @@ class PersonDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.personTweets(person.name!, completion: completion)
+                try TwitterManager.sharedInstance.userSearch(person.name!, completion: completion)
             } catch {}
         }
     }
@@ -364,7 +364,7 @@ class PersonDetailsViewController: UIViewController {
                 if let c = cell as? TWTRTweetTableViewCell,
                     tweets = tweets {
                     if tweets.count > 0 {
-                        if let tweet = tweets[indexPath.row-1] as? TWTRTweet {
+                        if let tweet = tweets[indexPath.row-2] as? TWTRTweet {
                             
                             c.configureWithTweet(tweet)
                             c.tweetView.showActionButtons = true
@@ -513,7 +513,7 @@ extension PersonDetailsViewController : UITableViewDelegate {
             default:
                 if let tweets = tweets {
                     if tweets.count > 0 {
-                        if let tweet = tweets[indexPath.row-1] as? TWTRTweet {
+                        if let tweet = tweets[indexPath.row-2] as? TWTRTweet {
                             return TWTRTweetTableViewCell.heightForTweet(tweet, style: .Compact, width: tableView.frame.size.width, showingActions: true)
                         }
                     }

@@ -10,86 +10,89 @@ import UIKit
 import TwitterKit
 
 class TwitterManager: NSObject {
-    func movieTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
-        let client = TWTRAPIClient()
-        let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\"\(query)\" movie",
-                      "result_type": "mixed"]
-        var clientError : NSError?
-        
-        let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
-        
-        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            var array = [AnyObject]()
-            
-            if connectionError != nil {
-                completion(results: array, error: connectionError)
-            
-            } else {
-                do {
-                    
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                    if let dict = json as? [String: AnyObject] {
-                        if let a = dict["statuses"] as? [AnyObject] {
-                            array = a
-                        }
-                    }
-                    
-                    completion(results: array, error: connectionError)
-                } catch let jsonError as NSError {
-                    completion(results: array, error: jsonError)
-                }
-            }
-        }
-    }
-    
-    func tvShowTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
-        let client = TWTRAPIClient()
-        let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\"\(query)\" tv",
-                      "result_type": "mixed"]
-        var clientError : NSError?
-        
-        let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
-        
-        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            var array = [AnyObject]()
-            
-            if connectionError != nil {
-                completion(results: array, error: connectionError)
-                
-            } else {
-                do {
-                    
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                    if let dict = json as? [String: AnyObject] {
-                        if let a = dict["statuses"] as? [AnyObject] {
-                            array = a
-                        }
-                    }
-                    
-                    completion(results: array, error: connectionError)
-                } catch let jsonError as NSError {
-                    completion(results: array, error: jsonError)
-                }
-            }
-        }
-    }
-    
-    func personTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
+    func userSearch(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/users/search.json"
-        let params = ["q": "\"\(query)\"",
+        let params = ["q": "\"\(query)\""]
+        var clientError : NSError?
+        
+        let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
+        
+        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            let arrResults = [AnyObject]()
+            
+            if connectionError != nil {
+                completion(results: arrResults, error: connectionError)
+                
+            } else {
+                do {
+                    var screenName:String?
+                    var followersCount = 0
+                    
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
+                    
+                    if let array = json as? [[String: AnyObject]] {
+                        for dict in array {
+                            // get a verified or most popular user
+                            if let verified = dict["verified"] as? Bool {
+                                if verified {
+                                    screenName = dict["screen_name"] as? String
+                                    break
+                                    
+                                } else {
+                                    if let count = dict["followers_count"] as? Int {
+                                        if count > followersCount {
+                                            screenName = dict["screen_name"] as? String
+                                        }
+                                        followersCount = count
+                                    }
+                                }
+                            } else {
+                                if let count = dict["followers_count"] as? Int {
+                                    if count > followersCount {
+                                        screenName = dict["screen_name"] as? String
+                                    }
+                                    followersCount = count
+                                }
+                            }
+                        }
+                    }
+                    
+                    if let screenName = screenName {
+                        do {
+                            try self.userTimeline(screenName, completion: completion)
+                        } catch {
+                            completion(results: arrResults, error: connectionError)
+                        }
+                    
+                    } else {
+                        do {
+                            try self.searchTweets("\"\(query)\"", completion: completion)
+                        } catch {
+                            completion(results: arrResults, error: connectionError)
+                        }
+                    }
+                } catch let jsonError as NSError {
+                    completion(results: arrResults, error: jsonError)
+                }
+            }
+        }
+    }
+    
+    func searchTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
+        let client = TWTRAPIClient()
+        let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
+        let params = ["q": "\(query)",
                       "result_type": "mixed"]
         var clientError : NSError?
         
         let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
         
         client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            var array = [AnyObject]()
+            var arrResults = [AnyObject]()
             
             if connectionError != nil {
-                completion(results: array, error: connectionError)
+                completion(results: arrResults, error: connectionError)
                 
             } else {
                 do {
@@ -97,13 +100,43 @@ class TwitterManager: NSObject {
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
                     if let dict = json as? [String: AnyObject] {
                         if let a = dict["statuses"] as? [AnyObject] {
-                            array = a
+                            arrResults = a
                         }
                     }
                     
-                    completion(results: array, error: connectionError)
+                    completion(results: arrResults, error: connectionError)
                 } catch let jsonError as NSError {
-                    completion(results: array, error: jsonError)
+                    completion(results: arrResults, error: jsonError)
+                }
+            }
+        }
+    }
+    
+    func userTimeline(screenName: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
+        let client = TWTRAPIClient()
+        let endpoint = "https://api.twitter.com/1.1/statuses/user_timeline.json"
+        let params = ["screen_name": "\(screenName)"]
+        var clientError : NSError?
+        
+        let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
+        
+        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            var arrResults = [AnyObject]()
+            
+            if connectionError != nil {
+                completion(results: arrResults, error: connectionError)
+                
+            } else {
+                do {
+                    
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
+                    if let dict = json as? [[String: AnyObject]] {
+                        arrResults = dict
+                    }
+                    
+                    completion(results: arrResults, error: connectionError)
+                } catch let jsonError as NSError {
+                    completion(results: arrResults, error: jsonError)
                 }
             }
         }
