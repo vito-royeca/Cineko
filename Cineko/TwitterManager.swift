@@ -10,58 +10,75 @@ import UIKit
 import TwitterKit
 
 class TwitterManager: NSObject {
-    func movieTweets(query: String, completion: (result: AnyObject?, error: NSError?) -> Void?) throws {
+    func movieTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\(query) movie",
+        let params = ["q": "\"\(query)\"",
                       "result_type": "mixed"]
         var clientError : NSError?
         
         let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
         
         client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            var array = [AnyObject]()
+            
             if connectionError != nil {
-                completion(result: nil, error: connectionError)
+                completion(results: array, error: connectionError)
             
             } else {
                 do {
+                    
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                    completion(result: json, error: connectionError)
+                    if let dict = json as? [String: AnyObject] {
+                        if let a = dict["statuses"] as? [AnyObject] {
+                            array = a
+                        }
+                    }
+                    
+                    completion(results: array, error: connectionError)
                 } catch let jsonError as NSError {
-                    completion(result: nil, error: jsonError)
+                    completion(results: array, error: jsonError)
                 }
             }
         }
     }
     
-    func tvShowTweets(query: String, completion: (result: AnyObject?, error: NSError?) -> Void?) throws {
+    func tvShowTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-        let params = ["q": "\(query) tv",
+        let params = ["q": "\"\(query)\"",
                       "result_type": "mixed"]
         var clientError : NSError?
         
         let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
         
         client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            var array = [AnyObject]()
+            
             if connectionError != nil {
-                completion(result: nil, error: connectionError)
-            
+                completion(results: array, error: connectionError)
+                
             } else {
-            
                 do {
+                    
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                    completion(result: json, error: connectionError)
+                    if let dict = json as? [String: AnyObject] {
+                        if let a = dict["statuses"] as? [AnyObject] {
+                            array = a
+                        }
+                    }
+                    
+                    completion(results: array, error: connectionError)
                 } catch let jsonError as NSError {
-                    completion(result: nil, error: jsonError)
+                    completion(results: array, error: jsonError)
                 }
             }
         }
     }
     
-    func peopleTweets(query: String, completion: (result: AnyObject?, error: NSError?) -> Void?) throws {
+    func personTweets(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
-        let endpoint = "https://api.twitter.com/1.1/search/tweets.json"
+        let endpoint = "https://api.twitter.com/1.1/users/search.json"
         let params = ["q": "\(query)",
                       "result_type": "mixed"]
         var clientError : NSError?
@@ -69,16 +86,24 @@ class TwitterManager: NSObject {
         let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
         
         client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            var array = [AnyObject]()
+            
             if connectionError != nil {
-                completion(result: nil, error: connectionError)
+                completion(results: array, error: connectionError)
                 
             } else {
-                
                 do {
+                    
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                    completion(result: json, error: connectionError)
+                    if let dict = json as? [String: AnyObject] {
+                        if let a = dict["statuses"] as? [AnyObject] {
+                            array = a
+                        }
+                    }
+                    
+                    completion(results: array, error: connectionError)
                 } catch let jsonError as NSError {
-                    completion(result: nil, error: jsonError)
+                    completion(results: array, error: jsonError)
                 }
             }
         }

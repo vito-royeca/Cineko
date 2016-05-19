@@ -192,18 +192,19 @@ class PersonDetailsViewController: UIViewController {
         if let personID = personID {
             let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
             
-            let completion = { (result: AnyObject?, error: NSError?) in
-                if let result = result {
-                    if let json = result as? [String: AnyObject] {
-                        self.tweets = TWTRTweet.tweetsWithJSONArray(json["statuses"] as? Array)
+            let completion = { (results: [AnyObject], error: NSError?) in
+                performUIUpdatesOnMain {
+                    
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    } else {
+                        self.tweets = TWTRTweet.tweetsWithJSONArray(results)
                     }
-                } else {
-                    self.tweets = [AnyObject]()
-                }
-                
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                    self.tableView.reloadData()
+                    
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                        self.tableView.reloadData()
+                    }
                 }
             }
             
@@ -211,7 +212,7 @@ class PersonDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.movieTweets(person.name!, completion: completion)
+                try TwitterManager.sharedInstance.personTweets(person.name!, completion: completion)
             } catch {}
         }
     }
@@ -424,7 +425,7 @@ extension PersonDetailsViewController : UITableViewDataSource {
             }
         case .Tweets:
             if let tweets = tweets {
-                rows = tweets.count+1
+                rows = tweets.count+2
             }
         }
         return rows

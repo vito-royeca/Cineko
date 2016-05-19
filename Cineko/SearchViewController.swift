@@ -30,6 +30,12 @@ class SearchViewController: UIViewController {
         initDrawerButton()
         navigationItem.titleView = searchBar
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        
+        // add a done button to the keyboard
+        let barButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: searchBar, action: #selector(resignFirstResponder))
+        let toolbar = UIToolbar(frame: CGRectMake(0, 0, searchBar.frame.size.width, 44))
+        toolbar.items = [barButton]
+        searchBar.inputAccessoryView = toolbar
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

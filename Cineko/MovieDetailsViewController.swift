@@ -332,18 +332,19 @@ class MovieDetailsViewController: UIViewController {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
-            let completion = { (result: AnyObject?, error: NSError?) in
-                if let result = result {
-                    if let json = result as? [String: AnyObject] {
-                            self.tweets = TWTRTweet.tweetsWithJSONArray(json["statuses"] as? Array)
-                    }
-                } else {
-                    self.tweets = [AnyObject]()
-                }
+            let completion = { (results: [AnyObject], error: NSError?) in
+                performUIUpdatesOnMain {
                 
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                    self.tableView.reloadData()
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    } else {
+                        self.tweets = TWTRTweet.tweetsWithJSONArray(results)
+                    }
+                
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                        self.tableView.reloadData()
+                    }
                 }
             }
             

@@ -298,20 +298,21 @@ class TVShowDetailsViewController: UIViewController {
     
     func loadTweets() {
         if let tvShowID = tvShowID {
-            let tvSHow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
             
-            let completion = { (result: AnyObject?, error: NSError?) in
-                if let result = result {
-                    if let json = result as? [String: AnyObject] {
-                        self.tweets = TWTRTweet.tweetsWithJSONArray(json["statuses"] as? Array)
+            let completion = { (results: [AnyObject], error: NSError?) in
+                performUIUpdatesOnMain {
+                    
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    } else {
+                        self.tweets = TWTRTweet.tweetsWithJSONArray(results)
                     }
-                } else {
-                    self.tweets = [AnyObject]()
-                }
-                
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
-                    self.tableView.reloadData()
+                    
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                        self.tableView.reloadData()
+                    }
                 }
             }
             
@@ -319,7 +320,7 @@ class TVShowDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.movieTweets(tvSHow.name!, completion: completion)
+                try TwitterManager.sharedInstance.tvShowTweets(tvShow.name!, completion: completion)
             } catch {}
         }
     }
