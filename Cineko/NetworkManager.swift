@@ -1,5 +1,5 @@
 //
-//  FlickrManager.swift
+//  NetworkManager.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 3/18/16.

@@ -12,6 +12,7 @@ import CoreData
 import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
+import MMDrawerController
 import SafariServices
 import SDWebImage
 import TwitterKit
@@ -19,9 +20,6 @@ import TwitterKit
 class MovieDetailsViewController: UIViewController {
 
     // MARK: Outlets
-    @IBOutlet weak var favoriteButton: UIBarButtonItem!
-    @IBOutlet weak var watchlistButton: UIBarButtonItem!
-    @IBOutlet weak var listButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
@@ -34,86 +32,11 @@ class MovieDetailsViewController: UIViewController {
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
     var posterFetchRequest:NSFetchRequest?
-    var isFavorite = false
-    var isWatchlist = false
     private var averageColor:UIColor?
     private var contrastColor:UIColor?
     var tweets:[AnyObject]?
     
     // MARK: Actions
-    @IBAction func favoriteAction(sender: UIBarButtonItem) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
-            
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    self.updateButtons()
-                }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.accountFavorite(movie.movieID!, mediaType: .Movie, favorite: !isFavorite, completion: completion)
-            } catch {
-                self.updateButtons()
-            }
-        }
-    }
-    
-    @IBAction func watchlistAction(sender: UIBarButtonItem) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
-            
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    self.updateButtons()
-                }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.accountWatchlist(movie.movieID!, mediaType: .Movie, watchlist: !isWatchlist, completion: completion)
-            } catch {
-                self.updateButtons()
-            }
-        }
-    }
-    
-    @IBAction func listAction(sender: UIBarButtonItem) {
-        let message = "List Options"
-        
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
-        alertController.addAction(cancelAction)
-        
-        let addAction = UIAlertAction(title: "Add To List", style: .Default) { (action) in
-            self.showAddToListDialog()
-        }
-        alertController.addAction(addAction)
-        
-        let removeAction = UIAlertAction(title: "Remove from List", style: .Destructive) { (action) in
-            self.showRemoveFromListDialog()
-        }
-        alertController.addAction(removeAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func segmentedAction(sender: UISegmentedControl) {
-        
-    }
-    
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -130,6 +53,8 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
+        
+        initDrawerButton()
         
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.whiteColor()
@@ -148,70 +73,7 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateButtons()
-        
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
-            
-            if let posterPath = movie.posterPath {
-                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
-                let backgroundView = UIImageView()
-                backgroundView.contentMode = .ScaleAspectFit
-                tableView.backgroundView = backgroundView
-                
-                let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    
-                    if let image = image {
-                        let color = image.averageColor()
-                        self.averageColor = color.colorWithAlphaComponent(0.97)
-                        self.contrastColor = color.blackOrWhiteContrastingColor()
-                        self.titleLabel!.backgroundColor = self.averageColor
-                        self.titleLabel!.textColor = self.contrastColor
-                        if let inverseColor = self.contrastColor {
-                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
-                            self.navigationController!.navigationBar.tintColor = inverseColor
-                        }
-                        if let averageColor = self.averageColor {
-                            self.navigationController!.navigationBar.barTintColor = averageColor
-                            self.navigationController!.navigationBar.translucent = false
-                        }
-                        
-                        // change also the button items
-                        if let image = self.favoriteButton.image {
-                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
-                            self.favoriteButton.image = tintedImage
-                            self.favoriteButton.tintColor = self.contrastColor
-                        }
-                        if let image = self.watchlistButton.image {
-                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
-                            self.watchlistButton.image = tintedImage
-                            self.watchlistButton.tintColor = self.contrastColor
-                        }
-                        if let image = self.listButton.image {
-                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
-                            self.listButton.image = tintedImage
-                            self.listButton.tintColor = self.contrastColor
-                        }
-                        
-                        backgroundView.backgroundColor = self.averageColor
-                        self.tableView.reloadData()
-                    }
-                }
-                
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                backgroundView.sd_setImageWithURL(url, completed: comppleted)
-            }
-            
-            titleLabel!.text = movie.title
-            titleLabel!.sizeToFit()
-            // resize the frame to cover the whole width
-            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
-        }
+        updateBackground()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -238,27 +100,63 @@ class MovieDetailsViewController: UIViewController {
     }
     
     // MARK: Custom Methods
-    func updateButtons() {
+    func updateBackground() {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
-            if let favorite = movie.favorite {
-                isFavorite = favorite.boolValue
+            if let posterPath = movie.posterPath {
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
+                let backgroundView = UIImageView()
+                backgroundView.contentMode = .ScaleAspectFit
+                tableView.backgroundView = backgroundView
+                
+                let completed = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    
+                    if let image = image {
+                        let color = image.averageColor()
+                        self.averageColor = color.colorWithAlphaComponent(0.97)
+                        self.contrastColor = color.blackOrWhiteContrastingColor()
+                        self.titleLabel!.backgroundColor = self.averageColor
+                        self.titleLabel!.textColor = self.contrastColor
+                        if let inverseColor = self.contrastColor {
+                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
+                            self.navigationController!.navigationBar.tintColor = inverseColor
+                        }
+                        if let averageColor = self.averageColor {
+                            self.navigationController!.navigationBar.barTintColor = averageColor
+                            self.navigationController!.navigationBar.translucent = false
+                        }
+                        
+                        // change also the button items
+                        if let button = self.navigationItem.rightBarButtonItem {
+                            if let image = button.image {
+                                let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                                button.image = tintedImage
+                                button.tintColor = self.contrastColor
+                            }
+                        }
+                        
+                        backgroundView.backgroundColor = self.averageColor
+                        self.tableView.reloadData()
+                    }
+                }
+                
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                backgroundView.sd_setImageWithURL(url, completed: completed)
             }
-            favoriteButton.image = isFavorite ? UIImage(named: "heart-filled") : UIImage(named: "heart")
             
-            if let watchlist = movie.watchlist {
-                isWatchlist = watchlist.boolValue
-            }
-            watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
+            titleLabel!.text = movie.title
+            titleLabel!.sizeToFit()
+            // resize the frame to cover the whole width
+            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-        
-        let hasSession = TMDBManager.sharedInstance.hasSessionID()
-        favoriteButton.enabled = hasSession
-        watchlistButton.enabled = hasSession
-        listButton.enabled = hasSession
     }
-
+    
     func loadDetails() {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
@@ -622,146 +520,41 @@ class MovieDetailsViewController: UIViewController {
         }
     }
     
-    func showAddToListDialog() {
-        let callback = { (lists: [AnyObject]) in
-            performUIUpdatesOnMain {
-                if lists.count > 0 {
-                    let alert = UIAlertController(title: "Add Movie To List", message: nil, preferredStyle: .ActionSheet)
-                    
-                    for list in lists {
-                        let handler = {(alert: UIAlertAction!) in
-                            self.addMovieToList(list as! List)
-                        }
-                        alert.addAction(UIAlertAction(title: list.name, style: UIAlertActionStyle.Default, handler: handler))
-                    }
-                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
-                    
-                    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                        if let popover = alert.popoverPresentationController {
-                            popover.barButtonItem = self.listButton
-                            popover.permittedArrowDirections = .Any
-                            self.showDetailViewController(alert, sender:self.listButton)
-                        }
-                    } else {
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    }
-                    
-                } else {
-                    JJJUtil.alertWithTitle("Error", andMessage:"You have not created an List yet.")
-                }
-            }
-        }
+    // MARK: MMDrawer methods
+    func initDrawerButton() {
+        setupRightMenuButton()
         
-        findLists(callback)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
     }
     
-    func showRemoveFromListDialog() {
-        let callback = { (lists: [AnyObject]) in
-            performUIUpdatesOnMain {
-                if lists.count > 0 {
-                    let alert = UIAlertController(title: "Remove Movie From List", message: nil, preferredStyle: .ActionSheet)
-                    
-                    for list in lists {
-                        let handler = {(alert: UIAlertAction!) in
-                            self.removeMovieFromList(list as! List)
-                        }
-                        alert.addAction(UIAlertAction(title: list.name, style: UIAlertActionStyle.Default, handler: handler))
-                    }
-                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
-                    
-                    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-                        if let popover = alert.popoverPresentationController {
-                            popover.barButtonItem = self.listButton
-                            popover.permittedArrowDirections = .Any
-                            self.showDetailViewController(alert, sender:self.listButton)
-                        }
-                    } else {
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    }
-                    
-                } else {
-                    JJJUtil.alertWithTitle("Error", andMessage:"You have not created an List yet.")
-                }
-            }
-        }
-        
-        findLists(callback)
+    func setupRightMenuButton() {
+        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
+        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
     }
     
-    func addMovieToList(list: List) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
-            
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.addMovie(movie.movieID!, toList: list.listID!, completion: completion)
-            } catch {
-                JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
-            }
-        }
+    func closeDrawers() {
+        mm_drawerController.closeDrawerAnimated(false, completion:nil)
     }
     
-    func removeMovieFromList(list: List) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+    func rightDrawerButtonPress(sender: AnyObject) {
+        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+            var movieSettings:MovieSettingsViewController?
             
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
+            for drawer in navigationVC.viewControllers {
+                if drawer is MovieSettingsViewController {
+                    movieSettings = drawer as? MovieSettingsViewController
                 }
             }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.removeMovie(movie.movieID!, fromList: list.listID!, completion: completion)
-            } catch {
-                JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
+            if movieSettings == nil {
+                movieSettings = MovieSettingsViewController()
+                navigationVC.addChildViewController(movieSettings!)
             }
+
+            movieSettings!.movieID = movieID
+            navigationVC.popToViewController(movieSettings!, animated: true)
         }
-    }
-    
-    func findLists(callback: (lists: [AnyObject]) -> Void) {
-        if TMDBManager.sharedInstance.needsRefresh(TMDBConstants.Device.Keys.Lists) {
-            let completion = { (arrayIDs: [AnyObject], error: NSError?) in
-                if let error = error {
-                    TMDBManager.sharedInstance.deleteRefreshData(TMDBConstants.Device.Keys.Lists)
-                    performUIUpdatesOnMain {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                }
-                
-                let predicate = NSPredicate(format: "listID IN %@", arrayIDs)
-                let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
-                callback(lists: lists)
-            }
-            
-            do {
-                try TMDBManager.sharedInstance.lists(completion)
-            } catch {
-                let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
-                let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
-                callback(lists: lists)
-            }
-            
-        } else {
-            let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
-            let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)])
-            callback(lists: lists)
-        }
+        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
     }
 }
 

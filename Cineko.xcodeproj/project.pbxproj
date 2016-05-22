@@ -166,6 +166,8 @@
 		8CD53C091CC62B570035AD45 /* ThumbnailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C051CC62B570035AD45 /* ThumbnailTableViewCell.xib */; };
 		8CD53C0A1CC62B570035AD45 /* ThumbnailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C061CC62B570035AD45 /* ThumbnailCollectionViewCell.xib */; };
 		8CD53C0B1CC62B570035AD45 /* MediaInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CD53C071CC62B570035AD45 /* MediaInfoTableViewCell.xib */; };
+		8CE83F811CEE851E009BDFE5 /* MovieSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE83F801CEE851E009BDFE5 /* MovieSettingsViewController.swift */; };
+		8CE83F831CEE853F009BDFE5 /* TVShowSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE83F821CEE853F009BDFE5 /* TVShowSettingsViewController.swift */; };
 		8CF5ECDB1CCF71E700260045 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */; };
 		A6EFC38E7DA51EF7EB697EB8 /* Pods_CinekoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */; };
 /* End PBXBuildFile section */
@@ -264,6 +266,8 @@
 		8CD53C0C1CC62C200035AD45 /* Cine Ko!-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cine Ko!-Info.plist"; sourceTree = "<group>"; };
 		8CDAA4961CB60B26008E9665 /* Credit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Credit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CDAA4971CB60B26008E9665 /* Credit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credit.swift; sourceTree = "<group>"; };
+		8CE83F801CEE851E009BDFE5 /* MovieSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieSettingsViewController.swift; sourceTree = "<group>"; };
+		8CE83F821CEE853F009BDFE5 /* TVShowSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowSettingsViewController.swift; sourceTree = "<group>"; };
 		8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowDetailsViewController.swift; sourceTree = "<group>"; };
 		8CF5ECDA1CCF71E700260045 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		90EB5DD5D3DEA29B63CD4009 /* Pods_CinekoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CinekoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,6 +447,7 @@
 				8C6AF0481CE0E05F00E4C5A5 /* ListEditorViewController.swift */,
 				8C3C82331CB22032008CCF4C /* LoginViewController.swift */,
 				8C7809521CB80A7800C1810C /* MovieDetailsViewController.swift */,
+				8CE83F801CEE851E009BDFE5 /* MovieSettingsViewController.swift */,
 				8CB749431CAEC1CF00EABB91 /* MoviesViewController.swift */,
 				8C17D5A01CC54B9800D81F66 /* PersonDetailsViewController.swift */,
 				8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */,
@@ -450,6 +455,7 @@
 				8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */,
 				8CD408BD1CB17AC200F9132F /* StartViewController.swift */,
 				8CEBE9731CC08299006137DA /* TVShowDetailsViewController.swift */,
+				8CE83F821CEE853F009BDFE5 /* TVShowSettingsViewController.swift */,
 				8CB749471CAEC1F000EABB91 /* TVShowsViewController.swift */,
 			);
 			name = Controller;
@@ -913,6 +919,7 @@
 				8CD53BCC1CC62B400035AD45 /* Movie.swift in Sources */,
 				8CD53BCD1CC62B400035AD45 /* Credit+CoreDataProperties.swift in Sources */,
 				8CD53BCE1CC62B400035AD45 /* TVSeason.swift in Sources */,
+				8CE83F811CEE851E009BDFE5 /* MovieSettingsViewController.swift in Sources */,
 				8CD53BCF1CC62B400035AD45 /* ThumbnailCollectionViewCell.swift in Sources */,
 				8CD53BD01CC62B400035AD45 /* Constants.swift in Sources */,
 				8CD53BD11CC62B400035AD45 /* TVSeason+CoreDataProperties.swift in Sources */,
@@ -947,6 +954,7 @@
 				8C0B19B71CDCB4B0000D3286 /* List+CoreDataProperties.swift in Sources */,
 				8C8934EB1CEC3A90000BCCB8 /* TwitterManager.swift in Sources */,
 				8C2D0DC61CD64C0300DE888C /* NYTimesReviewManager.swift in Sources */,
+				8CE83F831CEE853F009BDFE5 /* TVShowSettingsViewController.swift in Sources */,
 				8CD53BE91CC62B400035AD45 /* Movie+CoreDataProperties.swift in Sources */,
 				8CBDFD481CD9BE8C006E6D30 /* Review+CoreDataProperties.swift in Sources */,
 				8CBDFD491CD9BE8C006E6D30 /* Review.swift in Sources */,

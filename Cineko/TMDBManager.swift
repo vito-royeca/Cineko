@@ -1511,12 +1511,22 @@ class TMDBManager: NSObject {
                         
                         if let listID = m.listID {
                             listIDs.append(listID)
+                            
+                            // pre-download the list details
+                            do {
+                                try self.listDetails(listID, completion: { _,_ -> Void in
+                                
+                                })
+                            } catch {}
+                            
                         }
                     }
                 }
             }
+            
             CoreDataManager.sharedInstance.savePrivateContext()
             completion(arrayIDs: listIDs, error: nil)
+            
         }
         
         let failure = { (error: NSError?) -> Void in
@@ -1540,12 +1550,21 @@ class TMDBManager: NSObject {
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["items"] as? [[String: AnyObject]] {
+                    
+                    let list = ObjectManager.sharedInstance.findOrCreateList([List.Keys.ListID: listID])
+                    let set = list.mutableSetValueForKey("movies") as NSMutableSet
+                    
                     for movie in json {
                         let m = ObjectManager.sharedInstance.findOrCreateMovie(movie)
+                        
                         if let movieID = m.movieID {
                             movieIDs.append(movieID)
+                            set.addObject(m)
                         }
                     }
+                    
+                    // update list movies
+                    CoreDataManager.sharedInstance.savePrivateContext()
                 }
             }
             completion(arrayIDs: movieIDs, error: nil)

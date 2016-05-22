@@ -323,8 +323,10 @@ extension ThumbnailTableViewCell : NSFetchedResultsControllerDelegate {
             collectionView.reloadData()
         } else {
             collectionView.performBatchUpdates({
-                self.blockOperation!.start()
-                }, completion:nil)
+                if let blockOperation = self.blockOperation {
+                    blockOperation.start()
+                }
+            }, completion:nil)
         }
     }
 }

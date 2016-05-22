@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Movies-->
@@ -147,7 +146,7 @@
             </objects>
             <point key="canvasLocation" x="1902" y="-863"/>
         </scene>
-        <!--Movie-->
+        <!--Movie Details-->
         <scene sceneID="NhU-hz-64w">
             <objects>
                 <viewController storyboardIdentifier="MovieDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="6At-tm-DiG" customClass="MovieDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
@@ -249,30 +248,9 @@
                             <constraint firstItem="BZY-Dv-BSm" firstAttribute="leading" secondItem="mi1-zV-vtf" secondAttribute="leading" id="rIz-76-z6w"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Movie" id="hKK-Iw-wLY">
-                        <rightBarButtonItems>
-                            <barButtonItem image="list" id="uPv-Lp-20Y">
-                                <connections>
-                                    <action selector="listAction:" destination="6At-tm-DiG" id="rsd-3F-ZkN"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="eye" id="sLV-iu-MVH">
-                                <connections>
-                                    <action selector="watchlistAction:" destination="6At-tm-DiG" id="2Cd-lC-swu"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="heart" id="cuV-FF-voo">
-                                <connections>
-                                    <action selector="favoriteAction:" destination="6At-tm-DiG" id="5jq-ti-D9C"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY"/>
                     <connections>
-                        <outlet property="favoriteButton" destination="cuV-FF-voo" id="e9C-gj-hhl"/>
-                        <outlet property="listButton" destination="uPv-Lp-20Y" id="8py-54-iqj"/>
                         <outlet property="tableView" destination="BZY-Dv-BSm" id="EKZ-W8-Amz"/>
-                        <outlet property="watchlistButton" destination="sLV-iu-MVH" id="qLN-uV-lCy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0JT-9C-AX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -434,31 +412,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvJ-JR-hY1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-521" y="625"/>
-        </scene>
-        <!--Search Settings-->
-        <scene sceneID="YXX-nV-tqb">
-            <objects>
-                <viewController id="hSv-zl-rCq" customClass="SearchSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0jW-Pb-HHa"/>
-                        <viewControllerLayoutGuide type="bottom" id="acx-iI-5W6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Dxj-ER-BGp">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Search Settings" id="tgd-e0-MM8">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="p6d-i8-vJt">
-                            <connections>
-                                <action selector="refreshAction:" destination="hSv-zl-rCq" id="eaf-yh-QTK"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Saz-aw-kPH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="282" y="1544"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Kri-Hn-J2M">
@@ -623,7 +576,7 @@
                     </connections>
                 </searchBar>
             </objects>
-            <point key="canvasLocation" x="2706" y="1404"/>
+            <point key="canvasLocation" x="1894" y="1398"/>
         </scene>
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
@@ -674,7 +627,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJd-b5-IBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1894" y="2193"/>
+            <point key="canvasLocation" x="1894" y="2497"/>
         </scene>
         <!--List Editor View Controller-->
         <scene sceneID="gXt-dZ-2nY">
@@ -704,7 +657,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5sw-0l-nqu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3456" y="2193"/>
+            <point key="canvasLocation" x="3486" y="2497"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -762,7 +715,7 @@
             </objects>
             <point key="canvasLocation" x="2792" y="-863"/>
         </scene>
-        <!--TV Show-->
+        <!--TV Show Details-->
         <scene sceneID="nVb-95-rf2">
             <objects>
                 <viewController storyboardIdentifier="TVShowDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="wVx-Wm-bVh" customClass="TVShowDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
@@ -865,24 +818,9 @@
                             <constraint firstItem="PKf-Af-LCm" firstAttribute="top" secondItem="wnb-Z9-7bp" secondAttribute="bottom" id="gaq-Ik-ezu"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="TV Show" id="60C-GX-mVq">
-                        <rightBarButtonItems>
-                            <barButtonItem image="eye" id="6la-k3-GH4">
-                                <connections>
-                                    <action selector="watchlistAction:" destination="wVx-Wm-bVh" id="F9w-8c-Mfg"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="heart" id="NCF-yy-Ioa">
-                                <connections>
-                                    <action selector="favoriteAction:" destination="wVx-Wm-bVh" id="bJy-Ti-5tw"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq"/>
                     <connections>
-                        <outlet property="favoriteButton" destination="NCF-yy-Ioa" id="WiS-Lq-EuC"/>
                         <outlet property="tableView" destination="PKf-Af-LCm" id="HBq-ZP-eAe"/>
-                        <outlet property="watchlistButton" destination="6la-k3-GH4" id="Euo-1y-4LP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uPY-oa-goJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1121,7 +1059,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9fz-5F-i8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1894" y="1404"/>
+            <point key="canvasLocation" x="1090" y="1398"/>
         </scene>
         <!--Account-->
         <scene sceneID="wWq-uB-xnH">
@@ -1140,7 +1078,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upO-LN-CSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="2193"/>
+            <point key="canvasLocation" x="1090" y="2497"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8s4-Ae-U03">
@@ -1158,9 +1096,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gdp-7k-RgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2644" y="2193"/>
+            <point key="canvasLocation" x="2662" y="2497"/>
         </scene>
-        <!--List-->
+        <!--List Details-->
         <scene sceneID="VhV-e3-E6N">
             <objects>
                 <viewController storyboardIdentifier="ListDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" id="JaW-8p-6FZ" customClass="ListDetailsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
@@ -1215,7 +1153,7 @@
                             <constraint firstItem="ztu-Q1-GNb" firstAttribute="top" secondItem="Kvn-dK-wtx" secondAttribute="bottom" id="ywe-0d-doM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="List" id="GgU-Sw-VzX">
+                    <navigationItem key="navigationItem" title="List Details" id="GgU-Sw-VzX">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="7Fq-oJ-Ejm">
                             <connections>
                                 <action selector="deleteAction:" destination="JaW-8p-6FZ" id="zQw-i9-sZH"/>
@@ -1228,7 +1166,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12k-Xz-6Op" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3456" y="2912"/>
+            <point key="canvasLocation" x="3486" y="3318"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kdE-dy-Dn1">
@@ -1246,7 +1184,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2dM-6z-0og" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2644" y="2912"/>
+            <point key="canvasLocation" x="2662" y="3318"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="igL-1G-90U">
@@ -1258,22 +1196,79 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="hSv-zl-rCq" kind="relationship" relationship="rootViewController" id="esP-8K-U7B"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjV-tG-lod" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-521" y="1544"/>
         </scene>
+        <!--Search Settings-->
+        <scene sceneID="Bey-cB-Yq9">
+            <objects>
+                <viewController id="9f9-Me-FRT" customClass="SearchSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JsJ-da-T7b"/>
+                        <viewControllerLayoutGuide type="bottom" id="vV9-r4-DMU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8V5-Gd-AFf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Search Settings" id="iVS-Nz-zBQ">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="tQw-Gs-Jh2">
+                            <connections>
+                                <action selector="refreshAction:" destination="9f9-Me-FRT" id="Piy-cf-xMD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UUZ-LO-yWx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1184" y="2326"/>
+        </scene>
+        <!--Movie Settings-->
+        <scene sceneID="QUE-Qn-hYk">
+            <objects>
+                <viewController id="EbD-zR-Ty7" customClass="MovieSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M6b-1R-KbG"/>
+                        <viewControllerLayoutGuide type="bottom" id="K5G-4m-uTb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DJO-u1-fT3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Movie Settings" id="XXt-GD-q5t"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lIo-Xp-Xxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-521" y="2326"/>
+        </scene>
+        <!--TV Show Settings-->
+        <scene sceneID="Sdk-0V-P2j">
+            <objects>
+                <viewController id="cOO-6w-JZS" customClass="TVShowSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7i0-6t-VrB"/>
+                        <viewControllerLayoutGuide type="bottom" id="igb-1S-A1C"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="I6a-kf-BGv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="TV Show Settings" id="1Dq-hE-OCz"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kgi-7f-6y4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="176" y="2326"/>
+        </scene>
     </scenes>
     <resources>
         <image name="account" width="25" height="25"/>
-        <image name="eye" width="25" height="25"/>
         <image name="film edge" width="535" height="51"/>
         <image name="film edge up" width="535" height="51"/>
-        <image name="heart" width="25" height="25"/>
-        <image name="list" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="tv" width="25" height="25"/>
     </resources>

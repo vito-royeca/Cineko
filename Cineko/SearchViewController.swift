@@ -187,6 +187,21 @@ class SearchViewController: UIViewController {
     }
     
     func rightDrawerButtonPress(sender: AnyObject) {
+        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+            var searchSettings:SearchSettingsViewController?
+            
+            for drawer in navigationVC.viewControllers {
+                if drawer is SearchSettingsViewController {
+                    searchSettings = drawer as? SearchSettingsViewController
+                }
+            }
+            if searchSettings == nil {
+                searchSettings = SearchSettingsViewController()
+                navigationVC.addChildViewController(searchSettings!)
+            }
+            
+            navigationVC.popToViewController(searchSettings!, animated: true)
+        }
         mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
     }
 }

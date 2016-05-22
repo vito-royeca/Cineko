@@ -32,7 +32,6 @@ class AccountViewController: UIViewController {
                     _listsFetchRequest.sortDescriptors = [
                         NSSortDescriptor(key: "name", ascending: true)]
                     let context = CoreDataManager.sharedInstance.mainObjectContext
-//                    let context = CoreDataManager.sharedInstance().privateContext
                     fetchedResultsController = NSFetchedResultsController(fetchRequest: _listsFetchRequest,
                                                                           managedObjectContext: context,
                                                                           sectionNameKeyPath: nil,
@@ -43,7 +42,6 @@ class AccountViewController: UIViewController {
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let context = CoreDataManager.sharedInstance.mainObjectContext
-//        let context = CoreDataManager.sharedInstance().privateContext
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: self.listsFetchRequest!,
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: nil,
@@ -66,8 +64,6 @@ class AccountViewController: UIViewController {
                     self.presentLoginViewController(urlString)
                     
                 } else {
-                    MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-                    
                     let success = { (results: AnyObject!) in
                         if let dict = results as? [String: AnyObject] {
                             if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
@@ -94,6 +90,7 @@ class AccountViewController: UIViewController {
                     }
                     
                     do {
+                        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                         try TMDBManager.sharedInstance.authenticationTokenNew(success, failure: failure)
                     } catch {}
                 }
@@ -194,7 +191,7 @@ class AccountViewController: UIViewController {
         
         performUIUpdatesOnMain {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2)) {
-                    MBProgressHUD.hideHUDForView(cell, animated: true)
+                MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
         }
@@ -409,7 +406,7 @@ extension AccountViewController : NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)) {
                     
-                    if let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
+                    if let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section)) as? List {
                         self.configureCell(cell, list: list)
                     }
                 }

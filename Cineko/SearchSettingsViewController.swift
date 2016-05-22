@@ -19,7 +19,7 @@ struct SearchSettingsKeys {
     static let PeopleIncludeAdult = "PeopleIncludeAdult"
 }
 
-class SearchSettingsViewController: FormViewController {
+class SearchSettingsViewController : FormViewController {
 
     // MARK: Constants
     let minimumYear = 1900
@@ -47,86 +47,83 @@ class SearchSettingsViewController: FormViewController {
         let components = NSCalendar.currentCalendar().components(.Year, fromDate: NSDate())
         currentYear = components.year
         
+        navigationItem.title = "Search Settings"
         composeForm()
-        mm_drawerController.showsShadow = false
     }
-
+    
+    // MARK: Custom Methods
     func composeForm() {
         
         form =
-            Section("")
-        
             // Movies
-            +++ Section("Movies")
+            Section("Movies")
             <<< SwitchRow() {
-                    $0.title = "Include Year Released"
-                    $0.tag = SearchSettingsKeys.MovieIncludeYearReleased
-                    $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeYearReleased)
+                $0.title = "Include Year Released"
+                $0.tag = SearchSettingsKeys.MovieIncludeYearReleased
+                $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeYearReleased)
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setBool(row.value!, forKey: SearchSettingsKeys.MovieIncludeYearReleased)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+            }
             
             <<< PickerInlineRow<Int>("movieYearReleased") { (row : PickerInlineRow<Int>) -> Void in
-                    row.options = []
-                    for year in currentYear.stride(to: minimumYear, by: -1) {
-                        row.options.append(year)
-                    }
-                    row.disabled = "$MovieIncludeYearReleased = false"
-                    row.title = "Year Released"
-                    row.tag = SearchSettingsKeys.MovieYearReleased
-                    let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.MovieYearReleased)
-                    row.value = year > 0 ? year : currentYear
+                row.options = []
+                for year in currentYear.stride(to: minimumYear, by: -1) {
+                    row.options.append(year)
+                }
+                row.disabled = "$MovieIncludeYearReleased = false"
+                row.title = "Year Released"
+                row.tag = SearchSettingsKeys.MovieYearReleased
+                let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.MovieYearReleased)
+                row.value = year > 0 ? year : currentYear
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setInteger(row.value!, forKey: SearchSettingsKeys.MovieYearReleased)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+            }
             
             <<< SwitchRow() {
-                    $0.title = "Include Adult"
-                    $0.tag = SearchSettingsKeys.MovieIncludeAdult
-                    $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeAdult)
+                $0.title = "Include Adult"
+                $0.tag = SearchSettingsKeys.MovieIncludeAdult
+                $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.MovieIncludeAdult)
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setBool(row.value!, forKey: SearchSettingsKeys.MovieIncludeAdult)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+            }
             
             // TV Shows
             +++ Section("TV Shows")
             <<< SwitchRow() {
-                    $0.title = "Include First Air Date"
-                    $0.tag = SearchSettingsKeys.TVShowIncludeFirstAirDate
-                    $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.TVShowIncludeFirstAirDate)
+                $0.title = "Include First Air Date"
+                $0.tag = SearchSettingsKeys.TVShowIncludeFirstAirDate
+                $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.TVShowIncludeFirstAirDate)
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setBool(row.value!, forKey: SearchSettingsKeys.TVShowIncludeFirstAirDate)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+            }
             
             <<< PickerInlineRow<Int>("tvShowFirstAirDate") { (row : PickerInlineRow<Int>) -> Void in
-                    row.options = []
-                    for year in currentYear.stride(to: minimumYear, by: -1) {
-                        row.options.append(year)
-                    }
-                    row.disabled = "$TVShowIncludeFirstAirDate = false"
-                    row.title = "First Air Date"
-                    row.tag = SearchSettingsKeys.TVShowFirstAirDate
-                    let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.TVShowFirstAirDate)
-                    row.value = year > 0 ? year : currentYear
+                row.options = []
+                for year in currentYear.stride(to: minimumYear, by: -1) {
+                    row.options.append(year)
+                }
+                row.disabled = "$TVShowIncludeFirstAirDate = false"
+                row.title = "First Air Date"
+                row.tag = SearchSettingsKeys.TVShowFirstAirDate
+                let year = NSUserDefaults.standardUserDefaults().integerForKey(SearchSettingsKeys.TVShowFirstAirDate)
+                row.value = year > 0 ? year : currentYear
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setInteger(row.value!, forKey: SearchSettingsKeys.TVShowFirstAirDate)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+            }
             
             +++ Section("People")
             <<< SwitchRow() {
-                    $0.title = "Include Adult"
-                    $0.tag = SearchSettingsKeys.PeopleIncludeAdult
-                    $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.PeopleIncludeAdult)
+                $0.title = "Include Adult"
+                $0.tag = SearchSettingsKeys.PeopleIncludeAdult
+                $0.value = NSUserDefaults.standardUserDefaults().boolForKey(SearchSettingsKeys.PeopleIncludeAdult)
                 }.onChange { row in
                     NSUserDefaults.standardUserDefaults().setBool(row.value!, forKey: SearchSettingsKeys.PeopleIncludeAdult)
                     NSUserDefaults.standardUserDefaults().synchronize()
-                }
+        }
     }
-    
 }
-

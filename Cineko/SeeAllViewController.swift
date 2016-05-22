@@ -16,6 +16,7 @@ class SeeAllViewController: UIViewController {
     static let Height:CGFloat = 180
     static let MaxItems = 12
     static let MaxImageWidth = CGFloat(80)
+    static let CellsPerRow = (UIDevice.currentDevice().userInterfaceIdiom == .Pad) ? 5 : 3
     
     // MARK: Outlets
     @IBOutlet weak var collectionView: UICollectionView!
@@ -89,11 +90,12 @@ class SeeAllViewController: UIViewController {
                 
                 if let image = image {
                     if !self.imageSizeAdjusted {
+                        let cellsPerRow = CGFloat(SeeAllViewController.CellsPerRow)
                         let space: CGFloat = 1.0
                         let imageHeight = image.size.height
                         let imageWidth = image.size.width
                         let longerSize = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width
-                        let width = (longerSize - (3*space)) / 3.0
+                        let width = (longerSize - (cellsPerRow*space)) / cellsPerRow
                         let height = (imageHeight*width)/imageWidth
                         self.flowLayout.minimumInteritemSpacing = space
                         self.flowLayout.minimumLineSpacing = space
@@ -133,11 +135,12 @@ class SeeAllViewController: UIViewController {
     func setDefaultImageForCell(cell: ThumbnailCollectionViewCell, caption: String?) {
         if let image = UIImage(named: "noImage") {
             if !imageSizeAdjusted {
+                let cellsPerRow = CGFloat(SeeAllViewController.CellsPerRow)
                 let space: CGFloat = 1.0
                 let imageHeight = image.size.height
                 let imageWidth = image.size.width
                 let longerSize = self.view.frame.size.width > self.view.frame.size.height ? self.view.frame.size.height : self.view.frame.size.width
-                let width = (longerSize - (3*space)) / 3.0
+                let width = (longerSize - (cellsPerRow*space)) / cellsPerRow
                 let height = (imageHeight*width)/imageWidth
                 self.flowLayout.minimumInteritemSpacing = space
                 self.flowLayout.minimumLineSpacing = space

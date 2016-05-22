@@ -12,14 +12,13 @@ import CoreData
 import IDMPhotoBrowser
 import JJJUtils
 import MBProgressHUD
+import MMDrawerController
 import SDWebImage
 import TwitterKit
 
 class TVShowDetailsViewController: UIViewController {
 
     // MARK: Outlets
-    @IBOutlet weak var favoriteButton: UIBarButtonItem!
-    @IBOutlet weak var watchlistButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: Variables
@@ -31,60 +30,11 @@ class TVShowDetailsViewController: UIViewController {
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
     var tvSeasonFetchRequest:NSFetchRequest?
-    var isFavorite = false
-    var isWatchlist = false
     private var averageColor:UIColor?
     private var contrastColor:UIColor?
     var tweets:[AnyObject]?
     
     // MARK: Actions
-    @IBAction func favoriteAction(sender: UIBarButtonItem) {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
-            
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    self.updateButtons()
-                }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.accountFavorite(tvShow.tvShowID!, mediaType: .TVShow, favorite: !isFavorite, completion: completion)
-            } catch {
-                self.updateButtons()
-            }
-        }
-    }
-    
-    @IBAction func watchlistAction(sender: UIBarButtonItem) {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
-            
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    self.updateButtons()
-                }
-            }
-            
-            do {
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.accountWatchlist(tvShow.tvShowID!, mediaType: .TVShow, watchlist: !isWatchlist, completion: completion)
-            } catch {
-                self.updateButtons()
-            }
-        }
-    }
     
     // MARK: Overrides
     override func viewDidLoad() {
@@ -100,6 +50,8 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
+        
+        initDrawerButton()
         
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
@@ -119,64 +71,8 @@ class TVShowDetailsViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateButtons()
-        
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
-            if let posterPath = tvShow.posterPath {
-                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
-                let backgroundView = UIImageView()
-                backgroundView.contentMode = .ScaleAspectFit
-                tableView.backgroundView = backgroundView
-                
-                let comppleted = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
-                        MBProgressHUD.hideHUDForView(cell, animated: true)
-                    }
-                    
-                    if let image = image {
-                        let color = image.averageColor()
-                        self.averageColor = color.colorWithAlphaComponent(0.97)
-                        self.contrastColor = color.blackOrWhiteContrastingColor()
-                        self.titleLabel!.backgroundColor = self.averageColor
-                        self.titleLabel!.textColor = self.contrastColor
-                        if let inverseColor = self.contrastColor {
-                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
-                            self.navigationController!.navigationBar.tintColor = inverseColor
-                        }
-                        if let averageColor = self.averageColor {
-                            self.navigationController!.navigationBar.barTintColor = averageColor
-                            self.navigationController!.navigationBar.translucent = false
-                        }
-                        
-                        // change also the button items
-                        if let image = self.favoriteButton.image {
-                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
-                            self.favoriteButton.image = tintedImage
-                            self.favoriteButton.tintColor = self.contrastColor
-                        }
-                        if let image = self.watchlistButton.image {
-                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
-                            self.watchlistButton.image = tintedImage
-                            self.watchlistButton.tintColor = self.contrastColor
-                        }
-                        
-                        backgroundView.backgroundColor = self.averageColor
-                        self.tableView.reloadData()
-                    }
-                }
-                
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
-                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
-                }
-                backgroundView.sd_setImageWithURL(url, completed: comppleted)
-            }
-            
-            titleLabel!.text = tvShow.name
-            titleLabel!.sizeToFit()
-            // resize the frame to cover the whole width
-            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
-        }
+//        updateButtons()
+        updateBackground()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -203,26 +99,62 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     // MARK: Custom Methods
-    func updateButtons() {
+    func updateBackground() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
-            
-            if let favorite = tvShow.favorite {
-                isFavorite = favorite.boolValue
+            if let posterPath = tvShow.posterPath {
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
+                let backgroundView = UIImageView()
+                backgroundView.contentMode = .ScaleAspectFit
+                tableView.backgroundView = backgroundView
+                
+                let completed = { (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                    }
+                    
+                    if let image = image {
+                        let color = image.averageColor()
+                        self.averageColor = color.colorWithAlphaComponent(0.97)
+                        self.contrastColor = color.blackOrWhiteContrastingColor()
+                        self.titleLabel!.backgroundColor = self.averageColor
+                        self.titleLabel!.textColor = self.contrastColor
+                        if let inverseColor = self.contrastColor {
+                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
+                            self.navigationController!.navigationBar.tintColor = inverseColor
+                        }
+                        if let averageColor = self.averageColor {
+                            self.navigationController!.navigationBar.barTintColor = averageColor
+                            self.navigationController!.navigationBar.translucent = false
+                        }
+                        
+                        // change also the button items
+                        if let button = self.navigationItem.rightBarButtonItem {
+                            if let image = button.image {
+                                let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                                button.image = tintedImage
+                                button.tintColor = self.contrastColor
+                            }
+                        }
+                        
+                        backgroundView.backgroundColor = self.averageColor
+                        self.tableView.reloadData()
+                    }
+                }
+                
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                backgroundView.sd_setImageWithURL(url, completed: completed)
             }
-            favoriteButton.image = isFavorite ? UIImage(named: "heart-filled") : UIImage(named: "heart")
             
-            if let watchlist = tvShow.watchlist {
-                isWatchlist = watchlist.boolValue
-            }
-            watchlistButton.image = isWatchlist ? UIImage(named: "eye-filled") : UIImage(named: "eye")
+            titleLabel!.text = tvShow.name
+            titleLabel!.sizeToFit()
+            // resize the frame to cover the whole width
+            titleLabel!.frame = CGRectMake(titleLabel!.frame.origin.x, titleLabel!.frame.origin.y, view.frame.size.width, titleLabel!.frame.size.height)
         }
-        
-        let hasSession = TMDBManager.sharedInstance.hasSessionID()
-        favoriteButton.enabled = hasSession
-        watchlistButton.enabled = hasSession
     }
-    
+
     func loadDetails() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
@@ -543,6 +475,43 @@ class TVShowDetailsViewController: UIViewController {
             browser.setInitialPageIndex(UInt(path.row))
             presentViewController(browser, animated:true, completion:nil)
         }
+    }
+    
+    // MARK: MMDrawer methods
+    func initDrawerButton() {
+        setupRightMenuButton()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
+    }
+    
+    func setupRightMenuButton() {
+        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
+        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
+    }
+    
+    func closeDrawers() {
+        mm_drawerController.closeDrawerAnimated(false, completion:nil)
+    }
+    
+    func rightDrawerButtonPress(sender: AnyObject) {
+        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+            var tvShowSettings:TVShowSettingsViewController?
+            
+            for drawer in navigationVC.viewControllers {
+                if drawer is TVShowSettingsViewController {
+                    tvShowSettings = drawer as? TVShowSettingsViewController
+                }
+            }
+            if tvShowSettings == nil {
+                tvShowSettings = TVShowSettingsViewController()
+                navigationVC.addChildViewController(tvShowSettings!)
+            }
+
+            tvShowSettings!.tvShowID = tvShowID
+            navigationVC.popToViewController(tvShowSettings!, animated: true)
+        }
+        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
     }
 }
 
