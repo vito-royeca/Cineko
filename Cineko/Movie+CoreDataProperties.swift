@@ -33,6 +33,7 @@ extension Movie {
     @NSManaged var status: String?
     @NSManaged var tagline: String?
     @NSManaged var title: String?
+    @NSManaged var twitterQuery: String?
     @NSManaged var video: NSNumber?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?

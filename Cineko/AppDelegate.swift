@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Fabric and Twitter
-//        Twitter.sharedInstance().startWithConsumerKey(Constants.TwitterAPIKey, consumerSecret: Constants.TwitterAPISecret)
         Fabric.with([Crashlytics.self, Twitter.self])
+        Twitter.sharedInstance().startWithConsumerKey(Constants.TwitterAPIKey, consumerSecret: Constants.TwitterAPISecret)
         
         // Core Data
         CoreDataManager.sharedInstance.setup(Constants.CoreDataSQLiteFile, modelFile: Constants.CoreDataModelFile)

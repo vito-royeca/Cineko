@@ -242,6 +242,7 @@
 		8C8934EA1CEC3A90000BCCB8 /* TwitterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterManager.swift; sourceTree = "<group>"; };
 		8C8B37F11CE3BB41002A5A29 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
 		8C9018DD1CC764CB001EB1A6 /* SeeAllViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeeAllViewController.swift; sourceTree = "<group>"; };
+		8C91D8631CF4047500E1AF48 /* Cineko 05242016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Cineko 05242016.xcdatamodel"; sourceTree = "<group>"; };
 		8CAB33E21CC4891C00441861 /* ObjectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectManager.swift; sourceTree = "<group>"; };
 		8CAB33EA1CC4C70600441861 /* Job+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Job+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8CAB33EB1CC4C70600441861 /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
@@ -1221,11 +1222,12 @@
 		8C1378A71CAE7BF300FB6830 /* Cineko.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8C91D8631CF4047500E1AF48 /* Cineko 05242016.xcdatamodel */,
 				8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */,
 				8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */,
 				8C1378A81CAE7BF300FB6830 /* Cineko.xcdatamodel */,
 			);
-			currentVersion = 8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */;
+			currentVersion = 8C91D8631CF4047500E1AF48 /* Cineko 05242016.xcdatamodel */;
 			path = Cineko.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

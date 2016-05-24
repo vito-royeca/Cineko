@@ -185,8 +185,9 @@ class MovieSettingsViewController: FormViewController {
             <<< SwitchRow() {
                     $0.title = "Favorite"
                     $0.tag =  "Favorite"
+                    $0.disabled = hasSession ? false : true
                 if let favorite = movie!.favorite {
-                    $0.value = favorite.boolValue
+                    $0.value = favorite.boolValue && hasSession
                 } else {
                     $0.value = false
                 }}.onChange { row in
@@ -198,8 +199,9 @@ class MovieSettingsViewController: FormViewController {
             <<< SwitchRow() {
                     $0.title = "Watchlist"
                     $0.tag = "Watchlist"
+                    $0.disabled = hasSession ? false : true
                 if let watchlist = movie!.watchlist {
-                    $0.value = watchlist.boolValue
+                    $0.value = watchlist.boolValue && hasSession
                 } else {
                     $0.value = false
                 }}.onChange { row in
@@ -232,7 +234,7 @@ class MovieSettingsViewController: FormViewController {
                     }
                 }
                 
-                self.form.last!
+                form.last!
                     <<< CheckRow() {
                             $0.title = list.name
                             $0.tag = list.listID

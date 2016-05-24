@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F34" minimumToolsVersion="Xcode 7.0">
+    <entity name="Account" representedClassName=".Account" syncable="YES">
+        <attribute name="accountID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="gravatarHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="includeAdult" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iso31661" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="createdBy" inverseEntity="List" syncable="YES"/>
+    </entity>
+    <entity name="Company" representedClassName=".Company" syncable="YES">
+        <attribute name="companyDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="companyID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="headquarters" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logoPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+            </userInfo>
+        </attribute>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCompanies" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="tvShows" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVShow" inverseName="productionCompanies" inverseEntity="TVShow" syncable="YES"/>
+    </entity>
+    <entity name="Country" representedClassName=".Country" syncable="YES">
+        <attribute name="iso31661" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="name"/>
+            </userInfo>
+        </attribute>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="productionCountries" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="Credit" representedClassName=".Credit" syncable="YES">
+        <attribute name="castID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="character" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creditID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creditType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="job" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Job" inverseName="credits" inverseEntity="Job" syncable="YES"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="credits" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="person" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="credits" inverseEntity="Person" syncable="YES"/>
+        <relationship name="tvEpisode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVEpisode" inverseName="credits" inverseEntity="TVEpisode" syncable="YES"/>
+        <relationship name="tvSeason" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVSeason" inverseName="credits" inverseEntity="TVSeason" syncable="YES"/>
+        <relationship name="tvShow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="credits" inverseEntity="TVShow" syncable="YES"/>
+    </entity>
+    <entity name="Genre" representedClassName=".Genre" syncable="YES">
+        <attribute name="genreID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="movieGenre" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvGenre" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="genres" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="tvShows" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVShow" inverseName="genres" inverseEntity="TVShow" syncable="YES"/>
+    </entity>
+    <entity name="Image" representedClassName=".Image" syncable="YES">
+        <attribute name="aspectRatio" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="file_path"/>
+            </userInfo>
+        </attribute>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="movieBackdrop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="backdrops" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="moviePoster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="posters" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="personProfile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Person" inverseName="profiles" inverseEntity="Person" syncable="YES"/>
+        <relationship name="tvShowBackdrop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="backdrops" inverseEntity="TVShow" syncable="YES"/>
+        <relationship name="tvShowPoster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="posters" inverseEntity="TVShow" syncable="YES"/>
+    </entity>
+    <entity name="Job" representedClassName=".Job" syncable="YES">
+        <attribute name="department" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="job" inverseEntity="Credit" syncable="YES"/>
+    </entity>
+    <entity name="Language" representedClassName=".Language" syncable="YES">
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="name"/>
+            </userInfo>
+        </attribute>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="spokenLanguages" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="List" representedClassName=".List" syncable="YES">
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favoriteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="listID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="listType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="createdBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="lists" inverseEntity="Account" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="lists" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="Movie" representedClassName=".Movie" syncable="YES">
+        <attribute name="adult" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="budget" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imdbID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="movieID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="revenue" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="rtID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="runtime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitterQuery" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="video" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="watchlist" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="backdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="movieBackdrop" inverseEntity="Image" syncable="YES"/>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="movie" inverseEntity="Credit" syncable="YES"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="movies" inverseEntity="Genre" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="movies" inverseEntity="List" syncable="YES"/>
+        <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="moviePoster" inverseEntity="Image" syncable="YES"/>
+        <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Company" inverseName="movies" inverseEntity="Company" syncable="YES"/>
+        <relationship name="productionCountries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Country" inverseName="movies" inverseEntity="Country" syncable="YES"/>
+        <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Review" inverseName="movie" inverseEntity="Review" syncable="YES"/>
+        <relationship name="spokenLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Language" inverseName="movies" inverseEntity="Language" syncable="YES"/>
+    </entity>
+    <entity name="Network" representedClassName=".Network" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="networkID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="tvShows" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVShow" inverseName="networks" inverseEntity="TVShow" syncable="YES"/>
+        <userInfo>
+            <entry key="hyper.isPrimaryKey" value="YES"/>
+            <entry key="hyper.remoteKey" value="id"/>
+        </userInfo>
+    </entity>
+    <entity name="Person" representedClassName=".Person" syncable="YES">
+        <attribute name="adult" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="alsoKnownAs" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="biography" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="birthday" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deathday" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="personID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="placeOfBirth" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="profilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitterQuery" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="person" inverseEntity="Credit" syncable="YES"/>
+        <relationship name="profiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="personProfile" inverseEntity="Image" syncable="YES"/>
+    </entity>
+    <entity name="Review" representedClassName=".Review" syncable="YES">
+        <attribute name="byline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reviewType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="suggestedLinkText" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="reviews" inverseEntity="Movie" syncable="YES"/>
+    </entity>
+    <entity name="TVEpisode" representedClassName=".TVEpisode" syncable="YES">
+        <attribute name="airDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="episodeID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="episodeNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="productionCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seasonNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="stillPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="tvEpisode" inverseEntity="Credit" syncable="YES"/>
+        <relationship name="tvSeason" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVSeason" inverseName="tvEpisodes" inverseEntity="TVSeason" syncable="YES"/>
+    </entity>
+    <entity name="TVSeason" representedClassName=".TVSeason" syncable="YES">
+        <attribute name="airDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="episodeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seasonNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="tvSeasonID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="tvSeason" inverseEntity="Credit" syncable="YES"/>
+        <relationship name="tvEpisodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVEpisode" inverseName="tvSeason" inverseEntity="TVEpisode" syncable="YES"/>
+        <relationship name="tvShow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="tvSeasons" inverseEntity="TVShow" syncable="YES"/>
+        <userInfo>
+            <entry key="hyper.isPrimaryKey" value="YES"/>
+            <entry key="hyper.remoteKey" value="id"/>
+        </userInfo>
+    </entity>
+    <entity name="TVShow" representedClassName=".TVShow" syncable="YES">
+        <attribute name="backdropPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="firstAirDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="homepage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inProduction" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastAirDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfEpisodes" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberOfSeasons" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvShowID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="YES"/>
+                <entry key="hyper.remoteKey" value="id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="tvShowType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="twitterQuery" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="voteAverage" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="voteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="watchlist" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="backdrops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="tvShowBackdrop" inverseEntity="Image" syncable="YES"/>
+        <relationship name="credits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Credit" inverseName="tvShow" inverseEntity="Credit" syncable="YES"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="tvShows" inverseEntity="Genre" syncable="YES"/>
+        <relationship name="networks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Network" inverseName="tvShows" inverseEntity="Network" syncable="YES"/>
+        <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="tvShowPoster" inverseEntity="Image" syncable="YES"/>
+        <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Company" inverseName="tvShows" inverseEntity="Company" syncable="YES"/>
+        <relationship name="tvSeasons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVSeason" inverseName="tvShow" inverseEntity="TVSeason" syncable="YES"/>
+        <userInfo>
+            <entry key="hyper.isPrimaryKey" value="YES"/>
+            <entry key="hyper.remoteKey" value="id"/>
+        </userInfo>
+    </entity>
+    <elements>
+        <element name="Account" positionX="18" positionY="63" width="128" height="165"/>
+        <element name="Company" positionX="0" positionY="45" width="128" height="165"/>
+        <element name="Country" positionX="9" positionY="108" width="128" height="90"/>
+        <element name="Credit" positionX="9" positionY="162" width="128" height="210"/>
+        <element name="Genre" positionX="-9" positionY="54" width="128" height="135"/>
+        <element name="Image" positionX="36" positionY="81" width="128" height="225"/>
+        <element name="Job" positionX="-9" positionY="144" width="128" height="90"/>
+        <element name="Language" positionX="18" positionY="144" width="128" height="90"/>
+        <element name="List" positionX="-9" positionY="144" width="128" height="195"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="540"/>
+        <element name="Network" positionX="-9" positionY="144" width="128" height="90"/>
+        <element name="Person" positionX="-18" positionY="27" width="128" height="255"/>
+        <element name="Review" positionX="-9" positionY="144" width="128" height="135"/>
+        <element name="TVEpisode" positionX="0" positionY="63" width="128" height="225"/>
+        <element name="TVSeason" positionX="-9" positionY="54" width="128" height="195"/>
+        <element name="TVShow" positionX="-36" positionY="9" width="128" height="465"/>
+    </elements>
+</model>

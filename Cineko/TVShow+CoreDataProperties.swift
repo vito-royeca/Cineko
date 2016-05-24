@@ -31,6 +31,7 @@ extension TVShow {
     @NSManaged var status: String?
     @NSManaged var tvShowID: NSNumber?
     @NSManaged var tvShowType: String?
+    @NSManaged var twitterQuery: String?
     @NSManaged var voteAverage: NSNumber?
     @NSManaged var voteCount: NSNumber?
     @NSManaged var watchlist: NSNumber?

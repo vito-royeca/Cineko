@@ -76,7 +76,7 @@ class TVShowSettingsViewController: FormViewController {
     }
     
     func composeForm() {
-//        let hasSession = TMDBManager.sharedInstance.hasSessionID()
+        let hasSession = TMDBManager.sharedInstance.hasSessionID()
         
         var tvShow:TVShow?
         
@@ -89,8 +89,9 @@ class TVShowSettingsViewController: FormViewController {
             <<< SwitchRow() {
                 $0.title = "Favorite"
                 $0.tag =  "Favorite"
+                $0.disabled = hasSession ? false : true
                 if let favorite = tvShow!.favorite {
-                    $0.value = favorite.boolValue
+                    $0.value = favorite.boolValue && hasSession
                 } else {
                     $0.value = false
                 }}.onChange { row in
@@ -102,8 +103,9 @@ class TVShowSettingsViewController: FormViewController {
             <<< SwitchRow() {
                 $0.title = "Watchlist"
                 $0.tag = "Watchlist"
+                $0.disabled = hasSession ? false : true
                 if let watchlist = tvShow!.watchlist {
-                    $0.value = watchlist.boolValue
+                    $0.value = watchlist.boolValue && hasSession
                 } else {
                     $0.value = false
                 }}.onChange { row in

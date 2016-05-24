@@ -272,7 +272,7 @@ class MovieDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.userSearch(movie.title!, completion: completion)
+                try TwitterManager.sharedInstance.userSearch("\"\(movie.title!)\"", completion: completion)
             } catch {}
         }
     }
@@ -465,7 +465,9 @@ class MovieDetailsViewController: UIViewController {
                             c.backgroundColor = UIColor.clearColor()
                             c.tweetView.backgroundColor = averageColor!
                             c.tweetView.primaryTextColor = contrastColor!
+                            c.tweetView.linkTextColor = contrastColor!
                             c.tweetView.showActionButtons = true
+                            c.tweetView.delegate = self
                         }
                     }
                 }
@@ -909,5 +911,12 @@ extension MovieDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
         case .Tweets:
             loadTweets()
         }
+    }
+}
+
+// MARK: TWTRTweetViewDelegate
+extension MovieDetailsViewController : TWTRTweetViewDelegate {
+    func tweetView(tweetView: TWTRTweetView, shouldDisplayDetailViewController controller: TWTRTweetDetailViewController) -> Bool {
+        return false
     }
 }

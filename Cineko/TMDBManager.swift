@@ -16,7 +16,7 @@ enum TMDBError: ErrorType {
 }
 
 struct TMDBConstants {
-    static let APIKey          = "api_key"
+    static let APIKeyParam     = "api_key"
     static let SessionID       = "session_id"
     static let APIURL          = "https://api.themoviedb.org/3"
     static let SignupURL       = "https://www.themoviedb.org/account/signup"
@@ -417,7 +417,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Authentication.TokenNew.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
@@ -430,7 +430,7 @@ class TMDBManager: NSObject {
         if let requestToken = try getAvailableRequestToken() {
             let httpMethod:HTTPMethod = .Get
             let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Authentication.SessionNew.Path)"
-            let parameters = [TMDBConstants.APIKey: apiKey!,
+            let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                               TMDBConstants.Authentication.TokenNew.Keys.RequestToken: requestToken]
             
             let success = { (results: AnyObject!) in
@@ -523,7 +523,7 @@ class TMDBManager: NSObject {
 
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.Details.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         
         let success = { (results: AnyObject!) in
@@ -558,7 +558,7 @@ class TMDBManager: NSObject {
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         
         let bodyDict = ["media_type": mediaType.rawValue,
@@ -606,7 +606,7 @@ class TMDBManager: NSObject {
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         
         let bodyDict = ["media_type": mediaType.rawValue,
@@ -652,7 +652,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteMovies.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         var movieIDs = [NSNumber]()
         
@@ -697,7 +697,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.FavoriteTVShows.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         var tvShowIDs = [NSNumber]()
         
@@ -742,7 +742,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistMovies.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         var movieIDs = [NSNumber]()
         
@@ -787,7 +787,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Account.WatchlistTVShows.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         var tvShowIDs = [NSNumber]()
         
@@ -824,7 +824,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var movieIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -856,7 +856,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.ByGenre.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(genreID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var movieIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -888,7 +888,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Details.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
     
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
@@ -923,7 +923,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Images.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
@@ -959,7 +959,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Credits.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
@@ -995,7 +995,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var tvShowIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -1027,7 +1027,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Details.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
@@ -1051,7 +1051,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Images.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
@@ -1081,7 +1081,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Credits.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
@@ -1117,7 +1117,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Popular.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var personIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -1149,7 +1149,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Details.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
@@ -1173,7 +1173,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Images.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let person = ObjectManager.sharedInstance.findOrCreatePerson([Person.Keys.PersonID: personID])
@@ -1203,7 +1203,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.People.Credits.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(personID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         
         let success = { (results: AnyObject!) in
             let person = ObjectManager.sharedInstance.findOrCreatePerson([Person.Keys.PersonID: personID])
@@ -1239,7 +1239,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Genres.Movie.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var genreIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -1272,7 +1272,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Genres.Movie.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var genreIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -1306,7 +1306,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Multi.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           "query": query,
                           "include_adult": "true"]
         
@@ -1375,7 +1375,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Movie.Path)"
-        var parameters = [TMDBConstants.APIKey: apiKey!,
+        var parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           "query": query,
                           "include_adult": "\(includeAdult)"]
         if year > 0 {
@@ -1414,7 +1414,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.TVShow.Path)"
-        var parameters = [TMDBConstants.APIKey: apiKey!,
+        var parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           "query": query]
         if year > 0 {
             parameters["first_air_date_year"] = "\(year)"
@@ -1452,7 +1452,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Search.Person.Path)"
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           "query": query,
                           "include_adult": "\(includeAdult)"]
         
@@ -1498,7 +1498,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.All.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         var listIDs = [String]()
         
@@ -1544,7 +1544,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Details.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
-        let parameters = [TMDBConstants.APIKey: apiKey!]
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
         var movieIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
@@ -1594,7 +1594,7 @@ class TMDBManager: NSObject {
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Create.Path)"
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         let bodyDict = ["name": name,
                         "description": description]
@@ -1637,7 +1637,7 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Delete
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Delete.Path)"
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         
         let success = { (results: AnyObject!) in
@@ -1686,7 +1686,7 @@ class TMDBManager: NSObject {
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         let bodyDict = ["media_id": movieID]
         let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
@@ -1738,7 +1738,7 @@ class TMDBManager: NSObject {
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
-        let parameters = [TMDBConstants.APIKey: apiKey!,
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         let bodyDict = ["media_id": movieID]
         let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)

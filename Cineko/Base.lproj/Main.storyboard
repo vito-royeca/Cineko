@@ -1204,7 +1204,7 @@
         <!--Search Settings-->
         <scene sceneID="Bey-cB-Yq9">
             <objects>
-                <viewController id="9f9-Me-FRT" customClass="SearchSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9f9-Me-FRT" customClass="SearchSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JsJ-da-T7b"/>
                         <viewControllerLayoutGuide type="bottom" id="vV9-r4-DMU"/>
@@ -1229,7 +1229,7 @@
         <!--Movie Settings-->
         <scene sceneID="QUE-Qn-hYk">
             <objects>
-                <viewController id="EbD-zR-Ty7" customClass="MovieSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="EbD-zR-Ty7" customClass="MovieSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="M6b-1R-KbG"/>
                         <viewControllerLayoutGuide type="bottom" id="K5G-4m-uTb"/>
@@ -1248,7 +1248,7 @@
         <!--TV Show Settings-->
         <scene sceneID="Sdk-0V-P2j">
             <objects>
-                <viewController id="cOO-6w-JZS" customClass="TVShowSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="cOO-6w-JZS" customClass="TVShowSettingsViewController" customModule="Cine_Ko_" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7i0-6t-VrB"/>
                         <viewControllerLayoutGuide type="bottom" id="igb-1S-A1C"/>

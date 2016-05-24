@@ -71,7 +71,6 @@ class TVShowDetailsViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-//        updateButtons()
         updateBackground()
     }
 
@@ -102,6 +101,7 @@ class TVShowDetailsViewController: UIViewController {
     func updateBackground() {
         if let tvShowID = tvShowID {
             let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+            
             if let posterPath = tvShow.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
                 let backgroundView = UIImageView()
@@ -269,7 +269,7 @@ class TVShowDetailsViewController: UIViewController {
                 if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
-                try TwitterManager.sharedInstance.userSearch(tvShow.name!, completion: completion)
+                try TwitterManager.sharedInstance.userSearch("\"\(tvShow.name!)\"", completion: completion)
             } catch {}
         }
     }
@@ -440,7 +440,9 @@ class TVShowDetailsViewController: UIViewController {
                             c.backgroundColor = UIColor.clearColor()
                             c.tweetView.backgroundColor = averageColor!
                             c.tweetView.primaryTextColor = contrastColor!
+                            c.tweetView.linkTextColor = contrastColor!
                             c.tweetView.showActionButtons = true
+                            c.tweetView.delegate = self
                         }
                     }
                 }
@@ -780,5 +782,12 @@ extension TVShowDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
         case .Tweets:
             loadTweets()
         }
+    }
+}
+
+// MARK: TWTRTweetViewDelegate
+extension TVShowDetailsViewController : TWTRTweetViewDelegate {
+    func tweetView(tweetView: TWTRTweetView, shouldDisplayDetailViewController controller: TWTRTweetDetailViewController) -> Bool {
+        return false
     }
 }

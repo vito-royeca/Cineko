@@ -13,7 +13,7 @@ class TwitterManager: NSObject {
     func userSearch(query: String, completion: (results: [AnyObject], error: NSError?) -> Void?) throws {
         let client = TWTRAPIClient()
         let endpoint = "https://api.twitter.com/1.1/users/search.json"
-        let params = ["q": "\"\(query)\""]
+        let params = ["q": "\(query)"]
         var clientError : NSError?
         
         let request = client.URLRequestWithMethod("GET", URL: endpoint, parameters: params, error: &clientError)
@@ -33,7 +33,7 @@ class TwitterManager: NSObject {
                     
                     if let array = json as? [[String: AnyObject]] {
                         for dict in array {
-                            // get a verified or most popular user
+                            // get a verified or the most popular user
                             if let verified = dict["verified"] as? Bool {
                                 if verified {
                                     screenName = dict["screen_name"] as? String
@@ -67,7 +67,7 @@ class TwitterManager: NSObject {
                     
                     } else {
                         do {
-                            try self.searchTweets("\"\(query)\"", completion: completion)
+                            try self.searchTweets("\(query)", completion: completion)
                         } catch {
                             completion(results: arrResults, error: connectionError)
                         }

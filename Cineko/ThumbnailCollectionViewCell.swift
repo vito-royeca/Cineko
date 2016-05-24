@@ -48,6 +48,10 @@ class ThumbnailCollectionViewCell: UICollectionViewCell {
         
     }
     
+    override func prepareForReuse() {
+        thumbnailImage.image = UIImage(named: "noImage")
+    }
+    
     // MARK: Custom methods
     func addCaptionImage(text: String) {
         if let image = thumbnailImage.image {
