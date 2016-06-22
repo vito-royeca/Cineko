@@ -106,7 +106,7 @@ class NetworkManager: NSObject {
             }
             
             if dataOffset > 0 {
-                newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                newData = data.subdataWithRange(NSMakeRange(dataOffset, data.length - dataOffset))
             } else {
                 newData = data
             }
