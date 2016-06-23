@@ -1,10 +1,27 @@
-//
 //  HeaderFooterView.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Martin Barreto on 2/23/16.
-//  Copyright © 2016 Xmartlabs. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 
 import Foundation
 
@@ -63,15 +80,11 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public var viewProvider: HeaderFooterProvider<ViewType>?
     
     /// Closure called when the view is created. Useful to customize its appearance.
-    public var onSetupView: ((view: ViewType, section: Section, form: FormViewController) -> ())?
+    public var onSetupView: ((view: ViewType, section: Section) -> ())?
     
     /// A closure that returns the height for the header or footer view.
     public var height: (()->CGFloat)?
     
-    lazy var staticView : ViewType? = {
-        guard let view = self.viewProvider?.createView() else { return nil }
-        return view
-    }()
     
     /**
      This method can be called to get the view corresponding to the header or footer of a section in a specific controller.
@@ -82,27 +95,24 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
      
      - returns: The header or footer of the specified section.
      */
-    public func viewForSection(section: Section, type: HeaderFooterType, controller: FormViewController) -> UIView? {
+    public func viewForSection(section: Section, type: HeaderFooterType) -> UIView? {
         var view: ViewType?
         if type == .Header {
-            view = section.headerView as? ViewType
-            if view == nil {
-                view = viewProvider?.createView()
-                section.headerView = view
-            }
+            view = section.headerView as? ViewType ?? {
+                            let result = viewProvider?.createView()
+                            section.headerView = result
+                            return result
+                        }()
         }
         else {
-            view = section.footerView as? ViewType
-            if view == nil {
-                view = viewProvider?.createView()
-                section.footerView = view
-            }
+            view = section.footerView as? ViewType ?? {
+                            let result = viewProvider?.createView()
+                            section.footerView = result
+                            return result
+                        }()
         }
         guard let v = view else { return nil }
-        onSetupView?(view: v, section: section, form: controller)
-        v.setNeedsUpdateConstraints()
-        v.updateConstraintsIfNeeded()
-        v.setNeedsLayout()
+        onSetupView?(view: v, section: section)
         return v
     }
     
@@ -141,4 +151,14 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public init(stringLiteral value: String) {
         self.title = value
     }
+}
+
+extension UIView {
+    
+    func eurekaInvalidate() {
+        setNeedsUpdateConstraints()
+        updateConstraintsIfNeeded()
+        setNeedsLayout()
+    }
+    
 }

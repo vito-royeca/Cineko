@@ -1,0 +1,6 @@
+framework module MMDrawerController_Storyboard {
+  umbrella header "MMDrawerController+Storyboard-iOS9.3-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -329,6 +329,8 @@ public enum EurekaError : ErrorType {
 *  A protocol implemented by FormViewController
 */
 public protocol FormViewControllerProtocol {
+    var tableView: UITableView? { get }
+    
     func beginEditing<T:Equatable>(cell: Cell<T>)
     func endEditing<T:Equatable>(cell: Cell<T>)
     
@@ -481,11 +483,36 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let selectedIndexPath = tableView?.indexPathForSelectedRow {
-            tableView?.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
-            tableView?.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
-            tableView?.deselectRowAtIndexPath(selectedIndexPath, animated: true)
+
+        let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
+        tableView?.reloadRowsAtIndexPaths(selectedIndexPaths, withRowAnimation: .None)
+        selectedIndexPaths.forEach {
+            tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
         }
+
+        let deselectionAnimation = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
+            selectedIndexPaths.forEach {
+                self?.tableView?.deselectRowAtIndexPath($0, animated: context.isAnimated())
+            }
+        }
+
+        let reselection = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
+            if context.isCancelled() {
+                selectedIndexPaths.forEach {
+                    self?.tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
+                }
+            }
+        }
+
+        if let coordinator = transitionCoordinator() {
+            coordinator.animateAlongsideTransitionInView(parentViewController?.view, animation: deselectionAnimation, completion: reselection)
+        }
+        else {
+            selectedIndexPaths.forEach {
+                tableView?.deselectRowAtIndexPath($0, animated: false)
+            }
+        }
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -500,6 +527,24 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         super.prepareForSegue(segue, sender: sender)
         let baseRow = sender as? BaseRow
         baseRow?.prepareForSegue(segue)
+    }
+    
+    /**
+     Returns the navigation accessory view if it is enabled. Returns nil otherwise.
+     */
+    public func inputAccessoryViewForRow(row: BaseRow) -> UIView? {
+        let options = navigationOptions ?? Form.defaultNavigationOptions
+        guard options.contains(.Enabled) else { return nil }
+        guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
+        navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
+        navigationAccessoryView.doneButton.target = self
+        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
+        navigationAccessoryView.previousButton.target = self
+        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
+        navigationAccessoryView.nextButton.target = self
+        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
+        navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
+        return navigationAccessoryView
     }
     
     //MARK: FormDelegate
@@ -626,11 +671,6 @@ extension FormViewController : UITableViewDelegate {
     
     //MARK: UITableViewDelegate
     
-    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard tableView == self.tableView else { return }
-        form[indexPath].updateCell()
-    }
-    
     public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
     }
@@ -658,18 +698,18 @@ extension FormViewController : UITableViewDelegate {
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return form[section].header?.viewForSection(form[section], type: .Header, controller: self)
+        return form[section].header?.viewForSection(form[section], type: .Header)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return form[section].footer?.viewForSection(form[section], type:.Footer, controller: self)
+        return form[section].footer?.viewForSection(form[section], type:.Footer)
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let height = form[section].header?.height {
             return height()
         }
-        guard let view = form[section].header?.viewForSection(form[section], type: .Header, controller: self) else{
+        guard let view = form[section].header?.viewForSection(form[section], type: .Header) else{
             return UITableViewAutomaticDimension
         }
         guard view.bounds.height != 0 else {
@@ -682,7 +722,7 @@ extension FormViewController : UITableViewDelegate {
         if let height = form[section].footer?.height {
             return height()
         }
-        guard let view = form[section].footer?.viewForSection(form[section], type: .Footer, controller: self) else{
+        guard let view = form[section].footer?.viewForSection(form[section], type: .Footer) else{
             return UITableViewAutomaticDimension
         }
         guard view.bounds.height != 0 else {
@@ -705,6 +745,7 @@ extension FormViewController : UITableViewDataSource {
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    	form[indexPath].updateCell()
         return form[indexPath].baseCell
     }
     
@@ -831,7 +872,7 @@ extension FormViewController {
         navigateToDirection(sender == navigationAccessoryView.previousButton ? .Up : .Down)
     }
     
-    private func navigateToDirection(direction: Direction){
+    public func navigateToDirection(direction: Direction){
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
         guard let currentIndexPath = tableView?.indexPathForCell(currentCell) else { assertionFailure(); return }
         guard let nextRow = nextRowForRow(form[currentIndexPath], withDirection: direction) else { return }
@@ -857,22 +898,16 @@ extension FormViewController {
         }
         return nextRowForRow(nextRow, withDirection:direction)
     }
+}
+
+extension FormViewControllerProtocol {
     
-    /**
-     Returns the navigation accessory view if it is enabled. Returns nil otherwise.
-     */
-    public func inputAccessoryViewForRow(row: BaseRow) -> UIView? {
-        let options = navigationOptions ?? Form.defaultNavigationOptions
-        guard options.contains(.Enabled) else { return nil }
-        guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
-        navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
-        navigationAccessoryView.doneButton.target = self
-        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
-        navigationAccessoryView.previousButton.target = self
-        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.target = self
-        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
-        return navigationAccessoryView
+    //MARK: Helpers
+    
+    func makeRowVisible(row: BaseRow){
+        guard let cell = row.baseCell, indexPath = row.indexPath(), tableView = tableView else { return }
+        if cell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= cell.frame.origin.y + cell.frame.size.height){
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
+        }
     }
 }

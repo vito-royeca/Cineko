@@ -13,7 +13,6 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { BaseRow.estimatedRowHeight }
     }
     
     public override func setup() {
@@ -25,7 +24,6 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     public override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .None : .Default
-        detailTextLabel?.text = row.displayValueFor?(row.value)
     }
     
     public override func didSelect() {
@@ -35,7 +33,7 @@ public class DateInlineCell : Cell<NSDate>, CellType {
 }
 
 
-public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProtocol {
+public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
@@ -49,8 +47,12 @@ public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProt
     /// The formatter for the date picked by the user
     public var dateFormatter: NSDateFormatter?
     
+    public var noValueDisplayText: String?
+    
     required public init(tag: String?) {
         super.init(tag: tag)
+        dateFormatter = NSDateFormatter()
+        dateFormatter?.locale = .currentLocale()
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
             return formatter.stringFromDate(val)

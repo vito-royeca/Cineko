@@ -2,10 +2,10 @@ PODS:
   - Colours (5.13.0):
     - Colours/ObjC (= 5.13.0)
   - Colours/ObjC (5.13.0)
-  - Crashlytics (3.7.0):
+  - Crashlytics (3.7.1):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.3.1)
-  - Eureka (1.5.0)
+  - Eureka (1.6.0)
   - Fabric (1.6.7)
   - IDMPhotoBrowser (1.8.4):
     - DACircularProgress
@@ -30,13 +30,14 @@ PODS:
   - MMDrawerController/Subclass (0.6.0):
     - MMDrawerController/Core
   - pop (1.0.9)
-  - SDWebImage (3.7.6):
-    - SDWebImage/Core (= 3.7.6)
-  - SDWebImage/Core (3.7.6)
-  - TwitterCore (2.1.1):
+  - SDWebImage (3.8.1):
+    - SDWebImage/Core (= 3.8.1)
+  - SDWebImage/Core (3.8.1)
+  - SimulatorStatusMagic (1.8)
+  - TwitterCore (2.2.0):
     - Fabric
-  - TwitterKit (2.1.1):
-    - TwitterCore (= 2.1.1)
+  - TwitterKit (2.2.0):
+    - TwitterCore (= 2.2.0)
 
 DEPENDENCIES:
   - Colours
@@ -50,14 +51,15 @@ DEPENDENCIES:
   - MMDrawerController
   - MMDrawerController+Storyboard
   - SDWebImage
+  - SimulatorStatusMagic
   - TwitterCore
   - TwitterKit
 
 SPEC CHECKSUMS:
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
-  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
+  Crashlytics: 3cdd4c9655be68032a0cf0379e0fb5ef6af22cad
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
-  Eureka: 2fb37bb50569c62ee3284689d5b7aca694b040e0
+  Eureka: ef5b9ac93aedeecfe50d98b1ac7678bf09a1fc62
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
@@ -66,8 +68,11 @@ SPEC CHECKSUMS:
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
-  SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
-  TwitterCore: abc46da2bc4b76e2c68a74cd8671a071a8e3abbf
-  TwitterKit: 38232c31f622db1f26a5952436eaa88d10763fd0
+  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+  SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
+  TwitterCore: 115527630bb2986954adc928b8c895a92bcd57e5
+  TwitterKit: 2c64ec342a6261ae6bab565bad85dcbbfd3888b7
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: d3e5eb48d56fb7f27c7c583044f2dc9bfc73e3d7
+
+COCOAPODS: 1.0.1

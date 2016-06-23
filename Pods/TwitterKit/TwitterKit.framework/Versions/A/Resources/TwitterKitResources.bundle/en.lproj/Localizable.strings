@@ -20,6 +20,10 @@
 "tw__composer_placeholder_text" = "What's Happening?";
 /* Label to explain this view contains sponsored ads. This is also spoken out with VoiceOver when an ad is shown. */
 "tw__view_is_sponsored_ad" = "This is a sponsored ad";
+/* Label to show users when a button will open a link in another app */
+"tw__open_in_text" = "Open in %@";
+/* Label for explaining that there were no matching Tweets found for a given timeline (User/Collection/Search, etc). */
+"tw__empty_timeline" = "Timeline is empty";
 
 /* Timestamps */
 

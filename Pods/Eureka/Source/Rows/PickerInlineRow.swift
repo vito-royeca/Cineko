@@ -8,12 +8,36 @@
 
 import Foundation
 
+public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        accessoryType = .None
+        editingAccessoryType =  .None
+    }
+    
+    public override func update() {
+        super.update()
+        selectionStyle = row.isDisabled ? .None : .Default
+    }
+    
+    public override func didSelect() {
+        super.didSelect()
+        row.deselect()
+    }
+}
+
 //MARK: PickerInlineRow
 
-public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
+public class _PickerInlineRow<T where T: Equatable> : Row<T, PickerInlineCell<T>>, NoValueDisplayTextConformance {
     
     public typealias InlineRow = PickerRow<T>
     public var options = [T]()
+    public var noValueDisplayText: String?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -21,7 +45,7 @@ public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
 }
 
 /// A generic inline row where the user can pick an option from a picker view
-public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType{
+public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType {
     
     required public init(tag: String?) {
         super.init(tag: tag)

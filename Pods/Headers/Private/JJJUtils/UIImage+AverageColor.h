@@ -1,1 +1,0 @@
-../../../JJJUtils/Pod/Classes/iOS/UIImage+AverageColor.h

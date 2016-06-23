@@ -53,16 +53,14 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
     
     public override func customDidSelect() {
         super.customDidSelect()
-        if !isDisabled {
-            if let presentationMode = presentationMode {
-                if let controller = presentationMode.createController(){
-                    controller.row = self
-                    onPresentCallback?(cell.formViewController()!, controller)
-                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
-                }
-                else{
-                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
-                }
+        if let presentationMode = presentationMode where !isDisabled {
+            if let controller = presentationMode.createController(){
+                controller.row = self
+                onPresentCallback?(cell.formViewController()!, controller)
+                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+            }
+            else{
+                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
             }
         }
     }
@@ -75,8 +73,8 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
         if let callback = self.presentationMode?.completionHandler{
             rowVC.completionCallback = callback
         }
-        onPresentCallback?(cell.formViewController()!, rowVC)
         rowVC.row = self
+        onPresentCallback?(cell.formViewController()!, rowVC)
     }
     
 }

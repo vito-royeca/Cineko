@@ -16,11 +16,12 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
 end
 
-target "CinekoTests" do
+target "Cine Ko!Tests" do
 pod 'Colours'
 pod 'Crashlytics'
 pod 'Eureka'
@@ -32,11 +33,12 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
 end
 
-target "CinekoUITests" do
+target "Cine Ko!UITests" do
 pod 'Colours'    
 pod 'Crashlytics'
 pod 'Eureka'
@@ -48,6 +50,7 @@ pod 'MBProgressHUD'
 pod 'MMDrawerController'
 pod 'MMDrawerController+Storyboard'
 pod 'SDWebImage'
+pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
 end

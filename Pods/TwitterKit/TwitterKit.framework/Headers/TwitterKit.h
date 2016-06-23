@@ -37,6 +37,7 @@
 #import <TwitterKit/TWTRJSONConvertible.h>
 #import <TwitterKit/TWTRListTimelineDataSource.h>
 #import <TwitterKit/TWTRLogInButton.h>
+#import <TwitterKit/TWTRMediaEntitySize.h>
 #import <TwitterKit/TWTRMoPubAdConfiguration.h>
 #import <TwitterKit/TWTRMoPubNativeAdContainerView.h>
 #import <TwitterKit/TWTRNotificationConstants.h>
@@ -46,10 +47,16 @@
 #import <TwitterKit/TWTRTimelineType.h>
 #import <TwitterKit/TWTRTimelineViewController.h>
 #import <TwitterKit/TWTRTweet.h>
+#import <TwitterKit/TWTRTweetCashtagEntity.h>
 #import <TwitterKit/TWTRTweetDetailViewController.h>
+#import <TwitterKit/TWTRTweetEntity.h>
+#import <TwitterKit/TWTRTweetHashtagEntity.h>
 #import <TwitterKit/TWTRTweetTableViewCell.h>
+#import <TwitterKit/TWTRTweetUrlEntity.h>
+#import <TwitterKit/TWTRTweetUserMentionEntity.h>
 #import <TwitterKit/TWTRTweetView.h>
 #import <TwitterKit/TWTRTweetViewDelegate.h>
 #import <TwitterKit/TWTRUser.h>
 #import <TwitterKit/TWTRUserTimelineDataSource.h>
+#import <TwitterKit/TWTRVideoMetaData.h>
 

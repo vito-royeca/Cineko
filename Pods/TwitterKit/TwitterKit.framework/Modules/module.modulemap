@@ -6,7 +6,8 @@ framework module TwitterKit {
 
     link framework "AVFoundation"
     link framework "CoreMedia"
-    
+    link framework "SafariServices"
+
     header "Twitter.h"
     header "TwitterKit.h"
     header "TWTRAPIClient.h"

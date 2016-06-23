@@ -16,7 +16,7 @@ install_framework()
     local source="$1"
   fi
 
-  local destination="${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+  local destination="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
   if [ -L "${source}" ]; then
       echo "Symlinked..."
@@ -59,8 +59,8 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements "$1"
+    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements \"$1\""
+    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements "$1"
   fi
 }
 
@@ -84,28 +84,29 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-Cine Ko!/Colours.framework"
-  install_framework "Pods-Cine Ko!/DACircularProgress.framework"
-  install_framework "Pods-Cine Ko!/Eureka.framework"
-  install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
-  install_framework "Pods-Cine Ko!/JJJUtils.framework"
-  install_framework "Pods-Cine Ko!/KeychainAccess.framework"
-  install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
-  install_framework "Pods-Cine Ko!/MMDrawerController.framework"
-  install_framework "Pods-Cine Ko!/MMDrawerController_Storyboard.framework"
-  install_framework "Pods-Cine Ko!/SDWebImage.framework"
-  install_framework "Pods-Cine Ko!/pop.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Colours-iOS9.0/Colours.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress-iOS9.0/DACircularProgress.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Eureka-iOS9.0/Eureka.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/IDMPhotoBrowser-iOS9.0/IDMPhotoBrowser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JJJUtils-iOS9.0/JJJUtils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KeychainAccess-iOS9.0/KeychainAccess.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD-iOS9.0/MBProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController-iOS9.0/MMDrawerController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController+Storyboard-iOS9.0/MMDrawerController_Storyboard.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SDWebImage-iOS9.0/SDWebImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SimulatorStatusMagic-iOS9.0/SimulatorStatusMagic.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/pop-iOS9.0/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-Cine Ko!/Colours.framework"
-  install_framework "Pods-Cine Ko!/DACircularProgress.framework"
-  install_framework "Pods-Cine Ko!/Eureka.framework"
-  install_framework "Pods-Cine Ko!/IDMPhotoBrowser.framework"
-  install_framework "Pods-Cine Ko!/JJJUtils.framework"
-  install_framework "Pods-Cine Ko!/KeychainAccess.framework"
-  install_framework "Pods-Cine Ko!/MBProgressHUD.framework"
-  install_framework "Pods-Cine Ko!/MMDrawerController.framework"
-  install_framework "Pods-Cine Ko!/MMDrawerController_Storyboard.framework"
-  install_framework "Pods-Cine Ko!/SDWebImage.framework"
-  install_framework "Pods-Cine Ko!/pop.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Colours-iOS9.0/Colours.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress-iOS9.0/DACircularProgress.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Eureka-iOS9.0/Eureka.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/IDMPhotoBrowser-iOS9.0/IDMPhotoBrowser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/JJJUtils-iOS9.0/JJJUtils.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KeychainAccess-iOS9.0/KeychainAccess.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD-iOS9.0/MBProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController-iOS9.0/MMDrawerController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController+Storyboard-iOS9.0/MMDrawerController_Storyboard.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SDWebImage-iOS9.0/SDWebImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/pop-iOS9.0/pop.framework"
 fi

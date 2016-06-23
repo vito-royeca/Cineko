@@ -23,6 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, null_resettable) TWTRComposerTheme *theme;
 
 /**
+ * An array of hashtags that will be added to the composer. This property must be
+ * set before the composer's view is loaded. If any hashtags are not valid they will
+ * be ignored.
+ * Hashtags must come in the form @[@"#fabric", @"#twitter"].
+ */
+@property (nonatomic, copy, nullable) NSArray *hashtags;
+
+/**
  * Use initWithUserID: instead.
  */
 - (instancetype)init NS_UNAVAILABLE;

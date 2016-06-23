@@ -26,7 +26,6 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     
     public override func setup() {
         super.setup()
-        height = { 213 }
         accessoryType = .None
         editingAccessoryType =  .None
         datePicker.datePickerMode = datePickerMode()
@@ -51,7 +50,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     }
     
     func datePickerValueChanged(sender: UIDatePicker){
-        row.value = sender.date
+        row?.value = sender.date
     }
     
     private func datePickerMode() -> UIDatePickerMode{

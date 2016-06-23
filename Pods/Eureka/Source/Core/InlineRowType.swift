@@ -1,10 +1,27 @@
-//
 //  InlineRowType.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Martin Barreto on 2/24/16.
-//  Copyright © 2016 Xmartlabs. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 
 import Foundation
 
@@ -48,7 +65,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
      Method that can be called to expand (open) an inline row.
      */
     public func expandInlineRow() {
-        guard inlineRow == nil else { return }
+        if let _ = inlineRow  { return } 
         if var section = section, let form = section.form {
             let inline = InlineRow.init() { _ in }
             inline.value = value
@@ -70,6 +87,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
             if let indexPath = indexPath() {
                 section.insert(inline, atIndex: indexPath.row + 1)
                 _inlineRow = inline
+                cell.formViewController()?.makeRowVisible(inline)
             }
         }
     }

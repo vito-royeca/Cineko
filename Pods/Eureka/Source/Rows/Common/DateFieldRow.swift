@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol DatePickerRowProtocol {
+public protocol DatePickerRowProtocol: class {
     var minimumDate : NSDate? { get set }
     var maximumDate : NSDate? { get set }
     var minuteInterval : Int? { get set }
@@ -21,7 +21,6 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { BaseRow.estimatedRowHeight }
     }
     
     public override func setup() {
@@ -39,7 +38,6 @@ public class DateCell : Cell<NSDate>, CellType {
     public override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .None : .Default
-        detailTextLabel?.text = row.displayValueFor?(row.value)
         datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
@@ -90,7 +88,7 @@ public class DateCell : Cell<NSDate>, CellType {
 }
 
 
-public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol {
+public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
@@ -103,6 +101,8 @@ public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol {
     
     /// The formatter for the date picked by the user
     public var dateFormatter: NSDateFormatter?
+    
+    public var noValueDisplayText: String? = nil
     
     required public init(tag: String?) {
         super.init(tag: tag)

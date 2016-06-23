@@ -24,7 +24,11 @@ typedef NS_OPTIONS(NSInteger, TWTRLoginMethod) {
     TWTRLoginMethodSystemAccounts = 1 << 0,
     
     /**
-     * Presents a web view that allows the user to log in.
+     * Presents a web view that allows the user to log in. Will use
+     * either UIWebView or SFSafariViewController depending on iOS
+     * version and the presence of a custom URL scheme for auth
+     * redirects.
+     *
      * This method will allow the developer to request more application
      * permissions. To learn more about configuring your application to 
      * have higher levels of permissions. 
@@ -32,6 +36,13 @@ typedef NS_OPTIONS(NSInteger, TWTRLoginMethod) {
      * more information about Twitter's application permission model.
      */
     TWTRLoginMethodWebBased       = 1 << 1,
+
+    /**
+     *  Presents a web view that doesn't use any cached sessions
+     *  from Safari. Allows the developer to provide multi-user
+     *  functionality with several Twitter accounts.
+     */
+    TWTRLoginMethodWebBasedForceLogin = 1 << 2,
     
     /**
      * Picks the first available log in method. The order in which 
@@ -139,6 +150,22 @@ typedef NS_OPTIONS(NSInteger, TWTRLoginMethod) {
  *  @warning This method requires that you have set up your `consumerKey` and `consumerSecret`.
  */
 - (void)logInWithViewController:(nullable UIViewController *)viewController methods:(TWTRLoginMethod)methods completion:(TWTRLogInCompletion)completion;
+
+/**
+ *  Finish the `SFSafariViewController` authentication loop. This method should 
+ *  be called from application:openURL:options inside the application delegate.
+ *
+ *  This method will verify an authentication token sent by the Twitter API to 
+ *  finish the web-based authentication flow.
+ *
+ *  @param application  The `UIApplication` instance received as a parameter.
+ *  @param url          The `NSURL` instance received as a parameter.
+ *  @param options      The options dictionary received as a parameter.
+ *
+ *  @return Boolean specifying whether this URL was handled
+ *          by Twitter Kit or not.
+ */
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary *)options;
 
 @end
 

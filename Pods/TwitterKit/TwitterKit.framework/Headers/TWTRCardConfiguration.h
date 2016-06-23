@@ -47,9 +47,10 @@ typedef NS_ENUM(NSUInteger, TWTRCardType){
 @property (nonatomic, readonly, copy, nullable) NSString *cardDescription;
 
 /**
- *  Unique image representing the content. Size of the image cannot exceed 1MB.
- *  The minimum dimensions can vary depending on the Card type. See https://dev.twitter.com/cards/types
- *  for more detailed requirements.
+ *  Unique image representing the content. Image dimensions must 
+ *  be at least 800px by 320px and the image size cannot exceed 1MB.
+ *
+ *  Note: For more card information see https://dev.twitter.com/cards/types
  */
 @property (nonatomic, readonly, nullable) UIImage *image;
 
@@ -58,7 +59,7 @@ typedef NS_ENUM(NSUInteger, TWTRCardType){
 /**
  *  Creates a new instance of configuration for a Twitter App Promo Card.
  *
- *  @param promoImage           (Required) Unique image of the user generated content to be promoted.
+ *  @param promoImage           (Required) Unique image of the user generated content to be promoted. Must be at least 800 by 320 pixels.
  *  @param iPhoneAppID          (Optional) String representation of your app ID in the App Store (.i.e. "307234931"). Either the `iPhoneAppID` or `iPadAppID` has to be provided.
  *  @param iPadAppID            (Optional) String representation of your app ID in the App Store (.i.e. "307234931"). Either the `iPhoneAppID` or `iPadAppID` has to be provided.
  *  @param googlePlayAppID      (Optional) String representation of your app ID in Google Play (.i.e. "com.android.app")

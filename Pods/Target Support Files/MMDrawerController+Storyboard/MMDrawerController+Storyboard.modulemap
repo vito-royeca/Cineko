@@ -1,6 +1,0 @@
-framework module MMDrawerController_Storyboard {
-  umbrella header "MMDrawerController+Storyboard-umbrella.h"
-
-  export *
-  module * { export * }
-}

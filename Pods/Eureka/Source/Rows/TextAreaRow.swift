@@ -8,16 +8,28 @@
 
 import Foundation
 
-protocol TextAreaConformance : FormatterConformance {
+public enum TextAreaHeight {
+    case Fixed(cellHeight: CGFloat)
+    case Dynamic(initialTextViewHeight: CGFloat)
+}
+
+protocol TextAreaConformance: FormatterConformance {
     var placeholder : String? { get set }
+    var textAreaHeight : TextAreaHeight { get set }
 }
 
 
 /**
  *  Protocol for cells that contain a UITextView
  */
-public protocol AreaCell {
+public protocol AreaCell : TextInputCell {
     var textView: UITextView { get }
+}
+
+extension AreaCell {
+    public var textInput: UITextInput {
+        return textView
+    }
 }
 
 public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextViewDelegate, AreaCell {
@@ -40,11 +52,18 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         return v
     }()
     
-    private var dynamicConstraints = [NSLayoutConstraint]()
+    public var dynamicConstraints = [NSLayoutConstraint]()
     
     public override func setup() {
         super.setup()
-        height = { 110 }
+        let textAreaRow = row as! TextAreaConformance
+        switch textAreaRow.textAreaHeight {
+        case .Dynamic(_):
+            height = { UITableViewAutomaticDimension }
+            textView.scrollEnabled = false
+        case .Fixed(let cellHeight):
+            height = { cellHeight }
+        }
         textView.keyboardType = .Default
         textView.delegate = self
         textView.font = .preferredFontForTextStyle(UIFontTextStyleBody)
@@ -56,10 +75,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         contentView.addSubview(placeholderLabel)
         
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
-        
-        let views : [String: AnyObject] =  ["textView": textView, "label": placeholderLabel]
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[label]", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views))
+        setNeedsUpdateConstraints()
     }
     
     deinit {
@@ -131,45 +147,44 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     public func textViewDidChange(textView: UITextView) {
+        
+        if let textAreaConformance = row as? TextAreaConformance, case .Dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
+            let currentOffset = tableView.contentOffset
+            UIView.setAnimationsEnabled(false)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+            tableView.setContentOffset(currentOffset, animated: false)
+        }
         placeholderLabel.hidden = textView.text.characters.count != 0
         guard let textValue = textView.text else {
             row.value = nil
             return
         }
-        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter {
-            if fieldRow.useFormatterDuringInput {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
-                    if var selStartPos = textView.selectedTextRange?.start {
-                        let oldVal = textView.text
-                        textView.text = row.displayValueFor?(row.value)
-                        if let f = formatter as? FormatterProtocol {
-                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text)
-                        }
-                        textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
-                    }
-                    return
-                }
-            }
-            else {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
-                }
+        guard let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter else {
+            row.value = textValue.isEmpty ? nil : (T.init(string: textValue) ?? row.value)
+            return
+        }
+        if fieldRow.useFormatterDuringInput {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+                guard var selStartPos = textView.selectedTextRange?.start else { return }
+                let oldVal = textView.text
+                textView.text = row.displayValueFor?(row.value)
+                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text) ?? selStartPos
+                textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 return
             }
         }
-        guard !textValue.isEmpty else {
-            row.value = nil
-            return
+        else {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+            }
         }
-        guard let newValue = T.init(string: textValue) else {
-            return
-        }
-        row.value = newValue
     }
     
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -185,20 +200,31 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     public override func updateConstraints(){
+        customConstraints()
+        super.updateConstraints()
+    }
+    
+    public func customConstraints() {
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] = ["textView": textView, "label": placeholderLabel]
+        dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[label]", options: [], metrics: nil, views: views))
+        if let textAreaConformance = row as? TextAreaConformance, case .Dynamic(let initialTextViewHeight) = textAreaConformance.textAreaHeight {
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView(>=initialHeight@800)]-|", options: [], metrics: ["initialHeight": initialTextViewHeight], views: views))
+        }
+        else {
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views))
+        }
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textView]-|", options: [], metrics: nil, views: views)
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-|", options: [], metrics: nil, views: views)
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textView]-|", options: [], metrics: nil, views: views))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-|", options: [], metrics: nil, views: views))
         }
-        else{
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
+        else {
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
         }
         contentView.addConstraints(dynamicConstraints)
-        super.updateConstraints()
     }
     
 }
@@ -210,25 +236,13 @@ public class TextAreaCell : _TextAreaCell<String>, CellType {
     }
 }
 
-public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: AreaCell, Cell.Value == T>: Row<T, Cell>, TextAreaConformance {
+public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: AreaCell, Cell.Value == T>: FormatteableRow<T, Cell>, TextAreaConformance {
     
     public var placeholder : String?
-    public var formatter: NSFormatter?
-    public var useFormatterDuringInput = false
-    public var useFormatterOnDidBeginEditing: Bool?
+    public var textAreaHeight = TextAreaHeight.Fixed(cellHeight: 110)
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        self.displayValueFor = { [unowned self] value in
-            guard let v = value else { return nil }
-            if let formatter = self.formatter {
-                if self.cell.textView.isFirstResponder(){
-                    return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
-                }
-                return formatter.stringForObjectValue(v as! AnyObject)
-            }
-            return String(v)
-        }
     }
 }
 
