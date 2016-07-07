@@ -1,0 +1,5 @@
+* Added Twitter feeds.
+
+* Favorite, Watchlist, and List  buttons are now in a side drawer.
+
+* Fixed unreadable background and foreground text color combinations.

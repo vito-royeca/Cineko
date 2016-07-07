@@ -1,0 +1,10 @@
+Cine Ko! is an iOS app that connects to themoviedb.org for Movies, TV Shows, and People data. It also connects to New York Times Movie Reviews API for movie reviews data.
+
+Features
+
+    - Movies (Now Showing, Popular, Top Rated, Coming Soon, Genres)
+    - New York Times Movie Reviews
+    - TV Shows (Airing Today, Popular, Top Rated, On the Air)
+    - People (Popular)
+    - Search Movies, TV Shows, and People
+    - Account (Favorites, Watchlists, Lists)

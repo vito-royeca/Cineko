@@ -1,0 +1,42 @@
+{
+  "default": {
+    "title": {
+      "color": "#008000"
+    },
+    "background": "./background.jpg",
+    "padding": 50
+  },
+
+  "data": [
+    {
+      "filter": "00-InitialScreen",
+      "keyword": {
+        "color": "#008000"
+      }
+    },
+    {
+      "filter": "01-Featured",
+      "keyword": {
+        "color": "#008000"
+      }
+    },
+    {
+      "filter": "02-NowShowing",
+      "keyword": {
+        "color": "#008000"
+      }
+    },
+    {
+      "filter": "03-Search",
+      "keyword": {
+        "color": "#008000"
+      }
+    },
+    {
+      "filter": "04-SearchSettings",
+      "keyword": {
+        "color": "#008000"
+      }
+    }
+  ]
+}

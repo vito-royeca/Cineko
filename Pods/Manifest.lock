@@ -11,6 +11,7 @@ PODS:
     - DACircularProgress
     - pop
     - SDWebImage
+  - InAppSettingsKit (2.7.1)
   - JJJUtils (0.3.2):
     - JJJUtils/OSX (= 0.3.2)
   - KeychainAccess (2.3.5)
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - Eureka
   - Fabric
   - IDMPhotoBrowser
+  - InAppSettingsKit
   - JJJUtils
   - KeychainAccess
   - MBProgressHUD
@@ -62,6 +64,7 @@ SPEC CHECKSUMS:
   Eureka: ef5b9ac93aedeecfe50d98b1ac7678bf09a1fc62
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
+  InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
   KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
@@ -73,6 +76,6 @@ SPEC CHECKSUMS:
   TwitterCore: 115527630bb2986954adc928b8c895a92bcd57e5
   TwitterKit: 2c64ec342a6261ae6bab565bad85dcbbfd3888b7
 
-PODFILE CHECKSUM: d3e5eb48d56fb7f27c7c583044f2dc9bfc73e3d7
+PODFILE CHECKSUM: 5cbb92356dcfef75440ea359f14b40e732108280
 
 COCOAPODS: 1.0.1

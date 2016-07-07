@@ -108,6 +108,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+## InAppSettingsKit
+
+Copyright (c) 2009-2014:
+Luc Vandal, Edovia Inc., http://www.edovia.com
+Ortwin Gentz, FutureTap GmbH, http://www.futuretap.com
+All rights reserved.
+
+It is appreciated but not required that you give credit to Luc Vandal and Ortwin Gentz, 
+as the original authors of this code. You can give credit in a blog post, a tweet or on 
+a info page of your app. Also, the original authors appreciate letting them know if you
+use this code.
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+This code is licensed under the BSD license that is available at: <http://www.opensource.org/licenses/bsd-license.php>
+
+
 ## JJJUtils
 
 Copyright (c) 2015 Jovito Royeca <jovit.royeca@gmail.com>
