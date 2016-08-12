@@ -6,7 +6,7 @@
 //  Copyright © 2016 Jovito Royeca. All rights reserved.
 //
 
-import UIKit
+import CoreData
 
 enum NYTimesReviewError: ErrorType {
     case NoAPIKey
@@ -33,15 +33,17 @@ class NYTimesReviewManager: NSObject {
         self.apiKey = apiKey
     }
     
-    func movieReviews(query: String, completion: (objectIDs: [AnyObject], error: NSError?) -> Void?) throws {
+    func movieReviews(movieID: NSManagedObjectID, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw NYTimesReviewError.NoAPIKey
         }
         
+        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(NYTimesReviewConstants.APIURL)\(NYTimesReviewConstants.Reviews.Search.Path)"
         let parameters = [NYTimesReviewConstants.APIKey: apiKey!,
-                          "query": "'\(query)'"]
+                          "query": "'\(movie.title!)'"]
         var reviewIDs = [AnyObject]()
         
         let success = { (results: AnyObject!) in
@@ -53,11 +55,12 @@ class NYTimesReviewManager: NSObject {
                     }
                 }
             }
-            completion(objectIDs: reviewIDs, error: nil)
+            ObjectManager.sharedInstance.updateMovie([Movie.Keys.MovieID: movie.movieID!], reviewIDs: reviewIDs)
+            completion(error: nil)
         }
         
         let failure = { (error: NSError?) -> Void in
-            completion(objectIDs: reviewIDs, error: error)
+            completion(error: error)
         }
         
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)

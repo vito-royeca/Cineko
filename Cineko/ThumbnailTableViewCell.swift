@@ -82,6 +82,8 @@ class ThumbnailTableViewCell: UITableViewCell {
         flowLayout.minimumLineSpacing = space
         
         collectionView.registerNib(UINib(nibName: "ThumbnailCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
         seeAllButton.hidden = showSeeAllButton
     }
     

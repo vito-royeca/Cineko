@@ -67,6 +67,41 @@ class MoviesViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showMovieDetailsFromMovies" {
+            if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
+                let movie = sender as! Movie
+                detailsVC.movieID = movie.objectID
+            }
+        } else if segue.identifier == "showSeeAllFromMovies" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                
+                switch sender as! Int {
+                case 0:
+                    title = dynamicTitle
+                    fetchRequest = dynamicFetchRequest
+                case 1:
+                    title = "Favorites"
+                    fetchRequest = favoritesFetchRequest
+                case 2:
+                    title = "Watchlist"
+                    fetchRequest = watchlistFetchRequest
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = .Poster
+                detailsVC.captionType = .Title
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Actions
     @IBAction func genreAction(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Select", message: nil, preferredStyle: .ActionSheet)
@@ -414,42 +449,10 @@ extension MoviesViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension MoviesViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            
-            switch tag {
-            case 0:
-                title = dynamicTitle
-                fetchRequest = dynamicFetchRequest
-            case 1:
-                title = "Favorites"
-                fetchRequest = favoritesFetchRequest
-            case 2:
-                title = "Watchlist"
-                fetchRequest = watchlistFetchRequest
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = .Poster
-            controller.captionType = .Title
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromMovies", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-            let navigationController = navigationController {
-            let movie = displayable as! Movie
-            controller.movieID = movie.objectID
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showMovieDetailsFromMovies", sender: displayable)
     }
 }

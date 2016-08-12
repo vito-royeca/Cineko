@@ -5,6 +5,23 @@
 //  Created by kishikawa katsumi on 2014/12/24.
 //  Copyright (c) 2014 kishikawa katsumi. All rights reserved.
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import Foundation
 import Security
@@ -131,7 +148,7 @@ public enum Accessibility {
     case AlwaysThisDeviceOnly
 }
 
-public struct AuthenticationPolicy : OptionSetType {
+public struct AuthenticationPolicy: OptionSetType {
     /**
     User presence policy using Touch ID or Passcode. Touch ID does not 
     have to be available or enrolled. Item is still accessible by Touch ID
@@ -203,7 +220,7 @@ public struct AuthenticationPolicy : OptionSetType {
     @available(watchOS, unavailable)
     public static let ApplicationPassword = AuthenticationPolicy(rawValue: 1 << 31)
 
-    public let rawValue : Int
+    public let rawValue: Int
 
     public init(rawValue:Int) {
         self.rawValue = rawValue
@@ -551,6 +568,7 @@ public class Keychain {
             query[UseNoAuthenticationUI] = true
         }
         #elseif os(OSX)
+        query[ReturnData] = true
         if #available(OSX 10.11, *) {
             query[UseAuthenticationUI] = UseAuthenticationUIFail
         }
@@ -1117,7 +1135,7 @@ private let UseAuthenticationUISkip = String(kSecUseAuthenticationUISkip)
 private let SharedPassword = String(kSecSharedPassword)
 #endif
 
-extension Keychain : CustomStringConvertible, CustomDebugStringConvertible {
+extension Keychain: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
         let items = allItems()
         if items.isEmpty {
@@ -1215,7 +1233,7 @@ extension Options {
 
 // MARK:
 
-extension Attributes : CustomStringConvertible, CustomDebugStringConvertible {
+extension Attributes: CustomStringConvertible, CustomDebugStringConvertible {
     public var description: String {
         return "\(attributes)"
     }
@@ -1225,7 +1243,7 @@ extension Attributes : CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
-extension ItemClass : RawRepresentable, CustomStringConvertible {
+extension ItemClass: RawRepresentable, CustomStringConvertible {
     
     public init?(rawValue: String) {
         switch rawValue {
@@ -1247,7 +1265,7 @@ extension ItemClass : RawRepresentable, CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case GenericPassword:
             return "GenericPassword"
@@ -1257,7 +1275,7 @@ extension ItemClass : RawRepresentable, CustomStringConvertible {
     }
 }
 
-extension ProtocolType : RawRepresentable, CustomStringConvertible {
+extension ProtocolType: RawRepresentable, CustomStringConvertible {
     
     public init?(rawValue: String) {
         switch rawValue {
@@ -1395,7 +1413,7 @@ extension ProtocolType : RawRepresentable, CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case FTP:
             return "FTP"
@@ -1463,7 +1481,7 @@ extension ProtocolType : RawRepresentable, CustomStringConvertible {
     }
 }
 
-extension AuthenticationType : RawRepresentable, CustomStringConvertible {
+extension AuthenticationType: RawRepresentable, CustomStringConvertible {
     
     public init?(rawValue: String) {
         switch rawValue {
@@ -1509,7 +1527,7 @@ extension AuthenticationType : RawRepresentable, CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case NTLM:
             return "NTLM"
@@ -1531,7 +1549,7 @@ extension AuthenticationType : RawRepresentable, CustomStringConvertible {
     }
 }
 
-extension Accessibility : RawRepresentable, CustomStringConvertible {
+extension Accessibility: RawRepresentable, CustomStringConvertible {
     
     public init?(rawValue: String) {
         if #available(OSX 10.10, *) {
@@ -1596,7 +1614,7 @@ extension Accessibility : RawRepresentable, CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case WhenUnlocked:
             return "WhenUnlocked"
@@ -1626,7 +1644,7 @@ extension CFError {
     }
 }
 
-public enum Status : OSStatus, ErrorType {
+public enum Status: OSStatus, ErrorType {
     case Success                            = 0
     case Unimplemented                      = -4
     case DiskFull                           = -34
@@ -2032,7 +2050,7 @@ public enum Status : OSStatus, ErrorType {
     case UnexpectedError                    = -99999
 }
 
-extension Status : RawRepresentable, CustomStringConvertible {
+extension Status: RawRepresentable, CustomStringConvertible {
     
     public init(status: OSStatus) {
         if let mappedStatus = Status(rawValue: status) {
@@ -2042,7 +2060,7 @@ extension Status : RawRepresentable, CustomStringConvertible {
         }
     }
     
-    public var description : String {
+    public var description: String {
         switch self {
         case Success:
             return "No error."

@@ -2,11 +2,11 @@ PODS:
   - Colours (5.13.0):
     - Colours/ObjC (= 5.13.0)
   - Colours/ObjC (5.13.0)
-  - Crashlytics (3.7.1):
+  - Crashlytics (3.7.3):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.3.1)
-  - Eureka (1.6.0)
-  - Fabric (1.6.7)
+  - Eureka (1.7.0)
+  - Fabric (1.6.8)
   - IDMPhotoBrowser (1.8.4):
     - DACircularProgress
     - pop
@@ -14,8 +14,8 @@ PODS:
   - InAppSettingsKit (2.7.1)
   - JJJUtils (0.3.2):
     - JJJUtils/OSX (= 0.3.2)
-  - KeychainAccess (2.3.5)
-  - MBProgressHUD (0.9.2)
+  - KeychainAccess (2.3.6)
+  - MBProgressHUD (1.0.0)
   - MMDrawerController (0.6.0):
     - MMDrawerController/Core (= 0.6.0)
     - MMDrawerController/MMDrawerBarButtonItem (= 0.6.0)
@@ -35,10 +35,10 @@ PODS:
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
   - SimulatorStatusMagic (1.8)
-  - TwitterCore (2.2.0):
+  - TwitterCore (2.3.0):
     - Fabric
-  - TwitterKit (2.2.0):
-    - TwitterCore (= 2.2.0)
+  - TwitterKit (2.3.0):
+    - TwitterCore (= 2.3.0)
 
 DEPENDENCIES:
   - Colours
@@ -59,22 +59,22 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
-  Crashlytics: 3cdd4c9655be68032a0cf0379e0fb5ef6af22cad
+  Crashlytics: 76f6beaff70acf226139582c09c78461597c2b98
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
-  Eureka: ef5b9ac93aedeecfe50d98b1ac7678bf09a1fc62
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
+  Eureka: 2020d9faeef7b7e9adeb9e3d8af779e5931c1897
+  Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
   InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
-  KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
-  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  KeychainAccess: 7f10e2ef998ddf954a64d5d608be08677774684d
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
-  TwitterCore: 115527630bb2986954adc928b8c895a92bcd57e5
-  TwitterKit: 2c64ec342a6261ae6bab565bad85dcbbfd3888b7
+  TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
+  TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
 PODFILE CHECKSUM: 5cbb92356dcfef75440ea359f14b40e732108280
 

@@ -78,10 +78,12 @@ class TVShowDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         // reset the navigation bar's colors look and feel
-        navigationController!.navigationBar.titleTextAttributes = nil
-        navigationController!.navigationBar.tintColor = nil
-        navigationController!.navigationBar.barTintColor = nil
-        navigationController!.navigationBar.translucent = true
+        if let navigationController = navigationController {
+            navigationController.navigationBar.titleTextAttributes = nil
+            navigationController.navigationBar.tintColor = nil
+            navigationController.navigationBar.barTintColor = nil
+            navigationController.navigationBar.translucent = true
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -119,13 +121,15 @@ class TVShowDetailsViewController: UIViewController {
                         self.contrastColor = color.blackOrWhiteContrastingColor()
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.contrastColor
-                        if let inverseColor = self.contrastColor {
-                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
-                            self.navigationController!.navigationBar.tintColor = inverseColor
+                        if let inverseColor = self.contrastColor,
+                            let navigationController = self.navigationController{
+                            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
+                            navigationController.navigationBar.tintColor = inverseColor
                         }
-                        if let averageColor = self.averageColor {
-                            self.navigationController!.navigationBar.barTintColor = averageColor
-                            self.navigationController!.navigationBar.translucent = false
+                        if let averageColor = self.averageColor,
+                            let navigationController = self.navigationController {
+                            navigationController.navigationBar.barTintColor = averageColor
+                            navigationController.navigationBar.translucent = false
                         }
                         
                         // change also the button items

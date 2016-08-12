@@ -20,7 +20,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     lazy public var segmentedControl : UISegmentedControl = {
         let result = UISegmentedControl()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.setContentHuggingPriority(500, forAxis: .Horizontal)
+        result.setContentHuggingPriority(250, forAxis: .Horizontal)
         return result
     }()
     private var dynamicConstraints = [NSLayoutConstraint]()
@@ -37,6 +37,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     public override func setup() {
         super.setup()
+        height = { BaseRow.estimatedRowHeight }
         selectionStyle = .None
         contentView.addSubview(titleLabel!)
         contentView.addSubview(segmentedControl)

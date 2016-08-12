@@ -40,4 +40,7 @@ build/
 
 # Pods
 #**/Pods/*
-
+fastlane/screenshots/en_US/*.png
+*.ipa
+*.app.dSYM.zip
+Preview.html

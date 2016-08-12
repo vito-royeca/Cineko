@@ -7,20 +7,21 @@
 //
 
 import XCTest
+import SimulatorStatusMagic
 
 class Cine_Ko_UITests: XCTestCase {
         
+    let app = XCUIApplication()
+    
     override func setUp() {
         super.setUp()
         
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // SimulatorStatusMagic
+        SDStatusBarManager.sharedInstance().enableOverrides()
         
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        setupSnapshot(app)
+        app.launch()
     }
     
     override func tearDown() {
@@ -28,9 +29,31 @@ class Cine_Ko_UITests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testTakeScreenshots() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        snapshot("00-InitialScreen")
+        
+        app.buttons["Skip Login"].tap()
+        sleep(20)
+        snapshot("01-Featured")
+        
+        let tablesQuery = app.tables
+        let seeAllButton = tablesQuery.cells.containingType(.StaticText, identifier:"Now Showing").buttons["See All >"]
+        seeAllButton.tap()
+        sleep(10)
+        snapshot("02-NowShowing")
+        
+        let featuredButton = app.navigationBars["Now Showing"].buttons["Featured"]
+        featuredButton.tap()
+        
+        app.tabBars.buttons["Search"].tap()
+        snapshot("03-Search")
+        
+        let button = app.navigationBars["Cine_Ko_.SearchView"].childrenMatchingType(.Button).elementBoundByIndex(1)
+        button.tap()
+        snapshot("04-SearchSettings")
     }
     
 }

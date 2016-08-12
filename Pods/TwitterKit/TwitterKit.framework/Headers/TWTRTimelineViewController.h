@@ -87,6 +87,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)refresh;
 
+/**
+ * Returns the number of Tweets that are currently displayed by the controller.
+ */
+- (NSUInteger)countOfTweets;
+
+/**
+ * Returns the Tweet at the given index.
+ * 
+ * @warning This method will throw an exception if the index is out of range of the count of Tweets.
+ */
+- (TWTRTweet *)tweetAtIndex:(NSInteger)index;
+
+/**
+ * Returns a copy of the Tweets at the time of calling this method.
+ 
+ * This method returns the copy of the current Tweets. The Tweets may change
+ * after this method is called.
+ */
+- (NSArray *)snapshotTweets;
+
 @end
 
 NS_ASSUME_NONNULL_END

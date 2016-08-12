@@ -78,6 +78,41 @@ class TVShowsViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showTVShowDetailsFromTVShows" {
+            if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
+                let tvShow = sender as! TVShow
+                detailsVC.tvShowID = tvShow.objectID
+            }
+        } else if segue.identifier == "showSeeAllFromTVShows" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                
+                switch sender as! Int {
+                case 0:
+                    title = dynamicTitle
+                    fetchRequest = dynamicFetchRequest
+                case 1:
+                    title = "Favorites"
+                    fetchRequest = favoritesFetchRequest
+                case 2:
+                    title = "Watchlist"
+                    fetchRequest = watchlistFetchRequest
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = .Poster
+                detailsVC.captionType = .Title
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom methods
     func loadTVShowGroup() {
         var path:String?
@@ -309,42 +344,10 @@ extension TVShowsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension TVShowsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            
-            switch tag {
-            case 0:
-                title = dynamicTitle
-                fetchRequest = dynamicFetchRequest
-            case 1:
-                title = "Favorites"
-                fetchRequest = favoritesFetchRequest
-            case 2:
-                title = "Watchlist"
-                fetchRequest = watchlistFetchRequest
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = .Poster
-            controller.captionType = .Title
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromTVShows", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
-            let navigationController = navigationController {
-            let tvShow = displayable as! TVShow
-            controller.tvShowID = tvShow.objectID
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showTVShowDetailsFromTVShows", sender: displayable)
     }
 }

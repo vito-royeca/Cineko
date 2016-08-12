@@ -880,40 +880,40 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
-    func movieDetails(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
-        guard (apiKey) != nil else {
-            throw TMDBError.NoAPIKey
-        }
-        
-        let httpMethod:HTTPMethod = .Get
-        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Details.Path)"
-        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
-        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
-    
-        let success = { (results: AnyObject!) in
-            if let dict = results as? [String: AnyObject] {
-                if let title = dict[Movie.Keys.Title] as? String {
-              
-                    let comp2 = { (objectIDs: [AnyObject], error: NSError?) in
-                        ObjectManager.sharedInstance.updateMovie(dict, reviewIDs: objectIDs)
-                        completion(error: nil)
-                    }
-                    
-                    do {
-                        try NYTimesReviewManager.sharedInstance.movieReviews(title, completion: comp2)
-                    } catch {
-                        completion(error: nil)
-                    }
-                }
-            }
-        }
-        
-        let failure = { (error: NSError?) -> Void in
-            completion(error: error)
-        }
-        
-        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
-    }
+//    func movieDetails(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+//        guard (apiKey) != nil else {
+//            throw TMDBError.NoAPIKey
+//        }
+//        
+//        let httpMethod:HTTPMethod = .Get
+//        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Details.Path)"
+//        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
+//        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
+//    
+//        let success = { (results: AnyObject!) in
+//            if let dict = results as? [String: AnyObject] {
+//                if let title = dict[Movie.Keys.Title] as? String {
+//              
+//                    let comp2 = { (objectIDs: [AnyObject], error: NSError?) in
+//                        ObjectManager.sharedInstance.updateMovie(dict, reviewIDs: objectIDs)
+//                        completion(error: nil)
+//                    }
+//                    
+//                    do {
+//                        try NYTimesReviewManager.sharedInstance.movieReviews(title, completion: comp2)
+//                    } catch {
+//                        completion(error: nil)
+//                    }
+//                }
+//            }
+//        }
+//        
+//        let failure = { (error: NSError?) -> Void in
+//            completion(error: error)
+//        }
+//        
+//        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+//    }
 
     func movieImages(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {

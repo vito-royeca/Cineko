@@ -53,6 +53,62 @@ class FeaturedViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showMovieDetailsFromFeatured" {
+            if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
+                let movie = sender as! Movie
+                detailsVC.movieID = movie.objectID
+            }
+        } else if segue.identifier == "showTVShowDetailsFromFeatured" {
+            if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
+                let tvShow = sender as! TVShow
+                detailsVC.tvShowID = tvShow.objectID
+            }
+        } else if segue.identifier == "showPersonDetailsFromFeatured" {
+            if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
+                let person = sender as! Person
+                detailsVC.personID = person.objectID
+            }
+        } else if segue.identifier == "showSeeAllFromFeatured" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                var displayType:DisplayType?
+                var captionType:CaptionType?
+                var showCaption = false
+                
+                switch sender as! Int {
+                case 0:
+                    title = "Now Showing"
+                    fetchRequest = nowShowingFetchRequest
+                    displayType = .Poster
+                    captionType = .Title
+                case 1:
+                    title = "Airing Today"
+                    fetchRequest = airingTodayFetchRequest
+                    displayType = .Poster
+                    captionType = .Title
+                case 2:
+                    title = "Popular People"
+                    fetchRequest = popularPeopleFetchRequest
+                    displayType = .Profile
+                    captionType = .Name
+                    showCaption = true
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = displayType
+                detailsVC.captionType = captionType
+                detailsVC.showCaption = showCaption
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom Methods
     func loadFeaturedMovies() {
         nowShowingFetchRequest = NSFetchRequest(entityName: "Movie")
@@ -238,72 +294,19 @@ extension FeaturedViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension FeaturedViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-        
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
-            var captionType:CaptionType?
-            var showCaption = false
-            
-            switch tag {
-            case 0:
-                title = "Now Showing"
-                fetchRequest = nowShowingFetchRequest
-                displayType = .Poster
-                captionType = .Title
-            case 1:
-                title = "Airing Today"
-                fetchRequest = airingTodayFetchRequest
-                displayType = .Poster
-                captionType = .Title
-            case 2:
-                title = "Popular People"
-                fetchRequest = popularPeopleFetchRequest
-                displayType = .Profile
-                captionType = .Name
-                showCaption = true
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
-            controller.captionType = captionType
-            controller.showCaption = showCaption
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromFeatured", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         switch tag {
         case 0:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-                let navigationController = navigationController {
-                let movie = displayable as! Movie
-                controller.movieID = movie.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showMovieDetailsFromFeatured", sender: displayable)
         case 1:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
-                let navigationController = navigationController {
-                let tvShow = displayable as! TVShow
-                controller.tvShowID = tvShow.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showTVShowDetailsFromFeatured", sender: displayable)
         case 2:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
-                let navigationController = navigationController {
-                let person = displayable as! Person
-                controller.personID = person.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showPersonDetailsFromFeatured", sender: displayable)
         default:
-            return
+            ()
         }
     }
 }

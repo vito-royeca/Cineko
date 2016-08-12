@@ -20,14 +20,16 @@ import TwitterKit
 class MovieDetailsViewController: UIViewController {
 
     // MARK: Outlets
+    
+    @IBOutlet weak var segmentedView: UIView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: Variables
     var titleLabel: UILabel?
     var movieID:NSManagedObjectID?
     var movieReviews:NSSet?
     var homepage:String?
-    var detailsAndTweetsSelection:DetailsAndTweetsSelection = .Details
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
@@ -37,16 +39,32 @@ class MovieDetailsViewController: UIViewController {
     var tweets:[AnyObject]?
     
     // MARK: Actions
+    @IBAction func segmentedControlAction(sender: UISegmentedControl) {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            loadDetails()
+            loadPhotos()
+            loadCastAndCrew()
+        case 1:
+            loadReviews()
+        case 2:
+            loadTweets()
+        default:
+            ()
+        }
+        
+        tableView.reloadData()
+    }
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
-        tableView.registerNib(UINib(nibName: "DetailsAndTweetsTableViewCell", bundle: nil), forCellReuseIdentifier: "detailsAndTweetsTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "segmentedTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "homepageTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "homepageTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "reviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
@@ -80,10 +98,12 @@ class MovieDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         // reset the navigation bar's colors look and feel
-        navigationController!.navigationBar.titleTextAttributes = nil
-        navigationController!.navigationBar.tintColor = nil
-        navigationController!.navigationBar.barTintColor = nil
-        navigationController!.navigationBar.translucent = true
+        if let navigationController = navigationController {
+            navigationController.navigationBar.titleTextAttributes = nil
+            navigationController.navigationBar.tintColor = nil
+            navigationController.navigationBar.barTintColor = nil
+            navigationController.navigationBar.translucent = true
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -121,13 +141,15 @@ class MovieDetailsViewController: UIViewController {
                         self.contrastColor = color.blackOrWhiteContrastingColor()
                         self.titleLabel!.backgroundColor = self.averageColor
                         self.titleLabel!.textColor = self.contrastColor
-                        if let inverseColor = self.contrastColor {
-                            self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
-                            self.navigationController!.navigationBar.tintColor = inverseColor
+                        if let inverseColor = self.contrastColor,
+                           let navigationController = self.navigationController {
+                            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: inverseColor]
+                            navigationController.navigationBar.tintColor = inverseColor
                         }
-                        if let averageColor = self.averageColor {
-                            self.navigationController!.navigationBar.barTintColor = averageColor
-                            self.navigationController!.navigationBar.translucent = false
+                        if let averageColor = self.averageColor,
+                           let navigationController = self.navigationController{
+                            navigationController.navigationBar.barTintColor = averageColor
+                            navigationController.navigationBar.translucent = false
                         }
                         
                         // change also the button items
@@ -161,26 +183,11 @@ class MovieDetailsViewController: UIViewController {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
-            let completion = { (error: NSError?) in
-                performUIUpdatesOnMain {
-                    if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                
-                    self.movieReviews = movie.reviews
-                    if let homepage = movie.homepage {
-                        if !homepage.isEmpty {
-                            self.homepage = homepage
-                        }
-                    }
-                
-                    self.tableView.reloadData()
+            if let homepage = movie.homepage {
+                if !homepage.isEmpty {
+                    self.homepage = homepage
                 }
             }
-            
-            do {
-                try TMDBManager.sharedInstance.movieDetails(movie.movieID!, completion: completion)
-            } catch {}
         }
     }
     
@@ -248,6 +255,28 @@ class MovieDetailsViewController: UIViewController {
         }
     }
     
+    func loadReviews() {
+        if let movieID = movieID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.movieReviews = movie.reviews
+                    self.tableView.reloadData()
+                }
+            }
+            
+            do {
+                try NYTimesReviewManager.sharedInstance.movieReviews(movieID, completion: completion)
+            } catch {}
+        }
+
+    }
+    
     func loadTweets() {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
@@ -278,17 +307,12 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
-            var reviewCount = 0
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
                 homepageCount = 1
-            }
-            
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
             }
             
             // reset the accessory button
@@ -303,10 +327,15 @@ class MovieDetailsViewController: UIViewController {
                 }
                 cell.backgroundColor = UIColor.clearColor()
             case 1:
-                if let c = cell as? DetailsAndTweetsTableViewCell {
-                    c.changeColor(averageColor, fontColor: contrastColor)
-                    c.delegate = self
+                segmentedView.removeFromSuperview()
+                segmentedView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: segmentedView.frame.size.height)
+                segmentedView.backgroundColor = averageColor
+                if let contrastColor = contrastColor {
+                    segmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: contrastColor], forState: .Normal)
+                    segmentedControl.tintColor = contrastColor
                 }
+                cell.backgroundColor = UIColor.clearColor()
+                cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? MediaInfoTableViewCell {
                     if let movieID = movieID {
@@ -348,7 +377,7 @@ class MovieDetailsViewController: UIViewController {
                             var productionCompanyStrings = String()
                             let objects = productionCompanies.allObjects as! [Company]
                             let names = objects.map { $0.name! } as [String]
-                            productionCompanyStrings = names.sort().joinWithSeparator(", ")
+                            productionCompanyStrings = names.sort().joinWithSeparator("\n")
                             text += "\n\n\(productionCompanyStrings)"
                         }
                         
@@ -359,7 +388,7 @@ class MovieDetailsViewController: UIViewController {
                     }
                     c.changeColor(averageColor, fontColor: contrastColor)
                 }
-            case 4+homepageCount+reviewCount:
+            case 4+homepageCount:
                 if let c = cell as? ThumbnailTableViewCell {
                     c.tag = indexPath.row
                     c.titleLabel.text = "Photos"
@@ -371,7 +400,7 @@ class MovieDetailsViewController: UIViewController {
                     c.delegate = self
                     c.loadData()
                 }
-            case 5+homepageCount+reviewCount:
+            case 5+homepageCount:
                 if let c = cell as? ThumbnailTableViewCell {
                     c.tag = indexPath.row
                     c.titleLabel.text = "Cast"
@@ -385,7 +414,7 @@ class MovieDetailsViewController: UIViewController {
                     c.delegate = self
                     c.loadData()
                 }
-            case 6+homepageCount+reviewCount:
+            case 6+homepageCount:
                 if let c = cell as? ThumbnailTableViewCell {
                     c.tag = indexPath.row
                     c.titleLabel.text = "Crew"
@@ -399,7 +428,7 @@ class MovieDetailsViewController: UIViewController {
                     c.delegate = self
                     c.loadData()
                 }
-            case 7+homepageCount+reviewCount:
+            case 7+homepageCount:
                 if let c = cell as? ThumbnailTableViewCell {
                     c.tag = indexPath.row
                     c.titleLabel.text = "Posters"
@@ -416,41 +445,41 @@ class MovieDetailsViewController: UIViewController {
                 
                 if homepageCount > 0 {
                     if indexPath.row == rowPath {
-                        if let c = cell as? DynamicHeightTableViewCell {
-                            c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                            c.dynamicLabel.text = homepage
-                            c.accessoryType = .DisclosureIndicator
-                            c.changeColor(averageColor, fontColor: contrastColor)
-                        }
-                    } else {
-                        if reviewCount > 0 {
-                            if let c = cell as? DynamicHeightTableViewCell,
-                                let movieReviews = movieReviews {
-                                
-                                let movieReview = movieReviews.allObjects[indexPath.row-rowPath-homepageCount] as! Review
-                                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                                c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
-                                c.accessoryType = .DisclosureIndicator
-                                c.changeColor(averageColor, fontColor: contrastColor)
-                            }
-                        }
-                    }
-                } else {
-                    if reviewCount > 0 {
-                        if let c = cell as? DynamicHeightTableViewCell,
-                            let movieReviews = movieReviews {
-                            
-                            let movieReview = movieReviews.allObjects[indexPath.row-rowPath-homepageCount] as! Review
-                            c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                            c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
-                            c.accessoryType = .DisclosureIndicator
-                            c.changeColor(averageColor, fontColor: contrastColor)
+                        cell.accessoryType = .DisclosureIndicator
+                        cell.textLabel?.text = homepage
+                        cell.textLabel?.textColor = contrastColor
+                        cell.textLabel?.backgroundColor = averageColor
+                        cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                        cell.backgroundColor = averageColor
+                        cell.accessoryView?.tintColor = contrastColor
+                        if let image = UIImage(named: "link"),
+                            let imageView = cell.imageView {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            imageView.image = tintedImage
+                            imageView.tintColor = contrastColor
                         }
                     }
                 }
             }
+        
+        case 1:
+            switch indexPath.row {
+            case 0,
+                 1:
+                return
+            default:
+                if let c = cell as? DynamicHeightTableViewCell,
+                    let movieReviews = movieReviews {
+                    
+                    let movieReview = movieReviews.allObjects[indexPath.row-2] as! Review
+                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                    c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
+                    c.accessoryType = .DisclosureIndicator
+                    c.changeColor(averageColor, fontColor: contrastColor)
+                }
+            }
             
-        case .Tweets:
+        case 2:
             switch indexPath.row {
             case 0,
                  1:
@@ -472,6 +501,9 @@ class MovieDetailsViewController: UIViewController {
                     }
                 }
             }
+            
+        default:
+            ()
         }
     }
     
@@ -565,21 +597,30 @@ extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = 0
         
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             rows = 8
             
             if let _ = homepage {
                 rows += 1
             }
             
+        case 1:
             if let movieReviews = movieReviews {
-                rows += movieReviews.allObjects.count
+                rows = movieReviews.allObjects.count+2
+            } else {
+                rows = 2
             }
-        case .Tweets:
+
+        case 2:
             if let tweets = tweets {
                 rows = tweets.count+2
+            } else {
+                rows = 2
             }
+            
+        default:
+            ()
         }
         
         return rows
@@ -588,36 +629,30 @@ extension MovieDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        switch detailsAndTweetsSelection {
-        case .Details:
-            
-            var reviewCount = 0
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
                 homepageCount = 1
             }
             
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
-            }
-            
             switch indexPath.row {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             case 2:
                 cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
             case 3:
                 cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
-            case 4+homepageCount+reviewCount:
+            case 4+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
-            case 5+homepageCount+reviewCount:
+            case 5+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("castTableViewCell", forIndexPath: indexPath)
-            case 6+homepageCount+reviewCount:
+            case 6+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("crewTableViewCell", forIndexPath: indexPath)
-            case 7+homepageCount+reviewCount:
+            case 7+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("postersTableViewCell", forIndexPath: indexPath)
             default:
                 let rowPath = 4
@@ -625,27 +660,32 @@ extension MovieDetailsViewController : UITableViewDataSource {
                 if homepageCount > 0 {
                     if indexPath.row == rowPath {
                         cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
-                    } else {
-                        if reviewCount > 0 {
-                            cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
-                        }
-                    }
-                } else {
-                    if reviewCount > 0 {
-                        cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
                     }
                 }
             }
-            
-        case .Tweets:
+        
+        case 1:
             switch indexPath.row {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
+            default:
+                cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
+            }
+            
+        case 2:
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             default:
                 cell = tableView.dequeueReusableCellWithIdentifier("tweetsTableViewCell", forIndexPath: indexPath)
             }
+            
+        default:
+            ()
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -657,17 +697,12 @@ extension MovieDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension MovieDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
-            var reviewCount = 0
             
             if let _ = homepage {
                 homepageCount = 1
-            }
-            
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
             }
             
             switch indexPath.row {
@@ -678,16 +713,24 @@ extension MovieDetailsViewController : UITableViewDelegate {
                 return UITableViewAutomaticDimension
             case 3:
                 return dynamicHeightForCell("overviewTableViewCell", indexPath: indexPath)
-            case 4+homepageCount+reviewCount,
-                 5+homepageCount+reviewCount,
-                 6+homepageCount+reviewCount,
-                 7+homepageCount+reviewCount:
+            case 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount,
+                 7+homepageCount:
                 return tableView.frame.size.height / 3
             default:
                 return UITableViewAutomaticDimension
             }
+        
+        case 1:
+            switch indexPath.row {
+            case 0:
+                return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
+            default:
+                return UITableViewAutomaticDimension
+            }
             
-        case .Tweets:
+        case 2:
             switch indexPath.row {
             case 0:
                 return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
@@ -702,23 +745,20 @@ extension MovieDetailsViewController : UITableViewDelegate {
                     }
                 }
             }
+        default:
+            ()
         }
         
         return UITableViewAutomaticDimension
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        switch detailsAndTweetsSelection {
-        case .Details:
-            var reviewCount = 0
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
                 homepageCount = 1
-            }
-            
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
             }
             
             switch indexPath.row {
@@ -726,34 +766,28 @@ extension MovieDetailsViewController : UITableViewDelegate {
                  1,
                  2,
                  3,
-                 4+homepageCount+reviewCount,
-                 5+homepageCount+reviewCount,
-                 6+homepageCount+reviewCount,
-                 7+homepageCount+reviewCount:
+                 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount,
+                 7+homepageCount:
                 // return nil for the first row which is not selectable
                 return nil
             default:
                 return indexPath
             }
         
-        case .Tweets:
+        default:
             return nil
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
-            
-            var reviewCount = 0
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
                 homepageCount = 1
-            }
-            
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
             }
             
             switch indexPath.row {
@@ -761,10 +795,10 @@ extension MovieDetailsViewController : UITableViewDelegate {
                  1,
                  2,
                  3,
-                 4+homepageCount+reviewCount,
-                 5+homepageCount+reviewCount,
-                 6+homepageCount+reviewCount,
-                 7+homepageCount+reviewCount:
+                 4+homepageCount,
+                 5+homepageCount,
+                 6+homepageCount,
+                 7+homepageCount:
                 return
             default:
                 let rowPath = 4
@@ -772,35 +806,22 @@ extension MovieDetailsViewController : UITableViewDelegate {
                 if homepageCount > 0 {
                     if indexPath.row == rowPath {
                         UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
-                    } else {
-                        if reviewCount > 0 {
-                            if let movieReviews = movieReviews,
-                                let navigationController = navigationController {
-                                let moviewReview = movieReviews.allObjects[indexPath.row-rowPath-homepageCount] as! Review
-                                let URL = NSURL(string: moviewReview.link!)
-                                
-                                let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
-                                svc.delegate = self
-                                navigationController.presentViewController(svc, animated: true, completion: nil)
-                            }
-                        }
-                    }
-                } else {
-                    if reviewCount > 0 {
-                        if let movieReviews = movieReviews,
-                            let navigationController = navigationController {
-                            let moviewReview = movieReviews.allObjects[indexPath.row-rowPath-homepageCount] as! Review
-                            let URL = NSURL(string: moviewReview.link!)
-                            
-                            let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
-                            svc.delegate = self
-                            navigationController.presentViewController(svc, animated: true, completion: nil)
-                        }
                     }
                 }
             }
+        
+        case 1:
+            if let movieReviews = movieReviews,
+                let navigationController = navigationController {
+                let moviewReview = movieReviews.allObjects[indexPath.row+2] as! Review
+                let URL = NSURL(string: moviewReview.link!)
+                
+                let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
+                svc.delegate = self
+                navigationController.presentViewController(svc, animated: true, completion: nil)
+            }
             
-        case .Tweets:
+        default:
             return
         }
     }
@@ -895,22 +916,6 @@ extension MovieDetailsViewController : ThumbnailDelegate {
 extension MovieDetailsViewController : SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         controller.dismissViewControllerAnimated(true, completion: nil)
-    }
-}
-
-// MARK: DetailsAndTweets
-extension MovieDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
-    func selectionChanged(selection: DetailsAndTweetsSelection) {
-        detailsAndTweetsSelection = selection
-        
-        switch selection {
-        case .Details:
-            loadDetails()
-            loadPhotos()
-            loadCastAndCrew()
-        case .Tweets:
-            loadTweets()
-        }
     }
 }
 
