@@ -16,11 +16,10 @@ class StartViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func loginAction(sender: UIButton) {
-        
         do {
             if let requestToken = try TMDBManager.sharedInstance.getAvailableRequestToken() {
                 let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
-                self.presentLoginViewController(urlString)
+                performSegueWithIdentifier("presentLoginFromStart", sender: urlString)
             
             } else {
                 let success = { (results: AnyObject!) in
@@ -34,7 +33,7 @@ class StartViewController: UIViewController {
                             performUIUpdatesOnMain {
                                 let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
                                 MBProgressHUD.hideHUDForView(self.view, animated: true)
-                                self.presentLoginViewController(urlString)
+                                self.performSegueWithIdentifier("presentLoginFromStart", sender: urlString)
                             }
                         }
                     }
@@ -56,17 +55,21 @@ class StartViewController: UIViewController {
     }
     
     @IBAction func skipLoginAction(sender: UIButton) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
-            self.presentViewController(controller, animated: true, completion: nil)
-        }
+//        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
+//            self.presentViewController(controller, animated: true, completion: nil)
+//        }
+        performSegueWithIdentifier("presentDrawerFromStart", sender: sender)
     }
     
-    // MARK: Utility methods
-    func presentLoginViewController(authenticateURLString: String) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController {
-            controller.authenticationURLString = authenticateURLString
-            controller.delegate = self
-            self.presentViewController(controller, animated: true, completion: nil)
+    // MARK: Overrides
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "presentLoginFromStart" {
+            if let vc = segue.destinationViewController as? LoginViewController {
+                vc.authenticationURLString = sender as? String
+                vc.delegate = self
+            }
+        } else if segue.identifier == "presentDrawerFromStart" {
+            // no op
         }
     }
 }

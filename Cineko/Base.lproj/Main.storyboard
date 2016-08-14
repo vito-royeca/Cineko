@@ -367,10 +367,14 @@
                             <constraint firstItem="2Ci-UP-NoW" firstAttribute="top" secondItem="p4c-YP-zCy" secondAttribute="bottom" constant="8" symbolic="YES" id="tMY-OQ-ChA"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="R7y-Gi-aqr" kind="presentation" identifier="presentLoginFromStart" id="Lde-gk-eot"/>
+                        <segue destination="iXN-mH-ycE" kind="presentation" identifier="presentDrawerFromStart" id="CmE-ps-ps0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnL-Iu-Zr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2154" y="625"/>
+            <point key="canvasLocation" x="-1550" y="211"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="1gZ-hr-BQj">
@@ -424,7 +428,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bqd-fc-8TL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1360" y="625"/>
+            <point key="canvasLocation" x="-521" y="-113"/>
         </scene>
         <!--Drawer Controller-->
         <scene sceneID="xQ0-sM-Lxx">
@@ -1302,5 +1306,6 @@
         <segue reference="XBv-HI-Onn"/>
         <segue reference="Ilk-th-HCZ"/>
         <segue reference="AWx-A5-qv7"/>
+        <segue reference="Lde-gk-eot"/>
     </inferredMetricsTieBreakers>
 </document>
