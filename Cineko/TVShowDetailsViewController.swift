@@ -112,6 +112,61 @@ class TVShowDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showPersonDetailsFromTVShowDetails" {
+            if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
+                let credit = sender as! Credit
+                detailsVC.personID = credit.person!.objectID
+            }
+            
+        } else if segue.identifier == "showSeeAllFromTVShowDetails" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var homepageCount = 0
+                
+                if let _ = homepage {
+                    homepageCount = 1
+                }
+                
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                var displayType:DisplayType?
+                var captionType:CaptionType?
+                var showCaption = false
+                
+                switch sender as! Int {
+                case 5+homepageCount:
+                    title = "Cast"
+                    fetchRequest = castFetchRequest
+                    displayType = .Profile
+                    captionType = .NameAndRole
+                    showCaption = true
+                case 6+homepageCount:
+                    title = "Crew"
+                    fetchRequest = crewFetchRequest
+                    displayType = .Profile
+                    captionType = .NameAndJob
+                    showCaption = true
+                case 7+homepageCount:
+                    title = "Seasons"
+                    fetchRequest = tvSeasonFetchRequest
+                    displayType = .Poster
+                    captionType = .Title
+                    showCaption = true
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = displayType
+                detailsVC.captionType = captionType
+                detailsVC.showCaption = showCaption
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom Methods
     func updateBackground() {
         if let tvShowID = tvShowID {
@@ -764,52 +819,7 @@ extension TVShowDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension TVShowDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            var homepageCount = 0
-            
-            if let _ = homepage {
-                homepageCount = 1
-            }
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
-            var captionType:CaptionType?
-            var showCaption = false
-            
-            switch tag {
-            case 5+homepageCount:
-                title = "Cast"
-                fetchRequest = castFetchRequest
-                displayType = .Profile
-                captionType = .NameAndRole
-                showCaption = true
-            case 6+homepageCount:
-                title = "Crew"
-                fetchRequest = crewFetchRequest
-                displayType = .Profile
-                captionType = .NameAndJob
-                showCaption = true
-            case 7+homepageCount:
-                title = "Seasons"
-                fetchRequest = tvSeasonFetchRequest
-                displayType = .Poster
-                captionType = .Title
-                showCaption = true
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
-            controller.captionType = captionType
-            controller.showCaption = showCaption
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromTVShowDetails", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
@@ -824,12 +834,7 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
             showBackdropsBrowser(path)
         case 5+homepageCount,
              6+homepageCount:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
-                let navigationController = navigationController {
-                let credit = displayable as! Credit
-                controller.personID = credit.person!.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showPersonDetailsFromTVShowDetails", sender: displayable)
         default:
             return
         }

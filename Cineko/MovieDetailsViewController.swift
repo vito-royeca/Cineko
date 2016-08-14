@@ -117,6 +117,59 @@ class MovieDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showPersonDetailsFromMovieDetails" {
+            if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
+                let credit = sender as! Credit
+                detailsVC.personID = credit.person!.objectID
+            }
+            
+        } else if segue.identifier == "showSeeAllFromMovieDetails" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var homepageCount = 0
+                
+                if let _ = homepage {
+                    homepageCount = 1
+                }
+                
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                var displayType:DisplayType?
+                var captionType:CaptionType?
+                var showCaption = false
+                
+                switch sender as! Int {
+                case 5+homepageCount:
+                    title = "Cast"
+                    fetchRequest = castFetchRequest
+                    displayType = .Profile
+                    captionType = .NameAndRole
+                    showCaption = true
+                case 6+homepageCount:
+                    title = "Crew"
+                    fetchRequest = crewFetchRequest
+                    displayType = .Profile
+                    captionType = .NameAndJob
+                    showCaption = true
+                case 7+homepageCount:
+                    title = "Posters"
+                    fetchRequest = posterFetchRequest
+                    displayType = .Poster
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = displayType
+                detailsVC.captionType = captionType
+                detailsVC.showCaption = showCaption
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom Methods
     func updateBackground() {
         if let movieID = movieID {
@@ -857,81 +910,23 @@ extension MovieDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension MovieDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            var reviewCount = 0
-            var homepageCount = 0
-            
-            if let _ = homepage {
-                homepageCount = 1
-            }
-            
-            if let movieReviews = movieReviews {
-                reviewCount = movieReviews.allObjects.count
-            }
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
-            var captionType:CaptionType?
-            var showCaption = false
-            
-            switch tag {
-            case 5+homepageCount+reviewCount:
-                title = "Cast"
-                fetchRequest = castFetchRequest
-                displayType = .Profile
-                captionType = .NameAndRole
-                showCaption = true
-            case 6+homepageCount+reviewCount:
-                title = "Crew"
-                fetchRequest = crewFetchRequest
-                displayType = .Profile
-                captionType = .NameAndJob
-                showCaption = true
-            case 7+homepageCount+reviewCount:
-                title = "Posters"
-                fetchRequest = posterFetchRequest
-                displayType = .Poster
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
-            controller.captionType = captionType
-            controller.showCaption = showCaption
-            controller.view.tag = tag+reviewCount
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromMovieDetails", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
-        var reviewCount = 0
         var homepageCount = 0
         
         if let _ = homepage {
             homepageCount = 1
         }
         
-        if let movieReviews = movieReviews {
-            reviewCount = movieReviews.allObjects.count
-        }
-        
         switch tag {
-        case 4+homepageCount+reviewCount:
+        case 4+homepageCount:
             showBackdropsBrowser(path)
-        case 5+homepageCount+reviewCount,
-             6+homepageCount+reviewCount:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
-                let navigationController = navigationController {
-                let credit = displayable as! Credit
-                controller.personID = credit.person!.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
-        case 7+homepageCount+reviewCount:
+        case 5+homepageCount,
+             6+homepageCount:
+            performSegueWithIdentifier("showPersonDetailsFromMovieDetails", sender: displayable)
+        case 7+homepageCount:
             showPostersBrowser(path)
         default:
             return

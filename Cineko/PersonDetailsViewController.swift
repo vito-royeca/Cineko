@@ -72,6 +72,77 @@ class PersonDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showMovieDetailsFromPersonDetails" {
+            if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
+                let credit = sender as! Credit
+                detailsVC.movieID = credit.movie!.objectID
+            }
+            
+        } else if segue.identifier == "showTVShowDetailsFromPersonDetails" {
+            if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
+                let credit = sender as! Credit
+                detailsVC.tvShowID = credit.tvShow!.objectID
+            }
+            
+        } else if segue.identifier == "showSeeAllFromPersonDetails" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var homepageCount = 0
+                
+                if let _ = homepage {
+                    homepageCount = 1
+                }
+                
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                var displayType:DisplayType?
+                var captionType:CaptionType?
+                var showCaption = false
+                
+                switch sender as! Int {
+                case 0:
+                    title = "Photos"
+                    fetchRequest = photosFetchRequest
+                    displayType = .Profile
+                case 3+homepageCount:
+                    title = "Movie Appearances"
+                    fetchRequest = moviesFetchRequest
+                    displayType = .Poster
+                    captionType = .Role
+                    showCaption = true
+                case 4+homepageCount:
+                    title = "TV Show Appearances"
+                    fetchRequest = tvShowsFetchRequest
+                    displayType = .Poster
+                    captionType = .Role
+                    showCaption = true
+                case 5+homepageCount:
+                    title = "Movie Credits"
+                    fetchRequest = movieCreditsFetchRequest
+                    displayType = .Poster
+                    captionType = .Job
+                    showCaption = true
+                case 6+homepageCount:
+                    title = "TV Show Credits"
+                    fetchRequest = tvShowCreditsFetchRequest
+                    displayType = .Poster
+                    captionType = .Job
+                    showCaption = true
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = displayType
+                detailsVC.captionType = captionType
+                detailsVC.showCaption = showCaption
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom Methods
     func loadPhotos() {
         if let personID = personID {
@@ -639,62 +710,7 @@ extension PersonDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension PersonDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            var homepageCount = 0
-            
-            if let _ = homepage {
-                homepageCount = 1
-            }
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
-            var captionType:CaptionType?
-            var showCaption = false
-            
-            switch tag {
-            case 0:
-                title = "Photos"
-                fetchRequest = photosFetchRequest
-                displayType = .Profile
-            case 3+homepageCount:
-                title = "Movie Appearances"
-                fetchRequest = moviesFetchRequest
-                displayType = .Poster
-                captionType = .Role
-                showCaption = true
-            case 4+homepageCount:
-                title = "TV Show Appearances"
-                fetchRequest = tvShowsFetchRequest
-                displayType = .Poster
-                captionType = .Role
-                showCaption = true
-            case 5+homepageCount:
-                title = "Movie Credits"
-                fetchRequest = movieCreditsFetchRequest
-                displayType = .Poster
-                captionType = .Job
-                showCaption = true
-            case 6+homepageCount:
-                title = "TV Show Credits"
-                fetchRequest = tvShowCreditsFetchRequest
-                displayType = .Poster
-                captionType = .Job
-                showCaption = true
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
-            controller.captionType = captionType
-            controller.showCaption = showCaption
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromPersonDetails", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
@@ -709,20 +725,10 @@ extension PersonDetailsViewController : ThumbnailDelegate {
             showProfilesBrowser(path)
         case 3+homepageCount,
              5+homepageCount:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-                let navigationController = navigationController {
-                let credit = displayable as! Credit
-                controller.movieID = credit.movie!.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showMovieDetailsFromPersonDetails", sender: displayable)
         case 4+homepageCount,
              6+homepageCount:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
-                let navigationController = navigationController {
-                let credit = displayable as! Credit
-                controller.tvShowID = credit.tvShow!.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showTVShowDetailsFromPersonDetails", sender: displayable)
         default:
             return
         }
