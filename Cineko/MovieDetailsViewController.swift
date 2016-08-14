@@ -52,8 +52,6 @@ class MovieDetailsViewController: UIViewController {
         default:
             ()
         }
-        
-        tableView.reloadData()
     }
     
     // MARK: Overrides
@@ -183,11 +181,25 @@ class MovieDetailsViewController: UIViewController {
         if let movieID = movieID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
             
-            if let homepage = movie.homepage {
-                if !homepage.isEmpty {
-                    self.homepage = homepage
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    if let homepage = movie.homepage {
+                        if !homepage.isEmpty {
+                            self.homepage = homepage
+                        }
+                    }
+                    
+                    self.tableView.reloadData()
                 }
             }
+            
+            do {
+                try TMDBManager.sharedInstance.movieDetails(movie.movieID!, completion: completion)
+            } catch {}
         }
     }
     
@@ -266,12 +278,19 @@ class MovieDetailsViewController: UIViewController {
                     }
                     
                     self.movieReviews = movie.reviews
-                    self.tableView.reloadData()
+                    
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                        self.tableView.reloadData()
+                    }
                 }
             }
             
             do {
-                try NYTimesReviewManager.sharedInstance.movieReviews(movieID, completion: completion)
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try NYTimesReviewManager.sharedInstance.movieReviews(movie.movieID!, completion: completion)
             } catch {}
         }
 
@@ -290,7 +309,7 @@ class MovieDetailsViewController: UIViewController {
                         self.tweets = TWTRTweet.tweetsWithJSONArray(results)
                     }
                 
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                         self.tableView.reloadData()
                     }
@@ -298,7 +317,7 @@ class MovieDetailsViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TwitterManager.sharedInstance.userSearch("\"\(movie.title!)\"", completion: completion)
@@ -451,12 +470,17 @@ class MovieDetailsViewController: UIViewController {
                         cell.textLabel?.backgroundColor = averageColor
                         cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
                         cell.backgroundColor = averageColor
-                        cell.accessoryView?.tintColor = contrastColor
                         if let image = UIImage(named: "link"),
                             let imageView = cell.imageView {
                             let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
                             imageView.image = tintedImage
                             imageView.tintColor = contrastColor
+                        }
+                        if let image = UIImage(named: "forward") {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            let imageView = UIImageView(image: tintedImage)
+                            imageView.tintColor = contrastColor
+                            cell.accessoryView = imageView
                         }
                     }
                 }
@@ -770,12 +794,15 @@ extension MovieDetailsViewController : UITableViewDelegate {
                  5+homepageCount,
                  6+homepageCount,
                  7+homepageCount:
-                // return nil for the first row which is not selectable
+                // return nil for the rows which are not selectable
                 return nil
             default:
                 return indexPath
             }
         
+        case 1:
+            return indexPath
+
         default:
             return nil
         }
@@ -813,7 +840,7 @@ extension MovieDetailsViewController : UITableViewDelegate {
         case 1:
             if let movieReviews = movieReviews,
                 let navigationController = navigationController {
-                let moviewReview = movieReviews.allObjects[indexPath.row+2] as! Review
+                let moviewReview = movieReviews.allObjects[indexPath.row-2] as! Review
                 let URL = NSURL(string: moviewReview.link!)
                 
                 let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)

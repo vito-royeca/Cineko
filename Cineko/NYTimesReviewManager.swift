@@ -33,29 +33,34 @@ class NYTimesReviewManager: NSObject {
         self.apiKey = apiKey
     }
     
-    func movieReviews(movieID: NSManagedObjectID, completion: (error: NSError?) -> Void?) throws {
+    func movieReviews(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw NYTimesReviewError.NoAPIKey
         }
         
-        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        var movie:Movie?
+        let fetchRequest = NSFetchRequest(entityName: "Movie")
+        fetchRequest.predicate = NSPredicate(format: "movieID == %@", movieID)
+        
+        do {
+            movie = try CoreDataManager.sharedInstance.privateContext.executeFetchRequest(fetchRequest).first as? Movie
+        } catch {}
         
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(NYTimesReviewConstants.APIURL)\(NYTimesReviewConstants.Reviews.Search.Path)"
         let parameters = [NYTimesReviewConstants.APIKey: apiKey!,
-                          "query": "'\(movie.title!)'"]
-        var reviewIDs = [AnyObject]()
+                          "query": "'\(movie!.title!)'"]
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
                 if let json = dict["results"] as? [[String: AnyObject]] {
                     for review in json {
                         let m = ObjectManager.sharedInstance.findOrCreateReview(review)
-                        reviewIDs.append(m.objectID)
+                        m.movie = movie
                     }
                 }
             }
-            ObjectManager.sharedInstance.updateMovie([Movie.Keys.MovieID: movie.movieID!], reviewIDs: reviewIDs)
+            CoreDataManager.sharedInstance.savePrivateContext()
             completion(error: nil)
         }
         

@@ -17,11 +17,12 @@ class PersonDetailsViewController: UIViewController {
 
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedView: UIView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: Variables
     var personID:NSManagedObjectID?
     var homepage:String?
-    var detailsAndTweetsSelection:DetailsAndTweetsSelection = .Details
     var photosFetchRequest:NSFetchRequest?
     var moviesFetchRequest:NSFetchRequest?
     var tvShowsFetchRequest:NSFetchRequest?
@@ -29,14 +30,28 @@ class PersonDetailsViewController: UIViewController {
     var tvShowCreditsFetchRequest:NSFetchRequest?
     var tweets:[AnyObject]?
     
+    // MARK: Actions
+    @IBAction func segmentedAction(sender: UISegmentedControl) {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            loadDetails()
+            loadPhotos()
+            loadCombinedCredits()
+        case 1:
+            loadTweets()
+        default:
+            ()
+        }
+    }
+    
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
-        tableView.registerNib(UINib(nibName: "DetailsAndTweetsTableViewCell", bundle: nil), forCellReuseIdentifier: "detailsAndTweetsTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "segmentedTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "homepageTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "homepageTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowsTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "movieCreditsTableViewCell")
@@ -218,8 +233,8 @@ class PersonDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -241,9 +256,10 @@ class PersonDetailsViewController: UIViewController {
                     c.loadData()
                 }
             case 1:
-                if let c = cell as? DetailsAndTweetsTableViewCell {
-                    c.delegate = self
-                }
+                segmentedView.removeFromSuperview()
+                segmentedView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: segmentedView.frame.size.height)
+                cell.backgroundColor = UIColor.clearColor()
+                cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? DynamicHeightTableViewCell {
                     if let personID = personID {
@@ -347,15 +363,28 @@ class PersonDetailsViewController: UIViewController {
                     c.loadData()
                 }
             default:
-                if let c = cell as? DynamicHeightTableViewCell {
-                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = homepage
-                    c.accessoryType = .DisclosureIndicator
-                    c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
+                let rowPath = 3
+                
+                if homepageCount > 0 {
+                    if indexPath.row == rowPath {
+                        cell.accessoryType = .DisclosureIndicator
+                        cell.textLabel?.text = homepage
+                        cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                        if let image = UIImage(named: "link"),
+                            let imageView = cell.imageView {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            imageView.image = tintedImage
+                        }
+                        if let image = UIImage(named: "forward") {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            let imageView = UIImageView(image: tintedImage)
+                            cell.accessoryView = imageView
+                        }
+                    }
                 }
             }
             
-        case .Tweets:
+        case 1:
             switch indexPath.row {
             case 0,
                  1:
@@ -373,6 +402,9 @@ class PersonDetailsViewController: UIViewController {
                     }
                 }
             }
+            
+        default:
+            ()
         }
     }
     
@@ -417,17 +449,23 @@ extension PersonDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = 0
         
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             rows = 7
             
             if let _ = homepage {
                 rows += 1
             }
-        case .Tweets:
+            
+        case 1:
             if let tweets = tweets {
                 rows = tweets.count+2
+            } else {
+                rows = 2
             }
+            
+        default:
+            ()
         }
         return rows
     }
@@ -435,8 +473,8 @@ extension PersonDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -447,7 +485,7 @@ extension PersonDetailsViewController : UITableViewDataSource {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             case 2:
                 cell = tableView.dequeueReusableCellWithIdentifier("overviewTableViewCell", forIndexPath: indexPath)
             case 3+homepageCount:
@@ -459,18 +497,27 @@ extension PersonDetailsViewController : UITableViewDataSource {
             case 6+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("tvShowCreditsTableViewCell", forIndexPath: indexPath)
             default:
-                cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+                let rowPath = 3
+                
+                if homepageCount > 0 {
+                    if indexPath.row == rowPath {
+                        cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+                    }
+                }
             }
         
-        case .Tweets:
+        case 1:
             switch indexPath.row {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("photosTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             default:
                 cell = tableView.dequeueReusableCellWithIdentifier("tweetsTableViewCell", forIndexPath: indexPath)
             }
+            
+        default:
+            ()
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -481,9 +528,8 @@ extension PersonDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension PersonDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch detailsAndTweetsSelection {
-        case .Details:
-            
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -505,7 +551,7 @@ extension PersonDetailsViewController : UITableViewDelegate {
             default:
                 return UITableViewAutomaticDimension
             }
-        case .Tweets:
+        case 1:
             switch indexPath.row {
             case 0:
                 return tableView.frame.size.height / 3
@@ -520,14 +566,17 @@ extension PersonDetailsViewController : UITableViewDelegate {
                     }
                 }
             }
+            
+        default:
+            ()
         }
         
         return UITableViewAutomaticDimension
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -537,26 +586,25 @@ extension PersonDetailsViewController : UITableViewDelegate {
             switch indexPath.row {
             case 0,
                  1,
-                 2+homepageCount,
+                 2,
                  3+homepageCount,
                  4+homepageCount,
                  5+homepageCount,
                  6+homepageCount:
-                // return nil for the first row which is not selectable
+                // return nil for the rows which are not selectable
                 return nil
             default:
                 return indexPath
             }
         
-        case .Tweets:
+        default:
             return nil
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
-            
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -573,12 +621,16 @@ extension PersonDetailsViewController : UITableViewDelegate {
                  6+homepageCount:
                 return
             default:
+                let rowPath = 3
+                
                 if homepageCount > 0 {
-                    UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+                    if indexPath.row == rowPath {
+                        UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+                    }
                 }
             }
             
-        case .Tweets:
+        default:
             return
         }
     }
@@ -673,22 +725,6 @@ extension PersonDetailsViewController : ThumbnailDelegate {
             }
         default:
             return
-        }
-    }
-}
-
-// MARK: DetailsAndTweets
-extension PersonDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
-    func selectionChanged(selection: DetailsAndTweetsSelection) {
-        detailsAndTweetsSelection = selection
-        
-        switch selection {
-        case .Details:
-            loadPhotos()
-            loadDetails()
-            loadCombinedCredits()
-        case .Tweets:
-            loadTweets()
         }
     }
 }

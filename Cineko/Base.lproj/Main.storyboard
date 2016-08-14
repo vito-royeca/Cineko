@@ -165,7 +165,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BZY-Dv-BSm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BZY-Dv-BSm">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -177,7 +177,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segmentedTableViewCell" id="dVm-hz-1V8" userLabel="detailsAndTweetsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segmentedTableViewCell" id="dVm-hz-1V8">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dVm-hz-1V8" id="ajP-Cm-cRT">
@@ -744,7 +744,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PKf-Af-LCm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PKf-Af-LCm">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -757,7 +757,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="detailsAndTweetsTableViewCell" id="CV7-n1-5V8" userLabel="detailsAndTweetsTableViewCell" customClass="DetailsAndTweetsTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segmentedTableViewCell" id="CV7-n1-5V8">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CV7-n1-5V8" id="Mgm-qW-wAg">
@@ -837,12 +837,37 @@
                     </view>
                     <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq"/>
                     <connections>
+                        <outlet property="segmentedControl" destination="yYJ-05-nfb" id="E3e-uT-NWX"/>
+                        <outlet property="segmentedView" destination="bGv-aE-eyW" id="Dtu-e6-NJ6"/>
                         <outlet property="tableView" destination="PKf-Af-LCm" id="HBq-ZP-eAe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uPY-oa-goJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="bGv-aE-eyW">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yYJ-05-nfb">
+                            <rect key="frame" x="8" y="7" width="224" height="29"/>
+                            <segments>
+                                <segment title="Details"/>
+                                <segment title="Tweets"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedAction:" destination="wVx-Wm-bVh" eventType="valueChanged" id="gd5-Sl-eJE"/>
+                                <action selector="segmentedControlAction:" destination="6At-tm-DiG" eventType="valueChanged" id="c37-0y-005"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="top" secondItem="bGv-aE-eyW" secondAttribute="top" constant="7" id="557-df-B7F"/>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="trailing" secondItem="bGv-aE-eyW" secondAttribute="trailingMargin" id="BU6-88-QRn"/>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="leading" secondItem="bGv-aE-eyW" secondAttribute="leadingMargin" id="Ckg-o0-Nev"/>
+                    </constraints>
+                </view>
             </objects>
-            <point key="canvasLocation" x="2924" y="-157"/>
+            <point key="canvasLocation" x="2924" y="-113"/>
         </scene>
         <!--Person Details View Controller-->
         <scene sceneID="BSS-QG-tQ8">
@@ -856,7 +881,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XZ9-su-1vm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XZ9-su-1vm">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -868,7 +893,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="detailsAndTweetsTableViewCell" id="1Wl-4a-1KS" userLabel="detailsAndTweetsTableViewCell" customClass="DetailsAndTweetsTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segmentedTableViewCell" id="1Wl-4a-1KS">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Wl-4a-1KS" id="MrF-aA-Goj">
@@ -933,12 +958,37 @@
                     </view>
                     <navigationItem key="navigationItem" id="eX0-jh-5k0"/>
                     <connections>
+                        <outlet property="segmentedControl" destination="cqP-m8-bef" id="020-8R-SEP"/>
+                        <outlet property="segmentedView" destination="Guw-bh-Tq5" id="2eI-LX-lyo"/>
                         <outlet property="tableView" destination="XZ9-su-1vm" id="a9O-4y-NHs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TKn-H3-oCK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Guw-bh-Tq5">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cqP-m8-bef">
+                            <rect key="frame" x="8" y="7" width="224" height="29"/>
+                            <segments>
+                                <segment title="Details"/>
+                                <segment title="Tweets"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedAction:" destination="SIe-LV-vPe" eventType="valueChanged" id="AYk-42-2nE"/>
+                                <action selector="segmentedControlAction:" destination="6At-tm-DiG" eventType="valueChanged" id="p9L-Fd-oJy"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="cqP-m8-bef" firstAttribute="top" secondItem="Guw-bh-Tq5" secondAttribute="top" constant="7" id="5uN-ix-59C"/>
+                        <constraint firstItem="cqP-m8-bef" firstAttribute="trailing" secondItem="Guw-bh-Tq5" secondAttribute="trailingMargin" id="VHo-Qn-SXI"/>
+                        <constraint firstItem="cqP-m8-bef" firstAttribute="leading" secondItem="Guw-bh-Tq5" secondAttribute="leadingMargin" id="WOh-OQ-SZo"/>
+                    </constraints>
+                </view>
             </objects>
-            <point key="canvasLocation" x="2924" y="561"/>
+            <point key="canvasLocation" x="2924" y="625"/>
         </scene>
         <!--TV Shows-->
         <scene sceneID="kIu-Bb-VQf">

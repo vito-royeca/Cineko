@@ -225,7 +225,9 @@ class MoviesViewController: UIViewController {
             }
             
         } else {
-            dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[refreshData!] as! [NSNumber])
+            if let groupIDs = dataDict[refreshData!] as? [NSNumber] {
+                dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", groupIDs)
+            }
             tableView.reloadData()
         }
     }

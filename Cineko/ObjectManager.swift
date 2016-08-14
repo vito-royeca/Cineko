@@ -30,7 +30,7 @@ class ObjectManager: NSObject {
         return findOrCreateObject(dict, entityName: "Movie", objectKey: "movieID", objectValue: dict[Movie.Keys.MovieID] as! NSObject, initializer: initializer) as! Movie
     }
     
-    func updateMovie(dict: [String: AnyObject], reviewIDs: [AnyObject]) {
+    func updateMovie(dict: [String: AnyObject]) {
         if let movieID = dict[Movie.Keys.MovieID] as? NSNumber {
             let fetchRequest = NSFetchRequest(entityName: "Movie")
             fetchRequest.predicate = NSPredicate(format: "movieID == %@", movieID)
@@ -72,11 +72,6 @@ class ObjectManager: NSObject {
                             set.addObject(findOrCreateLanguage(language))
                         }
                         m.spokenLanguages = set
-                    }
-                    
-                    for reviewID in reviewIDs {
-                        let review = privateContext.objectWithID(reviewID as! NSManagedObjectID) as! Review
-                        review.movie = m
                     }
                     
                     m.update(dict)

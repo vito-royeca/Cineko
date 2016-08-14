@@ -20,12 +20,13 @@ class TVShowDetailsViewController: UIViewController {
 
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedView: UIView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
 
     // MARK: Variables
     var titleLabel:UILabel?
     var tvShowID:NSManagedObjectID?
     var homepage:String?
-    var detailsAndTweetsSelection:DetailsAndTweetsSelection = .Details
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
@@ -35,16 +36,28 @@ class TVShowDetailsViewController: UIViewController {
     var tweets:[AnyObject]?
     
     // MARK: Actions
+    @IBAction func segmentedAction(sender: UISegmentedControl) {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            loadDetails()
+            loadPhotos()
+            loadCastAndCrew()
+        case 1:
+            loadTweets()
+        default:
+            ()
+        }
+    }
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "clearTableViewCell")
-        tableView.registerNib(UINib(nibName: "DetailsAndTweetsTableViewCell", bundle: nil), forCellReuseIdentifier: "detailsAndTweetsTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "segmentedTableViewCell")
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "homepageTableViewCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "homepageTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
@@ -262,7 +275,7 @@ class TVShowDetailsViewController: UIViewController {
                         self.tweets = TWTRTweet.tweetsWithJSONArray(results)
                     }
                     
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
                         self.tableView.reloadData()
                     }
@@ -270,7 +283,7 @@ class TVShowDetailsViewController: UIViewController {
             }
             
             do {
-                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 try TwitterManager.sharedInstance.userSearch("\"\(tvShow.name!)\"", completion: completion)
@@ -279,8 +292,8 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -299,10 +312,15 @@ class TVShowDetailsViewController: UIViewController {
                 }
                 cell.backgroundColor = UIColor.clearColor()
             case 1:
-                if let c = cell as? DetailsAndTweetsTableViewCell {
-                    c.changeColor(averageColor, fontColor: contrastColor)
-                    c.delegate = self
+                segmentedView.removeFromSuperview()
+                segmentedView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: segmentedView.frame.size.height)
+                segmentedView.backgroundColor = averageColor
+                if let contrastColor = contrastColor {
+                    segmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: contrastColor], forState: .Normal)
+                    segmentedControl.tintColor = contrastColor
                 }
+                cell.backgroundColor = UIColor.clearColor()
+                cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? MediaInfoTableViewCell {
                     if let tvShowID = tvShowID {
@@ -356,7 +374,7 @@ class TVShowDetailsViewController: UIViewController {
                             var productionCompanyStrings = String()
                             let objects = productionCompanies.allObjects as! [Company]
                             let names = objects.map { $0.name! } as [String]
-                            productionCompanyStrings = names.sort().joinWithSeparator(", ")
+                            productionCompanyStrings = names.sort().joinWithSeparator("\n")
                             text += "\n\n\(productionCompanyStrings)"
                         }
                         
@@ -422,14 +440,34 @@ class TVShowDetailsViewController: UIViewController {
                     c.loadData()
                 }
             default:
-                if let c = cell as? DynamicHeightTableViewCell {
-                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = homepage
-                    c.accessoryType = .DisclosureIndicator
-                    c.changeColor(averageColor, fontColor: contrastColor)
+                let rowPath = 4
+                
+                if homepageCount > 0 {
+                    if indexPath.row == rowPath {
+                        cell.accessoryType = .DisclosureIndicator
+                        cell.textLabel?.text = homepage
+                        cell.textLabel?.textColor = contrastColor
+                        cell.textLabel?.backgroundColor = averageColor
+                        cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                        cell.backgroundColor = averageColor
+                        cell.accessoryView?.tintColor = contrastColor
+                        if let image = UIImage(named: "link"),
+                            let imageView = cell.imageView {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            imageView.image = tintedImage
+                            imageView.tintColor = contrastColor
+                        }
+                        if let image = UIImage(named: "forward") {
+                            let tintedImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                            let imageView = UIImageView(image: tintedImage)
+                            imageView.tintColor = contrastColor
+                            cell.accessoryView = imageView
+                        }
+                    }
                 }
             }
-        case .Tweets:
+            
+        case 1:
             switch indexPath.row {
             case 0,
                  1:
@@ -451,6 +489,9 @@ class TVShowDetailsViewController: UIViewController {
                     }
                 }
             }
+            
+        default:
+            ()
         }
     }
     
@@ -526,27 +567,33 @@ extension TVShowDetailsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = 0
         
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             rows = 8
             
             if let _ = homepage {
                 rows += 1
             }
             
-        case .Tweets:
+        case 1:
             if let tweets = tweets {
                 rows = tweets.count+2
+            } else {
+                rows = 2
             }
+            
+        default:
+            ()
         }
+        
         return rows
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -557,7 +604,7 @@ extension TVShowDetailsViewController : UITableViewDataSource {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             case 2:
                 cell = tableView.dequeueReusableCellWithIdentifier("mediaInfoTableViewCell", forIndexPath: indexPath)
             case 3:
@@ -571,19 +618,29 @@ extension TVShowDetailsViewController : UITableViewDataSource {
             case 7+homepageCount:
                 cell = tableView.dequeueReusableCellWithIdentifier("seasonsTableViewCell", forIndexPath: indexPath)
             default:
-                cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+                let rowPath = 4
+                
+                if homepageCount > 0 {
+                    if indexPath.row == rowPath {
+                        cell = tableView.dequeueReusableCellWithIdentifier("homepageTableViewCell", forIndexPath: indexPath)
+                    }
+                }
             }
             
-        case .Tweets:
+        case 1:
             switch indexPath.row {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
             case 1:
-                cell = tableView.dequeueReusableCellWithIdentifier("detailsAndTweetsTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             default:
                 cell = tableView.dequeueReusableCellWithIdentifier("tweetsTableViewCell", forIndexPath: indexPath)
             }
+            
+        default:
+            ()
         }
+        
         configureCell(cell!, indexPath: indexPath)
         return cell!
     }
@@ -592,8 +649,8 @@ extension TVShowDetailsViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension TVShowDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -617,7 +674,7 @@ extension TVShowDetailsViewController : UITableViewDelegate {
                 return UITableViewAutomaticDimension
             }
             
-        case .Tweets:
+        case 1:
             switch indexPath.row {
             case 0:
                 return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
@@ -632,14 +689,17 @@ extension TVShowDetailsViewController : UITableViewDelegate {
                     }
                 }
             }
+            
+        default:
+            ()
         }
         
         return UITableViewAutomaticDimension
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -650,7 +710,7 @@ extension TVShowDetailsViewController : UITableViewDelegate {
             case 0,
                  1,
                  2,
-                 3+homepageCount,
+                 3,
                  4+homepageCount,
                  5+homepageCount,
                  6+homepageCount,
@@ -661,14 +721,14 @@ extension TVShowDetailsViewController : UITableViewDelegate {
                 return indexPath
             }
         
-        case .Tweets:
+        default:
             return nil
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch detailsAndTweetsSelection {
-        case .Details:
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
             var homepageCount = 0
             
             if let _ = homepage {
@@ -679,19 +739,23 @@ extension TVShowDetailsViewController : UITableViewDelegate {
             case 0,
                  1,
                  2,
-                 3+homepageCount,
+                 3,
                  4+homepageCount,
                  5+homepageCount,
                  6+homepageCount,
                  7+homepageCount:
                 return
             default:
+                let rowPath = 4
+                
                 if homepageCount > 0 {
-                    UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+                    if indexPath.row == rowPath {
+                        UIApplication.sharedApplication().openURL(NSURL(string: homepage!)!)
+                    }
                 }
             }
             
-        case .Tweets:
+        default:
             return
         }
     }
@@ -770,22 +834,6 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
             return
         }
         
-    }
-}
-
-// MARK: DetailsAndTweets
-extension TVShowDetailsViewController : DetailsAndTweetsTableViewCellDelegate {
-    func selectionChanged(selection: DetailsAndTweetsSelection) {
-        detailsAndTweetsSelection = selection
-        
-        switch selection {
-        case .Details:
-            loadDetails()
-            loadPhotos()
-            loadCastAndCrew()
-        case .Tweets:
-            loadTweets()
-        }
     }
 }
 
