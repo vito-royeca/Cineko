@@ -61,7 +61,7 @@ class AccountViewController: UIViewController {
             do {
                 if let requestToken = try TMDBManager.sharedInstance.getAvailableRequestToken() {
                     let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
-                    self.presentLoginViewController(urlString)
+                    performSegueWithIdentifier("presentLoginFromAccount", sender: urlString)
                     
                 } else {
                     let success = { (results: AnyObject!) in
@@ -75,7 +75,7 @@ class AccountViewController: UIViewController {
                                 performUIUpdatesOnMain {
                                     let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
                                     MBProgressHUD.hideHUDForView(self.view, animated: true)
-                                    self.presentLoginViewController(urlString)
+                                    self.performSegueWithIdentifier("presentLoginFromAccount", sender: urlString)
                                 }
                             }
                         }
@@ -122,24 +122,22 @@ class AccountViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "addListSegue" {
-            let vc = segue.destinationViewController as! UINavigationController
-            if let editor = vc.viewControllers.first as? ListEditorViewController {
-                editor.navigationItem.title = "New List"
-                editor.delegate = self
+        if segue.identifier == "presentLoginFromAccount" {
+            if let vc = segue.destinationViewController as? LoginViewController {
+                vc.authenticationURLString = sender as? String
+                vc.delegate = self
+            }
+        } else if segue.identifier == "addListSegue" {
+            if let vc = segue.destinationViewController as? UINavigationController {
+                if let editor = vc.viewControllers.first as? ListEditorViewController {
+                    editor.navigationItem.title = "New List"
+                    editor.delegate = self
+                }
             }
         }
     }
     
      // MARK: Custom Methods
-    func presentLoginViewController(authenticateURLString: String) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController {
-            controller.authenticationURLString = authenticateURLString
-            controller.delegate = self
-            self.presentViewController(controller, animated: true, completion: nil)
-        }
-    }
-    
     func loadLists() {
         listsFetchRequest = NSFetchRequest(entityName: "List")
         

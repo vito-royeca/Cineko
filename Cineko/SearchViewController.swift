@@ -44,6 +44,62 @@ class SearchViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showMovieDetailsFromSearch" {
+            if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
+                let movie = sender as! Movie
+                detailsVC.movieID = movie.objectID
+            }
+        } else if segue.identifier == "showTVShowDetailsFromSearch" {
+            if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
+                let tvShow = sender as! TVShow
+                detailsVC.tvShowID = tvShow.objectID
+            }
+        } else if segue.identifier == "showPersonDetailsFromSearch" {
+            if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
+                let person = sender as! Person
+                detailsVC.personID = person.objectID
+            }
+        } else if segue.identifier == "showSeeAllFromSearch" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController {
+                var title:String?
+                var fetchRequest:NSFetchRequest?
+                var displayType:DisplayType?
+                var captionType:CaptionType?
+                var showCaption = false
+                
+                switch sender as! Int {
+                case 0:
+                    title = "Movies"
+                    fetchRequest = moviesFetchRequest
+                    displayType = .Poster
+                    captionType = .Title
+                case 1:
+                    title = "TV Shows"
+                    fetchRequest = tvShowsFetchRequest
+                    displayType = .Poster
+                    captionType = .Title
+                case 2:
+                    title = "People"
+                    fetchRequest = peopleFetchRequest
+                    displayType = .Profile
+                    captionType = .Name
+                    showCaption = true
+                default:
+                    return
+                }
+                
+                detailsVC.navigationItem.title = title
+                detailsVC.fetchRequest = fetchRequest
+                detailsVC.displayType = displayType
+                detailsVC.captionType = captionType
+                detailsVC.showCaption = showCaption
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
+    }
+    
     // MARK: Custom Methods
     func searchMovies(query: String) {
         let completion = { (arrayIDs: [AnyObject], error: NSError?) in
@@ -253,72 +309,19 @@ extension SearchViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension SearchViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            
-            var title:String?
-            var fetchRequest:NSFetchRequest?
-            var displayType:DisplayType?
-            var captionType:CaptionType?
-            var showCaption = false
-            
-            switch tag {
-            case 0:
-                title = "Movies"
-                fetchRequest = moviesFetchRequest
-                displayType = .Poster
-                captionType = .Title
-            case 1:
-                title = "TV Shows"
-                fetchRequest = tvShowsFetchRequest
-                displayType = .Poster
-                captionType = .Title
-            case 2:
-                title = "People"
-                fetchRequest = peopleFetchRequest
-                displayType = .Profile
-                captionType = .Name
-                showCaption = true
-            default:
-                return
-            }
-            
-            controller.navigationItem.title = title
-            controller.fetchRequest = fetchRequest
-            controller.displayType = displayType
-            controller.captionType = captionType
-            controller.showCaption = showCaption
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromSearch", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
         switch tag {
         case 0:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-                let navigationController = navigationController {
-                let movie = displayable as! Movie
-                controller.movieID = movie.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showMovieDetailsFromSearch", sender: displayable)
         case 1:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TVShowDetailsViewController") as? TVShowDetailsViewController,
-                let navigationController = navigationController {
-                let tvShow = displayable as! TVShow
-                controller.tvShowID = tvShow.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showTVShowDetailsFromSearch", sender: displayable)
         case 2:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("PersonDetailsViewController") as? PersonDetailsViewController,
-                let navigationController = navigationController {
-                let person = displayable as! Person
-                controller.personID = person.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showPersonDetailsFromSearch", sender: displayable)
         default:
-            return
+            ()
         }
     }
 }
