@@ -82,6 +82,7 @@ class LoginViewController: UIViewController {
 // MARK: UIWebViewDelegate
 extension LoginViewController: UIWebViewDelegate {
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
         if !hasHUD {
             MBProgressHUD.showHUDAddedTo(webView, animated: true)
             hasHUD = true

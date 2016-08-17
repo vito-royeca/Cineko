@@ -77,7 +77,7 @@ class TVShowSettingsViewController: FormViewController {
     
     func composeForm() {
         let hasSession = TMDBManager.sharedInstance.hasSessionID()
-        
+        let header = hasSession ? "" : "You may need to login to enable editing"
         var tvShow:TVShow?
         
         if let tvShowID = tvShowID {
@@ -85,7 +85,7 @@ class TVShowSettingsViewController: FormViewController {
         }
         
         form =
-            Section("")
+            Section(header)
             <<< SwitchRow() {
                 $0.title = "Favorite"
                 $0.tag =  "Favorite"

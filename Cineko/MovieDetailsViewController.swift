@@ -39,6 +39,27 @@ class MovieDetailsViewController: UIViewController {
     var tweets:[AnyObject]?
     
     // MARK: Actions
+    @IBAction func menuAction(sender: UIBarButtonItem) {
+        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+            var movieSettings:MovieSettingsViewController?
+            
+            for drawer in navigationVC.viewControllers {
+                if drawer is MovieSettingsViewController {
+                    movieSettings = drawer as? MovieSettingsViewController
+                }
+            }
+            if movieSettings == nil {
+                movieSettings = MovieSettingsViewController()
+                navigationVC.addChildViewController(movieSettings!)
+            }
+            
+            movieSettings!.movieID = movieID
+            navigationVC.popToViewController(movieSettings!, animated: true)
+        }
+        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
+    }
+    
+    
     @IBAction func segmentedControlAction(sender: UISegmentedControl) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -69,8 +90,6 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
-        
-        initDrawerButton()
         
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
         titleLabel!.backgroundColor = UIColor.whiteColor()
@@ -632,41 +651,41 @@ class MovieDetailsViewController: UIViewController {
     }
     
     // MARK: MMDrawer methods
-    func initDrawerButton() {
-        setupRightMenuButton()
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
-    }
+//    func initDrawerButton() {
+//        setupRightMenuButton()
+//        
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
+//    }
+//    
+//    func setupRightMenuButton() {
+//        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
+//        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
+//    }
+//    
+//    func closeDrawers() {
+//        mm_drawerController.closeDrawerAnimated(false, completion:nil)
+//    }
     
-    func setupRightMenuButton() {
-        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
-        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
-    }
-    
-    func closeDrawers() {
-        mm_drawerController.closeDrawerAnimated(false, completion:nil)
-    }
-    
-    func rightDrawerButtonPress(sender: AnyObject) {
-        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
-            var movieSettings:MovieSettingsViewController?
-            
-            for drawer in navigationVC.viewControllers {
-                if drawer is MovieSettingsViewController {
-                    movieSettings = drawer as? MovieSettingsViewController
-                }
-            }
-            if movieSettings == nil {
-                movieSettings = MovieSettingsViewController()
-                navigationVC.addChildViewController(movieSettings!)
-            }
-
-            movieSettings!.movieID = movieID
-            navigationVC.popToViewController(movieSettings!, animated: true)
-        }
-        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
-    }
+//    func rightDrawerButtonPress(sender: AnyObject) {
+//        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+//            var movieSettings:MovieSettingsViewController?
+//            
+//            for drawer in navigationVC.viewControllers {
+//                if drawer is MovieSettingsViewController {
+//                    movieSettings = drawer as? MovieSettingsViewController
+//                }
+//            }
+//            if movieSettings == nil {
+//                movieSettings = MovieSettingsViewController()
+//                navigationVC.addChildViewController(movieSettings!)
+//            }
+//
+//            movieSettings!.movieID = movieID
+//            navigationVC.popToViewController(movieSettings!, animated: true)
+//        }
+//        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
+//    }
 }
 
 // MARK: UITableViewDataSource

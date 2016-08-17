@@ -36,6 +36,26 @@ class TVShowDetailsViewController: UIViewController {
     var tweets:[AnyObject]?
     
     // MARK: Actions
+    @IBAction func menuAction(sender: UIBarButtonItem) {
+        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+            var tvShowSettings:TVShowSettingsViewController?
+            
+            for drawer in navigationVC.viewControllers {
+                if drawer is TVShowSettingsViewController {
+                    tvShowSettings = drawer as? TVShowSettingsViewController
+                }
+            }
+            if tvShowSettings == nil {
+                tvShowSettings = TVShowSettingsViewController()
+                navigationVC.addChildViewController(tvShowSettings!)
+            }
+            
+            tvShowSettings!.tvShowID = tvShowID
+            navigationVC.popToViewController(tvShowSettings!, animated: true)
+        }
+        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
+    }
+    
     @IBAction func segmentedAction(sender: UISegmentedControl) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -63,8 +83,6 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
-        
-        initDrawerButton()
         
         // manually setup the floating title header
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
@@ -580,41 +598,41 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     // MARK: MMDrawer methods
-    func initDrawerButton() {
-        setupRightMenuButton()
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
-    }
-    
-    func setupRightMenuButton() {
-        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
-        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
-    }
-    
-    func closeDrawers() {
-        mm_drawerController.closeDrawerAnimated(false, completion:nil)
-    }
-    
-    func rightDrawerButtonPress(sender: AnyObject) {
-        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
-            var tvShowSettings:TVShowSettingsViewController?
-            
-            for drawer in navigationVC.viewControllers {
-                if drawer is TVShowSettingsViewController {
-                    tvShowSettings = drawer as? TVShowSettingsViewController
-                }
-            }
-            if tvShowSettings == nil {
-                tvShowSettings = TVShowSettingsViewController()
-                navigationVC.addChildViewController(tvShowSettings!)
-            }
-
-            tvShowSettings!.tvShowID = tvShowID
-            navigationVC.popToViewController(tvShowSettings!, animated: true)
-        }
-        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
-    }
+//    func initDrawerButton() {
+//        setupRightMenuButton()
+//        
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
+//    }
+//    
+//    func setupRightMenuButton() {
+//        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
+//        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
+//    }
+//    
+//    func closeDrawers() {
+//        mm_drawerController.closeDrawerAnimated(false, completion:nil)
+//    }
+//    
+//    func rightDrawerButtonPress(sender: AnyObject) {
+//        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
+//            var tvShowSettings:TVShowSettingsViewController?
+//            
+//            for drawer in navigationVC.viewControllers {
+//                if drawer is TVShowSettingsViewController {
+//                    tvShowSettings = drawer as? TVShowSettingsViewController
+//                }
+//            }
+//            if tvShowSettings == nil {
+//                tvShowSettings = TVShowSettingsViewController()
+//                navigationVC.addChildViewController(tvShowSettings!)
+//            }
+//
+//            tvShowSettings!.tvShowID = tvShowID
+//            navigationVC.popToViewController(tvShowSettings!, animated: true)
+//        }
+//        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
+//    }
 }
 
 // MARK: UITableViewDataSource

@@ -255,7 +255,13 @@
                             <constraint firstAttribute="trailing" secondItem="BZY-Dv-BSm" secondAttribute="trailing" id="fze-eL-Dfy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY"/>
+                    <navigationItem key="navigationItem" title="Movie Details" id="hKK-Iw-wLY">
+                        <barButtonItem key="rightBarButtonItem" image="menu" id="eY8-B3-O47">
+                            <connections>
+                                <action selector="menuAction:" destination="6At-tm-DiG" id="l0a-3i-GEZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="segmentedControl" destination="PEf-QB-9Md" id="v6a-Rq-gOa"/>
                         <outlet property="segmentedView" destination="gu4-5P-NV9" id="22F-bU-n1f"/>
@@ -374,7 +380,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnL-Iu-Zr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1550" y="211"/>
+            <point key="canvasLocation" x="-1363" y="244"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="1gZ-hr-BQj">
@@ -471,7 +477,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="laX-6W-WvS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="176" y="625"/>
+            <point key="canvasLocation" x="260" y="625"/>
         </scene>
         <!--TV Shows-->
         <scene sceneID="nVY-oC-pzh">
@@ -601,7 +607,13 @@
                             <constraint firstItem="KLD-Fm-Bhw" firstAttribute="top" secondItem="f9R-tH-DH0" secondAttribute="bottom" id="YfY-8N-OWB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="eD0-Iy-N82"/>
+                    <navigationItem key="navigationItem" id="eD0-Iy-N82">
+                        <barButtonItem key="rightBarButtonItem" image="menu" id="J1f-Kg-Isu">
+                            <connections>
+                                <action selector="menuAction:" destination="uwc-6F-GSl" id="nnW-SE-x5h"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="OhY-vt-4Ga" id="WIp-cG-GMO"/>
                         <outlet property="tableView" destination="KLD-Fm-Bhw" id="d9A-gL-nib"/>
@@ -621,7 +633,7 @@
                     </connections>
                 </searchBar>
             </objects>
-            <point key="canvasLocation" x="1894" y="1398"/>
+            <point key="canvasLocation" x="1902" y="1524"/>
         </scene>
         <!--Account-->
         <scene sceneID="TA2-6t-kiN">
@@ -673,7 +685,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJd-b5-IBM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="2209"/>
+            <point key="canvasLocation" x="1902" y="2324"/>
         </scene>
         <!--List Editor View Controller-->
         <scene sceneID="gXt-dZ-2nY">
@@ -703,7 +715,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5sw-0l-nqu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3882" y="2209"/>
+            <point key="canvasLocation" x="3882" y="2316"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -846,7 +858,13 @@
                             <constraint firstAttribute="trailing" secondItem="PKf-Af-LCm" secondAttribute="trailing" id="Ur0-ie-wtF"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq"/>
+                    <navigationItem key="navigationItem" title="TV Show Details" id="60C-GX-mVq">
+                        <barButtonItem key="rightBarButtonItem" image="menu" id="wX3-ab-IXD">
+                            <connections>
+                                <action selector="menuAction:" destination="wVx-Wm-bVh" id="oeC-CI-5mI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="segmentedControl" destination="yYJ-05-nfb" id="E3e-uT-NWX"/>
                         <outlet property="segmentedView" destination="bGv-aE-eyW" id="Dtu-e6-NJ6"/>
@@ -1069,7 +1087,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P1t-k3-DXf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2924" y="1398"/>
+            <point key="canvasLocation" x="2924" y="1524"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ax7-xb-0Wt">
@@ -1088,7 +1106,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9fz-5F-i8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1090" y="1398"/>
+            <point key="canvasLocation" x="1090" y="1524"/>
         </scene>
         <!--Account-->
         <scene sceneID="wWq-uB-xnH">
@@ -1107,7 +1125,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upO-LN-CSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1082" y="2209"/>
+            <point key="canvasLocation" x="1082" y="2324"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8s4-Ae-U03">
@@ -1125,7 +1143,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gdp-7k-RgW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2924" y="2209"/>
+            <point key="canvasLocation" x="2924" y="2316"/>
         </scene>
         <!--List Details-->
         <scene sceneID="VhV-e3-E6N">
@@ -1228,7 +1246,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjV-tG-lod" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-521" y="1544"/>
+            <point key="canvasLocation" x="-521" y="1524"/>
         </scene>
         <!--Search Settings-->
         <scene sceneID="Bey-cB-Yq9">
@@ -1253,7 +1271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UUZ-LO-yWx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1184" y="2326"/>
+            <point key="canvasLocation" x="260" y="2316"/>
         </scene>
         <!--Movie Settings-->
         <scene sceneID="QUE-Qn-hYk">
@@ -1272,7 +1290,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lIo-Xp-Xxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-521" y="2326"/>
+            <point key="canvasLocation" x="-1363" y="2316"/>
         </scene>
         <!--TV Show Settings-->
         <scene sceneID="Sdk-0V-P2j">
@@ -1291,13 +1309,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kgi-7f-6y4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="176" y="2326"/>
+            <point key="canvasLocation" x="-521" y="2324"/>
         </scene>
     </scenes>
     <resources>
         <image name="account" width="25" height="25"/>
         <image name="film edge" width="535" height="51"/>
         <image name="film edge up" width="535" height="51"/>
+        <image name="menu" width="25" height="25"/>
         <image name="movie" width="25" height="25"/>
         <image name="tv" width="25" height="25"/>
     </resources>
@@ -1306,6 +1325,6 @@
         <segue reference="XBv-HI-Onn"/>
         <segue reference="Ilk-th-HCZ"/>
         <segue reference="AWx-A5-qv7"/>
-        <segue reference="Lde-gk-eot"/>
+        <segue reference="BnZ-8w-2Vv"/>
     </inferredMetricsTieBreakers>
 </document>

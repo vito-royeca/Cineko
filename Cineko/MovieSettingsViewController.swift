@@ -174,6 +174,7 @@ class MovieSettingsViewController: FormViewController {
     
     func composeForm() {
         let hasSession = TMDBManager.sharedInstance.hasSessionID()
+        let header = hasSession ? "" : "You may need to login to enable editing"
         var movie:Movie?
         
         if let movieID = movieID {
@@ -181,7 +182,7 @@ class MovieSettingsViewController: FormViewController {
         }
         
         form =
-            Section("")
+            Section(header)
             <<< SwitchRow() {
                     $0.title = "Favorite"
                     $0.tag =  "Favorite"
@@ -210,9 +211,7 @@ class MovieSettingsViewController: FormViewController {
                     }
                 }
         
-//        if hasSession {
             +++ Section(header: "Lists", footer: "Tap a List to Add or Remove this movie.")
-//        }
     }
 
     func addListsToForm() {

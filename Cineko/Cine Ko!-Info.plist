@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>15BC</string>
+	<string>15CA</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -67,6 +67,8 @@
 				<key>NSExceptionRequiresForwardSecrecy</key>
 				<false/>
 				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
 			<key>twimg.com</key>
