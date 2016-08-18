@@ -96,8 +96,14 @@ extension LoginViewController: UIWebViewDelegate {
         
         if let request = webView.request {
             if let url = request.URL {
+                print("page=\(url.absoluteString)")
+                
                 if url.absoluteString.containsString("/account/") {
-                    requestSessionID()
+                    if let authenticationURLString  = authenticationURLString {
+                        if let authURL = NSURL(string: authenticationURLString) {
+                            webView.loadRequest(NSURLRequest(URL: authURL))
+                        }
+                    }
                 } else {
                     if let lastPath = url.lastPathComponent {
                         do {

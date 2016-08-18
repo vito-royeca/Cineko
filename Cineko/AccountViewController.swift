@@ -66,10 +66,15 @@ class AccountViewController: UIViewController {
                 } else {
                     let success = { (results: AnyObject!) in
                         if let dict = results as? [String: AnyObject] {
-                            if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
+                            if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String,
+                                let expires_at = dict[TMDBConstants.Authentication.TokenNew.Keys.ExpiresAt] as? String {
+                                
+                                let formatter = NSDateFormatter()
+                                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+                                let expirationDate = formatter.dateFromString(expires_at)
                                 
                                 do {
-                                    try TMDBManager.sharedInstance.saveRequestToken(requestToken)
+                                    try TMDBManager.sharedInstance.saveRequestToken(requestToken, date: expirationDate!)
                                 } catch {}
                                 
                                 performUIUpdatesOnMain {
@@ -127,7 +132,7 @@ class AccountViewController: UIViewController {
                 vc.authenticationURLString = sender as? String
                 vc.delegate = self
             }
-        } else if segue.identifier == "addListSegue" {
+        } else if segue.identifier == "addListFromAccount" {
             if let vc = segue.destinationViewController as? UINavigationController {
                 if let editor = vc.viewControllers.first as? ListEditorViewController {
                     editor.navigationItem.title = "New List"

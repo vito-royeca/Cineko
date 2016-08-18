@@ -21,6 +21,7 @@ struct TMDBConstants {
     static let APIURL          = "https://api.themoviedb.org/3"
     static let SignupURL       = "https://www.themoviedb.org/account/signup"
     static let AuthenticateURL = "https://www.themoviedb.org/authenticate"
+    static let AllowURL        = "https://www.themoviedb.org/allow"
     static let ImageURL        = "https://image.tmdb.org/t/p"
     
     static let BackdropSizes = [
@@ -89,6 +90,7 @@ struct TMDBConstants {
             static let Path = "/authentication/token/new"
             struct Keys {
                 static let RequestToken = "request_token"
+                static let ExpiresAt = "expires_at"
             }
         }
         
@@ -320,7 +322,7 @@ class TMDBManager: NSObject {
         return nil
     }
     
-    func saveRequestToken(requestToken: String) throws {
+    func saveRequestToken(requestToken: String, date: NSDate) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -430,6 +432,7 @@ class TMDBManager: NSObject {
         if let requestToken = try getAvailableRequestToken() {
             let httpMethod:HTTPMethod = .Get
             let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Authentication.SessionNew.Path)"
+            let headers = ["Accept": "application/json"]
             let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                               TMDBConstants.Authentication.TokenNew.Keys.RequestToken: requestToken]
             
@@ -449,7 +452,7 @@ class TMDBManager: NSObject {
                 completion(error: error)
             }
             
-            NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+            NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
         
         } else {
             completion(error: NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey : "No request token available."]))

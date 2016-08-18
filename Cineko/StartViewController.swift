@@ -24,10 +24,15 @@ class StartViewController: UIViewController {
             } else {
                 let success = { (results: AnyObject!) in
                     if let dict = results as? [String: AnyObject] {
-                        if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String {
+                        if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String,
+                            let expires_at = dict[TMDBConstants.Authentication.TokenNew.Keys.ExpiresAt] as? String {
+                            
+                            let formatter = NSDateFormatter()
+                            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+                            let expirationDate = formatter.dateFromString(expires_at)
                             
                             do {
-                             try TMDBManager.sharedInstance.saveRequestToken(requestToken)
+                             try TMDBManager.sharedInstance.saveRequestToken(requestToken, date: expirationDate!)
                             } catch {}
                             
                             performUIUpdatesOnMain {
@@ -55,9 +60,6 @@ class StartViewController: UIViewController {
     }
     
     @IBAction func skipLoginAction(sender: UIButton) {
-//        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("DrawerController") as? MMDrawerController {
-//            self.presentViewController(controller, animated: true, completion: nil)
-//        }
         performSegueWithIdentifier("presentDrawerFromStart", sender: sender)
     }
     
