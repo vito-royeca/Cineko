@@ -189,6 +189,7 @@
 		8CC797341D1A6A7E00417BA6 /* TMDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBTests.swift; sourceTree = "<group>"; };
 		8CC797381D1A6B1600417BA6 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		8CCE40BB1CE23C340079D80C /* ListDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailsViewController.swift; sourceTree = "<group>"; };
+		8CCF45451D6D754700BDAB10 /* Cineko 08242016.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Cineko 08242016.xcdatamodel"; sourceTree = "<group>"; };
 		8CD408BD1CB17AC200F9132F /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		8CD408C11CB1822E00F9132F /* TMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMDBManager.swift; sourceTree = "<group>"; };
 		8CD53C011CC62B400035AD45 /* Cine Ko!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cine Ko!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1096,12 +1097,13 @@
 		8C1378A71CAE7BF300FB6830 /* Cineko.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8CCF45451D6D754700BDAB10 /* Cineko 08242016.xcdatamodel */,
 				8C91D8631CF4047500E1AF48 /* Cineko 05242016.xcdatamodel */,
 				8CBDFD451CD9A3C9006E6D30 /* Cineko 05042016.xcdatamodel */,
 				8C1AB31B1CC8F27A0009BEB9 /* Cineko 04212016.xcdatamodel */,
 				8C1378A81CAE7BF300FB6830 /* Cineko.xcdatamodel */,
 			);
-			currentVersion = 8C91D8631CF4047500E1AF48 /* Cineko 05242016.xcdatamodel */;
+			currentVersion = 8CCF45451D6D754700BDAB10 /* Cineko 08242016.xcdatamodel */;
 			path = Cineko.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

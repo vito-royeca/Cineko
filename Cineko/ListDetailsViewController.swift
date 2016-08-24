@@ -17,7 +17,7 @@ class ListDetailsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: Variables
-    var listID:NSManagedObjectID?
+    var listOID:NSManagedObjectID?
     var moviesFetchRequest:NSFetchRequest?
     
     // MARK: Actions
@@ -30,7 +30,7 @@ class ListDetailsViewController: UIViewController {
         alertController.addAction(cancelAction)
         
         let overwriteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
-            if let listID = self.listID {
+            if let listID = self.listOID {
                 let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
                 self.deleteList(list)
             }
@@ -57,8 +57,8 @@ class ListDetailsViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadMovies() {
-        if let listID = listID {
-            let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
+        if let listOID = listOID {
+            let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
             
             moviesFetchRequest = NSFetchRequest(entityName: "Movie")
             moviesFetchRequest!.fetchLimit = ThumbnailTableViewCell.MaxItems
@@ -86,7 +86,7 @@ class ListDetailsViewController: UIViewController {
                     MBProgressHUD.showHUDAddedTo(cell, animated: true)
                 }
                 
-                try TMDBManager.sharedInstance.listDetails(list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.listDetails(list.listIDInt!, completion: completion)
             } catch {}
         }
     }
@@ -109,7 +109,7 @@ class ListDetailsViewController: UIViewController {
         
         do {
             MBProgressHUD.showHUDAddedTo(view, animated: true)
-            try TMDBManager.sharedInstance.deleteList(list.listID!, completion: completion)
+            try TMDBManager.sharedInstance.deleteList(list.listIDInt!, completion: completion)
         } catch {
             MBProgressHUD.hideHUDForView(view, animated: true)
         }
@@ -123,8 +123,8 @@ class ListDetailsViewController: UIViewController {
         switch indexPath.section {
         case 0:
             if let c = cell as? DynamicHeightTableViewCell {
-                if let listID = listID {
-                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
+                if let listOID = listOID {
+                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                     c.dynamicLabel.text = list.name
@@ -133,8 +133,8 @@ class ListDetailsViewController: UIViewController {
             }
         case 1:
             if let c = cell as? DynamicHeightTableViewCell {
-                if let listID = listID {
-                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listID) as! List
+                if let listOID = listOID {
+                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
                     
                     c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                     c.dynamicLabel.text = list.description_
@@ -243,7 +243,7 @@ extension ListDetailsViewController : ThumbnailDelegate {
         if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
             let navigationController = navigationController {
             let movie = displayable as! Movie
-            controller.movieID = movie.objectID
+            controller.movieOID = movie.objectID
             navigationController.pushViewController(controller, animated: true)
         }
     }

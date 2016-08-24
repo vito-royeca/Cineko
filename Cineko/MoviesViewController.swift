@@ -71,7 +71,7 @@ class MoviesViewController: UIViewController {
         if segue.identifier == "showMovieDetailsFromMovies" {
             if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
                 let movie = sender as! Movie
-                detailsVC.movieID = movie.objectID
+                detailsVC.movieOID = movie.objectID
             }
         } else if segue.identifier == "showSeeAllFromMovies" {
             if let detailsVC = segue.destinationViewController as? SeeAllViewController {

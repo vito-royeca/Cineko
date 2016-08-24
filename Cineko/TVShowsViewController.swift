@@ -82,7 +82,7 @@ class TVShowsViewController: UIViewController {
         if segue.identifier == "showTVShowDetailsFromTVShows" {
             if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
                 let tvShow = sender as! TVShow
-                detailsVC.tvShowID = tvShow.objectID
+                detailsVC.tvShowOID = tvShow.objectID
             }
         } else if segue.identifier == "showSeeAllFromTVShows" {
             if let detailsVC = segue.destinationViewController as? SeeAllViewController {

@@ -21,7 +21,7 @@ class PersonDetailsViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: Variables
-    var personID:NSManagedObjectID?
+    var personOID:NSManagedObjectID?
     var homepage:String?
     var photosFetchRequest:NSFetchRequest?
     var moviesFetchRequest:NSFetchRequest?
@@ -58,8 +58,8 @@ class PersonDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "tvShowCreditsTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
         
-        if let personID = personID {
-            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+        if let personOID = personOID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
             navigationItem.title = person.name
         }
         
@@ -76,13 +76,13 @@ class PersonDetailsViewController: UIViewController {
         if segue.identifier == "showMovieDetailsFromPersonDetails" {
             if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
                 let credit = sender as! Credit
-                detailsVC.movieID = credit.movie!.objectID
+                detailsVC.movieOID = credit.movie!.objectID
             }
             
         } else if segue.identifier == "showTVShowDetailsFromPersonDetails" {
             if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
                 let credit = sender as! Credit
-                detailsVC.tvShowID = credit.tvShow!.objectID
+                detailsVC.tvShowOID = credit.tvShow!.objectID
             }
             
         } else if segue.identifier == "showSeeAllFromPersonDetails" {
@@ -145,8 +145,8 @@ class PersonDetailsViewController: UIViewController {
     
     // MARK: Custom Methods
     func loadPhotos() {
-        if let personID = personID {
-            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+        if let personOID = personOID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -176,8 +176,8 @@ class PersonDetailsViewController: UIViewController {
     }
     
     func loadDetails() {
-        if let personID = personID {
-            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+        if let personOID = personOID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -202,8 +202,8 @@ class PersonDetailsViewController: UIViewController {
     }
 
     func loadCombinedCredits() {
-        if let personID = personID {
-            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+        if let personOID = personOID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
             
             let completion = { (error: NSError?) in
                 if let error = error {
@@ -275,8 +275,8 @@ class PersonDetailsViewController: UIViewController {
     }
     
     func loadTweets() {
-        if let personID = personID {
-            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+        if let personOID = personOID {
+            let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
             
             let completion = { (results: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
@@ -333,8 +333,8 @@ class PersonDetailsViewController: UIViewController {
                 cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? DynamicHeightTableViewCell {
-                    if let personID = personID {
-                        let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personID) as! Person
+                    if let personOID = personOID {
+                        let person = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(personOID) as! Person
                         var text = String()
                         
                         if let alsoKnownAs = person.alsoKnownAs {

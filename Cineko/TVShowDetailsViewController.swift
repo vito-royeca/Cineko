@@ -25,7 +25,7 @@ class TVShowDetailsViewController: UIViewController {
 
     // MARK: Variables
     var titleLabel:UILabel?
-    var tvShowID:NSManagedObjectID?
+    var tvShowOID:NSManagedObjectID?
     var homepage:String?
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
@@ -50,7 +50,7 @@ class TVShowDetailsViewController: UIViewController {
                 navigationVC.addChildViewController(tvShowSettings!)
             }
             
-            tvShowSettings!.tvShowID = tvShowID
+            tvShowSettings!.tvShowOID = tvShowOID
             navigationVC.popToViewController(tvShowSettings!, animated: true)
         }
         mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
@@ -134,7 +134,7 @@ class TVShowDetailsViewController: UIViewController {
         if segue.identifier == "showPersonDetailsFromTVShowDetails" {
             if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
                 let credit = sender as! Credit
-                detailsVC.personID = credit.person!.objectID
+                detailsVC.personOID = credit.person!.objectID
             }
             
         } else if segue.identifier == "showSeeAllFromTVShowDetails" {
@@ -187,8 +187,8 @@ class TVShowDetailsViewController: UIViewController {
     
     // MARK: Custom Methods
     func updateBackground() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             if let posterPath = tvShow.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
@@ -246,8 +246,8 @@ class TVShowDetailsViewController: UIViewController {
     }
 
     func loadDetails() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -278,8 +278,8 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     func loadPhotos() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -303,8 +303,8 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     func loadCastAndCrew() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -336,8 +336,8 @@ class TVShowDetailsViewController: UIViewController {
     }
     
     func loadTweets() {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (results: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
@@ -396,8 +396,8 @@ class TVShowDetailsViewController: UIViewController {
                 cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? MediaInfoTableViewCell {
-                    if let tvShowID = tvShowID {
-                        let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+                    if let tvShowOID = tvShowOID {
+                        let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
                         var dateText = String()
                         
                         if let firstAirDate = tvShow.firstAirDate {
@@ -424,8 +424,8 @@ class TVShowDetailsViewController: UIViewController {
                 }
             case 3:
                 if let c = cell as? DynamicHeightTableViewCell {
-                    if let tvShowID = tvShowID {
-                        let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+                    if let tvShowOID = tvShowOID {
+                        let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
                         var text = String()
                         
                         // genre

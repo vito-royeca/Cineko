@@ -146,7 +146,7 @@ class AccountViewController: UIViewController {
                         }
                     }
                 
-                    self.listsFetchRequest!.predicate = NSPredicate(format: "listID IN %@", arrayIDs)
+                    self.listsFetchRequest!.predicate = NSPredicate(format: "listIDInt IN %@", arrayIDs)
                     self.doFetch()
                 }
                 
@@ -167,7 +167,9 @@ class AccountViewController: UIViewController {
             
         } else {
             if TMDBManager.sharedInstance.hasSessionID() {
-                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
+                if let account = TMDBManager.sharedInstance.account {
+                    listsFetchRequest!.predicate = NSPredicate(format: "createdBy.accountID = %@", account.accountID!)
+                }
             } else {
                 listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
             }
@@ -190,9 +192,9 @@ class AccountViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, list: List) {
-        if let posterPath = list.posterPath {
-            cell.imageView!.sd_setImageWithURL(NSURL(string: posterPath), placeholderImage: UIImage(named: "account.png"))
-        }
+//        if let posterPath = list.posterPath {
+//            cell.imageView!.sd_setImageWithURL(NSURL(string: posterPath), placeholderImage: UIImage(named: "account.png"))
+//        }
         cell.textLabel!.text = list.name
         cell.detailTextLabel!.text = list.description_
         cell.accessoryType = .DisclosureIndicator
@@ -213,7 +215,7 @@ class AccountViewController: UIViewController {
         
         do {
             MBProgressHUD.showHUDAddedTo(view, animated: true)
-            try TMDBManager.sharedInstance.deleteList(list.listID!, completion: completion)
+            try TMDBManager.sharedInstance.deleteList(list.listIDInt!, completion: completion)
         } catch {
             MBProgressHUD.hideHUDForView(view, animated: true)
         }
@@ -336,7 +338,7 @@ extension AccountViewController : UITableViewDelegate {
             if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("ListDetailsViewController") as? ListDetailsViewController,
                 let navigationController = navigationController,
                 let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
-                controller.listID = list.objectID
+                controller.listOID = list.objectID
                 navigationController.pushViewController(controller, animated: true)
             }
         default:

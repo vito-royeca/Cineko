@@ -27,7 +27,7 @@ class MovieDetailsViewController: UIViewController {
     
     // MARK: Variables
     var titleLabel: UILabel?
-    var movieID:NSManagedObjectID?
+    var movieOID:NSManagedObjectID?
     var movieReviews:NSSet?
     var homepage:String?
     var backdropFetchRequest:NSFetchRequest?
@@ -53,7 +53,7 @@ class MovieDetailsViewController: UIViewController {
                 navigationVC.addChildViewController(movieSettings!)
             }
             
-            movieSettings!.movieID = movieID
+            movieSettings!.movieOID = movieOID
             navigationVC.popToViewController(movieSettings!, animated: true)
         }
         mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
@@ -140,7 +140,7 @@ class MovieDetailsViewController: UIViewController {
         if segue.identifier == "showPersonDetailsFromMovieDetails" {
             if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
                 let credit = sender as! Credit
-                detailsVC.personID = credit.person!.objectID
+                detailsVC.personOID = credit.person!.objectID
             }
             
         } else if segue.identifier == "showSeeAllFromMovieDetails" {
@@ -191,8 +191,8 @@ class MovieDetailsViewController: UIViewController {
     
     // MARK: Custom Methods
     func updateBackground() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             if let posterPath = movie.posterPath {
                 let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.PosterSizes[4])\(posterPath)")
@@ -250,8 +250,8 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func loadDetails() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -276,8 +276,8 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func loadPhotos() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -307,8 +307,8 @@ class MovieDetailsViewController: UIViewController {
     }
 
     func loadCastAndCrew() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -340,8 +340,8 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func loadReviews() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -369,8 +369,8 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func loadTweets() {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (results: [AnyObject], error: NSError?) in
                 performUIUpdatesOnMain {
@@ -429,8 +429,8 @@ class MovieDetailsViewController: UIViewController {
                 cell.contentView.addSubview(segmentedView)
             case 2:
                 if let c = cell as? MediaInfoTableViewCell {
-                    if let movieID = movieID {
-                        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+                    if let movieOID = movieOID {
+                        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
                         
                         if let releaseDate = movie.releaseDate {
                             c.dateLabel.text = releaseDate
@@ -444,8 +444,8 @@ class MovieDetailsViewController: UIViewController {
                 }
             case 3:
                 if let c = cell as? DynamicHeightTableViewCell {
-                    if let movieID = movieID {
-                        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+                    if let movieOID = movieOID {
+                        let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
                         var text = String()
                         
                         // genre

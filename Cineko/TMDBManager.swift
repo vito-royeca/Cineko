@@ -1514,7 +1514,7 @@ class TMDBManager: NSObject {
         urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(account!.accountID!)")
         let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
-        var listIDs = [String]()
+        var listIDs = [NSNumber]()
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
@@ -1523,12 +1523,12 @@ class TMDBManager: NSObject {
                         let m = ObjectManager.sharedInstance.findOrCreateList(list)
                         m.createdBy = self.account
                         
-                        if let listID = m.listID {
-                            listIDs.append(listID)
+                        if let listIDInt = m.listIDInt {
+                            listIDs.append(listIDInt)
                             
                             // pre-download the list details
                             do {
-                                try self.listDetails(listID, completion: { _,_ -> Void in
+                                try self.listDetails(listIDInt, completion: { _,_ -> Void in
                                 
                                 })
                             } catch {}
@@ -1540,7 +1540,6 @@ class TMDBManager: NSObject {
             
             CoreDataManager.sharedInstance.savePrivateContext()
             completion(arrayIDs: listIDs, error: nil)
-            
         }
         
         let failure = { (error: NSError?) -> Void in
@@ -1550,7 +1549,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func listDetails(listID: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
+    func listDetails(listID: NSNumber, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -1635,7 +1634,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func deleteList(listID: String, completion: (error: NSError?) -> Void) throws {
+    func deleteList(listID: NSNumber, completion: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -1650,7 +1649,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Delete
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Delete.Path)"
-        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
         let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
         
@@ -1682,7 +1681,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
-    func addMovie(movieID: NSNumber, toList listID: String, completion: (error: NSError?) -> Void) throws {
+    func addMovie(movieID: NSNumber, toList listID: NSNumber, completion: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -1697,7 +1696,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Post
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.AddMovie.Path)"
-        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
         let parameters = [TMDBConstants.APIKeyParam: apiKey!,
@@ -1734,7 +1733,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func removeMovie(movieID: NSNumber, fromList listID: String, completion: (error: NSError?) -> Void) throws {
+    func removeMovie(movieID: NSNumber, fromList listID: NSNumber, completion: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -1749,7 +1748,7 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Post
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.RemoveMovie.Path)"
-        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: listID)
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
         let headers = ["Accept": "application/json",
                        "Content-Type": "application/json"]
         let parameters = [TMDBConstants.APIKeyParam: apiKey!,

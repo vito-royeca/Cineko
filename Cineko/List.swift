@@ -39,7 +39,7 @@ class List: NSManagedObject {
         favoriteCount = dictionary[Keys.FavoriteCount] as?  NSNumber
         iso6391 = dictionary[Keys.ISO6391] as?  String
         itemCount = dictionary[Keys.ItemCount] as?  NSNumber
-        listID = dictionary[Keys.ListID] as?  String
+        listIDInt = dictionary[Keys.ListID] as?  NSNumber
         listType = dictionary[Keys.ListType] as?  String
         name = dictionary[Keys.Name] as?  String
         posterPath = dictionary[Keys.PosterPath] as? String

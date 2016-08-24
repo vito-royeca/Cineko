@@ -15,7 +15,7 @@ import MBProgressHUD
 class TVShowSettingsViewController: FormViewController {
 
     // MARK: Variables
-    var tvShowID:NSManagedObjectID?
+    var tvShowOID:NSManagedObjectID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,8 @@ class TVShowSettingsViewController: FormViewController {
     }
     
     func setFavorite(isFavorite: Bool) {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -53,8 +53,8 @@ class TVShowSettingsViewController: FormViewController {
     }
     
     func setWatchlist(isWatchlist: Bool) {
-        if let tvShowID = tvShowID {
-            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as! TVShow
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -80,8 +80,8 @@ class TVShowSettingsViewController: FormViewController {
         let header = hasSession ? "" : "You may need to login to enable editing"
         var tvShow:TVShow?
         
-        if let tvShowID = tvShowID {
-            tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowID) as? TVShow
+        if let tvShowOID = tvShowOID {
+            tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as? TVShow
         }
         
         form =

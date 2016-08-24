@@ -19,6 +19,7 @@ extension List {
     @NSManaged var iso6391: String?
     @NSManaged var itemCount: NSNumber?
     @NSManaged var listID: String?
+    @NSManaged var listIDInt: NSNumber?
     @NSManaged var listType: String?
     @NSManaged var name: String?
     @NSManaged var posterPath: String?

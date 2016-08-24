@@ -67,17 +67,17 @@ class SearchViewController: UIViewController {
         if segue.identifier == "showMovieDetailsFromSearch" {
             if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
                 let movie = sender as! Movie
-                detailsVC.movieID = movie.objectID
+                detailsVC.movieOID = movie.objectID
             }
         } else if segue.identifier == "showTVShowDetailsFromSearch" {
             if let detailsVC = segue.destinationViewController as? TVShowDetailsViewController {
                 let tvShow = sender as! TVShow
-                detailsVC.tvShowID = tvShow.objectID
+                detailsVC.tvShowOID = tvShow.objectID
             }
         } else if segue.identifier == "showPersonDetailsFromSearch" {
             if let detailsVC = segue.destinationViewController as? PersonDetailsViewController {
                 let person = sender as! Person
-                detailsVC.personID = person.objectID
+                detailsVC.personOID = person.objectID
             }
         } else if segue.identifier == "showSeeAllFromSearch" {
             if let detailsVC = segue.destinationViewController as? SeeAllViewController {

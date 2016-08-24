@@ -15,7 +15,7 @@ import MBProgressHUD
 class MovieSettingsViewController: FormViewController {
 
     // MARK: Variables
-    var movieID:NSManagedObjectID?
+    var movieOID:NSManagedObjectID?
     var lists:[List]?
     
     // MARK: Overrides
@@ -37,8 +37,8 @@ class MovieSettingsViewController: FormViewController {
     
     // MARK: Custom Methods
     func setFavorite(isFavorite: Bool) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -60,8 +60,8 @@ class MovieSettingsViewController: FormViewController {
     }
 
     func setWatchlist(isWatchlist: Bool) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -83,8 +83,8 @@ class MovieSettingsViewController: FormViewController {
     }
 
     func addMovieToList(list: List) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -98,7 +98,7 @@ class MovieSettingsViewController: FormViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.addMovie(movie.movieID!, toList: list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.addMovie(movie.movieID!, toList: list.listIDInt!, completion: completion)
             } catch {
                 JJJUtil.alertWithTitle("Error", andMessage:"Failed to add Movie to List.")
             }
@@ -106,8 +106,8 @@ class MovieSettingsViewController: FormViewController {
     }
 
     func removeMovieFromList(list: List) {
-        if let movieID = movieID {
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             let completion = { (error: NSError?) in
                 performUIUpdatesOnMain {
@@ -121,7 +121,7 @@ class MovieSettingsViewController: FormViewController {
             
             do {
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
-                try TMDBManager.sharedInstance.removeMovie(movie.movieID!, fromList: list.listID!, completion: completion)
+                try TMDBManager.sharedInstance.removeMovie(movie.movieID!, fromList: list.listIDInt!, completion: completion)
             } catch {
                 JJJUtil.alertWithTitle("Error", andMessage:"Failed to remove Movie from List.")
             }
@@ -177,8 +177,8 @@ class MovieSettingsViewController: FormViewController {
         let header = hasSession ? "" : "You may need to login to enable editing"
         var movie:Movie?
         
-        if let movieID = movieID {
-            movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as? Movie
+        if let movieOID = movieOID {
+            movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as? Movie
         }
         
         form =
@@ -216,9 +216,9 @@ class MovieSettingsViewController: FormViewController {
 
     func addListsToForm() {
         if let lists = lists,
-           let movieID = movieID {
+           let movieOID = movieOID {
             
-            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieID) as! Movie
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
             for list in lists {
                 var checked = false
@@ -236,7 +236,7 @@ class MovieSettingsViewController: FormViewController {
                 form.last!
                     <<< CheckRow() {
                             $0.title = list.name
-                            $0.tag = list.listID
+                            $0.tag = "\(list.listID)"
                             $0.value = checked
                         }.onChange { row in
                             if let value = row.value {
