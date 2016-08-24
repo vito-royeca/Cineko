@@ -35,10 +35,10 @@ PODS:
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
   - SimulatorStatusMagic (1.8)
-  - TwitterCore (2.3.0):
+  - TwitterCore (2.4.0):
     - Fabric
-  - TwitterKit (2.3.0):
-    - TwitterCore (= 2.3.0)
+  - TwitterKit (2.4.0):
+    - TwitterCore (= 2.4.0)
 
 DEPENDENCIES:
   - Colours
@@ -73,8 +73,8 @@ SPEC CHECKSUMS:
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
-  TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
-  TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
+  TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
+  TwitterKit: 1cf9742edf9d182c1518cfdd6aaac0dfe313b38b
 
 PODFILE CHECKSUM: 5cbb92356dcfef75440ea359f14b40e732108280
 

@@ -412,7 +412,7 @@ class TMDBManager: NSObject {
     }
     
     // MARK: Authentication
-    func authenticationTokenNew(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) throws {
+    func authenticationTokenNew(completion: (error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -420,6 +420,28 @@ class TMDBManager: NSObject {
         let httpMethod:HTTPMethod = .Get
         let urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Authentication.TokenNew.Path)"
         let parameters = [TMDBConstants.APIKeyParam: apiKey!]
+        
+        let success = { (results: AnyObject!) -> Void in
+            if let dict = results as? [String: AnyObject] {
+                if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String,
+                    let expires_at = dict[TMDBConstants.Authentication.TokenNew.Keys.ExpiresAt] as? String {
+                    
+                    let formatter = NSDateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
+                    let expirationDate = formatter.dateFromString(expires_at)
+                    
+                    do {
+                        try self.saveRequestToken(requestToken, date: expirationDate!)
+                    } catch {}
+                }
+            }
+            
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
         
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }

@@ -22,39 +22,29 @@ class StartViewController: UIViewController {
                 performSegueWithIdentifier("presentLoginFromStart", sender: urlString)
             
             } else {
-                let success = { (results: AnyObject!) in
-                    if let dict = results as? [String: AnyObject] {
-                        if let requestToken = dict[TMDBConstants.Authentication.TokenNew.Keys.RequestToken] as? String,
-                            let expires_at = dict[TMDBConstants.Authentication.TokenNew.Keys.ExpiresAt] as? String {
+                let completion = { (error: NSError?) in
+                    if let error = error {
+                        performUIUpdatesOnMain {
+                            MBProgressHUD.hideHUDForView(self.view, animated: true)
+                            JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                             
-                            let formatter = NSDateFormatter()
-                            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzz"
-                            let expirationDate = formatter.dateFromString(expires_at)
-                            
-                            do {
-                             try TMDBManager.sharedInstance.saveRequestToken(requestToken, date: expirationDate!)
-                            } catch {}
-                            
-                            performUIUpdatesOnMain {
-                                let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
-                                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                                self.performSegueWithIdentifier("presentLoginFromStart", sender: urlString)
-                            }
                         }
+                        
+                    } else {
+                        do {
+                            if let requestToken = try TMDBManager.sharedInstance.getAvailableRequestToken() {
+                                performUIUpdatesOnMain {
+                                        let urlString = "\(TMDBConstants.AuthenticateURL)/\(requestToken)"
+                                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                                    self.performSegueWithIdentifier("presentLoginFromStart", sender: urlString)
+                                }
+                            }
+                        } catch {}
                     }
                 }
                 
-                let failure = { (error: NSError?) in
-                    performUIUpdatesOnMain {
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-                }
-                
-                do {
-                    MBProgressHUD.showHUDAddedTo(view, animated: true)
-                    try TMDBManager.sharedInstance.authenticationTokenNew(success, failure: failure)
-                } catch {}
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
+                try TMDBManager.sharedInstance.authenticationTokenNew(completion)
             }
         } catch {}
     }
