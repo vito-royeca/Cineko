@@ -138,7 +138,7 @@ class MovieSettingsViewController: FormViewController {
                     }
                 }
                 
-                let predicate = NSPredicate(format: "listID IN %@", arrayIDs)
+                let predicate = NSPredicate(format: "listIDInt IN %@", arrayIDs)
                 if let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [List] {
                     
                     self.lists = lists
@@ -236,7 +236,7 @@ class MovieSettingsViewController: FormViewController {
                 form.last!
                     <<< CheckRow() {
                             $0.title = list.name
-                            $0.tag = "\(list.listID)"
+                            $0.tag = "\(list.listIDInt)"
                             $0.value = checked
                         }.onChange { row in
                             if let value = row.value {

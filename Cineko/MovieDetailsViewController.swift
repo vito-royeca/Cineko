@@ -175,7 +175,7 @@ class MovieDetailsViewController: UIViewController {
                     fetchRequest = posterFetchRequest
                     displayType = .Poster
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title
@@ -649,43 +649,6 @@ class MovieDetailsViewController: UIViewController {
             presentViewController(browser, animated:true, completion:nil)
         }
     }
-    
-    // MARK: MMDrawer methods
-//    func initDrawerButton() {
-//        setupRightMenuButton()
-//        
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
-//    }
-//    
-//    func setupRightMenuButton() {
-//        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
-//        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
-//    }
-//    
-//    func closeDrawers() {
-//        mm_drawerController.closeDrawerAnimated(false, completion:nil)
-//    }
-    
-//    func rightDrawerButtonPress(sender: AnyObject) {
-//        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
-//            var movieSettings:MovieSettingsViewController?
-//            
-//            for drawer in navigationVC.viewControllers {
-//                if drawer is MovieSettingsViewController {
-//                    movieSettings = drawer as? MovieSettingsViewController
-//                }
-//            }
-//            if movieSettings == nil {
-//                movieSettings = MovieSettingsViewController()
-//                navigationVC.addChildViewController(movieSettings!)
-//            }
-//
-//            movieSettings!.movieID = movieID
-//            navigationVC.popToViewController(movieSettings!, animated: true)
-//        }
-//        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
-//    }
 }
 
 // MARK: UITableViewDataSource

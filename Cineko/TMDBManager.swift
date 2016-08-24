@@ -600,7 +600,7 @@ class TMDBManager: NSObject {
                 let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.favorite = NSNumber(bool: favorite)
             default:
-                break
+                ()
             }
             CoreDataManager.sharedInstance.savePrivateContext()
             completion(error: nil)
@@ -648,7 +648,7 @@ class TMDBManager: NSObject {
                 let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: mediaID])
                 tvShow.watchlist = NSNumber(bool: watchlist)
             default:
-                break
+                ()
             }
             CoreDataManager.sharedInstance.savePrivateContext()
             completion(error: nil)

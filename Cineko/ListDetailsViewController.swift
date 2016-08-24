@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import JJJUtils
 import MBProgressHUD
+import SDWebImage
 
 class ListDetailsViewController: UIViewController {
 
@@ -44,6 +45,7 @@ class ListDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "posterTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "nameTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "descriptionTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
@@ -53,6 +55,29 @@ class ListDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
 
         loadMovies()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showMovieDetailsFromListDetails" {
+            if let detailsVC = segue.destinationViewController as? MovieDetailsViewController {
+                let movie = sender as! Movie
+                detailsVC.movieOID = movie.objectID
+            }
+        }  else if segue.identifier == "showSeeAllFromListDetails" {
+            if let detailsVC = segue.destinationViewController as? SeeAllViewController,
+                let listOID = listOID {
+                
+                let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
+                
+                detailsVC.navigationItem.title = list.name
+                detailsVC.fetchRequest = moviesFetchRequest
+                detailsVC.displayType = .Poster
+                detailsVC.captionType = .Title
+                detailsVC.showCaption = false
+                detailsVC.view.tag = sender as! Int
+                detailsVC.delegate = self
+            }
+        }
     }
     
     // MARK: Custom Methods
@@ -116,32 +141,45 @@ class ListDetailsViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        var list:List?
+        if let listOID = listOID {
+            list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as? List
+        }
+        
         // reset the accessory button
         cell.accessoryType = .None
         cell.selectionStyle = .None
         
         switch indexPath.section {
         case 0:
-            if let c = cell as? DynamicHeightTableViewCell {
-                if let listOID = listOID {
-                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
-                    
-                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-                    c.dynamicLabel.text = list.name
-                }
-                c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
+            for v in cell.contentView.subviews {
+                v.removeFromSuperview()
             }
+            
+            let imageView = UIImageView()
+            imageView.contentMode = .ScaleToFill
+            
+            if let posterPath = list!.posterPath {
+                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[1])\(posterPath)")
+                imageView.sd_setImageWithURL(url)
+            } else {
+                imageView.image = UIImage(named: "noImage")
+            }
+            
+            cell.contentView.addSubview(imageView)
         case 1:
             if let c = cell as? DynamicHeightTableViewCell {
-                if let listOID = listOID {
-                    let list = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(listOID) as! List
-                    
-                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-                    c.dynamicLabel.text = list.description_
-                }
+                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+                c.dynamicLabel.text = list!.name
                 c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
             }
         case 2:
+            if let c = cell as? DynamicHeightTableViewCell {
+                c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+                c.dynamicLabel.text = list!.description_
+                c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
+            }
+        case 3:
             if let c = cell as? ThumbnailTableViewCell {
                 c.titleLabel.text = "Movies"
                 c.fetchRequest = moviesFetchRequest
@@ -152,7 +190,7 @@ class ListDetailsViewController: UIViewController {
                 c.loadData()
             }
         default:
-            break
+            ()
         }
     }
     
@@ -175,14 +213,14 @@ extension ListDetailsViewController : UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0:
-            return "Name"
         case 1:
+            return "Name"
+        case 2:
             return "Description"
         default:
             return nil
@@ -194,13 +232,15 @@ extension ListDetailsViewController : UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("nameTableViewCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("posterTableViewCell", forIndexPath: indexPath)
         case 1:
-            cell = tableView.dequeueReusableCellWithIdentifier("descriptionTableViewCell", forIndexPath: indexPath)
+            cell = tableView.dequeueReusableCellWithIdentifier("nameTableViewCell", forIndexPath: indexPath)
         case 2:
+            cell = tableView.dequeueReusableCellWithIdentifier("descriptionTableViewCell", forIndexPath: indexPath)
+        case 3:
             cell = tableView.dequeueReusableCellWithIdentifier("moviesTableViewCell", forIndexPath: indexPath)
         default:
-            break
+            ()
         }
         
         configureCell(cell!, indexPath: indexPath)
@@ -212,9 +252,9 @@ extension ListDetailsViewController : UITableViewDataSource {
 extension ListDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0:
-            return UITableViewAutomaticDimension
         case 1:
+            return UITableViewAutomaticDimension
+        case 2:
             return dynamicHeightForCell("descriptionTableViewCell", indexPath: indexPath)
         default:
             return tableView.frame.size.height / 3
@@ -225,26 +265,10 @@ extension ListDetailsViewController : UITableViewDelegate {
 // MARK: ThumbnailTableViewCellDelegate
 extension ListDetailsViewController : ThumbnailDelegate {
     func seeAllAction(tag: Int) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("SeeAllViewController") as? SeeAllViewController,
-            let navigationController = navigationController {
-            
-            controller.navigationItem.title = "Movies"
-            controller.fetchRequest = moviesFetchRequest
-            controller.displayType = .Poster
-            controller.captionType = .Title
-            controller.showCaption = false
-            controller.view.tag = tag
-            controller.delegate = self
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showSeeAllFromListDetails", sender: tag)
     }
     
     func didSelectItem(tag: Int, displayable: ThumbnailDisplayable, path: NSIndexPath) {
-        if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MovieDetailsViewController") as? MovieDetailsViewController,
-            let navigationController = navigationController {
-            let movie = displayable as! Movie
-            controller.movieOID = movie.objectID
-            navigationController.pushViewController(controller, animated: true)
-        }
+        performSegueWithIdentifier("showMovieDetailsFromListDetails", sender: displayable)
     }
 }

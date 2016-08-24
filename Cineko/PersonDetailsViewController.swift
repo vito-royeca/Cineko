@@ -129,7 +129,7 @@ class PersonDetailsViewController: UIViewController {
                     captionType = .Job
                     showCaption = true
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title

@@ -105,7 +105,7 @@ class SearchViewController: UIViewController {
                     captionType = .Name
                     showCaption = true
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title
@@ -308,7 +308,7 @@ extension SearchViewController : UITableViewDataSource {
             cell.captionType = .Name
             cell.showCaption = true
         default:
-            break
+            ()
         }
         
         cell.tag = indexPath.row

@@ -650,6 +650,19 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ugt-lx-3QY">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="IBL-UK-rkq">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IBL-UK-rkq" id="qaP-AW-whv">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="JaW-8p-6FZ" kind="show" identifier="showListDetailsFromAccount" id="Oa7-eG-dPv"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="GDC-zP-ktd" id="eMs-S3-Vx3"/>
                                     <outlet property="delegate" destination="GDC-zP-ktd" id="n4q-Cv-CHc"/>
@@ -672,7 +685,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="gvW-4h-bOI">
                             <connections>
-                                <segue destination="udq-C0-Zfv" kind="presentation" identifier="addListFromAccount" id="3NC-ge-DZe"/>
+                                <segue destination="tB6-t7-dZT" kind="presentation" identifier="addListFromAccount" id="yxr-TY-PNT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -698,15 +711,10 @@
                     <view key="view" contentMode="scaleToFill" id="crb-7A-btq">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JtC-dT-8Ld">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items/>
-                            </toolbar>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6au-kg-nYo">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="89U-Fi-N4F">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Opn-0E-sSc">
                             <connections>
                                 <action selector="cancelAction:" destination="hkG-Y2-gnI" id="0Te-Uu-8M3"/>
@@ -718,10 +726,11 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5sw-0l-nqu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3759" y="2324"/>
+            <point key="canvasLocation" x="3666" y="2324"/>
         </scene>
         <!--Movies-->
         <scene sceneID="vZV-Du-RDZ">
@@ -1145,7 +1154,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ztu-Q1-GNb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ztu-Q1-GNb">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1197,29 +1206,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="ztu-Q1-GNb" id="Qr1-AO-UPz"/>
+                        <segue destination="di8-Zf-MMg" kind="show" identifier="showSeeAllFromListDetails" id="lCu-K8-Ppa"/>
+                        <segue destination="6At-tm-DiG" kind="show" identifier="showMovieDetailsFromListDetails" id="19g-Gc-cxR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="12k-Xz-6Op" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2924" y="3182"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="kdE-dy-Dn1">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4UQ-5S-hzJ" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="av1-BG-4NS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="JaW-8p-6FZ" kind="relationship" relationship="rootViewController" id="Ezn-Ww-3Lo"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2dM-6z-0og" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1874" y="3182"/>
+            <point key="canvasLocation" x="2924" y="3239"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="igL-1G-90U">
@@ -1300,20 +1293,20 @@
             <point key="canvasLocation" x="-521" y="2324"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="mUH-bj-rca">
+        <scene sceneID="mzy-IJ-vkp">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="udq-C0-Zfv" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tB6-t7-dZT" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xQ1-Qo-7bb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MXR-UG-aHI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="hkG-Y2-gnI" kind="relationship" relationship="rootViewController" id="7VR-s1-MSF"/>
+                        <segue destination="hkG-Y2-gnI" kind="relationship" relationship="rootViewController" id="r3f-bZ-4AE"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UmM-fB-0Hk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fC2-nZ-mzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2924" y="2324"/>
         </scene>
@@ -1328,9 +1321,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="NUZ-jq-DWU"/>
-        <segue reference="XBv-HI-Onn"/>
-        <segue reference="Ilk-th-HCZ"/>
-        <segue reference="AWx-A5-qv7"/>
         <segue reference="BnZ-8w-2Vv"/>
+        <segue reference="lCu-K8-Ppa"/>
+        <segue reference="19g-Gc-cxR"/>
+        <segue reference="Pxx-Kf-BZb"/>
     </inferredMetricsTieBreakers>
 </document>

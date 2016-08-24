@@ -12,45 +12,24 @@ import JJJUtils
 import MBProgressHUD
 
 protocol ListEditorViewControllerDelegate : NSObjectProtocol {
-    func success(editor: ListEditorViewController)
-    func failure(editor: ListEditorViewController, error: NSError?)
+    func listEditorAction(editor: ListEditorViewController, name: String, description: String)
 }
 
 class ListEditorViewController : FormViewController {
     // MARK: Variables
     var delegate:ListEditorViewControllerDelegate?
+    var listName:String?
+    var listDescription:String?
     
     // MARK: Actions
     @IBAction func saveAction(sender: UIBarButtonItem) {
         if let name = form.values()["name"] as? String {
             
             if let description = form.values()["description"] as? String {
-                let completion = { (error: NSError?) in
-                    performUIUpdatesOnMain {
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
-                        
-                        if let error = error {
-                            if let delegate = self.delegate {
-                                delegate.failure(self, error: error)
-                            }
-                            
-                        } else {
-                            if let delegate = self.delegate {
-                                    delegate.success(self)
-                            }
-                        }
-                    }
+                if let delegate = self.delegate {
+                    delegate.listEditorAction(self, name: name, description: description)
                 }
                 
-                do {
-                    MBProgressHUD.showHUDAddedTo(view, animated: true)
-                    try TMDBManager.sharedInstance.createList(name, description: description, completion: completion)
-                } catch {
-                    MBProgressHUD.hideHUDForView(view, animated: true)
-                    if let delegate = self.delegate {
-                        delegate.failure(self, error: nil)
-                    }
-                }
             } else {
                 JJJUtil.alertWithTitle("Error", andMessage:"Description is blank.")
             }

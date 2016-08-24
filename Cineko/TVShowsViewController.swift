@@ -100,7 +100,7 @@ class TVShowsViewController: UIViewController {
                     title = "Watchlist"
                     fetchRequest = watchlistFetchRequest
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title

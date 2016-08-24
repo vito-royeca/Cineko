@@ -89,7 +89,7 @@ class MoviesViewController: UIViewController {
                     title = "Watchlist"
                     fetchRequest = watchlistFetchRequest
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title
@@ -429,7 +429,7 @@ extension MoviesViewController : UITableViewDataSource {
             cell.titleLabel.text = "Watchlist"
             cell.fetchRequest = watchlistFetchRequest
         default:
-            break
+            ()
         }
         
         cell.tag = indexPath.row

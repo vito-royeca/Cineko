@@ -95,7 +95,7 @@ class FeaturedViewController: UIViewController {
                     captionType = .Name
                     showCaption = true
                 default:
-                    return
+                    ()
                 }
                 
                 detailsVC.navigationItem.title = title
@@ -274,7 +274,7 @@ extension FeaturedViewController : UITableViewDataSource {
                 cell.captionType = .Name
                 cell.showCaption = true
             default:
-                break
+                ()
         }
         
         cell.tag = indexPath.row

@@ -128,6 +128,14 @@ class AccountViewController: UIViewController {
                     editor.delegate = self
                 }
             }
+        } else if segue.identifier == "showListDetailsFromAccount" {
+            if let vc = segue.destinationViewController as? ListDetailsViewController,
+                let indexPath = sender as? NSIndexPath {
+                
+                if let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
+                    vc.listOID = list.objectID
+                }
+            }
         }
     }
     
@@ -192,9 +200,10 @@ class AccountViewController: UIViewController {
     }
     
     func configureCell(cell: UITableViewCell, list: List) {
-//        if let posterPath = list.posterPath {
-//            cell.imageView!.sd_setImageWithURL(NSURL(string: posterPath), placeholderImage: UIImage(named: "account.png"))
-//        }
+        if let posterPath = list.posterPath {
+            let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[1])\(posterPath)")
+            cell.imageView!.sd_setImageWithURL(url, placeholderImage: UIImage(named: "noImage"))
+        }
         cell.textLabel!.text = list.name
         cell.detailTextLabel!.text = list.description_
         cell.accessoryType = .DisclosureIndicator
@@ -280,7 +289,7 @@ extension AccountViewController : UITableViewDataSource {
                 configureCell(cell, list: list)
             }
         default:
-            break
+            ()
         }
         
         return cell
@@ -335,12 +344,7 @@ extension AccountViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 1:
-            if let controller = self.storyboard!.instantiateViewControllerWithIdentifier("ListDetailsViewController") as? ListDetailsViewController,
-                let navigationController = navigationController,
-                let list = fetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)) as? List {
-                controller.listOID = list.objectID
-                navigationController.pushViewController(controller, animated: true)
-            }
+            performSegueWithIdentifier("showListDetailsFromAccount", sender: indexPath)
         default:
             return
         }
@@ -418,12 +422,26 @@ extension AccountViewController : NSFetchedResultsControllerDelegate {
 
 // MARK: ListEditorViewControllerDelegate
 extension AccountViewController : ListEditorViewControllerDelegate {
-    func success(editor: ListEditorViewController) {
-        editor.dismissViewControllerAnimated(true, completion: nil)
-        loadLists()
-    }
-    
-    func failure(editor: ListEditorViewController, error: NSError?) {
-        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey])")
+    func listEditorAction(editor: ListEditorViewController, name: String, description: String) {
+        let completion = { (error: NSError?) in
+            performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+                if let error = error {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    
+                } else {
+                    editor.dismissViewControllerAnimated(true, completion: nil)
+                    self.loadLists()
+                }
+            }
+        }
+        
+        do {
+            MBProgressHUD.showHUDAddedTo(editor.view, animated: true)
+            try TMDBManager.sharedInstance.createList(name, description: description, completion: completion)
+        } catch {
+            MBProgressHUD.hideHUDForView(editor.view, animated: true)
+        }
     }
 }
