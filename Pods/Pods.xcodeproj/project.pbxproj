@@ -1052,7 +1052,6 @@
 		2C9B0CADA71A7E19E6C3FD954546A3D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		2CF799255D273118DE12F5E59F1E3AE0 /* pop-iOS9.0-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "pop-iOS9.0-prefix.pch"; sourceTree = "<group>"; };
 		2D8353B5847D5A7DAB6406F0CF4996E3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../KeychainAccess-iOS9.3/Info.plist"; sourceTree = "<group>"; };
-		2ED4DA49D353A5F5A93D6476584F05C8 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
 		2F32E161B899FEBE36BFA3BACDA6A094 /* IDMZoomingScrollView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IDMZoomingScrollView.h; path = Classes/IDMZoomingScrollView.h; sourceTree = "<group>"; };
 		2F6977AE939AF81690729DCB60C7D941 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../MMDrawerController+Storyboard-iOS9.3/Info.plist"; sourceTree = "<group>"; };
 		2F9A34A25D816A350E3B8AEFE95D5B74 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1099,7 +1098,6 @@
 		4433C5DC3E1E155945741456C3314FDF /* SimulatorStatusMagic-iOS9.3-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SimulatorStatusMagic-iOS9.3-prefix.pch"; path = "../SimulatorStatusMagic-iOS9.3/SimulatorStatusMagic-iOS9.3-prefix.pch"; sourceTree = "<group>"; };
 		450438DDC5E406111945B5DC62A5277F /* POPAnimationTracer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPAnimationTracer.h; path = pop/POPAnimationTracer.h; sourceTree = "<group>"; };
 		452C7104D8EDC1B72F56AEADD9E091EC /* Eureka-iOS9.0-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Eureka-iOS9.0-dummy.m"; sourceTree = "<group>"; };
-		4530F14C7368493EFE8D1114F412A6F9 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		4553407175E2757CAC63FAB5536A6787 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../InAppSettingsKit-iOS9.3/Info.plist"; sourceTree = "<group>"; };
 		4583154573D56DA73BCEC2A28F6F9F6F /* SDWebImage-iOS9.0.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "SDWebImage-iOS9.0.modulemap"; sourceTree = "<group>"; };
 		45E9BA338815FC2E224117FBDB31FB81 /* IDMPhotoProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IDMPhotoProtocol.h; path = Classes/IDMPhotoProtocol.h; sourceTree = "<group>"; };
@@ -1113,6 +1111,7 @@
 		492B63974F67970357C51B02432CC930 /* UnitBezier.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UnitBezier.h; path = pop/WebCore/UnitBezier.h; sourceTree = "<group>"; };
 		496E7ED50AC0E59D6811B184482438D9 /* IDMPhotoBrowser.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = IDMPhotoBrowser.bundle; path = Classes/IDMPhotoBrowser.bundle; sourceTree = "<group>"; };
 		49F7B47C98D4E7B9CFFDAB7E409B454D /* PickerInlineRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PickerInlineRow.swift; path = Source/Rows/PickerInlineRow.swift; sourceTree = "<group>"; };
+		4AE771BD6899205CEB434FDC0A06CBAB /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = iOS/TwitterKit.framework; sourceTree = "<group>"; };
 		4B96A7A58A61192F3204B790B4F5D017 /* nl.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = nl.lproj; path = InAppSettingsKit/Resources/nl.lproj; sourceTree = "<group>"; };
 		4BD3A7DAB2F9724689E15676D2E9A26A /* DateRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateRow.swift; path = Source/Rows/DateRow.swift; sourceTree = "<group>"; };
 		4C7AF69FE46A0F7941722A7B400945E6 /* BaseRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseRow.swift; path = Source/Core/BaseRow.swift; sourceTree = "<group>"; };
@@ -1193,6 +1192,7 @@
 		722643C4E9E32CE8B1DF68D1BE42A9CE /* POPSpringAnimation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPSpringAnimation.h; path = pop/POPSpringAnimation.h; sourceTree = "<group>"; };
 		735F4CD6A58AED23336FDB042DCFEB66 /* KeychainAccess-iOS9.3.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; name = "KeychainAccess-iOS9.3.modulemap"; path = "../KeychainAccess-iOS9.3/KeychainAccess-iOS9.3.modulemap"; sourceTree = "<group>"; };
 		74D88B260DDFAA31905FC27DAAF91C0A /* POP.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POP.h; path = pop/POP.h; sourceTree = "<group>"; };
+		75F82D569003E3BD0F749BF941CEA02A /* TwitterKitResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = iOS/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		772C3D1F240F0A2A1BD3A699F6E05186 /* JJJUtils-iOS9.0-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JJJUtils-iOS9.0-umbrella.h"; sourceTree = "<group>"; };
 		7764B4089ACB99F0AAA6CF48A9C309ED /* SliderRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SliderRow.swift; path = Source/Rows/SliderRow.swift; sourceTree = "<group>"; };
 		78A9A597B5FF6EA4C7570AB93AD4094E /* IDMPBConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IDMPBConstants.h; path = Classes/IDMPBConstants.h; sourceTree = "<group>"; };
@@ -1777,6 +1777,14 @@
 			path = Colours;
 			sourceTree = "<group>";
 		};
+		0C1A65CACC675B2BA86F91B2BC4C2FCE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				75F82D569003E3BD0F749BF941CEA02A /* TwitterKitResources.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		0CBEE54ACBE066641055556397DDEA7F /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -2269,14 +2277,6 @@
 			path = JJJUtils;
 			sourceTree = "<group>";
 		};
-		ACD60A1DE150415AD74401360C529564 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2ED4DA49D353A5F5A93D6476584F05C8 /* TwitterKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B384094F6941669BB532CF3BE2CC3D59 /* DACircularProgress */ = {
 			isa = PBXGroup;
 			children = (
@@ -2474,6 +2474,14 @@
 			path = MMDrawerController;
 			sourceTree = "<group>";
 		};
+		CE1F0E1A2625682DF3A320461397BCC1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4AE771BD6899205CEB434FDC0A06CBAB /* TwitterKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D0403E56A5C6D6362215E3DEC33CEED5 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2570,8 +2578,8 @@
 		EDE0E2CB066A67E6C346BC752B5B82B4 /* TwitterKit */ = {
 			isa = PBXGroup;
 			children = (
-				ACD60A1DE150415AD74401360C529564 /* Frameworks */,
-				FB5F6325E03B5010833C587DE869F3A3 /* Resources */,
+				CE1F0E1A2625682DF3A320461397BCC1 /* Frameworks */,
+				0C1A65CACC675B2BA86F91B2BC4C2FCE /* Resources */,
 			);
 			path = TwitterKit;
 			sourceTree = "<group>";
@@ -2673,14 +2681,6 @@
 				9A367F9F98781F6B7D32804FF87B4189 /* Support Files */,
 			);
 			path = pop;
-			sourceTree = "<group>";
-		};
-		FB5F6325E03B5010833C587DE869F3A3 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				4530F14C7368493EFE8D1114F412A6F9 /* TwitterKitResources.bundle */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
