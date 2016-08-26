@@ -151,6 +151,9 @@ struct TMDBConstants {
         struct Credits {
             static let Path = "/movie/{id}/credits"
         }
+        struct Videos {
+            static let Path = "/movie/{id}/videos"
+        }
     }
     
     struct TVShows {
@@ -174,6 +177,9 @@ struct TMDBConstants {
         }
         struct Credits {
             static let Path = "/tv/{id}/credits"
+        }
+        struct Videos {
+            static let Path = "/tv/{id}/videos"
         }
     }
     
@@ -1001,6 +1007,36 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
+    func movieVideos(movieID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Movies.Videos.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(movieID)")
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let movie = ObjectManager.sharedInstance.findOrCreateMovie([Movie.Keys.MovieID: movieID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let videos = dict["results"] as? [[String: AnyObject]] {
+                    for video in videos {
+                        ObjectManager.sharedInstance.findOrCreateVideo(video, forObject: movie)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
     // MARK: TV Shows
     func tvShows(path: String, completion: (arrayIDs: [AnyObject], error: NSError?) -> Void?) throws {
         guard (apiKey) != nil else {
@@ -1110,6 +1146,36 @@ class TMDBManager: NSObject {
                 if let crew = dict["crew"] as? [[String: AnyObject]] {
                     for c in crew {
                         ObjectManager.sharedInstance.findOrCreateCredit(c, creditType: .Crew, creditParent: .TVShow, forObject: tvShow)
+                    }
+                }
+            }
+            completion(error: nil)
+        }
+        
+        let failure = { (error: NSError?) -> Void in
+            completion(error: error)
+        }
+        
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+    }
+    
+    func tvShowVideos(tvShowID: NSNumber, completion: (error: NSError?) -> Void?) throws {
+        guard (apiKey) != nil else {
+            throw TMDBError.NoAPIKey
+        }
+        
+        let httpMethod:HTTPMethod = .Get
+        var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.TVShows.Videos.Path)"
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(tvShowID)")
+        let parameters = [TMDBConstants.APIKeyParam: apiKey!]
+        
+        let success = { (results: AnyObject!) in
+            let tvShow = ObjectManager.sharedInstance.findOrCreateTVShow([TVShow.Keys.TVShowID: tvShowID])
+            
+            if let dict = results as? [String: AnyObject] {
+                if let videos = dict["results"] as? [[String: AnyObject]] {
+                    for video in videos {
+                        ObjectManager.sharedInstance.findOrCreateVideo(video, forObject: tvShow)
                     }
                 }
             }

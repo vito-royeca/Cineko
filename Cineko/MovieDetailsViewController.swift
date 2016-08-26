@@ -16,6 +16,7 @@ import MMDrawerController
 import SafariServices
 import SDWebImage
 import TwitterKit
+import XCDYouTubeKit
 
 class MovieDetailsViewController: UIViewController {
 
@@ -28,12 +29,12 @@ class MovieDetailsViewController: UIViewController {
     // MARK: Variables
     var titleLabel: UILabel?
     var movieOID:NSManagedObjectID?
-    var movieReviews:NSSet?
     var homepage:String?
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
     var posterFetchRequest:NSFetchRequest?
+    var videoFetchRequest:NSFetchRequest?
     private var averageColor:UIColor?
     private var contrastColor:UIColor?
     var tweets:[AnyObject]?
@@ -67,8 +68,10 @@ class MovieDetailsViewController: UIViewController {
             loadPhotos()
             loadCastAndCrew()
         case 1:
-            loadReviews()
+            loadVideos()
         case 2:
+            loadReviews()
+        case 3:
             loadTweets()
         default:
             ()
@@ -84,11 +87,12 @@ class MovieDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "MediaInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "mediaInfoTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "overviewTableViewCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "homepageTableViewCell")
-        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "reviewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "photosTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "postersTableViewCell")
+        tableView.registerNib(UINib(nibName: "VideoTableViewCell", bundle: nil), forCellReuseIdentifier: "videoTableViewCell")
+        tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "reviewTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
         
         titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 44))
@@ -339,7 +343,7 @@ class MovieDetailsViewController: UIViewController {
         }
     }
     
-    func loadReviews() {
+    func loadVideos() {
         if let movieOID = movieOID {
             let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
             
@@ -349,7 +353,37 @@ class MovieDetailsViewController: UIViewController {
                         JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                     }
                     
-                    self.movieReviews = movie.reviews
+                    self.videoFetchRequest = NSFetchRequest(entityName: "Video")
+                    self.videoFetchRequest!.predicate = NSPredicate(format: "movie.movieID = %@", movie.movieID!)
+                    self.videoFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "name", ascending: true)]
+                    // set fetch limit??
+                    
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                        MBProgressHUD.hideHUDForView(cell, animated: true)
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            
+            do {
+                if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
+                    MBProgressHUD.showHUDAddedTo(cell, animated: true)
+                }
+                try TMDBManager.sharedInstance.movieVideos(movie.movieID!, completion: completion)
+            } catch {}
+        }
+    }
+    
+    func loadReviews() {
+        if let movieOID = movieOID {
+            let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
+            
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
                     
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
@@ -564,18 +598,41 @@ class MovieDetailsViewController: UIViewController {
                  1:
                 return
             default:
-                if let c = cell as? DynamicHeightTableViewCell,
-                    let movieReviews = movieReviews {
+                if let c = cell as? VideoTableViewCell,
+                    let movieOID = movieOID {
                     
-                    let movieReview = movieReviews.allObjects[indexPath.row-2] as! Review
-                    c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-                    c.dynamicLabel.text = "\(movieReview.suggestedLinkText!) by \(movieReview.byline!)"
-                    c.accessoryType = .DisclosureIndicator
-                    c.changeColor(averageColor, fontColor: contrastColor)
+                    let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
+                    if let videos = movie.videos {
+                        let video = videos.allObjects[indexPath.row-2] as! Video
+                        
+                        c.videoOID = video.objectID
+                        c.backgroundColor = averageColor
+                        c.delegate = self
+                    }
                 }
             }
             
         case 2:
+            switch indexPath.row {
+            case 0,
+                 1:
+                return
+            default:
+                if let c = cell as? DynamicHeightTableViewCell,
+                    let movieOID = movieOID {
+                    
+                    let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
+                    if let reviews = movie.reviews {
+                        let review = reviews.allObjects[indexPath.row-2] as! Review
+                        c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+                        c.dynamicLabel.text = "\(review.suggestedLinkText!) by \(review.byline!)"
+                        c.accessoryType = .DisclosureIndicator
+                        c.changeColor(averageColor, fontColor: contrastColor)
+                    }
+                }
+            }
+            
+        case 3:
             switch indexPath.row {
             case 0,
                  1:
@@ -663,15 +720,30 @@ extension MovieDetailsViewController : UITableViewDataSource {
             if let _ = homepage {
                 rows += 1
             }
-            
+        
         case 1:
-            if let movieReviews = movieReviews {
-                rows = movieReviews.allObjects.count+2
-            } else {
-                rows = 2
+            if let movieOID = movieOID {
+                let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
+                
+                if let videos = movie.videos {
+                    rows = videos.allObjects.count+2
+                } else {
+                    rows = 2
+                }
+            }
+            
+        case 2:
+            if let movieOID = movieOID {
+                let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
+                
+                if let reviews = movie.reviews {
+                    rows = reviews.allObjects.count+2
+                } else {
+                    rows = 2
+                }
             }
 
-        case 2:
+        case 3:
             if let tweets = tweets {
                 rows = tweets.count+2
             } else {
@@ -730,10 +802,20 @@ extension MovieDetailsViewController : UITableViewDataSource {
             case 1:
                 cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             default:
-                cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
+                cell = tableView.dequeueReusableCellWithIdentifier("videoTableViewCell", forIndexPath: indexPath)
             }
             
         case 2:
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
+            default:
+                cell = tableView.dequeueReusableCellWithIdentifier("reviewTableViewCell", forIndexPath: indexPath)
+            }
+            
+        case 3:
             switch indexPath.row {
             case 0:
                 cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
@@ -785,11 +867,21 @@ extension MovieDetailsViewController : UITableViewDelegate {
             switch indexPath.row {
             case 0:
                 return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
+            case 1:
+                return UITableViewAutomaticDimension
+            default:
+                return tableView.frame.size.height / 3
+            }
+            
+        case 2:
+            switch indexPath.row {
+            case 0:
+                return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
             default:
                 return UITableViewAutomaticDimension
             }
             
-        case 2:
+        case 3:
             switch indexPath.row {
             case 0:
                 return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
@@ -835,7 +927,7 @@ extension MovieDetailsViewController : UITableViewDelegate {
                 return indexPath
             }
         
-        case 1:
+        case 2:
             return indexPath
 
         default:
@@ -872,15 +964,19 @@ extension MovieDetailsViewController : UITableViewDelegate {
                 }
             }
         
-        case 1:
-            if let movieReviews = movieReviews,
-                let navigationController = navigationController {
-                let moviewReview = movieReviews.allObjects[indexPath.row-2] as! Review
-                let URL = NSURL(string: moviewReview.link!)
+        case 2:
+            if let navigationController = navigationController,
+                let movieOID = movieOID {
+                let movie = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(movieOID) as! Movie
                 
-                let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
-                svc.delegate = self
-                navigationController.presentViewController(svc, animated: true, completion: nil)
+                if let reviews = movie.reviews {
+                    let review = reviews.allObjects[indexPath.row-2] as! Review
+                    let URL = NSURL(string: review.link!)
+                    
+                    let svc = SFSafariViewController(URL: URL!, entersReaderIfAvailable: true)
+                    svc.delegate = self
+                    navigationController.presentViewController(svc, animated: true, completion: nil)
+                }
             }
             
         default:
@@ -929,3 +1025,12 @@ extension MovieDetailsViewController : TWTRTweetViewDelegate {
         return false
     }
 }
+
+// MARK: VideoTableViewCellDelegate
+extension MovieDetailsViewController : VideoTableViewCellDelegate {
+    func playVideoFullScreen(videoPlayer: XCDYouTubeVideoPlayerViewController) {
+        presentMoviePlayerViewControllerAnimated(videoPlayer)
+        videoPlayer.moviePlayer.play()
+    }
+}
+

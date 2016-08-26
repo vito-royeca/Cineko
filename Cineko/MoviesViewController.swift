@@ -224,12 +224,12 @@ class MoviesViewController: UIViewController {
                 tableView.reloadData()
             }
             
-        } else {
+        } /*else {
             if let groupIDs = dataDict[refreshData!] as? [NSNumber] {
                 dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", groupIDs)
             }
             tableView.reloadData()
-        }
+        }*/
     }
     
     func loadMovieGenre() {
@@ -282,12 +282,12 @@ class MoviesViewController: UIViewController {
                 tableView.reloadData()
             }
         
-        } else {
+        } /*else {
             if let genreIDs = dataDict[genreName!] as? [NSNumber] {
                 dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", genreIDs)
             }
             tableView.reloadData()
-        }
+        }*/
     }
     
     func loadFavorites() {
@@ -336,7 +336,7 @@ class MoviesViewController: UIViewController {
                 self.tableView.reloadData()
             }
 
-        } else {
+        } /*else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
@@ -346,7 +346,7 @@ class MoviesViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
-        }
+        }*/
     }
     
     func loadWatchlist() {
@@ -395,7 +395,7 @@ class MoviesViewController: UIViewController {
                 self.tableView.reloadData()
             }
             
-        } else {
+        } /*else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
@@ -405,7 +405,7 @@ class MoviesViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
-        }
+        }*/
     }
 }
 

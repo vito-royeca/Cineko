@@ -149,10 +149,10 @@ class FeaturedViewController: UIViewController {
                 tableView.reloadData()
             }
         
-        } else {
+        }/* else {
             nowShowingFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", dataDict[TMDBConstants.Device.Keys.MoviesNowShowing] as! [NSNumber])
             tableView.reloadData()
-        }
+        }*/
     }
     
     func loadFeaturedTVShows() {
@@ -194,10 +194,10 @@ class FeaturedViewController: UIViewController {
                 tableView.reloadData()
             }
         
-        } else {
+        } /*else {
             airingTodayFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", dataDict[TMDBConstants.Device.Keys.TVShowsAiringToday] as! [NSNumber])
             tableView.reloadData()
-        }
+        }*/
     }
     
     func loadFeaturedPeople() {
@@ -240,10 +240,10 @@ class FeaturedViewController: UIViewController {
                 tableView.reloadData()
             }
             
-        } else {
+        } /*else {
             popularPeopleFetchRequest!.predicate = NSPredicate(format: "personID IN %@", dataDict[TMDBConstants.Device.Keys.PeoplePopular] as! [NSNumber])
             tableView.reloadData()
-        }
+        }*/
     }
 }
 

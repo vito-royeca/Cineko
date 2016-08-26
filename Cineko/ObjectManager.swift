@@ -369,6 +369,23 @@ class ObjectManager: NSObject {
         return credit
     }
     
+    func findOrCreateVideo(dict: [String: AnyObject], forObject object: AnyObject) -> Video {
+        let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Video in
+            return Video(dictionary: dict, context: context)
+        }
+        
+        let video = findOrCreateObject(dict, entityName: "Video", objectKey: "videoID", objectValue: dict[Video.Keys.VideoID] as! NSObject, initializer: initializer) as! Video
+        
+        if object is Movie {
+            video.movie = object as? Movie
+        } else if object is TVShow {
+            video.tvShow = object as? TVShow
+        }
+        CoreDataManager.sharedInstance.savePrivateContext()
+        
+        return video
+    }
+    
     func findOrCreateAccount(dict: [String: AnyObject]) -> Account {
         let initializer = { (dict: [String: AnyObject], context: NSManagedObjectContext) -> Account in
             return Account(dictionary: dict, context: context)

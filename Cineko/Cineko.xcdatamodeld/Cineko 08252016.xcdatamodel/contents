@@ -151,6 +151,7 @@
         <relationship name="productionCountries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Country" inverseName="movies" inverseEntity="Country" syncable="YES"/>
         <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Review" inverseName="movie" inverseEntity="Review" syncable="YES"/>
         <relationship name="spokenLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Language" inverseName="movies" inverseEntity="Language" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="movie" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="Network" representedClassName=".Network" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -264,10 +265,22 @@
         <relationship name="posters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="tvShowPoster" inverseEntity="Image" syncable="YES"/>
         <relationship name="productionCompanies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Company" inverseName="tvShows" inverseEntity="Company" syncable="YES"/>
         <relationship name="tvSeasons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TVSeason" inverseName="tvShow" inverseEntity="TVSeason" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="tvShow" inverseEntity="Video" syncable="YES"/>
         <userInfo>
             <entry key="hyper.isPrimaryKey" value="YES"/>
             <entry key="hyper.remoteKey" value="id"/>
         </userInfo>
+    </entity>
+    <entity name="Video" representedClassName=".Video" syncable="YES">
+        <attribute name="iso6391" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="site" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="videoID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" inverseName="videos" inverseEntity="Movie" syncable="YES"/>
+        <relationship name="tvShow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TVShow" inverseName="videos" inverseEntity="TVShow" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="18" positionY="63" width="128" height="165"/>
@@ -279,12 +292,13 @@
         <element name="Job" positionX="-9" positionY="144" width="128" height="90"/>
         <element name="Language" positionX="18" positionY="144" width="128" height="90"/>
         <element name="List" positionX="-9" positionY="144" width="128" height="210"/>
-        <element name="Movie" positionX="-54" positionY="-9" width="128" height="540"/>
+        <element name="Movie" positionX="-54" positionY="-9" width="128" height="555"/>
         <element name="Network" positionX="-9" positionY="144" width="128" height="90"/>
         <element name="Person" positionX="-18" positionY="27" width="128" height="255"/>
         <element name="Review" positionX="-9" positionY="144" width="128" height="135"/>
         <element name="TVEpisode" positionX="0" positionY="63" width="128" height="225"/>
         <element name="TVSeason" positionX="-9" positionY="54" width="128" height="195"/>
-        <element name="TVShow" positionX="-36" positionY="9" width="128" height="465"/>
+        <element name="TVShow" positionX="-36" positionY="9" width="128" height="480"/>
+        <element name="Video" positionX="-9" positionY="144" width="128" height="180"/>
     </elements>
 </model>

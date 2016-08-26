@@ -1,18 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="VideoTableViewCell" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="VideoTableViewCell" customModule="Cine_Ko_" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="112"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EXr-Mx-VgZ">
+                        <rect key="frame" x="8" y="8" width="304" height="95"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2lA-hS-u61">
+                        <rect key="frame" x="121" y="43" width="79" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="79" id="7fm-fe-Jf7"/>
+                        </constraints>
+                        <state key="normal" image="play"/>
+                        <connections>
+                            <action selector="playAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0J6-mT-WhV"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyy-Sz-upf">
+                        <rect key="frame" x="8" y="82" width="304" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="trailing" secondItem="kyy-Sz-upf" secondAttribute="trailing" id="Efw-Zn-N12"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="Hpt-Q1-eoh"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="bottom" secondItem="kyy-Sz-upf" secondAttribute="bottom" id="Nsf-Ze-CcN"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="f8L-uX-lc1"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="centerY" secondItem="2lA-hS-u61" secondAttribute="centerY" id="iAX-iC-4qA"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="leading" secondItem="kyy-Sz-upf" secondAttribute="leading" id="u4e-uL-Gjq"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="vT4-7T-NiN"/>
+                    <constraint firstItem="EXr-Mx-VgZ" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="wOC-0W-mEB"/>
+                    <constraint firstItem="2lA-hS-u61" firstAttribute="centerX" secondItem="kyy-Sz-upf" secondAttribute="centerX" id="waL-20-bAc"/>
+                </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="captionLabel" destination="kyy-Sz-upf" id="YSn-bP-ZxJ"/>
+                <outlet property="playButton" destination="2lA-hS-u61" id="y3m-UT-hsU"/>
+                <outlet property="thumbnailImage" destination="EXr-Mx-VgZ" id="ylX-9i-gMw"/>
+            </connections>
+            <point key="canvasLocation" x="289" y="209"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="play" width="25" height="25"/>
+    </resources>
 </document>

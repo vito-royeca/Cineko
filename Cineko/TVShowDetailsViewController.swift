@@ -15,6 +15,7 @@ import MBProgressHUD
 import MMDrawerController
 import SDWebImage
 import TwitterKit
+import XCDYouTubeKit
 
 class TVShowDetailsViewController: UIViewController {
 
@@ -30,6 +31,7 @@ class TVShowDetailsViewController: UIViewController {
     var backdropFetchRequest:NSFetchRequest?
     var castFetchRequest:NSFetchRequest?
     var crewFetchRequest:NSFetchRequest?
+    var videoFetchRequest:NSFetchRequest?
     var tvSeasonFetchRequest:NSFetchRequest?
     private var averageColor:UIColor?
     private var contrastColor:UIColor?
@@ -63,6 +65,8 @@ class TVShowDetailsViewController: UIViewController {
             loadPhotos()
             loadCastAndCrew()
         case 1:
+            loadVideos()
+        case 2:
             loadTweets()
         default:
             ()
@@ -82,6 +86,7 @@ class TVShowDetailsViewController: UIViewController {
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "castTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "crewTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "seasonsTableViewCell")
+        tableView.registerNib(UINib(nibName: "VideoTableViewCell", bundle: nil), forCellReuseIdentifier: "videoTableViewCell")
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: "tweetsTableViewCell")
         
         // manually setup the floating title header
@@ -335,6 +340,32 @@ class TVShowDetailsViewController: UIViewController {
         }
     }
     
+    func loadVideos() {
+        if let tvShowOID = tvShowOID {
+            let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
+            
+            let completion = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
+                    }
+                    
+                    self.videoFetchRequest = NSFetchRequest(entityName: "Video")
+                    self.videoFetchRequest!.predicate = NSPredicate(format: "tvShow.tvShowID = %@", tvShow.tvShowID!)
+                    self.videoFetchRequest!.sortDescriptors = [
+                        NSSortDescriptor(key: "name", ascending: true)]
+                    // set fetch limit??
+                    
+                    self.tableView.reloadData()
+                }
+            }
+            
+            do {
+                try TMDBManager.sharedInstance.tvShowVideos(tvShow.tvShowID!, completion: completion)
+            } catch {}
+        }
+    }
+    
     func loadTweets() {
         if let tvShowOID = tvShowOID {
             let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
@@ -539,8 +570,28 @@ class TVShowDetailsViewController: UIViewController {
                     }
                 }
             }
-            
+        
         case 1:
+            switch indexPath.row {
+            case 0,
+                 1:
+                return
+            default:
+                if let c = cell as? VideoTableViewCell,
+                    let tvShowOID = tvShowOID {
+                    
+                    let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
+                    if let videos = tvShow.videos {
+                        let video = videos.allObjects[indexPath.row-2] as! Video
+                        
+                        c.videoOID = video.objectID
+                        c.backgroundColor = averageColor
+                        c.delegate = self
+                    }
+                }
+            }
+            
+        case 2:
             switch indexPath.row {
             case 0,
                  1:
@@ -610,8 +661,19 @@ extension TVShowDetailsViewController : UITableViewDataSource {
             if let _ = homepage {
                 rows += 1
             }
-            
+        
         case 1:
+            if let tvShowOID = tvShowOID {
+                let tvShow = CoreDataManager.sharedInstance.mainObjectContext.objectWithID(tvShowOID) as! TVShow
+                
+                if let videos = tvShow.videos {
+                    rows = videos.allObjects.count+2
+                } else {
+                    rows = 2
+                }
+            }
+            
+        case 2:
             if let tweets = tweets {
                 rows = tweets.count+2
             } else {
@@ -670,6 +732,16 @@ extension TVShowDetailsViewController : UITableViewDataSource {
             case 1:
                 cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
             default:
+                cell = tableView.dequeueReusableCellWithIdentifier("videoTableViewCell", forIndexPath: indexPath)
+            }
+            
+        case 2:
+            switch indexPath.row {
+            case 0:
+                cell = tableView.dequeueReusableCellWithIdentifier("clearTableViewCell", forIndexPath: indexPath)
+            case 1:
+                cell = tableView.dequeueReusableCellWithIdentifier("segmentedTableViewCell", forIndexPath: indexPath)
+            default:
                 cell = tableView.dequeueReusableCellWithIdentifier("tweetsTableViewCell", forIndexPath: indexPath)
             }
             
@@ -709,8 +781,18 @@ extension TVShowDetailsViewController : UITableViewDelegate {
             default:
                 return UITableViewAutomaticDimension
             }
-            
+        
         case 1:
+            switch indexPath.row {
+            case 0:
+                return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
+            case 1:
+                return UITableViewAutomaticDimension
+            default:
+                return tableView.frame.size.height / 3
+            }
+
+        case 2:
             switch indexPath.row {
             case 0:
                 return (tableView.frame.size.height / 2) + titleLabel!.frame.size.height
@@ -827,5 +909,13 @@ extension TVShowDetailsViewController : ThumbnailDelegate {
 extension TVShowDetailsViewController : TWTRTweetViewDelegate {
     func tweetView(tweetView: TWTRTweetView, shouldDisplayDetailViewController controller: TWTRTweetDetailViewController) -> Bool {
         return false
+    }
+}
+
+// MARK: VideoTableViewCellDelegate
+extension TVShowDetailsViewController : VideoTableViewCellDelegate {
+    func playVideoFullScreen(videoPlayer: XCDYouTubeVideoPlayerViewController) {
+        presentMoviePlayerViewControllerAnimated(videoPlayer)
+        videoPlayer.moviePlayer.play()
     }
 }

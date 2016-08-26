@@ -1,5 +1,5 @@
 //
-//  MovieVideo.swift
+//  Video.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 25/08/2016.
@@ -10,14 +10,14 @@ import Foundation
 import CoreData
 
 
-class MovieVideo: NSManagedObject {
+class Video: NSManagedObject {
 
     struct Keys {
-        static let MovieVideoID = "id"
+        static let VideoID = "id"
         static let ISO6391 = "iso_639_1"
         static let Key = "key"
         static let Name = "name"
-        static let Site = "Site"
+        static let Site = "site"
         static let Size = "size"
         static let VideoType = "type"
     }
@@ -27,14 +27,14 @@ class MovieVideo: NSManagedObject {
     }
     
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-        let entity =  NSEntityDescription.entityForName("MovieVideo", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entityForName("Video", inManagedObjectContext: context)!
         super.init(entity: entity,insertIntoManagedObjectContext: context)
         
         update(dictionary)
     }
     
     func update(dictionary: [String : AnyObject]) {
-        movieVideoID = dictionary[Keys.MovieVideoID] as? String
+        videoID = dictionary[Keys.VideoID] as? String
         iso6391 = dictionary[Keys.ISO6391] as? String
         key = dictionary[Keys.Key] as? String
         name = dictionary[Keys.Name] as? String

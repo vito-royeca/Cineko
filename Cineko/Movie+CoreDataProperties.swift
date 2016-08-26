@@ -47,4 +47,5 @@ extension Movie {
     @NSManaged var productionCountries: NSSet?
     @NSManaged var reviews: NSSet?
     @NSManaged var spokenLanguages: NSSet?
+    @NSManaged var videos: NSSet?
 }

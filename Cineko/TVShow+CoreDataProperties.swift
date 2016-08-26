@@ -42,5 +42,5 @@ extension TVShow {
     @NSManaged var posters: NSSet?
     @NSManaged var productionCompanies: NSSet?
     @NSManaged var tvSeasons: NSSet?
-    
+    @NSManaged var videos: NSSet?
 }

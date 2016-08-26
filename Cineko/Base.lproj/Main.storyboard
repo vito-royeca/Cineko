@@ -276,9 +276,10 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PEf-QB-9Md">
-                            <rect key="frame" x="8" y="7" width="224" height="30"/>
+                            <rect key="frame" x="8" y="7" width="224" height="29"/>
                             <segments>
                                 <segment title="Details"/>
+                                <segment title="Videos"/>
                                 <segment title="Reviews"/>
                                 <segment title="Tweets"/>
                             </segments>
@@ -289,10 +290,9 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="PEf-QB-9Md" firstAttribute="leading" secondItem="gu4-5P-NV9" secondAttribute="leadingMargin" id="5SN-4e-5pT"/>
-                        <constraint firstItem="PEf-QB-9Md" firstAttribute="bottom" secondItem="gu4-5P-NV9" secondAttribute="bottomMargin" id="fbT-Am-cfF"/>
-                        <constraint firstItem="PEf-QB-9Md" firstAttribute="trailing" secondItem="gu4-5P-NV9" secondAttribute="trailingMargin" id="gmj-rz-Sd7"/>
-                        <constraint firstItem="PEf-QB-9Md" firstAttribute="centerY" secondItem="gu4-5P-NV9" secondAttribute="centerY" id="sH9-j2-THN"/>
+                        <constraint firstItem="PEf-QB-9Md" firstAttribute="leading" secondItem="gu4-5P-NV9" secondAttribute="leadingMargin" id="Mui-VD-f5U"/>
+                        <constraint firstItem="PEf-QB-9Md" firstAttribute="trailing" secondItem="gu4-5P-NV9" secondAttribute="trailingMargin" id="mAh-mY-Xpr"/>
+                        <constraint firstItem="PEf-QB-9Md" firstAttribute="top" secondItem="gu4-5P-NV9" secondAttribute="top" constant="7" id="slc-Yp-fz2"/>
                     </constraints>
                 </view>
             </objects>
@@ -897,6 +897,7 @@
                             <rect key="frame" x="8" y="7" width="224" height="29"/>
                             <segments>
                                 <segment title="Details"/>
+                                <segment title="Videos"/>
                                 <segment title="Tweets"/>
                             </segments>
                             <connections>
@@ -907,9 +908,9 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="yYJ-05-nfb" firstAttribute="top" secondItem="bGv-aE-eyW" secondAttribute="top" constant="7" id="557-df-B7F"/>
-                        <constraint firstItem="yYJ-05-nfb" firstAttribute="trailing" secondItem="bGv-aE-eyW" secondAttribute="trailingMargin" id="BU6-88-QRn"/>
-                        <constraint firstItem="yYJ-05-nfb" firstAttribute="leading" secondItem="bGv-aE-eyW" secondAttribute="leadingMargin" id="Ckg-o0-Nev"/>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="leading" secondItem="bGv-aE-eyW" secondAttribute="leadingMargin" id="DD9-Me-ZSR"/>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="trailing" secondItem="bGv-aE-eyW" secondAttribute="trailingMargin" id="RVA-A0-3gD"/>
+                        <constraint firstItem="yYJ-05-nfb" firstAttribute="top" secondItem="bGv-aE-eyW" secondAttribute="top" constant="7" id="h8M-py-YnT"/>
                     </constraints>
                 </view>
             </objects>
@@ -1320,10 +1321,10 @@
         <image name="tv" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Ilk-th-HCZ"/>
         <segue reference="NUZ-jq-DWU"/>
+        <segue reference="wDL-oN-p5t"/>
+        <segue reference="5Hj-Uo-b4n"/>
         <segue reference="BnZ-8w-2Vv"/>
-        <segue reference="lCu-K8-Ppa"/>
-        <segue reference="19g-Gc-cxR"/>
-        <segue reference="Pxx-Kf-BZb"/>
     </inferredMetricsTieBreakers>
 </document>

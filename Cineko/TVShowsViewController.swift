@@ -173,12 +173,12 @@ class TVShowsViewController: UIViewController {
                 
             } catch {}
             
-        } else {
+        } /*else {
             if let tvShowIDs = dataDict[refreshData!] as? [NSNumber] {
                 dynamicFetchRequest!.predicate = NSPredicate(format: "tvShowID IN %@", tvShowIDs)
             }
             tableView.reloadData()
-        }
+        }*/
     }
     
     func loadFavorites() {
@@ -228,7 +228,7 @@ class TVShowsViewController: UIViewController {
                 self.tableView.reloadData()
             }
             
-        } else {
+        } /*else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
@@ -238,7 +238,7 @@ class TVShowsViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
-        }
+        }*/
     }
     
     func loadWatchlist() {
@@ -288,7 +288,7 @@ class TVShowsViewController: UIViewController {
                 self.tableView.reloadData()
             }
 
-        } else {
+        } /*else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
@@ -298,7 +298,7 @@ class TVShowsViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
             self.tableView.reloadData()
-        }
+        }*/
     }
 }
 

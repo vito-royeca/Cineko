@@ -1,5 +1,5 @@
 //
-//  MovieVideo+CoreDataProperties.swift
+//  Video+CoreDataProperties.swift
 //  Cineko
 //
 //  Created by Jovit Royeca on 25/08/2016.
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension MovieVideo {
+extension Video {
 
     @NSManaged var videoID: String?
     @NSManaged var iso6391: String?
