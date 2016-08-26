@@ -96,6 +96,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController+Storyboard-iOS9.3/MMDrawerController_Storyboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage-iOS9.3/SDWebImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SimulatorStatusMagic-iOS9.3/SimulatorStatusMagic.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XCDYouTubeKit-iOS9.3/XCDYouTubeKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/pop-iOS9.3/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -110,5 +111,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController-iOS9.3/MMDrawerController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MMDrawerController+Storyboard-iOS9.3/MMDrawerController_Storyboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage-iOS9.3/SDWebImage.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/XCDYouTubeKit-iOS9.3/XCDYouTubeKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/pop-iOS9.3/pop.framework"
 fi

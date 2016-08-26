@@ -39,6 +39,7 @@ PODS:
     - Fabric
   - TwitterKit (2.4.0):
     - TwitterCore (= 2.4.0)
+  - XCDYouTubeKit (2.5.3)
 
 DEPENDENCIES:
   - Colours
@@ -56,6 +57,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - TwitterCore
   - TwitterKit
+  - XCDYouTubeKit
 
 SPEC CHECKSUMS:
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
@@ -75,7 +77,8 @@ SPEC CHECKSUMS:
   SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
   TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
   TwitterKit: 1cf9742edf9d182c1518cfdd6aaac0dfe313b38b
+  XCDYouTubeKit: 90690f9e3523735dc93b8024269d991b0cfffe78
 
-PODFILE CHECKSUM: 5cbb92356dcfef75440ea359f14b40e732108280
+PODFILE CHECKSUM: 8e1edbfbdc99611f24d95012273b5d4d7b261550
 
 COCOAPODS: 1.0.1

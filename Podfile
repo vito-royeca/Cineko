@@ -20,6 +20,7 @@ pod 'SDWebImage'
 pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
+pod 'XCDYouTubeKit'
 end
 
 target "Cine Ko!Tests" do
@@ -38,6 +39,7 @@ pod 'SDWebImage'
 pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
+pod 'XCDYouTubeKit'
 end
 
 target "Cine Ko!UITests" do
@@ -56,4 +58,5 @@ pod 'SDWebImage'
 pod 'SimulatorStatusMagic', :configurations => ['Debug']
 pod 'TwitterKit'
 pod 'TwitterCore'
+pod 'XCDYouTubeKit'
 end
