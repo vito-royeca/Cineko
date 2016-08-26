@@ -224,12 +224,11 @@ class MoviesViewController: UIViewController {
                 tableView.reloadData()
             }
             
-        } /*else {
+        } else {
             if let groupIDs = dataDict[refreshData!] as? [NSNumber] {
                 dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", groupIDs)
             }
-            tableView.reloadData()
-        }*/
+        }
     }
     
     func loadMovieGenre() {
@@ -282,12 +281,11 @@ class MoviesViewController: UIViewController {
                 tableView.reloadData()
             }
         
-        } /*else {
+        } else {
             if let genreIDs = dataDict[genreName!] as? [NSNumber] {
                 dynamicFetchRequest!.predicate = NSPredicate(format: "movieID IN %@", genreIDs)
             }
-            tableView.reloadData()
-        }*/
+        }
     }
     
     func loadFavorites() {
@@ -336,17 +334,17 @@ class MoviesViewController: UIViewController {
                 self.tableView.reloadData()
             }
 
-        } /*else {
+        } else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 favoritesFetchRequest!.predicate = NSPredicate(format: "favorite = %@", NSNumber(bool: true))
             } else {
                 favoritesFetchRequest = nil
             }
+            
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0)) {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
-            self.tableView.reloadData()
-        }*/
+        }
     }
     
     func loadWatchlist() {
@@ -395,17 +393,17 @@ class MoviesViewController: UIViewController {
                 self.tableView.reloadData()
             }
             
-        } /*else {
+        } else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 watchlistFetchRequest!.predicate = NSPredicate(format: "watchlist = %@", NSNumber(bool: true))
             } else {
                 watchlistFetchRequest = nil
             }
+            
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                 MBProgressHUD.hideHUDForView(cell, animated: true)
             }
-            self.tableView.reloadData()
-        }*/
+        }
     }
 }
 

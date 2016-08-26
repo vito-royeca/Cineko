@@ -33,6 +33,12 @@ class Cine_Ko_UITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
+        // set landscape for iPad Pro
+        if UIScreen.mainScreen().bounds.size.width > 1024 {
+            let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+            UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        }
+    
         snapshot("00-InitialScreen")
         
         app.buttons["Skip Login"].tap()

@@ -361,8 +361,8 @@ class MovieDetailsViewController: UIViewController {
                     
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
-                        self.tableView.reloadData()
                     }
+                    self.tableView.reloadData()
                 }
             }
             
@@ -387,8 +387,8 @@ class MovieDetailsViewController: UIViewController {
                     
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
-                        self.tableView.reloadData()
                     }
+                    self.tableView.reloadData()
                 }
             }
             
@@ -417,8 +417,8 @@ class MovieDetailsViewController: UIViewController {
                 
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 2, inSection: 0)) {
                         MBProgressHUD.hideHUDForView(cell, animated: true)
-                        self.tableView.reloadData()
                     }
+                    self.tableView.reloadData()
                 }
             }
             

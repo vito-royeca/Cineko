@@ -243,42 +243,6 @@ class SearchViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
-    
-    // MARK: MMDrawer methods
-//    func initDrawerButton() {
-//        setupRightMenuButton()
-//        
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name:"kCloseOpenDrawersNotif",  object:nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(SearchViewController.closeDrawers), name: "kCloseOpenDrawersNotif", object:nil)
-//    }
-//    
-//    func setupRightMenuButton() {
-//        let rightDrawerButton = MMDrawerBarButtonItem(target:self, action:#selector(SearchViewController.rightDrawerButtonPress(_:)))
-//        navigationItem.setRightBarButtonItem(rightDrawerButton, animated:true)
-//    }
-//    
-//    func closeDrawers() {
-//        mm_drawerController.closeDrawerAnimated(false, completion:nil)
-//    }
-//    
-//    func rightDrawerButtonPress(sender: AnyObject) {
-//        if let navigationVC = mm_drawerController.rightDrawerViewController as? UINavigationController {
-//            var searchSettings:SearchSettingsViewController?
-//            
-//            for drawer in navigationVC.viewControllers {
-//                if drawer is SearchSettingsViewController {
-//                    searchSettings = drawer as? SearchSettingsViewController
-//                }
-//            }
-//            if searchSettings == nil {
-//                searchSettings = SearchSettingsViewController()
-//                navigationVC.addChildViewController(searchSettings!)
-//            }
-//            
-//            navigationVC.popToViewController(searchSettings!, animated: true)
-//        }
-//        mm_drawerController.toggleDrawerSide(.Right, animated:true, completion:nil)
-//    }
 }
 
 // MARK: UITableViewDataSource

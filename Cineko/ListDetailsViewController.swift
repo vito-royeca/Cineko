@@ -45,7 +45,6 @@ class ListDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "posterTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "nameTableViewCell")
         tableView.registerNib(UINib(nibName: "DynamicHeightTableViewCell", bundle: nil), forCellReuseIdentifier: "descriptionTableViewCell")
         tableView.registerNib(UINib(nibName: "ThumbnailTableViewCell", bundle: nil), forCellReuseIdentifier: "moviesTableViewCell")
@@ -122,12 +121,12 @@ class ListDetailsViewController: UIViewController {
             performUIUpdatesOnMain {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
-                if let error = error {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
-                }
-                
                 if let navigationController = self.navigationController {
                     navigationController.popToRootViewControllerAnimated(true)
+                }
+                
+                if let error = error {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error.userInfo[NSLocalizedDescriptionKey]!)")
                 }
             }
         }
@@ -152,34 +151,18 @@ class ListDetailsViewController: UIViewController {
         
         switch indexPath.section {
         case 0:
-            for v in cell.contentView.subviews {
-                v.removeFromSuperview()
-            }
-            
-            let imageView = UIImageView()
-            imageView.contentMode = .ScaleToFill
-            
-            if let posterPath = list!.posterPath {
-                let url = NSURL(string: "\(TMDBConstants.ImageURL)/\(TMDBConstants.BackdropSizes[1])\(posterPath)")
-                imageView.sd_setImageWithURL(url)
-            } else {
-                imageView.image = UIImage(named: "noImage")
-            }
-            
-            cell.contentView.addSubview(imageView)
-        case 1:
             if let c = cell as? DynamicHeightTableViewCell {
                 c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                 c.dynamicLabel.text = list!.name
                 c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
             }
-        case 2:
+        case 1:
             if let c = cell as? DynamicHeightTableViewCell {
                 c.dynamicLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
                 c.dynamicLabel.text = list!.description_
                 c.changeColor(UIColor.whiteColor(), fontColor: UIColor.blackColor())
             }
-        case 3:
+        case 2:
             if let c = cell as? ThumbnailTableViewCell {
                 c.titleLabel.text = "Movies"
                 c.fetchRequest = moviesFetchRequest
@@ -213,14 +196,14 @@ extension ListDetailsViewController : UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 1:
+        case 0:
             return "Name"
-        case 2:
+        case 1:
             return "Description"
         default:
             return nil
@@ -232,12 +215,10 @@ extension ListDetailsViewController : UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell = tableView.dequeueReusableCellWithIdentifier("posterTableViewCell", forIndexPath: indexPath)
-        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("nameTableViewCell", forIndexPath: indexPath)
-        case 2:
+        case 1:
             cell = tableView.dequeueReusableCellWithIdentifier("descriptionTableViewCell", forIndexPath: indexPath)
-        case 3:
+        case 2:
             cell = tableView.dequeueReusableCellWithIdentifier("moviesTableViewCell", forIndexPath: indexPath)
         default:
             ()
@@ -252,9 +233,9 @@ extension ListDetailsViewController : UITableViewDataSource {
 extension ListDetailsViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
-        case 1:
+        case 0:
             return UITableViewAutomaticDimension
-        case 2:
+        case 1:
             return dynamicHeightForCell("descriptionTableViewCell", indexPath: indexPath)
         default:
             return tableView.frame.size.height / 3

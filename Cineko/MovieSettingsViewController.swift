@@ -152,7 +152,7 @@ class MovieSettingsViewController: FormViewController {
             do {
                 try TMDBManager.sharedInstance.lists(completion)
             } catch {
-                let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
+                let predicate = NSPredicate(format: "createdBy = %@ AND listIDInt != nil", TMDBManager.sharedInstance.account!)
                 if let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [List] {
                     
                     self.lists = lists
@@ -162,7 +162,7 @@ class MovieSettingsViewController: FormViewController {
             }
             
         } else {
-            let predicate = NSPredicate(format: "createdBy = %@", TMDBManager.sharedInstance.account!)
+            let predicate = NSPredicate(format: "createdBy = %@ AND listIDInt != nil", TMDBManager.sharedInstance.account!)
             if let lists = ObjectManager.sharedInstance.findObjects("List", predicate: predicate, sorters: [NSSortDescriptor(key: "name", ascending: true)]) as? [List] {
                 
                 self.lists = lists

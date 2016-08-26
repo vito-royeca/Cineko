@@ -165,21 +165,21 @@ class AccountViewController: UIViewController {
                     try TMDBManager.sharedInstance.lists(completion)
                     
                 } catch {
-                    listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
+                    listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil AND listIDInt != nil")
                     doFetch()
                 }
             } else {
-                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
+                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil AND listIDInt != nil")
                 doFetch()
             }
             
         } else {
             if TMDBManager.sharedInstance.hasSessionID() {
                 if let account = TMDBManager.sharedInstance.account {
-                    listsFetchRequest!.predicate = NSPredicate(format: "createdBy.accountID = %@", account.accountID!)
+                    listsFetchRequest!.predicate = NSPredicate(format: "createdBy.accountID = %@ AND listIDInt != nil", account.accountID!)
                 }
             } else {
-                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil")
+                listsFetchRequest!.predicate = NSPredicate(format: "createdBy = nil AND listIDInt != nil")
             }
             doFetch()
         }

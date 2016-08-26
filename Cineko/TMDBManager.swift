@@ -1700,7 +1700,7 @@ class TMDBManager: NSObject {
         NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
-    func deleteList(listID: NSNumber, completion: (error: NSError?) -> Void) throws {
+    func deleteList(listIDInt: NSNumber, completion: (error: NSError?) -> Void) throws {
         guard (apiKey) != nil else {
             throw TMDBError.NoAPIKey
         }
@@ -1715,36 +1715,43 @@ class TMDBManager: NSObject {
         
         let httpMethod:HTTPMethod = .Delete
         var urlString = "\(TMDBConstants.APIURL)\(TMDBConstants.Lists.Delete.Path)"
-        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listID)")
+        urlString = urlString.stringByReplacingOccurrencesOfString("{id}", withString: "\(listIDInt)")
+        let headers = ["Accept": "application/json",
+                       "Content-Type": "application/json"]
         let parameters = [TMDBConstants.APIKeyParam: apiKey!,
                           TMDBConstants.SessionID: keychain[TMDBConstants.SessionID]!]
+        let bodyDict = ["media_id": listIDInt]
+        let body = try NSJSONSerialization.dataWithJSONObject(bodyDict, options: .PrettyPrinted)
         
         let success = { (results: AnyObject!) in
             if let dict = results as? [String: AnyObject] {
+                // force refresh of Lists
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
+                ObjectManager.sharedInstance.deleteObject("List", objectKey: "listIDInt", objectValue: listIDInt)
+                
                 if let statusCode = dict["status_code"] as? Int {
                     if statusCode == 13 { // 13 	200 	The item/record was deleted successfully.
-                        // force refresh of Lists
-                        NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
-                        
-                        ObjectManager.sharedInstance.deleteObject("List", objectKey: "listID", objectValue: listID)
-                        
                         completion(error: nil)
                     } else {
-                        let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listID)."])
+                        let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listIDInt)."])
                         completion(error: e)
                     }
                 } else {
-                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listID)."])
+                    let e = NSError(domain: "exec", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error deleting list: \(listIDInt)."])
                     completion(error: e)
                 }
             }
         }
         
         let failure = { (error: NSError?) -> Void in
+            // force refresh of Lists
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(TMDBConstants.Device.Keys.Lists)
+            ObjectManager.sharedInstance.deleteObject("List", objectKey: "listIDInt", objectValue: listIDInt)
+            
             completion(error: error)
         }
         
-        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: nil, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        NetworkManager.sharedInstance.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
 
     func addMovie(movieID: NSNumber, toList listID: NSNumber, completion: (error: NSError?) -> Void) throws {
