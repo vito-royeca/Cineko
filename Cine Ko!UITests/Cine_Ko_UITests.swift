@@ -39,24 +39,30 @@ class Cine_Ko_UITests: XCTestCase {
             UIDevice.currentDevice().setValue(value, forKey: "orientation")
         }
     
-        snapshot("00-InitialScreen")
+//        snapshot("00-InitialScreen")
         
         app.buttons["Skip Login"].tap()
         sleep(20)
-        snapshot("01-Featured")
         
         let tablesQuery = app.tables
         let seeAllButton = tablesQuery.cells.containingType(.StaticText, identifier:"Now Showing").buttons["See All >"]
         seeAllButton.tap()
-        sleep(10)
-        snapshot("02-NowShowing")
-        
+        sleep(20)
+        snapshot("01-NowShowing")
         let featuredButton = app.navigationBars["Now Showing"].buttons["Featured"]
         featuredButton.tap()
         
-        app.tabBars.buttons["Search"].tap()
-        snapshot("03-Search")
+        snapshot("00-Featured")
         
+        app.tabBars.buttons["Movies"].tap()
+        sleep(20)
+        snapshot("02-Movies")
+        
+        app.tabBars.buttons["TV Shows"].tap()
+        sleep(20)
+        snapshot("03-TVShows")
+        
+        app.tabBars.buttons["Search"].tap()
         let button = app.navigationBars["Cine_Ko_.SearchView"].childrenMatchingType(.Button).elementBoundByIndex(1)
         button.tap()
         snapshot("04-SearchSettings")

@@ -1,5 +1,3 @@
-* Added Twitter feeds.
+Minor bug fixes and improvements.
 
-* Favorite, Watchlist, and List  buttons are now in a side drawer.
-
-* Fixed unreadable background and foreground text color combinations.
+Can now play trailers, teasers, clips, etc.

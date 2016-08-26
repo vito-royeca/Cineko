@@ -28,7 +28,7 @@ scheme "Cine Ko!"
 
  clear_previous_screenshots true # remove the '#' to clear all previously generated screenshots before creating new ones
 
- erase_simulator true
+ erase_simulator false
  
 # Choose which project/workspace to use
 # project "./Project.xcodeproj"

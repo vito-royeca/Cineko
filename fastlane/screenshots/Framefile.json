@@ -9,25 +9,25 @@
 
   "data": [
     {
-      "filter": "00-InitialScreen",
+      "filter": "00-Featured",
       "keyword": {
         "color": "#008000"
       }
     },
     {
-      "filter": "01-Featured",
+      "filter": "01-NowShowing",
       "keyword": {
         "color": "#008000"
       }
     },
     {
-      "filter": "02-NowShowing",
+      "filter": "02-Movies",
       "keyword": {
         "color": "#008000"
       }
     },
     {
-      "filter": "03-Search",
+      "filter": "03-TVShows",
       "keyword": {
         "color": "#008000"
       }
