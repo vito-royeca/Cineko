@@ -2,7 +2,7 @@ PODS:
   - Colours (5.13.0):
     - Colours/ObjC (= 5.13.0)
   - Colours/ObjC (5.13.0)
-  - Crashlytics (3.7.3):
+  - Crashlytics (3.8.1):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.3.1)
   - Eureka (1.7.0)
@@ -11,7 +11,7 @@ PODS:
     - DACircularProgress
     - pop
     - SDWebImage
-  - InAppSettingsKit (2.7.1)
+  - InAppSettingsKit (2.8)
   - JJJUtils (0.3.2):
     - JJJUtils/OSX (= 0.3.2)
   - KeychainAccess (2.3.6)
@@ -31,10 +31,10 @@ PODS:
   - MMDrawerController/Subclass (0.6.0):
     - MMDrawerController/Core
   - pop (1.0.9)
-  - SDWebImage (3.8.1):
-    - SDWebImage/Core (= 3.8.1)
-  - SDWebImage/Core (3.8.1)
-  - SimulatorStatusMagic (1.8)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - SimulatorStatusMagic (1.9)
   - TwitterCore (2.4.0):
     - Fabric
   - TwitterKit (2.4.0):
@@ -61,24 +61,24 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
-  Crashlytics: 76f6beaff70acf226139582c09c78461597c2b98
+  Crashlytics: 4391d8df0b125345e9f209c5db6e7f40a6a8435d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   Eureka: 2020d9faeef7b7e9adeb9e3d8af779e5931c1897
   Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
   IDMPhotoBrowser: b574fe3229754e701f32df271afbc4ac7e4e1997
-  InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
+  InAppSettingsKit: fe3e73f8f9530cdd6270065cd7df7b3773f557e6
   JJJUtils: 5abcb911388dc05e24cecdde9d4a3e18f1b1510e
   KeychainAccess: 7f10e2ef998ddf954a64d5d608be08677774684d
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   MMDrawerController+Storyboard: c98f86c0f32cdef1d466d19a7da3ad2fc6c6ac00
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
-  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
-  SimulatorStatusMagic: 4dbf0faa0208e9ac0d56cea06eaa5f7a5f3d02fb
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SimulatorStatusMagic: 4db65b11c095bbb3abd966a4ae8ee0f11789e8e0
   TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
   TwitterKit: 1cf9742edf9d182c1518cfdd6aaac0dfe313b38b
   XCDYouTubeKit: 90690f9e3523735dc93b8024269d991b0cfffe78
 
-PODFILE CHECKSUM: 8e1edbfbdc99611f24d95012273b5d4d7b261550
+PODFILE CHECKSUM: d187780b896776df536967fe0d1c556577d30c27
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.1
